@@ -9,5 +9,7 @@ export default async function AuthLayout({
   const session = await getUserAuth();
   if (session?.session) redirect("/dashboard");
 
-  return (<div className="bg8">{children}</div>);
+  return (
+    <div className="grid h-screen  w-screen place-items-center">{children}</div>
+  );
 }

@@ -1,15 +1,15 @@
-import clsx from 'clsx'
-import React from 'react'
+import clsx from "clsx";
+import React from "react";
 
 type FlexProps = {
-    children: React.ReactNode
-    dir?: 'row' | 'row-reverse' | 'col' | 'col-reverse'
-    justify?: 'start' | 'end' | 'center' | 'between' | 'around' | 'evenly'
-    align?: 'start' | 'end' | 'center' | 'stretch' | 'baseline'
-    gap?: string
-    className?: string
-    as?: keyof JSX.IntrinsicElements
-}
+  children: React.ReactNode;
+  dir?: "row" | "row-reverse" | "col" | "col-reverse";
+  justify?: "start" | "end" | "center" | "between" | "around" | "evenly";
+  align?: "start" | "end" | "center" | "stretch" | "baseline";
+  gap?: string;
+  className?: string;
+  as?: keyof JSX.IntrinsicElements;
+};
 
 /**
  * Flex component to create flexible layouts using a minimalistic API.
@@ -24,45 +24,45 @@ type FlexProps = {
  * @returns {JSX.Element} The rendered Flex component.
  */
 const Flex: React.FC<FlexProps> = ({
-    children,
-    dir = 'row',
-    justify = 'start',
-    align = 'stretch',
-    gap = '0',
-    className = '',
-    as: Component = 'div',
-    ...props
+  children,
+  dir = "row",
+  justify = "start",
+  align = "stretch",
+  gap = "0",
+  className = "",
+  as: Component = "div",
+  ...props
 }) => {
-    const classes = clsx(
-        'flex',
-        {
-            'flex-row': dir === 'row',
-            'flex-row-reverse': dir === 'row-reverse',
-            'flex-col': dir === 'col',
-            'flex-col-reverse': dir === 'col-reverse',
-            'justify-start': justify === 'start',
-            'justify-end': justify === 'end',
-            'justify-center': justify === 'center',
-            'justify-between': justify === 'between',
-            'justify-around': justify === 'around',
-            'justify-evenly': justify === 'evenly',
-            'items-start': align === 'start',
-            'items-end': align === 'end',
-            'items-center': align === 'center',
-            'items-stretch': align === 'stretch',
-            'items-baseline': align === 'baseline',
-        },
-        {
-            [`gap-${gap}`]: gap,
-        },
-        className,
-    )
+  const classes = clsx(
+    "flex",
+    {
+      "flex-row": dir === "row",
+      "flex-row-reverse": dir === "row-reverse",
+      "flex-col": dir === "col",
+      "flex-col-reverse": dir === "col-reverse",
+      "justify-start": justify === "start",
+      "justify-end": justify === "end",
+      "justify-center": justify === "center",
+      "justify-between": justify === "between",
+      "justify-around": justify === "around",
+      "justify-evenly": justify === "evenly",
+      "items-start": align === "start",
+      "items-end": align === "end",
+      "items-center": align === "center",
+      "items-stretch": align === "stretch",
+      "items-baseline": align === "baseline",
+    },
+    {
+      [`gap-${gap}`]: gap,
+    },
+    className,
+  );
 
-    return (
-        <Component className={classes} {...props}>
-            {children}
-        </Component>
-    )
-}
+  return (
+    <Component className={classes} {...props}>
+      {children}
+    </Component>
+  );
+};
 
-export default Flex
+export default Flex;

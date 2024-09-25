@@ -2,9 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './themes/_regular.scss';
-@import './utillities/_border.scss';
+@import "./themes/_regular.scss";
+@import "./utillities/_border.scss";
 
 .trans-all {
-    transition: 500ms ease-in-out all;
+  transition: 500ms ease-in-out all;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply text-title;
 }

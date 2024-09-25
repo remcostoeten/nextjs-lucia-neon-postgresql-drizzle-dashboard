@@ -1,19 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
-import { AlignRight } from "lucide-react";
 import { defaultLinks } from "@/config/nav";
+import { AlignRight } from "lucide-react";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   return (
-    <div className="md:hidden border-b mb-4 pb-2 w-full">
+    <div className="md:hidden border-b mb-4 pb-2 w-full border border-border-outline">
       <nav className="flex justify-between w-full items-center">
         <div className="font-semibold text-lg">Logo</div>
         <Button variant="ghost" onClick={() => setOpen(!open)}>

@@ -1,7 +1,11 @@
 import * as React from "react";
 
 import { cn } from "cn";
-import { LuChevronLeft, LuChevronRight, LuMoreHorizontal } from "react-icons/lu";
+import {
+  LuChevronLeft,
+  LuChevronRight,
+  LuMoreHorizontal,
+} from "react-icons/lu";
 import { ButtonProps, buttonVariants } from "./button";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
@@ -113,6 +117,5 @@ export {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious
+  PaginationPrevious,
 };
-

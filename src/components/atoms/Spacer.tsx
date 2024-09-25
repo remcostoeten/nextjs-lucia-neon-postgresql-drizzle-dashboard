@@ -1,15 +1,15 @@
-import clsx from 'clsx'
-import React from 'react'
+import clsx from "clsx";
+import React from "react";
 
 type SpacerProps = {
-    children: React.ReactNode
-    spaceX?: string
-    spaceY?: string
-    margin?: string
-    padding?: string
-    className?: string
-    as?: keyof JSX.IntrinsicElements
-}
+  children: React.ReactNode;
+  spaceX?: string;
+  spaceY?: string;
+  margin?: string;
+  padding?: string;
+  className?: string;
+  as?: keyof JSX.IntrinsicElements;
+};
 
 /**
  * Spacer component to handle space-x, space-y, margin, and padding utility classes.
@@ -24,30 +24,30 @@ type SpacerProps = {
  * @returns {JSX.Element} The rendered Spacer component.
  */
 const Spacer: React.FC<SpacerProps> = ({
-    children,
-    spaceX = '0',
-    spaceY = '0',
-    margin = '0',
-    padding = '0',
-    className = '',
-    as: Component = 'div',
-    ...props
+  children,
+  spaceX = "0",
+  spaceY = "0",
+  margin = "0",
+  padding = "0",
+  className = "",
+  as: Component = "div",
+  ...props
 }) => {
-    const classes = clsx(
-        {
-            [`space-x-${spaceX}`]: spaceX !== '0',
-            [`space-y-${spaceY}`]: spaceY !== '0',
-            [`m-${margin}`]: margin !== '0',
-            [`p-${padding}`]: padding !== '0',
-        },
-        className,
-    )
+  const classes = clsx(
+    {
+      [`space-x-${spaceX}`]: spaceX !== "0",
+      [`space-y-${spaceY}`]: spaceY !== "0",
+      [`m-${margin}`]: margin !== "0",
+      [`p-${padding}`]: padding !== "0",
+    },
+    className,
+  );
 
-    return (
-        <Component className={classes} {...props}>
-            {children}
-        </Component>
-    )
-}
+  return (
+    <Component className={classes} {...props}>
+      {children}
+    </Component>
+  );
+};
 
-export default Spacer
+export default Spacer;

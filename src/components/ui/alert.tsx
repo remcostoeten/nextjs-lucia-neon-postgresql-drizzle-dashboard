@@ -53,11 +53,13 @@ const AlertDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("text-sm [&_p]:leading-relaxed [&:is(svg~&)]:col-[main]", className)}
+    className={cn(
+      "text-sm [&_p]:leading-relaxed [&:is(svg~&)]:col-[main]",
+      className,
+    )}
     {...props}
   />
 ));
 AlertDescription.displayName = "AlertDescription";
 
 export { Alert, AlertDescription, AlertTitle, alertVariants };
-

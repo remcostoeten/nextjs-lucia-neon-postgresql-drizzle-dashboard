@@ -1,10 +1,6 @@
 {
   "hasSrc": true,
-  "packages": [
-    "shadcn-ui",
-    "drizzle",
-    "lucia"
-  ],
+  "packages": ["shadcn-ui", "drizzle", "lucia"],
   "preferredPackageManager": "bun",
   "t3": false,
   "alias": "@",

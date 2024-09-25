@@ -122,6 +122,5 @@ export {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerVariants,
-  NavigationMenuViewport
+  NavigationMenuViewport,
 };
-

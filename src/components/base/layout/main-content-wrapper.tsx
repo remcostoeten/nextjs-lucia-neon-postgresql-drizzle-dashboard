@@ -1,44 +1,52 @@
-'use client'
-
-import { MainSidebar } from '@/components/aside/sidebar'
-import SubSidebarShell from '@/components/aside/sub-sidebar-shell'
-import { useMainSidebarStore, useSubSidebarStore } from '@/core/stores'
-import { ReactNode } from 'react'
+import MainSidebar from "@/components/aside/sidebar";
+import SubSidebarShell from "@/components/aside/sub-sidebar-shell";
+import Navbar from "@/components/Navbar";
+import { subSidebarConfig } from "@/core/config/menu-items/sidebar-menu-items";
+import { useMainSidebarStore, useSubSidebarStore } from "@/core/stores";
+import { usePathname } from "next/navigation";
+import { ReactNode, useEffect, useState } from "react";
 
 type MainContentWrapperProps = {
-    children?: ReactNode
-}
+  children?: ReactNode;
+};
 
 export default function MainContentWrapper({
-    children,
+  children,
 }: MainContentWrapperProps) {
-    const {
-        isCollapsed: isMainSidebarCollapsed,
-        toggleCollapse: toggleMainSidebar,
-    } = useMainSidebarStore()
-    const { isOpen: isSubSidebarOpen, toggle: toggleSubSidebar } =
-        useSubSidebarStore()
+  const pathname = usePathname();
+  const [hasSubSidebar, setHasSubSidebar] = useState(false);
+  const {
+    isCollapsed: isMainSidebarCollapsed,
+    toggleCollapse: toggleMainSidebar,
+  } = useMainSidebarStore();
+  const { isOpen: isSubSidebarOpen, toggle: toggleSubSidebar } =
+    useSubSidebarStore();
 
-    const marginClass = isMainSidebarCollapsed
-        ? ''
-        : isSubSidebarOpen
-            ? 'ml-[calc(var(--sidebar-width)+var(--sidebar-sub-width))]'
-            : 'ml-[var(--sidebar-width)]'
+  useEffect(() => {
+    setHasSubSidebar(!!subSidebarConfig[pathname]);
+  }, [pathname]);
 
-    return (
-        <>
-            <MainSidebar
-                isSubSidebarOpen={isSubSidebarOpen}
-                toggleSubSidebar={toggleSubSidebar}
-                isCollapsed={isMainSidebarCollapsed}
-                toggleCollapse={toggleMainSidebar}
-            />
-            <SubSidebarShell isSubSidebarOpen={isSubSidebarOpen} />
-            <main
-                className={`flex-1 overflow-x-hidden overflow-y-auto p-6 transition-all duration-300 ease-in-out ${marginClass}`}
-            >
-                {children}
-            </main>
-        </>
-    )
+  const marginClass = isMainSidebarCollapsed
+    ? ""
+    : hasSubSidebar && isSubSidebarOpen
+      ? "ml-[calc(var(--sidebar-width)+var(--sidebar-sub-width))]"
+      : "ml-[var(--sidebar-width)]";
+
+  return (
+    <>
+      <Navbar />
+      <MainSidebar
+        isSubSidebarOpen={isSubSidebarOpen}
+        toggleSubSidebar={toggleSubSidebar}
+        isCollapsed={isMainSidebarCollapsed}
+        toggleCollapse={toggleMainSidebar}
+      />
+      {hasSubSidebar && <SubSidebarShell isSubSidebarOpen={isSubSidebarOpen} />}
+      <main
+        className={`flex-1 overflow-x-hidden overflow-y-auto p-6 transition-all duration-300 ease-in-out ${marginClass}`}
+      >
+        {children}
+      </main>
+    </>
+  );
 }

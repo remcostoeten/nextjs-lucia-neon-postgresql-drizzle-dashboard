@@ -44,4 +44,3 @@ const Submit = () => {
   const { pending } = useFormStatus();
   return <Button disabled={pending}>Update Email</Button>;
 };
-

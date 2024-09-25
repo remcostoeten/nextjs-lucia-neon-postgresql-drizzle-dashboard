@@ -17,8 +17,8 @@ export const sessions = pgTable("session", {
     .references(() => users.id),
   expiresAt: timestamp("expires_at", {
     withTimezone: true,
-    mode: "date"
-  }).notNull()
+    mode: "date",
+  }).notNull(),
 });
 
 // Onboarding info table
@@ -90,4 +90,4 @@ export const relations = {
       fields: [onboardingInfo.userId, users.id],
     },
   },
-}
+};

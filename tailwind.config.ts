@@ -44,7 +44,6 @@ const config: Config = {
         "bg-dropdown": "var(--bg-dropdown)",
         modal: "var(--bg-modal)",
         "modal-hover": "var(--bg-modal-hover)",
-        
 
         /* Border & Outline Colors */
         "border-default": "var(--border-default)",
