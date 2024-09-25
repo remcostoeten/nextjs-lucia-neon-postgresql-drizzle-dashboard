@@ -3,19 +3,20 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { db } from "db";
+import { eq } from "drizzle-orm";
+import { generateId } from "lucia";
 import { Argon2id } from "oslo/password";
 import { lucia, validateRequest } from "../auth/lucia";
-import { generateId } from "lucia";
-import { eq } from "drizzle-orm";
-import { db } from "@/lib/db/index";
 
+import { updateUserSchema } from "models";
+import { users } from "schema";
 import {
   genericError,
+  getUserAuth,
   setAuthCookie,
   validateAuthFormData,
-  getUserAuth,
 } from "../auth/utils";
-import { users, updateUserSchema } from "../db/schema/auth";
 
 interface ActionResult {
   error: string;

@@ -5,7 +5,7 @@ import {
   Pool,
 } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
-import { env } from "@/lib/env.mjs";
+import { env } from "@/core/lib/env.mjs";
 
 neonConfig.fetchConnectionCache = true;
 

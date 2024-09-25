@@ -24,7 +24,19 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ]
+      ],
+      "cn": [
+        "./src/core/lib/utils.ts"
+      ],
+      "db": [
+        "./src/core/server/database/index.ts"
+      ],
+      "schema": [
+        "./src/core/server/schema/index.ts"
+      ],
+      "models": [
+        "./src/core/models/index.ts"
+      ],
     },
     "target": "esnext",
     "baseUrl": "./"

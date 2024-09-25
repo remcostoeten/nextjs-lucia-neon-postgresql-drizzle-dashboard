@@ -1,8 +1,8 @@
+import { env } from "@/core/lib/env.mjs";
 import type { Config } from "drizzle-kit";
-import { env } from "@/lib/env.mjs";
 
 export default {
-  schema: "./src/lib/db/schema",
+  schema: "./src/core/server/schema/index.ts",
   out: "./src/lib/db/migrations",
   driver: "pg",
   dbCredentials: {

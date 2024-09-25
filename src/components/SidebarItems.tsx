@@ -5,10 +5,10 @@ import { usePathname } from "next/navigation";
 
 import { LucideIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils";
-import { defaultLinks, additionalLinks } from "@/config/nav";
+import { additionalLinks, defaultLinks } from "@/core/config/navigation-items";
+import { cn } from "cn";
 
-export interface SidebarLink {
+export type SidebarLink = {
   title: string;
   href: string;
   icon: LucideIcon;
@@ -20,13 +20,13 @@ const SidebarItems = () => {
       <SidebarLinkGroup links={defaultLinks} />
       {additionalLinks.length > 0
         ? additionalLinks.map((l) => (
-            <SidebarLinkGroup
-              links={l.links}
-              title={l.title}
-              border
-              key={l.title}
-            />
-          ))
+          <SidebarLinkGroup
+            links={l.links}
+            title={l.title}
+            border
+            key={l.title}
+          />
+        ))
         : null}
     </>
   );
@@ -72,9 +72,8 @@ const SidebarLink = ({
   return (
     <Link
       href={link.href}
-      className={`group transition-colors p-2 inline-block hover:bg-popover hover:text-primary text-muted-foreground text-xs hover:shadow rounded-md w-full${
-        active ? " text-primary font-semibold" : ""
-      }`}
+      className={`group transition-colors p-2 inline-block hover:bg-popover hover:text-primary text-muted-foreground text-xs hover:shadow rounded-md w-full${active ? " text-primary font-semibold" : ""
+        }`}
     >
       <div className="flex items-center">
         <div

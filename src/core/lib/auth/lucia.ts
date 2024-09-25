@@ -1,12 +1,12 @@
-import { cookies } from 'next/headers'
-import { cache } from 'react'
+import { cookies } from 'next/headers';
+import { cache } from 'react';
 
-import { type Session, type User, Lucia } from 'lucia'
-import { db } from "@/lib/db/index";
+import { db } from "db";
+import { type Session, type User, Lucia } from 'lucia';
 
+import { sessions } from '@/core/server/schema/auth/sessions';
 import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
-import { sessions, users } from "../db/schema/auth";
-
+import { users } from "schema";
 
 export const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users);
 
@@ -69,7 +69,7 @@ export const validateRequest = cache(
           sessionCookie.attributes
         )
       }
-    } catch {}
+    } catch { }
     return result
   }
 )

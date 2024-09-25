@@ -1,15 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useFormState } from "react-dom";
-import { useFormStatus } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 
-import { signInAction } from "@/lib/actions/users";
+import { signInAction } from "@/core/lib/actions/users";
 
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import AuthFormError from "@/components/auth/AuthFormError";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function SignInPage() {
   const [state, formAction] = useFormState(signInAction, {

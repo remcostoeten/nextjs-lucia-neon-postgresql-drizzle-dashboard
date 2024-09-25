@@ -3,12 +3,12 @@
 import { useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
-import { AccountCard, AccountCardFooter, AccountCardBody } from "./AccountCard";
-import { updateUser } from "@/lib/actions/users";
+import { updateUser } from "@/core/lib/actions/users";
+import { AccountCard, AccountCardBody, AccountCardFooter } from "./AccountCard";
 
-import { toast } from "sonner";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 export default function UpdateEmailCard({ email }: { email: string }) {
   const [state, formAction] = useFormState(updateUser, {

@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "../ui/button";
+import { signOutAction } from "@/core/lib/actions/users";
 import { useFormStatus } from "react-dom";
-import { signOutAction } from "@/lib/actions/users";
+import { Button } from "../ui/button";
 
 export default function SignOutBtn() {
   return (

@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
+import { defaultLinks } from "@/core/config/navigation-items";
 import { AlignRight } from "lucide-react";
-import { defaultLinks } from "@/config/nav";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);

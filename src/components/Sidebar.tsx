@@ -3,7 +3,7 @@ import Link from "next/link";
 import SidebarItems from "./SidebarItems";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 
-import { AuthSession, getUserAuth } from "@/lib/auth/utils";
+import { AuthSession, getUserAuth } from "@/core/lib/auth/utils";
 
 const Sidebar = async () => {
   const session = await getUserAuth();
@@ -43,9 +43,9 @@ const UserDetails = ({ session }: { session: AuthSession }) => {
           <AvatarFallback className="border-border border-2 text-muted-foreground">
             {user.name
               ? user.name
-                  ?.split(" ")
-                  .map((word) => word[0].toUpperCase())
-                  .join("")
+                ?.split(" ")
+                .map((word) => word[0].toUpperCase())
+                .join("")
               : "~"}
           </AvatarFallback>
         </Avatar>
