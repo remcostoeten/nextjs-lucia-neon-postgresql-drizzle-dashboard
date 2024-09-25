@@ -1,0 +1,123 @@
+.border {
+    border: 1px solid var(--border-outline);
+}
+
+$border-styles: (
+    regular: var(--border-default),
+    outline: var(--border-outline),
+    separator: var(--border-separator),
+    transparent: transparent,
+);
+
+// Define border positions
+$border-positions: left, right, top, bottom;
+
+// Generate border classes for each style and position
+@each $style, $color in $border-styles {
+    .border-#{$style} {
+        border: 1px solid $color;
+
+        @each $position in $border-positions {
+            &-#{$position} {
+                border: none;
+                border-#{$position}: 1px solid $color;
+            }
+        }
+    }
+}
+
+.border {
+    transition: border 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+
+    &:hover {
+        border: 1px solid var(--border-outline) !important;
+    }
+}
+
+// Examples of generated classes:
+//
+// .border-regular { border: 1px solid var(--border-default); }
+// .border-regular-left { border: none; border-left: 1px solid var(--border-default); }
+// .border-regular-right { border: none; border-right: 1px solid var(--border-default); }
+// .border-regular-top { border: none; border-top: 1px solid var(--border-default); }
+// .border-regular-bottom { border: none; border-bottom: 1px solid var(--border-default); }
+//
+// .border-outline { border: 1px solid var(--border-outline); }
+// .border-outline-left { border: none; border-left: 1px solid var(--border-outline); }
+// .border-outline-right { border: none; border-right: 1px solid var(--border-outline); }
+// .border-outline-top { border: none; border-top: 1px solid var(--border-outline); }
+// .border-outline-bottom { border: none; border-bottom: 1px solid var(--border-outline); }
+//
+// .border-separator { border: 1px solid var(--border-separator); }
+// .border-separator-left { border: none; border-left: 1px solid var(--border-separator); }
+// .border-separator-right { border: none; border-right: 1px solid var(--border-separator); }
+// .border-separator-top { border: none; border-top: 1px solid var(--border-separator); }
+// .border-separator-bottom { border: none; border-bottom: 1px solid var(--border-separator); }
+//
+// Usage in HTML:
+// <div class="border-regular">All sides border</div>
+// <div class="border-outline-left">Left border only</div>
+// <div class="border-separator-top">Top border only</div>
+
+.line {
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        top: 20px;
+        left: -10%;
+        width: calc(100% + 20%);
+        height: 1px;
+        background-color: var(--border-outline);
+    }
+}
+
+// // General input and textarea focus styles
+input,
+textarea {
+    &:focus {
+        outline: none !important;
+        box-shadow: 0 0 0 2px var(--border-outline) !important;
+        transition: box-shadow 0.2s ease-in-out;
+    }
+}
+
+// // Color picker specific styles
+// input[type="color"] {
+//   -webkit-appearance: none;
+//   appearance: none;
+//   width: 40px;
+//   height: 40px;
+//   background-color: transparent;
+//   border: none;
+//   cursor: pointer;
+// }
+
+// input[type="color"]::-webkit-color-swatch-wrapper {
+//   padding: 0;
+// }
+
+// input[type="color"]::-webkit-color-swatch,
+// input[type="color"]::-moz-color-swatch {
+//   border: 2px solid #555;
+//   border-radius: 4px;
+// }
+
+// input[type="color"]:focus {
+//   outline: none;
+//   box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.6);
+// }
+
+// /* Optional: Style for the container */
+// .color-picker-container {
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+// }
+
+// .color-picker-container label {
+//   font-size: 14px;
+//   color: #fff;
+// }

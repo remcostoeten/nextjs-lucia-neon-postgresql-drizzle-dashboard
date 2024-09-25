@@ -8,6 +8,13 @@
       "when": 1708950366480,
       "tag": "0000_steady_golden_guardian",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1727293299342,
+      "tag": "0001_goofy_tana_nile",
+      "breakpoints": true
     }
   ]
 }

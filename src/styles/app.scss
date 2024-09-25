@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './themes/_regular.scss';
+@import './utillities/_border.scss';
+
+.trans-all {
+    transition: 500ms ease-in-out all;
+}

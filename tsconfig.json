@@ -24,6 +24,21 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "cn": [
+        "./src/lib/utils.ts"
+      ],
+      "db": [
+        "./src/core/server/database/index.ts"
+      ],
+      "schema": [
+        "./src/core/server/schema/index.ts"
+      ],
+      "models": [
+        "./src/core/models/index.ts"
+      ],
+      "ui": [
+        "./src/components/ui/index.ts"
       ]
     },
     "target": "esnext",
