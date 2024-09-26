@@ -1,101 +1,129 @@
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { createFolder, deleteFolder, getFolders, moveFolder, updateFolder } from '@/lib/actions/folders'
-import { AnimatePresence, motion } from 'framer-motion'
-import { ChevronDown, ChevronRight, ChevronUp, Edit, Folder, Plus, Search, Trash } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { DndProvider, useDrag, useDrop } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { toast } from 'sonner'
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  createFolder,
+  deleteFolder,
+  getFolders,
+  moveFolder,
+  updateFolder,
+} from "@/lib/actions/folders";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  ChevronDown,
+  ChevronRight,
+  ChevronUp,
+  Edit,
+  Folder,
+  Plus,
+  Search,
+  Trash,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { toast } from "sonner";
 
-const FolderItem = ({ item, level = 0, onUpdate, onDelete, onMove, searchTerm }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [isAdding, setIsAdding] = useState(false)
-  const [isEditing, setIsEditing] = useState(false)
-  const [newItemName, setNewItemName] = useState('')
-  const [newItemColor, setNewItemColor] = useState('#ffffff')
-  const [newItemDescription, setNewItemDescription] = useState('')
+const FolderItem = ({
+  item,
+  level = 0,
+  onUpdate,
+  onDelete,
+  onMove,
+  searchTerm,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [newItemName, setNewItemName] = useState("");
+  const [newItemColor, setNewItemColor] = useState("#ffffff");
+  const [newItemDescription, setNewItemDescription] = useState("");
 
   const [{ isDragging }, drag] = useDrag({
-    type: 'FOLDER_ITEM',
-    item: { id: item.id, type: 'folder' },
+    type: "FOLDER_ITEM",
+    item: { id: item.id, type: "folder" },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
-  })
+  });
 
   const [, drop] = useDrop({
-    accept: 'FOLDER_ITEM',
+    accept: "FOLDER_ITEM",
     drop: (draggedItem: { id: string }) => {
       if (draggedItem.id !== item.id) {
-        onMove(draggedItem.id, item.id)
+        onMove(draggedItem.id, item.id);
       }
     },
-  })
+  });
 
-  const handleToggle = () => setIsOpen(!isOpen)
+  const handleToggle = () => setIsOpen(!isOpen);
 
   const handleAdd = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const formData = new FormData()
-    formData.append('name', newItemName)
-    formData.append('color', newItemColor)
-    formData.append('description', newItemDescription)
-    formData.append('parentId', item.id)
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", newItemName);
+    formData.append("color", newItemColor);
+    formData.append("description", newItemDescription);
+    formData.append("parentId", item.id);
 
-    const result = await createFolder(formData)
+    const result = await createFolder(formData);
     if (result.error) {
-      toast.error(result.error)
+      toast.error(result.error);
     } else {
-      toast.success('Folder created successfully!')
-      setIsAdding(false)
-      setNewItemName('')
-      setNewItemColor('#ffffff')
-      setNewItemDescription('')
-      onUpdate()
+      toast.success("Folder created successfully!");
+      setIsAdding(false);
+      setNewItemName("");
+      setNewItemColor("#ffffff");
+      setNewItemDescription("");
+      onUpdate();
     }
-  }
+  };
 
   const handleEdit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const formData = new FormData()
-    formData.append('name', newItemName)
-    formData.append('color', newItemColor)
-    formData.append('description', newItemDescription)
-    formData.append('parentId', item.parentId || '')
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", newItemName);
+    formData.append("color", newItemColor);
+    formData.append("description", newItemDescription);
+    formData.append("parentId", item.parentId || "");
 
-    const result = await updateFolder(item.id, formData)
+    const result = await updateFolder(item.id, formData);
     if (result.error) {
-      toast.error(result.error)
+      toast.error(result.error);
     } else {
-      toast.success('Folder updated successfully!')
-      setIsEditing(false)
-      onUpdate()
+      toast.success("Folder updated successfully!");
+      setIsEditing(false);
+      onUpdate();
     }
-  }
+  };
 
   const handleDelete = async () => {
-    const result = await deleteFolder(item.id)
+    const result = await deleteFolder(item.id);
     if (result.error) {
-      toast.error(result.error)
+      toast.error(result.error);
     } else {
-      toast.success('Folder deleted successfully!')
-      onDelete()
+      toast.success("Folder deleted successfully!");
+      onDelete();
     }
-  }
+  };
 
-  const isMatch = item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const isMatch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
 
-  if (!isMatch && !isOpen) return null
+  if (!isMatch && !isOpen) return null;
 
   return (
-    <div ref={(node) => drag(drop(node))} className={`ml-4 ${isDragging ? 'opacity-50' : ''}`}>
+    <div
+      ref={(node) => drag(drop(node))}
+      className={`ml-4 ${isDragging ? "opacity-50" : ""}`}
+    >
       <div className="flex items-center space-x-2">
         {item.children && item.children.length > 0 && (
-          <button onClick={handleToggle} className="text-gray-400 hover:text-gray-200">
+          <button
+            onClick={handleToggle}
+            className="text-gray-400 hover:text-gray-200"
+          >
             {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
           </button>
         )}
@@ -115,7 +143,7 @@ const FolderItem = ({ item, level = 0, onUpdate, onDelete, onMove, searchTerm })
         {isOpen && item.children && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
+            animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
@@ -182,81 +210,86 @@ const FolderItem = ({ item, level = 0, onUpdate, onDelete, onMove, searchTerm })
         </form>
       )}
     </div>
-  )
-}
+  );
+};
 
 export default function FolderStructure() {
-  const [folderStructure, setFolderStructure] = useState<Folder[]>([])
-  const [searchTerm, setSearchTerm] = useState('')
-  const [expandAll, setExpandAll] = useState(false)
-  const [isAddingTopLevel, setIsAddingTopLevel] = useState(false)
-  const [newTopLevelName, setNewTopLevelName] = useState('')
-  const [newTopLevelColor, setNewTopLevelColor] = useState('#ffffff')
-  const [newTopLevelDescription, setNewTopLevelDescription] = useState('')
+  const [folderStructure, setFolderStructure] = useState<Folder[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [expandAll, setExpandAll] = useState(false);
+  const [isAddingTopLevel, setIsAddingTopLevel] = useState(false);
+  const [newTopLevelName, setNewTopLevelName] = useState("");
+  const [newTopLevelColor, setNewTopLevelColor] = useState("#ffffff");
+  const [newTopLevelDescription, setNewTopLevelDescription] = useState("");
 
   useEffect(() => {
-    fetchFolders()
-  }, [])
+    fetchFolders();
+  }, []);
 
   const fetchFolders = async () => {
-    const result = await getFolders()
+    const result = await getFolders();
     if (result.error) {
-      toast.error(result.error)
+      toast.error(result.error);
     } else {
-      setFolderStructure(result.folders)
+      setFolderStructure(result.folders);
     }
-  }
+  };
 
   const handleMove = async (draggedId: string, targetId: string) => {
-    const result = await moveFolder(draggedId, targetId)
+    const result = await moveFolder(draggedId, targetId);
     if (result.error) {
-      toast.error(result.error)
+      toast.error(result.error);
     } else {
-      toast.success('Folder moved successfully!')
-      fetchFolders()
+      toast.success("Folder moved successfully!");
+      fetchFolders();
     }
-  }
+  };
 
   const toggleExpandAll = () => {
-    setExpandAll(!expandAll)
+    setExpandAll(!expandAll);
     // Implement logic to expand/collapse all folders
-  }
+  };
 
   const handleAddTopLevel = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const formData = new FormData()
-    formData.append('name', newTopLevelName)
-    formData.append('color', newTopLevelColor)
-    formData.append('description', newTopLevelDescription)
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", newTopLevelName);
+    formData.append("color", newTopLevelColor);
+    formData.append("description", newTopLevelDescription);
 
-    const result = await createFolder(formData)
+    const result = await createFolder(formData);
     if (result.error) {
-      toast.error(result.error)
+      toast.error(result.error);
     } else {
-      toast.success('Top-level folder created successfully!')
-      setIsAddingTopLevel(false)
-      setNewTopLevelName('')
-      setNewTopLevelColor('#ffffff')
-      setNewTopLevelDescription('')
-      fetchFolders()
+      toast.success("Top-level folder created successfully!");
+      setIsAddingTopLevel(false);
+      setNewTopLevelName("");
+      setNewTopLevelColor("#ffffff");
+      setNewTopLevelDescription("");
+      fetchFolders();
     }
-  }
+  };
 
-  const buildFolderTree = (folders: Folder[], parentId: string | null = null): Folder[] => {
+  const buildFolderTree = (
+    folders: Folder[],
+    parentId: string | null = null,
+  ): Folder[] => {
     return folders
-      .filter(folder => folder.parentId === parentId)
-      .map(folder => ({
+      .filter((folder) => folder.parentId === parentId)
+      .map((folder) => ({
         ...folder,
-        children: buildFolderTree(folders, folder.id)
-      }))
-  }
+        children: buildFolderTree(folders, folder.id),
+      }));
+  };
 
-  const folderTree = buildFolderTree(folderStructure)
+  const folderTree = buildFolderTree(folderStructure);
 
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="p-4 bg-gray-900 min-h-screen text-sm">
-        <h1 className="text-2xl font-bold mb-4 text-gray-100">Folder Structure</h1>
+        <h1 className="text-2xl font-bold mb-4 text-gray-100">
+          Folder Structure
+        </h1>
         <div className="mb-4 flex items-center space-x-2">
           <Search size={16} className="text-gray-400" />
           <Input
@@ -268,7 +301,7 @@ export default function FolderStructure() {
           />
           <Button onClick={toggleExpandAll}>
             {expandAll ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-            {expandAll ? 'Collapse All' : 'Expand All'}
+            {expandAll ? "Collapse All" : "Expand All"}
           </Button>
           <Button onClick={() => setIsAddingTopLevel(true)}>
             <Plus size={16} />
@@ -311,5 +344,5 @@ export default function FolderStructure() {
         ))}
       </div>
     </DndProvider>
-  )
+  );
 }

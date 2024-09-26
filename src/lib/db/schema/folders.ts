@@ -1,33 +1,48 @@
-import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  jsonb,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
 export const folders = pgTable("folders", {
-    id: uuid("id").primaryKey().defaultRandom(),
-    name: text("name").notNull(),
-    color: text("color").notNull(),
-    description: text("description"),
-    parentId: uuid("parent_id").references(() => folders.id),
-    userId: uuid("user_id").notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: text("name").notNull(),
+  color: text("color").default("#000000").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const notes = pgTable("notes", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  title: text("title").notNull(),
+  content: text("content").notNull(),
+  folderId: uuid("folder_id")
+    .references(() => folders.id)
+    .notNull(),
+  isPinned: boolean("is_pinned").default(false).notNull(),
+  tags: jsonb("tags").default([]).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
 export const insertFolderSchema = createInsertSchema(folders).omit({
-    id: true,
-    userId: true,
-    createdAt: true,
-    updatedAt: true,
+  id: true,
+  createdAt: true,
+  updatedAt: true,
 });
-
 export const selectFolderSchema = createSelectSchema(folders);
 
-export const folderSchema = z.object({
-    name: z.string().min(1).max(255),
-    color: z.string().regex(/^#[0-9A-Fa-f]{6}$/),
-    description: z.string().max(1000).optional(),
-    parentId: z.string().uuid().nullable().optional(),
+export const insertNoteSchema = createInsertSchema(notes).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
 });
+export const selectNoteSchema = createSelectSchema(notes);
 
 export type Folder = z.infer<typeof selectFolderSchema>;
-export type NewFolder = z.infer<typeof insertFolderSchema>;
+export type Note = z.infer<typeof selectNoteSchema>;

@@ -1,44 +1,34 @@
-'use server'
+import {
+  boolean,
+  jsonb,
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+} from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { z } from "zod";
+import { folders } from "./folders";
 
-import { db } from '@/lib/db';
-import { insertNoteSchema, notes } from '@/lib/db/schema';
-import { eq } from 'drizzle-orm';
-import { revalidatePath } from 'next/cache';
+export const notes = pgTable("notes", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  title: text("title").notNull(),
+  content: text("content").notNull(),
+  folderId: uuid("folder_id")
+    .references(() => folders.id)
+    .notNull(),
+  userId: uuid("user_id").notNull(),
+  isPinned: boolean("is_pinned").default(false).notNull(),
+  tags: jsonb("tags").default([]).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
 
-export async function getNotes(folderId: string) {
-    try {
-        const result = await db.select().from(notes).where(eq(notes.folderId, folderId));
-        return { notes: result };
-    } catch (error) {
-        console.error('Failed to fetch notes:', error);
-        return { error: 'Failed to fetch notes' };
-    }
-}
+export const insertNoteSchema = createInsertSchema(notes).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+export const selectNoteSchema = createSelectSchema(notes);
 
-export async function createNote(data: FormData) {
-    const result = insertNoteSchema.safeParse(Object.fromEntries(data));
-
-    if (!result.success) {
-        return { error: 'Invalid note data' };
-    }
-
-    try {
-        await db.insert(notes).values(result.data);
-        revalidatePath('/folders');
-        return { success: true };
-    } catch (error) {
-        console.error('Failed to create note:', error);
-        return { error: 'Failed to create note' };
-    }
-}
-
-export async function deleteNote(id: string) {
-    try {
-        await db.delete(notes).where(eq(notes.id, id));
-        revalidatePath('/folders');
-        return { success: true };
-    } catch (error) {
-        console.error('Failed to delete note:', error);
-        return { error: 'Failed to delete note' };
-    }
-}
+export type Note = z.infer<typeof selectNoteSchema>;

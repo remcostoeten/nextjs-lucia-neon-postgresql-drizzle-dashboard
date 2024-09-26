@@ -8,9 +8,9 @@ import {
 import { drizzle } from "drizzle-orm/neon-http";
 
 // Import all schemas and relations
-import * as auth from './schema/auth';
-import * as folders from './schema/folders';
-import * as notes from './schema/notes';
+import * as auth from "./schema/auth";
+import * as folders from "./schema/folders";
+import * as notes from "./schema/notes";
 
 neonConfig.fetchConnectionCache = true;
 
@@ -29,7 +29,6 @@ export const db = drizzle(sql, { schema });
 export const pool = new Pool({ connectionString: env.DATABASE_URL });
 
 // Re-export all schemas and types for convenience
-export * from './schema/auth';
-export * from './schema/folders';
-export * from './schema/notes';
-
+export * from "./schema/auth";
+export * from "./schema/folders";
+export * from "./schema/notes";

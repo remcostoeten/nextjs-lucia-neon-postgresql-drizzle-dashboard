@@ -6,7 +6,6 @@ import { type Cookie } from "lucia";
 import { UsernameAndPassword, authenticationSchema } from "../db/schema/auth";
 import { validateRequest } from "./lucia";
 
-
 export type AuthSession = {
   session: {
     user: {

@@ -11,7 +11,11 @@ type FolderTreeProps = {
   onDelete: () => void;
 };
 
-export default function FolderTree({ folders = [], onEdit, onDelete }: FolderTreeProps) {
+export default function FolderTree({
+  folders = [],
+  onEdit,
+  onDelete,
+}: FolderTreeProps) {
   const handleDelete = async (folderId: string) => {
     const result = await deleteFolder(folderId);
     if (result.error) {
@@ -23,7 +27,8 @@ export default function FolderTree({ folders = [], onEdit, onDelete }: FolderTre
   };
 
   const renderFolders = (parentId: string | null) => {
-    return folders.filter((folder) => folder.parentId === parentId)
+    return folders
+      .filter((folder) => folder.parentId === parentId)
       .map((folder) => (
         <li key={folder.id} className="flex flex-col space-y-2">
           <div className="flex items-center space-x-2">
@@ -42,11 +47,14 @@ export default function FolderTree({ folders = [], onEdit, onDelete }: FolderTre
                 strokeLinejoin="round"
               />
             </svg>
-            <span className="text-sm font-medium text-subtitle">{folder.name}</span>
-            <Button onClick={() => onEdit(folder)}>
-              Edit
-            </Button>
-            <Button onClick={() => handleDelete(folder.id)} variant="destructive">
+            <span className="text-sm font-medium text-subtitle">
+              {folder.name}
+            </span>
+            <Button onClick={() => onEdit(folder)}>Edit</Button>
+            <Button
+              onClick={() => handleDelete(folder.id)}
+              variant="destructive"
+            >
               Delete
             </Button>
           </div>

@@ -14,22 +14,16 @@ interface ProductCategory {
 const productCategories: ProductCategory[] = [
   {
     name: "Elements",
-    links: [
-      { name: "Notice box", href: "/design-system/notice" },
-    ],
+    links: [{ name: "Notice box", href: "/design-system/notice" }],
   },
   {
     name: "Fancy stuff",
-    links: [
-      { name: "Spotlight cards", href: "/design-system/card-spotlight" },
-    ],
+    links: [{ name: "Spotlight cards", href: "/design-system/card-spotlight" }],
   },
   {
     name: "Showcase",
-    links: [
-      { name: "FileTree", href: "/design-system/tree" },
-    ],
-  }
+    links: [{ name: "FileTree", href: "/design-system/tree" }],
+  },
   //   name: "Components",
   //   links: [
   //     { name: "Tag input", href: "/design-system/tag-input" },
@@ -46,8 +40,9 @@ const ProductCategory: React.FC<ProductCategory> = ({ name, links }) => (
       <a
         key={index}
         href={link.href}
-        className={`block text-sm text-neutral-400 ${index !== links.length - 1 ? "mb-1" : ""
-          }`}
+        className={`block text-sm text-neutral-400 ${
+          index !== links.length - 1 ? "mb-1" : ""
+        }`}
       >
         {link.name}
       </a>

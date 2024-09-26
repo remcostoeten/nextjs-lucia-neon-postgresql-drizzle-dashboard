@@ -22,6 +22,13 @@
       "when": 1727389582811,
       "tag": "0002_loud_blade",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1727390966815,
+      "tag": "0003_easy_the_fury",
+      "breakpoints": true
     }
   ]
 }

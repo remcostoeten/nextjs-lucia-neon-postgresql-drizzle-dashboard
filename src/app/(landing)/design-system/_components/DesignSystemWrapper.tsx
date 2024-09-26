@@ -3,31 +3,34 @@
 import { DesignSystemWrapperProps } from "@/types/design-system";
 import { Button, Card } from "ui";
 
-export default function DesignSystemWrapper({ title, description, actionButtons = [], children }: DesignSystemWrapperProps) {
+export default function DesignSystemWrapper({
+  title,
+  description,
+  actionButtons = [],
+  children,
+}: DesignSystemWrapperProps) {
   return (
-    <div className='mx-auto'>
+    <div className="mx-auto">
       <div className="mb-8">
         <h2 className="text-xl font-bold">{title}</h2>
         <p className="text-muted-foreground mt-2">{description}</p>
       </div>
-      {
-        actionButtons.length > 0 && (
-          <Card className="bg-dark-section mb-8">
-            <div className="flex flex-wrap gap-4">
-              {actionButtons.map((button, index) => (
-                <Button
-                  key={index}
-                  onClick={button.onClick}
-                  variant="outline"
-                  className="bg-dark-section--lighter hover:bg-theme-primary hover:text-black transition-colors"
-                >
-                  {button.label}
-                </Button>
-              ))}
-            </div>
-          </Card>
-        )
-      }
+      {actionButtons.length > 0 && (
+        <Card className="bg-dark-section mb-8">
+          <div className="flex flex-wrap gap-4">
+            {actionButtons.map((button, index) => (
+              <Button
+                key={index}
+                onClick={button.onClick}
+                variant="outline"
+                className="bg-dark-section--lighter hover:bg-theme-primary hover:text-black transition-colors"
+              >
+                {button.label}
+              </Button>
+            ))}
+          </div>
+        </Card>
+      )}
       <div className="bg-dark-section space-y-4 rounded-lg space-x-4 flex flex-col gap-4">
         {children}
       </div>
