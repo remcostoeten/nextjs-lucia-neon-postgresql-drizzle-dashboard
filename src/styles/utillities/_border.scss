@@ -2,6 +2,10 @@
   border: 1px solid var(--border-outline);
 }
 
+* {
+  border-color: var(--border-outline);
+}
+
 .border-b-outline {
   border-bottom: 1px solid var(--border-outline);
 }

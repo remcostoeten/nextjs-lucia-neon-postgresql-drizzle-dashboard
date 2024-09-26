@@ -14,8 +14,16 @@ type MenuItem = {
 const SettingsSidebar: React.FC = () => {
   const menuItems: MenuItem[] = [
     { icon: User, text: "Account", href: "/dashboard/settings/account" },
-    { icon: Bell, text: "Notifications", href: "/dashboard/settings/notifications" },
-    { icon: Shield, text: "Privacy & Security", href: "/dashboard/settings/privacy" },
+    {
+      icon: Bell,
+      text: "Notifications",
+      href: "/dashboard/settings/notifications",
+    },
+    {
+      icon: Shield,
+      text: "Privacy & Security",
+      href: "/dashboard/settings/privacy",
+    },
     { icon: CreditCard, text: "Billing", href: "/dashboard/settings/billing" },
     { icon: Cog, text: "General", href: "/dashboard/settings/general" },
   ];
@@ -43,7 +51,11 @@ const SettingsSidebar: React.FC = () => {
                 href={item.href}
                 className="flex items-center space-x-3 p-2 rounded-md hover:bg-card border-outline transition-colors duration-200"
               >
-                <item.icon size={20} className="text-gray-400" aria-hidden="true" />
+                <item.icon
+                  size={20}
+                  className="text-gray-400"
+                  aria-hidden="true"
+                />
                 <span>{item.text}</span>
               </Link>
             </motion.li>
@@ -57,7 +69,11 @@ const SettingsSidebar: React.FC = () => {
         className="mt-8 p-4 bg-card border-outline rounded-md shadow-md"
       >
         <div className="flex items-center mb-2">
-          <HelpCircle size={20} className="text-blue-400 mr-2" aria-hidden="true" />
+          <HelpCircle
+            size={20}
+            className="text-blue-400 mr-2"
+            aria-hidden="true"
+          />
           <h3 className="text-lg font-semibold">Need Help?</h3>
         </div>
         <p className="text-sm mb-4 text-gray-300">

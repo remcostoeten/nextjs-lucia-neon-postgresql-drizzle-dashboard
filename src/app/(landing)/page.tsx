@@ -1,11 +1,9 @@
-import { DropdownNavigation } from "@/components/elements/DropdownNavigation";
 import BentoGridIntro from "@/components/landing/bent-grid";
 import Hero from "@/components/landing/Hero/Hero";
 
 export default function Home() {
   return (
     <>
-      <DropdownNavigation />
       <Hero />
       <Wrapper>
         <BentoGridIntro />

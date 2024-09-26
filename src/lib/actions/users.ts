@@ -7,27 +7,15 @@ import { db } from "@/lib/db/index";
 import { eq } from "drizzle-orm";
 import { generateId } from "lucia";
 import { Argon2id } from "oslo/password";
-import { lucia } from "../auth/lucia";
+import { lucia, validateRequest } from "../auth/lucia";
 
-import { z } from "zod";
 import {
   genericError,
   getUserAuth,
   setAuthCookie,
   validateAuthFormData,
 } from "../auth/utils";
-import { updateUserSchema, userProfiles, users } from "../db/schema/auth";
-
-// Define your user profile schema with transformations
-const userProfileSchema = z.object({
-  name: z.string().optional(),
-  email: z.string().email().optional(),
-  dateOfBirth: z.string().transform((str) => new Date(str)), // Transform string to Date
-  github: z.string().url().optional(), // Validate as URL
-  facebook: z.string().url().optional(), // Validate as URL
-  linkedin: z.string().url().optional(), // Validate as URL
-  twitter: z.string().url().optional(), // Validate as URL
-});
+import { updateUserSchema, users } from "../db/schema/auth";
 
 interface ActionResult {
   error: string;
@@ -91,6 +79,24 @@ export async function signUpAction(
   } catch (e) {
     return genericError;
   }
+
+  const session = await lucia.createSession(userId, {});
+  const sessionCookie = lucia.createSessionCookie(session.id);
+  setAuthCookie(sessionCookie);
+  return redirect("/dashboard");
+}
+
+export async function signOutAction(): Promise<ActionResult> {
+  const { session } = await validateRequest();
+  if (!session) {
+    return {
+      error: "Unauthorized",
+    };
+  }
+
+  await lucia.invalidateSession(session.id);
+
+  const sessionCookie = lucia.createBlankSessionCookie();
   setAuthCookie(sessionCookie);
   redirect("/sign-in");
 }
@@ -123,51 +129,5 @@ export async function updateUser(
     return { success: true, error: "" };
   } catch (e) {
     return genericError;
-  }
-}
-
-export async function updateUserProfile(
-  _: any,
-  formData: FormData
-): Promise<ActionResult & { success?: boolean }> {
-  const { session } = await getUserAuth();
-  if (!session) return { error: "Unauthorised" };
-
-  const profileData = Object.fromEntries(formData.entries());
-  const result = userProfileSchema.safeParse(profileData);
-
-  if (!result.success) {
-    const errors = result.error.flatten().fieldErrors;
-    const errorMessages = Object.entries(errors)
-      .map(([field, messages]) => `${field}: ${messages?.join(", ")}`)
-      .join("; ");
-    return { error: `Invalid data - ${errorMessages}` };
-  }
-
-  try {
-    await db
-      .insert(userProfiles)
-      .values({ ...result.data, userId: session.user.id })
-      .onConflictDoUpdate({
-        target: userProfiles.userId,
-        set: result.data,
-      });
-    revalidatePath("/account");
-    return { success: true, error: "" };
-  } catch (e) {
-    return genericError;
-  }
-}
-
-export async function getUserProfile(userId: string) {
-  try {
-    const [profile] = await db
-      .select()
-      .from(userProfiles)
-      .where(eq(userProfiles.userId, userId));
-    return profile;
-  } catch (e) {
-    console.error("Error fetching user profile:", e);
-    return null;
   }
 }

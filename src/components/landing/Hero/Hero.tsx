@@ -18,12 +18,12 @@ export default function Hero() {
   const isInView = useInView(ref);
 
   return (
-    <div className="relative px-10 w-full min-h-full">
+    <div className="relative px-10 w-full min-h-full -z-10 pointer-events-none">
       <TopRightShiningLight />
       <TopLeftShiningLight />
       <div className="absolute -z-1 inset-0  h-[600px] w-full bg-transparent opacity-5 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
       <div className="justify-between md:flex">
-        <Container className="relative py-20 mx-auto  max-w-[1440px] px-4 sm:px-6 lg:px-8 sm:pt-36 sm:pb-24">
+        <Container className="relative my-20 mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 sm:my-36 sm:pb-24 py-0">
           <div ref={ref}>
             <GradualSpacing
               textClassName="justify-start"

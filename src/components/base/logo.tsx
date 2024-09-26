@@ -13,8 +13,8 @@ type LogoProps = {
 };
 
 const LogoIcon: React.FC<LogoProps> = ({
-  width = "124",
-  height = "124",
+  width = "64",
+  height = "64",
   fill = "#fff",
   className = "",
   isLink = false,

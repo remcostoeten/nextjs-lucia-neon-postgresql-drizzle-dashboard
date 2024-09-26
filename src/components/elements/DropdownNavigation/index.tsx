@@ -2,6 +2,7 @@
 
 import Logo from "@/components/base/logo";
 import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { Tabs } from "./Tabs";
 
 const fadeInVariants = {
@@ -10,6 +11,9 @@ const fadeInVariants = {
 };
 
 export const DropdownNavigation = () => {
+  const pathname = usePathname();
+  if (pathname !== "/") return null;
+
   return (
     <motion.div
       className="flex items-center w-full justify-start md:justify-center z-50"

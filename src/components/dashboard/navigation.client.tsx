@@ -15,30 +15,22 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui";
-import { signOutAction } from "@/lib/actions/users";
 import {
-  ChevronDown,
-  CreditCard,
-  Globe,
-  HelpCircle,
-  LogOut,
-  Moon,
-  Settings,
-  Sun,
-} from "lucide-react";
+  IconTooltips,
+  links,
+} from "@/core/config/menu-items/dashboard-navigation-menu-items";
+import { signOutAction } from "@/lib/actions/users";
+import { ChevronDown, LogOut, Moon, Settings, Sun } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import LogoIcon from "../base/logo";
 
-type NavigationClientProps = {
+type NavigationProps = {
   userName: string;
   userEmail: string;
 };
 
-export default function IntegratedNavigation({
-  userName,
-  userEmail,
-}: NavigationClientProps) {
+export default function Navigation({ userName, userEmail }: NavigationProps) {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
   const toggleTheme = () => {
@@ -46,95 +38,74 @@ export default function IntegratedNavigation({
   };
 
   return (
-    <nav className="bg-bg-body text-text-regular-nav flex h-[77px] w-full items-center justify-between px-4 border-b-outline">
+    <nav className="bg-neutral-950 text-white flex h-[77px] w-full items-center justify-between px-4">
       <div className="flex items-center space-x-4">
         <Link href="/" className="text-text-title font-semibold">
           <LogoIcon />
         </Link>
-        <Button variant="ghost" className="text-text-title">
-          {userName || "User"}
-          <ChevronDown className="ml-2 h-4 w-4" />
-        </Button>
       </div>
 
-      <div className="flex-grow"></div>
-
-      <div className="flex items-center space-x-4">
-        <Tooltip>
-          <TooltipTrigger asChild>
+      <div className="flex-grow flex justify-center">
+        <div className="flex items-center space-x-4">
+          {links.map((link) => (
             <Link
-              href="/dashboard"
-              className="text-text-title hover:text-text-button"
+              key={link.href}
+              href={link.href}
+              className="text-sm text-subtitle hover:text-title trans-all"
             >
-              <Globe className="h-5 w-5" />
+              {link.label}
             </Link>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Home</p>
-          </TooltipContent>
-        </Tooltip>
+          ))}
+        </div>
+      </div>
 
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              href="/settings"
-              className="text-text-muted hover:text-text-button"
-            >
-              <Settings className="h-5 w-5" />
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Settings</p>
-          </TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              href="/billing"
-              className="text-text-muted hover:text-text-button"
-            >
-              <CreditCard className="h-5 w-5" />
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Billing</p>
-          </TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-text-muted hover:text-text-button"
-            >
-              <HelpCircle className="h-5 w-5" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Help</p>
-          </TooltipContent>
-        </Tooltip>
+      <div className="flex items-center space-x-4 mr-4">
+        {IconTooltips.map((tooltip) => (
+          <Tooltip key={tooltip.label}>
+            <TooltipTrigger asChild>
+              {tooltip.isButton ? (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-subtitle hover:text-title trans-all"
+                >
+                  <tooltip.icon className="h-5 w-5" />
+                </Button>
+              ) : (
+                <Link
+                  href={tooltip.href}
+                  className="text-text-muted hover:text-text-button"
+                >
+                  <tooltip.icon className="h-5 w-5" />
+                </Link>
+              )}
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{tooltip.label}</p>
+            </TooltipContent>
+          </Tooltip>
+        ))}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="secondary" className="rounded-full p-0">
-              <Avatar className="h-8 w-8 bg-avatar text-text-title">
-                <AvatarFallback>
-                  {userName ? userName.substring(0, 2).toUpperCase() : "U"}
-                </AvatarFallback>
-              </Avatar>
-              <ChevronDown className="ml-2 h-4 w-4 text-text-muted" />
-            </Button>
+            <button>
+              <div className="bg-neutral-900 flex items-center gap-1.5 transition-all duration-150 pl-0.5 pr-2 py-0.5 rounded-full">
+                <Avatar className="h-8 w-8 bg-avatar text-text-title">
+                  <AvatarFallback>
+                    {userName ? userName.substring(0, 2).toUpperCase() : "U"}
+                  </AvatarFallback>
+                </Avatar>
+                <ChevronDown className="h-3 w-3" />
+              </div>
+            </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 bg-bg-dropdown text-text-dropdown-item">
+          <DropdownMenuContent className="w-56 bg-neutral-800 text-neutral-200">
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium leading-none">
                   {userName || "User"}
                 </p>
-                <p className="text-xs leading-none text-text-muted">
+                <p className="text-xs leading-none text-neutral-400">
                   {userEmail}
                 </p>
               </div>

@@ -12,7 +12,11 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
 } from "lucide-react";
-import { SidebarItem, sidebarItems, subSidebarConfig } from "@/core/config/menu-items/sidebar-menu-items";
+import {
+  SidebarItem,
+  sidebarItems,
+  subSidebarConfig,
+} from "@/core/config/menu-items/sidebar-menu-items";
 
 type SidebarIconProps = {
   item: SidebarItem;
@@ -31,10 +35,11 @@ function SidebarIcon({ item, isActive }: SidebarIconProps) {
 
   return (
     <motion.div
-      className={`relative z-50 flex items-center justify-center size-10 mb-2 rounded-md transition-colors duration-200 border-r-outline ${isActive
+      className={`relative z-50 flex items-center justify-center size-10 mb-2 rounded-md transition-colors duration-200 border-r-outline ${
+        isActive
           ? "bg-body border-outline text-white"
           : "!border-transparent text-zinc-400 hover:text-title hover:bg-body hover:border-outline"
-        }`}
+      }`}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
       whileHover={{ scale: 1.1 }}
@@ -96,8 +101,9 @@ export default function MainSidebar({
         initial={{ opacity: 0 }}
         animate={{ opacity: isCollapsed ? 0 : 1 }}
         transition={{ duration: 0.3, delay: 0.1 }}
-        className={`h-full bg-body border-r-outline flex flex-col items-center py-4 z-40 transition-all duration-300 ease-in-out ${isCollapsed ? "w-0" : "w-full"
-          }`}
+        className={`h-full bg-body border-r-outline flex flex-col items-center py-4 z-40 transition-all duration-300 ease-in-out ${
+          isCollapsed ? "w-0" : "w-full"
+        }`}
       >
         <motion.nav
           initial={{ opacity: 0, y: 20 }}
@@ -125,13 +131,19 @@ export default function MainSidebar({
           className="flex flex-col items-center mt-auto"
         >
           <SidebarIcon
-            item={{ name: "Help", path: "#help", icon: HelpCircle as LucideIcon }}
+            item={{
+              name: "Help",
+              path: "#help",
+              icon: HelpCircle as LucideIcon,
+            }}
             isActive={false}
           />
           <button
             onClick={toggleSubSidebar}
             className="size-[55px] opacity-50 flex items-center justify-center text-zinc-400 hover:text-title mt-2"
-            aria-label={isSubSidebarOpen ? "Close sub sidebar" : "Open sub sidebar"}
+            aria-label={
+              isSubSidebarOpen ? "Close sub sidebar" : "Open sub sidebar"
+            }
           >
             {isSubSidebarOpen ? (
               <PanelLeftClose className="w-6 h-6" aria-hidden="true" />
@@ -149,7 +161,11 @@ export default function MainSidebar({
         className="absolute -right-4 top-1/2 transform -translate-y-1/2 p-1 rounded-full bg-body border border-outline text-white hover:bg-opacity-80 z-10"
         aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
       >
-        {isCollapsed ? <ChevronRight size={20} aria-hidden="true" /> : <ChevronLeft size={20} aria-hidden="true" />}
+        {isCollapsed ? (
+          <ChevronRight size={20} aria-hidden="true" />
+        ) : (
+          <ChevronLeft size={20} aria-hidden="true" />
+        )}
       </motion.button>
     </motion.aside>
   );
