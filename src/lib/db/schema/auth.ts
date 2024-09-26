@@ -1,4 +1,4 @@
-import { boolean, date, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { date, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { z } from "zod";
 
 // User table
@@ -21,8 +21,8 @@ export const sessions = pgTable("session", {
   }).notNull(),
 });
 
-// Onboarding info table
-export const onboardingInfo = pgTable("onboarding_info", {
+// User profile info table
+export const userProfiles = pgTable("user_profiles", {
   id: text("id").primaryKey(),
   userId: text("user_id")
     .notNull()
@@ -37,7 +37,6 @@ export const onboardingInfo = pgTable("onboarding_info", {
   facebook: text("facebook"),
   linkedin: text("linkedin"),
   twitter: text("twitter"),
-  onboardingCompleted: boolean("onboarding_completed").default(false),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -56,38 +55,37 @@ export const updateUserSchema = z.object({
   email: z.string().min(4).optional(),
 });
 
-export const onboardingInfoSchema = z.object({
+export const userProfileSchema = z.object({
   firstName: z.string().min(1).optional(),
   lastName: z.string().min(1).optional(),
   dateOfBirth: z.date().optional(),
   occupation: z.string().optional(),
   gender: z.string().optional(),
   bio: z.string().optional(),
-  github: z.string().optional(),
-  facebook: z.string().optional(),
-  linkedin: z.string().optional(),
-  twitter: z.string().optional(),
-  onboardingCompleted: z.boolean().optional(),
+  github: z.string().url().optional(),
+  facebook: z.string().url().optional(),
+  linkedin: z.string().url().optional(),
+  twitter: z.string().url().optional(),
 });
 
 // Types
 export type UsernameAndPassword = z.infer<typeof authenticationSchema>;
-export type OnboardingInfo = z.infer<typeof onboardingInfoSchema>;
+export type UserProfile = z.infer<typeof userProfileSchema>;
 
 // Relationships (if you're using Drizzle ORM's relations)
 export const relations = {
   users: {
-    onboardingInfo: {
+    userProfile: {
       relationshipType: "one-to-one",
-      schema: onboardingInfo,
-      fields: [users.id, onboardingInfo.userId],
+      schema: userProfiles,
+      fields: [users.id, userProfiles.userId],
     },
   },
-  onboardingInfo: {
+  userProfiles: {
     user: {
       relationshipType: "one-to-one",
       schema: users,
-      fields: [onboardingInfo.userId, users.id],
+      fields: [userProfiles.userId, users.id],
     },
   },
 };

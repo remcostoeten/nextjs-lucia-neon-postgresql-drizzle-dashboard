@@ -12,7 +12,7 @@ const fadeInVariants = {
 export const DropdownNavigation = () => {
   return (
     <motion.div
-      className="flex items-center w-full justify-start md:justify-center"
+      className="flex items-center w-full justify-start md:justify-center z-50"
       initial="hidden"
       animate="visible"
       variants={fadeInVariants}

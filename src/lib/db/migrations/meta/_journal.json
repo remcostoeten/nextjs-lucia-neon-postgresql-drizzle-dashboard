@@ -15,6 +15,13 @@
       "when": 1727293299342,
       "tag": "0001_goofy_tana_nile",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1727308158930,
+      "tag": "0002_fat_kree",
+      "breakpoints": true
     }
   ]
 }
