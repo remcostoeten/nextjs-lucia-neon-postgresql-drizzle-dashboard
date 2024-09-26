@@ -1,3 +1,4 @@
+import { folders } from "@/lib/db/schema/folders";
 import { date, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { z } from "zod";
 
@@ -80,12 +81,24 @@ export const relations = {
       schema: userProfiles,
       fields: [users.id, userProfiles.userId],
     },
+    folders: {
+      relationshipType: "one-to-many",
+      schema: folders,
+      fields: [users.id, folders.userId],
+    },
   },
   userProfiles: {
     user: {
       relationshipType: "one-to-one",
       schema: users,
       fields: [userProfiles.userId, users.id],
+    },
+  },
+  folders: {
+    user: {
+      relationshipType: "one-to-one",
+      schema: users,
+      fields: [folders.userId, users.id],
     },
   },
 };
