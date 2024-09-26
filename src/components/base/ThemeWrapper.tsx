@@ -17,7 +17,7 @@ export default function ThemeWrapper({
       suppressHydrationWarning
     >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased dark:bg-body`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased dark:bg-body relative pb-[330px]`}
       >
         <TooltipProvider>
           <main>

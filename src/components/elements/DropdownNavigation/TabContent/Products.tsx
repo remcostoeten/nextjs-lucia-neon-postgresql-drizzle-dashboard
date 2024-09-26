@@ -13,28 +13,30 @@ interface ProductCategory {
 
 const productCategories: ProductCategory[] = [
   {
-    name: "Config",
+    name: "Elements",
     links: [
-      { name: "Theme colors", href: "/design-system/tailwind-colors" },
-      { name: "Color tool", href: "/design-system/color-tool" },
+      { name: "Notice box", href: "/design-system/notice" },
+    ],
+  },
+  {
+    name: "Fancy stuff",
+    links: [
+      { name: "Spotlight cards", href: "/design-system/card-spotlight" },
     ],
   },
   {
     name: "Showcase",
     links: [
-      { name: "Hash & UUID", href: "/design-system/hash" },
-      { name: "Spotlight cards", href: "/design-system/card-spotlight" },
-      { name: "Ripple", href: "/design-system/ripple" },
+      { name: "FileTree", href: "/design-system/tree" },
     ],
-  },
-  {
-    name: "Components",
-    links: [
-      { name: "Tag input", href: "/design-system/tag-input" },
-      { name: "Edit form", href: "/design-system/edit-action" },
-      { name: "Confetti", href: "/design-system/confetti" },
-    ],
-  },
+  }
+  //   name: "Components",
+  //   links: [
+  //     { name: "Tag input", href: "/design-system/tag-input" },
+  //     { name: "Edit form", href: "/design-system/edit-action" },
+  //     { name: "Confetti", href: "/design-system/confetti" },
+  //   ],
+  // },
 ];
 
 const ProductCategory: React.FC<ProductCategory> = ({ name, links }) => (
@@ -44,9 +46,8 @@ const ProductCategory: React.FC<ProductCategory> = ({ name, links }) => (
       <a
         key={index}
         href={link.href}
-        className={`block text-sm text-neutral-400 ${
-          index !== links.length - 1 ? "mb-1" : ""
-        }`}
+        className={`block text-sm text-neutral-400 ${index !== links.length - 1 ? "mb-1" : ""
+          }`}
       >
         {link.name}
       </a>

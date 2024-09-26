@@ -17,3 +17,11 @@ h5,
 h6 {
   @apply text-title;
 }
+
+label {
+  color: var(--text-title);
+
+  &.dark {
+    color: var(--text-subtitle);
+  }
+}

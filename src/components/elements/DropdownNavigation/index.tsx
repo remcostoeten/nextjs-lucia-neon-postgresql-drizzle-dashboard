@@ -12,7 +12,7 @@ const fadeInVariants = {
 
 export const DropdownNavigation = () => {
   const pathname = usePathname();
-  if (pathname !== "/") return null;
+  if (pathname.includes("/dashboard")) return null;
 
   return (
     <motion.div

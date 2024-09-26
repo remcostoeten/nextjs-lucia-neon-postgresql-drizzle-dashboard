@@ -1,22 +1,33 @@
-import { pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
-import { users } from "./auth";
 
 export const folders = pgTable("folders", {
-    id: text("id").primaryKey(),
-    name: varchar("name", { length: 255 }).notNull(),
-    color: varchar("color", { length: 7 }).notNull(),
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    color: text("color").notNull(),
     description: text("description"),
-    userId: text("user_id").notNull().references(() => users.id),
-    createdAt: timestamp("created_at").defaultNow(),
-    updatedAt: timestamp("updated_at").defaultNow(),
+    parentId: uuid("parent_id").references(() => folders.id),
+    userId: uuid("user_id").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
+
+export const insertFolderSchema = createInsertSchema(folders).omit({
+    id: true,
+    userId: true,
+    createdAt: true,
+    updatedAt: true,
+});
+
+export const selectFolderSchema = createSelectSchema(folders);
 
 export const folderSchema = z.object({
     name: z.string().min(1).max(255),
     color: z.string().regex(/^#[0-9A-Fa-f]{6}$/),
-    description: z.string().optional(),
+    description: z.string().max(1000).optional(),
+    parentId: z.string().uuid().nullable().optional(),
 });
 
-export type Folder = typeof folders.$inferSelect;
-export type NewFolder = typeof folders.$inferInsert;
+export type Folder = z.infer<typeof selectFolderSchema>;
+export type NewFolder = z.infer<typeof insertFolderSchema>;

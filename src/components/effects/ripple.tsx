@@ -1,4 +1,4 @@
-import { cn } from "@/core/utils/tw-cn";
+import { cn } from "cn";
 import React, { CSSProperties } from "react";
 
 interface RippleProps {

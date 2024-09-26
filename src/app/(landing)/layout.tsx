@@ -8,7 +8,8 @@ export default function DashboardLayout({
   return (
     <section>
       <DropdownNavigation />
-      {children}
+      <main className="min-h-screen mt-24 ">{children}</main>
+
     </section>
   );
 }

@@ -1,4 +1,5 @@
 import BentoGridIntro from "@/components/landing/bent-grid";
+import { Footer } from "@/components/landing/footer";
 import Hero from "@/components/landing/Hero/Hero";
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
       <Wrapper>
         <BentoGridIntro />
       </Wrapper>
+      <Footer />
     </>
   );
 }

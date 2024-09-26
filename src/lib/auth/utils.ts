@@ -6,6 +6,7 @@ import { type Cookie } from "lucia";
 import { UsernameAndPassword, authenticationSchema } from "../db/schema/auth";
 import { validateRequest } from "./lucia";
 
+
 export type AuthSession = {
   session: {
     user: {
@@ -16,6 +17,7 @@ export type AuthSession = {
     };
   } | null;
 };
+
 export const getUserAuth = async (): Promise<AuthSession> => {
   const { session, user } = await validateRequest();
   if (!session) return { session: null };
