@@ -1,4 +1,3 @@
-import { DropdownNavigation } from "@/components/elements/DropdownNavigation";
 
 export default function DashboardLayout({
   children,

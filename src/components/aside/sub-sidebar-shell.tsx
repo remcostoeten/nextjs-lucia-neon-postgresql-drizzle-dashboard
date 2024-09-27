@@ -4,10 +4,8 @@ import { subSidebarConfig } from "@/core/config/menu-items/sidebar-menu-items";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { SubSidebarShellProps } from "./types.sidear";
 
-type SubSidebarShellProps = {
-  isSubSidebarOpen: boolean;
-};
 
 function SubSidebarShell({ isSubSidebarOpen }: SubSidebarShellProps) {
   const pathname = usePathname();

@@ -1,10 +1,10 @@
 "use server";
 
-import { getUserAuth } from "@/lib/auth/utils";
 import { db } from "@/lib/db/index";
 import { notes } from "@/lib/db/schema/notes";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { getUserAuth } from "../auth/utils";
 
 interface NoteData {
   title: string;

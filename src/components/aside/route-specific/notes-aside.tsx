@@ -1,67 +1,151 @@
 "use client";
 
-import { getFolders } from "@/lib/api/folders";
+import { CustomDropdown, DropdownAction } from "@/components/elements";
+import { createFolder, deleteFolder, getFolders, updateFolder } from "@/lib/api/folders";
 import { motion } from "framer-motion";
 import {
+  Edit,
   Folder,
   FolderOpen,
   PlusCircle,
   Search,
   Star,
   Tag,
+  Trash2,
 } from "lucide-react";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useNotesStore, useSiteSettingsStore } from "stores";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  Input,
+} from "ui";
 
-interface FolderType {
+type FolderType = {
   id: string;
   name: string;
-}
+  description: string | null;
+};
 
-const NotesSidebar: React.FC = () => {
+export default function NotesSidebar() {
   const [folders, setFolders] = useState<FolderType[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isNewFolderDialogOpen, setIsNewFolderDialogOpen] = useState(false);
+  const [isEditFolderDialogOpen, setIsEditFolderDialogOpen] = useState(false);
+  const [newFolderName, setNewFolderName] = useState("");
+  const [newFolderDescription, setNewFolderDescription] = useState("");
+  const [editingFolder, setEditingFolder] = useState<FolderType | null>(null);
+  const { selectedFolderId, setSelectedFolderId } = useNotesStore();
+  const { disableSidebarAnimations } = useSiteSettingsStore();
 
   useEffect(() => {
-    const fetchFolders = async () => {
-      const fetchedFolders = await getFolders();
-      setFolders(fetchedFolders?.folders || []);
-    };
-
     fetchFolders();
   }, []);
 
-  const menuItems = [
-    { icon: FolderOpen, text: "All Notes" },
-    { icon: Star, text: "Favorites" },
-    { icon: Tag, text: "Tags" },
+  const fetchFolders = async () => {
+    const fetchedFolders = await getFolders();
+    setFolders(fetchedFolders?.folders || []);
+  };
+
+  const handleCreateFolder = async () => {
+    const formData = new FormData();
+    formData.append("name", newFolderName);
+    formData.append("description", newFolderDescription);
+    await createFolder(formData);
+    setIsNewFolderDialogOpen(false);
+    setNewFolderName("");
+    setNewFolderDescription("");
+    fetchFolders();
+  };
+
+  const handleUpdateFolder = async () => {
+    if (editingFolder) {
+      const formData = new FormData();
+      formData.append("id", editingFolder.id);
+      formData.append("name", editingFolder.name);
+      formData.append("description", editingFolder.description || "");
+      await updateFolder(formData);
+      setIsEditFolderDialogOpen(false);
+      setEditingFolder(null);
+      fetchFolders();
+    }
+  };
+
+  const handleDeleteFolder = async (folderId: string) => {
+    const formData = new FormData();
+    formData.append("id", folderId);
+    await deleteFolder(formData);
+    fetchFolders();
+    if (selectedFolderId === folderId) {
+      setSelectedFolderId(null);
+    }
+  };
+
+  const handleFolderSelect = (folderId: string | null) => {
+    setSelectedFolderId(folderId);
+  };
+
+  const getFolderActions = (folder: FolderType): DropdownAction[] => [
+    {
+      label: "Edit",
+      icon: <Edit className="h-4 w-4" />,
+      onClick: () => {
+        setEditingFolder(folder);
+        setIsEditFolderDialogOpen(true);
+      },
+    },
+    {
+      label: "Delete",
+      icon: <Trash2 className="h-4 w-4" />,
+      onClick: () => handleDeleteFolder(folder.id),
+    },
   ];
 
+  const menuItems = [
+    { icon: FolderOpen, text: "All Notes", id: null },
+    { icon: Star, text: "Favorites", id: "favorites" },
+    { icon: Tag, text: "Tags", id: "tags" },
+  ];
+
+  const getAnimationProps = (delay: number) => {
+    if (disableSidebarAnimations) {
+      return {};
+    }
+    return {
+      initial: { opacity: 0, y: -20 },
+      animate: { opacity: 1, y: 0 },
+      transition: { delay },
+    };
+  };
+
   return (
-    <div className="text-white p-4 h-full w-[230px] overflow-y-auto">
+    <div className="text-white p-4 h-full w-full overflow-y-auto">
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
+        {...getAnimationProps(0.1)}
         className="flex justify-between items-center mb-6"
       >
         <h2 className="text-2xl font-bold">Notes</h2>
-        <button className="text-blue-400 hover:text-blue-300 transition-colors duration-200">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setIsNewFolderDialogOpen(true)}
+        >
           <PlusCircle size={24} />
-        </button>
+        </Button>
       </motion.div>
       <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
+        {...getAnimationProps(0.2)}
         className="relative mb-6"
       >
-        <input
+        <Input
           type="text"
           placeholder="Search notes"
-          className="w-full p-2 pl-10 bg-card border-outline rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          className="pl-10"
         />
         <Search size={18} className="absolute left-3 top-2.5 text-gray-400" />
       </motion.div>
@@ -70,48 +154,22 @@ const NotesSidebar: React.FC = () => {
           {menuItems.map((item, index) => (
             <motion.li
               key={item.text}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 * (index + 1) }}
+              {...getAnimationProps(0.1 * (index + 1))}
             >
-              <a
-                href="#"
-                className="flex items-center space-x-3 p-2 rounded-md hover:bg-card border-outline transition-colors duration-200"
+              <Button
+                variant="ghost"
+                className={`w-full justify-start ${selectedFolderId === item.id ? "bg-primary text-primary-foreground" : ""}`}
+                onClick={() => handleFolderSelect(item.id)}
               >
-                <item.icon size={20} className="text-gray-400" />
+                <item.icon size={20} className="mr-2" />
                 <span>{item.text}</span>
-              </a>
+              </Button>
             </motion.li>
           ))}
         </ul>
       </nav>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="mt-8"
-      >
-        <h3 className="text-lg font-semibold mb-4">Recent Notes</h3>
-        <ul className="space-y-2">
-          {["Project Ideas", "Meeting Notes", "To-Do List"].map(
-            (note, index) => (
-              <motion.li
-                key={note}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6 + index * 0.1 }}
-                className="text-sm hover:bg-card border-outline p-2 rounded-md cursor-pointer transition-colors duration-200"
-              >
-                {note}
-              </motion.li>
-            ),
-          )}
-        </ul>
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
+        {...getAnimationProps(0.5)}
         className="mt-8"
       >
         <h3 className="text-lg font-semibold mb-4">Folders</h3>
@@ -119,24 +177,66 @@ const NotesSidebar: React.FC = () => {
           {folders.map((folder, index) => (
             <motion.li
               key={folder.id}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.6 + index * 0.1 }}
-              className="text-sm hover:bg-card border-outline p-2 rounded-md cursor-pointer transition-colors trans-all"
+              {...getAnimationProps(0.6 + index * 0.1)}
+              className="flex items-center justify-between"
             >
-              <Link
-                href={`/dashboard/notes/folders/${folder.id}`}
-                className="flex items-center space-x-3"
+              <Button
+                variant="ghost"
+                className={`w-full justify-start ${selectedFolderId === folder.id ? "bg-primary text-primary-foreground" : ""}`}
+                onClick={() => handleFolderSelect(folder.id)}
               >
-                <Folder size={16} className="text-zinc-400" />
-                <span className="text-subtitle">{folder.name}</span>
-              </Link>
+                <Folder size={16} className="mr-2" />
+                <span>{folder.name}</span>
+              </Button>
+              <CustomDropdown actions={getFolderActions(folder)} />
             </motion.li>
           ))}
         </ul>
       </motion.div>
+
+      <Dialog
+        open={isNewFolderDialogOpen}
+        onOpenChange={setIsNewFolderDialogOpen}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create New Folder</DialogTitle>
+          </DialogHeader>
+          <Input
+            value={newFolderName}
+            onChange={(e) => setNewFolderName(e.target.value)}
+            placeholder="Folder Name"
+          />
+          <Input
+            value={newFolderDescription}
+            onChange={(e) => setNewFolderDescription(e.target.value)}
+            placeholder="Folder Description (optional)"
+          />
+          <Button onClick={handleCreateFolder}>Create Folder</Button>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={isEditFolderDialogOpen}
+        onOpenChange={setIsEditFolderDialogOpen}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Folder</DialogTitle>
+          </DialogHeader>
+          <Input
+            value={editingFolder?.name || ""}
+            onChange={(e) => setEditingFolder(prev => prev ? { ...prev, name: e.target.value } : null)}
+            placeholder="Folder Name"
+          />
+          <Input
+            value={editingFolder?.description || ""}
+            onChange={(e) => setEditingFolder(prev => prev ? { ...prev, description: e.target.value } : null)}
+            placeholder="Folder Description (optional)"
+          />
+          <Button onClick={handleUpdateFolder}>Update Folder</Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
-};
-
-export default NotesSidebar;
+}

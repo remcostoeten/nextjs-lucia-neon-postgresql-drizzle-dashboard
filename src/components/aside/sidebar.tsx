@@ -1,49 +1,41 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import {
+  sidebarItems,
+  subSidebarConfig
+} from "@/core/config/menu-items/sidebar-menu-items";
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   ChevronLeft,
   ChevronRight,
-  HelpCircle,
   LucideIcon,
   PanelLeftClose,
   PanelLeftOpen,
-} from "lucide-react";
-import {
-  SidebarItem,
-  sidebarItems,
-  subSidebarConfig,
-} from "@/core/config/menu-items/sidebar-menu-items";
+  Settings2Icon
+} from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { useSiteSettingsStore } from 'stores';
+import { SiteSettingsMenu } from "./site-settings-menu";
+import { MainSidebarProps, SidebarIconProps } from "./types.sidear";
 
-type SidebarIconProps = {
-  item: SidebarItem;
-  isActive: boolean;
-};
 
-type MainSidebarProps = {
-  isSubSidebarOpen: boolean;
-  toggleSubSidebar: () => void;
-  isCollapsed: boolean;
-  toggleCollapse: () => void;
-};
-
-function SidebarIcon({ item, isActive }: SidebarIconProps) {
+function SidebarIcon({ item, isActive, onClick }: SidebarIconProps) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   return (
     <motion.div
-      className={`relative z-50 flex items-center justify-center size-10 mb-2 rounded-md transition-colors duration-200 border-r-outline ${
-        isActive
-          ? "bg-body border-outline text-white"
-          : "!border-transparent text-zinc-400 hover:text-title hover:bg-body hover:border-outline"
-      }`}
+      className={`relative z-50 flex items-center justify-center size-10 mb-2 rounded-md transition-colors duration-200 border-r-outline ${isActive
+        ? "bg-body border-outline text-white"
+        : "!border-transparent text-zinc-400 hover:text-title hover:bg-body hover:border-outline"
+        }`}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
+      onClick={onClick}
     >
       <item.icon className="w-4 h-4" aria-hidden="true" />
       <span className="sr-only">{item.name}</span>
@@ -78,6 +70,8 @@ export default function MainSidebar({
 }: MainSidebarProps) {
   const pathname = usePathname();
   const [activePath, setActivePath] = useState<string>("");
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const { disableAllAnimations, disableSidebarAnimations } = useSiteSettingsStore();
 
   useEffect(() => {
     const matchingItem =
@@ -87,91 +81,115 @@ export default function MainSidebar({
     setActivePath(matchingItem.path);
   }, [pathname]);
 
-  return (
-    <motion.aside
-      initial={{ width: 0, opacity: 0 }}
-      animate={{
+  const sidebarAnimation = disableAllAnimations || disableSidebarAnimations
+    ? {}
+    : {
+      initial: { width: 0, opacity: 0 },
+      animate: {
         width: isCollapsed ? 0 : "var(--sidebar-width)",
         opacity: isCollapsed ? 0 : 1,
-      }}
-      transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="fixed left-0 top-[var(--header-height)] bottom-0 flex items-center transition-all duration-300 ease-in-out z-10"
-    >
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isCollapsed ? 0 : 1 }}
-        transition={{ duration: 0.3, delay: 0.1 }}
-        className={`h-full bg-body border-r-outline flex flex-col items-center py-4 z-40 transition-all duration-300 ease-in-out ${
-          isCollapsed ? "w-0" : "w-full"
-        }`}
-      >
-        <motion.nav
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.2 }}
-          className="flex gap-2 flex-col items-center flex-grow"
+      },
+      transition: { duration: 0.3, ease: "easeInOut" },
+    };
+
+  const handleSettingsChange = (setting: string, value: boolean) => {
+    if (setting === 'disableAllAnimations') {
+      toast.success(`All animations ${value ? 'disabled' : 'enabled'}`);
+    } else if (setting === 'disableSidebarAnimations') {
+      toast.success(`Sidebar animations ${value ? 'disabled' : 'enabled'}`);
+    }
+    // Add more conditions here for other settings as needed
+  };
+
+  return (
+    <>
+      <AnimatePresence>
+        <motion.aside
+          {...sidebarAnimation}
+          className="fixed left-0 top-[var(--header-height)] bottom-0 flex items-center transition-all duration-300 ease-in-out z-10"
         >
-          {sidebarItems.map((item, index) => (
-            <motion.div
-              key={item.path}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 * (index + 1) }}
-            >
-              <Link href={item.path}>
-                <SidebarIcon item={item} isActive={activePath === item.path} />
-              </Link>
-            </motion.div>
-          ))}
-        </motion.nav>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.4 }}
-          className="flex flex-col items-center mt-auto"
-        >
-          <SidebarIcon
-            item={{
-              name: "Help",
-              path: "#help",
-              icon: HelpCircle as LucideIcon,
-            }}
-            isActive={false}
-          />
-          <button
-            onClick={toggleSubSidebar}
-            className="size-[55px] opacity-50 flex items-center justify-center text-zinc-400 hover:text-title mt-2"
-            aria-label={
-              isSubSidebarOpen ? "Close sub sidebar" : "Open sub sidebar"
-            }
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isCollapsed ? 0 : 1 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className={`h-full bg-body border-r-outline flex flex-col items-center py-4 z-40 transition-all duration-300 ease-in-out ${isCollapsed ? "w-0" : "w-full"
+              }`}
           >
-            {isSubSidebarOpen ? (
-              <PanelLeftClose className="w-6 h-6" aria-hidden="true" />
+            <motion.nav
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+              className="flex gap-2 flex-col items-center flex-grow"
+            >
+              {sidebarItems.map((item, index) => (
+                <motion.div
+                  key={item.path}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.1 * (index + 1) }}
+                >
+                  <Link href={item.path}>
+                    <SidebarIcon item={item} isActive={activePath === item.path} />
+                  </Link>
+                </motion.div>
+              ))}
+            </motion.nav>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.4 }}
+              className="flex flex-col items-center mt-auto"
+            >
+              <SidebarIcon
+                item={{
+                  name: "Settings",
+                  path: "#settings",
+                  icon: Settings2Icon as LucideIcon,
+                }}
+                isActive={false}
+                onClick={() => setIsSettingsOpen(true)}
+              />
+              <button
+                onClick={toggleSubSidebar}
+                className="size-[55px] opacity-50 flex items-center justify-center text-zinc-400 hover:text-title mt-2"
+                aria-label={
+                  isSubSidebarOpen ? "Close sub sidebar" : "Open sub sidebar"
+                }
+              >
+                {isSubSidebarOpen ? (
+                  <PanelLeftClose className="w-6 h-6" aria-hidden="true" />
+                ) : (
+                  <PanelLeftOpen className="w-6 h-6" aria-hidden="true" />
+                )}
+              </button>
+            </motion.div>
+          </motion.div>
+          <motion.button
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3, delay: 0.5 }}
+            onClick={toggleCollapse}
+            className="absolute -right-4 top-1/2 transform -translate-y-1/2 p-1 rounded-full bg-body border border-outline text-white hover:bg-opacity-80 z-10"
+            aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {isCollapsed ? (
+              <ChevronRight size={20} aria-hidden="true" />
             ) : (
-              <PanelLeftOpen className="w-6 h-6" aria-hidden="true" />
+              <ChevronLeft size={20} aria-hidden="true" />
             )}
-          </button>
-        </motion.div>
-      </motion.div>
-      <motion.button
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.3, delay: 0.5 }}
-        onClick={toggleCollapse}
-        className="absolute -right-4 top-1/2 transform -translate-y-1/2 p-1 rounded-full bg-body border border-outline text-white hover:bg-opacity-80 z-10"
-        aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-      >
-        {isCollapsed ? (
-          <ChevronRight size={20} aria-hidden="true" />
-        ) : (
-          <ChevronLeft size={20} aria-hidden="true" />
-        )}
-      </motion.button>
-    </motion.aside>
+          </motion.button>
+        </motion.aside>
+      </AnimatePresence>
+      <SiteSettingsMenu
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        onSettingChange={handleSettingsChange}
+      />
+    </>
   );
 }
 
-function SubSidebarShell({ isSubSidebarOpen }: { isSubSidebarOpen: boolean }) {
+export function SubSidebarShell({ isSubSidebarOpen }: { isSubSidebarOpen: boolean }) {
   const pathname = usePathname();
   const [currentConfig, setCurrentConfig] = useState<any>(null);
 
@@ -202,5 +220,3 @@ function SubSidebarShell({ isSubSidebarOpen }: { isSubSidebarOpen: boolean }) {
     </AnimatePresence>
   );
 }
-
-export { SubSidebarShell };
