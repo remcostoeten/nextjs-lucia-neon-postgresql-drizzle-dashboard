@@ -1,26 +1,26 @@
-"use client";
+'use client'
 
-import { EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { EditorContent, useEditor } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
 
 export default function TipTapEditor({
-  content,
-  onChange,
+	content,
+	onChange
 }: {
-  content: string;
-  onChange: (html: string) => void;
+	content: string
+	onChange: (html: string) => void
 }) {
-  const editor = useEditor({
-    extensions: [StarterKit],
-    content,
-    onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
-    },
-  });
+	const editor = useEditor({
+		extensions: [StarterKit],
+		content,
+		onUpdate: ({ editor }) => {
+			onChange(editor.getHTML())
+		}
+	})
 
-  return (
-    <div className="border rounded-md p-2">
-      <EditorContent editor={editor} />
-    </div>
-  );
+	return (
+		<div className="border rounded-md p-2">
+			<EditorContent editor={editor} />
+		</div>
+	)
 }

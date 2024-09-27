@@ -1,14 +1,13 @@
-
 export default function DashboardLayout({
-  children,
+	children
 }: {
-  children: React.ReactNode;
+	children: React.ReactNode
 }) {
-  return (
-    <section>
-      <main className="min-h-screen mt-24 mx-auto  max-w-[90vw]">
-        {children}
-      </main>
-    </section>
-  );
+	return (
+		<section>
+			<main className="min-h-screen mt-24 mx-auto  max-w-[90vw]">
+				{children}
+			</main>
+		</section>
+	)
 }

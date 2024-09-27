@@ -1,34 +1,35 @@
 {
-  "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@/*": ["./src/*"],
-      "models": ["./src/core/models/index.ts"],
-      "cn": ["./src/lib/utils.ts"],
-      "db": ["./src/core/server/database/index.ts"],
-      "schema": ["./src/core/server/schema/index.ts"],
-      "ui": ["./src/components/ui/index.ts"],
-      "session": ["./src/lib/auth/utils.ts"]
-    },
-    "target": "esnext",
-    "baseUrl": "./"
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+	"compilerOptions": {
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"allowJs": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"noEmit": true,
+		"esModuleInterop": true,
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"jsx": "preserve",
+		"incremental": true,
+		"plugins": [
+			{
+				"name": "next"
+			}
+		],
+		"paths": {
+			"@/*": ["./src/*"],
+			"models": ["./src/core/models/index.ts"],
+			"cn": ["./src/lib/utils.ts"],
+			"db": ["./src/core/server/database/index.ts"],
+			"schema": ["./src/core/server/schema/index.ts"],
+			"ui": ["./src/components/ui/index.ts"],
+			"session": ["./src/lib/auth/utils.ts"],
+			"stores": ["./src/core/stores/index.ts"]
+		},
+		"target": "esnext",
+		"baseUrl": "./"
+	},
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+	"exclude": ["node_modules"]
 }

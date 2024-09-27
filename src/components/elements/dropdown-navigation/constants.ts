@@ -1,18 +1,18 @@
-import Authentication from "./TabContent/Authentication";
-import Blog from "./TabContent/Blog";
-import Products from "./TabContent/Products";
+import Authentication from './TabContent/Authentication'
+import Blog from './TabContent/Blog'
+import Products from './TabContent/Products'
 
 export const TABS = [
-  {
-    title: "Design system",
-    Component: Products,
-  },
-  {
-    title: "Authentication",
-    Component: Authentication,
-  },
-  {
-    title: "Blog",
-    Component: Blog,
-  },
-].map((n, idx) => ({ ...n, id: idx + 1 }));
+	{
+		title: 'Design system',
+		Component: Products
+	},
+	{
+		title: 'Authentication',
+		Component: Authentication
+	},
+	{
+		title: 'Blog',
+		Component: Blog
+	}
+].map((n, idx) => ({ ...n, id: idx + 1 }))

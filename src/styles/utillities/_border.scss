@@ -1,24 +1,24 @@
 .border {
-  border: 1px solid var(--border-outline);
+	border: 1px solid var(--border-outline);
 }
 
 * {
-  border-color: var(--border-outline);
+	border-color: var(--border-outline);
 }
 
 .border-b-outline {
-  border-bottom: 1px solid var(--border-outline);
+	border-bottom: 1px solid var(--border-outline);
 }
 
 .border-r-outline {
-  border-right: 1px solid var(--border-outline);
+	border-right: 1px solid var(--border-outline);
 }
 
 $border-styles: (
-  regular: var(--border-default),
-  outline: var(--border-outline),
-  separator: var(--border-separator),
-  transparent: transparent,
+	regular: var(--border-default),
+	outline: var(--border-outline),
+	separator: var(--border-separator),
+	transparent: transparent
 );
 
 // Define border positions
@@ -26,24 +26,24 @@ $border-positions: left, right, top, bottom;
 
 // Generate border classes for each style and position
 @each $style, $color in $border-styles {
-  .border-#{$style} {
-    border: 1px solid $color;
+	.border-#{$style} {
+		border: 1px solid $color;
 
-    @each $position in $border-positions {
-      &-#{$position} {
-        border: none;
-        border-#{$position}: 1px solid $color;
-      }
-    }
-  }
+		@each $position in $border-positions {
+			&-#{$position} {
+				border: none;
+				border-#{$position}: 1px solid $color;
+			}
+		}
+	}
 }
 
 .border {
-  transition: border 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+	transition: border 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
 
-  &:hover {
-    border: 1px solid var(--border-outline) !important;
-  }
+	&:hover {
+		border: 1px solid var(--border-outline) !important;
+	}
 }
 
 // Examples of generated classes:
@@ -72,28 +72,28 @@ $border-positions: left, right, top, bottom;
 // <div class="border-separator-top">Top border only</div>
 
 .line {
-  position: relative;
+	position: relative;
 
-  &::before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    top: 20px;
-    left: -10%;
-    width: calc(100% + 20%);
-    height: 1px;
-    background-color: var(--border-outline);
-  }
+	&::before {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		top: 20px;
+		left: -10%;
+		width: calc(100% + 20%);
+		height: 1px;
+		background-color: var(--border-outline);
+	}
 }
 
 // // General input and textarea focus styles
 input,
 textarea {
-  &:focus {
-    outline: none !important;
-    box-shadow: 0 0 0 2px var(--border-outline) !important;
-    transition: box-shadow 0.2s ease-in-out;
-  }
+	&:focus {
+		outline: none !important;
+		box-shadow: 0 0 0 2px var(--border-outline) !important;
+		transition: box-shadow 0.2s ease-in-out;
+	}
 }
 
 // // Color picker specific styles

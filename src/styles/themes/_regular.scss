@@ -1,115 +1,115 @@
 :root {
-  /* heights; */
-  --header-height: 77px;
-  --search-height: 40px;
-  --sidebar-width: 88px;
-  --sidebar-sub-width: 230px;
-  --sidebar-plus-aside-width: calc(
-    var(--sidebar-width) + var(--sidebar-sub-width)
-  );
+	/* heights; */
+	--header-height: 77px;
+	--search-height: 40px;
+	--sidebar-width: 88px;
+	--sidebar-sub-width: 230px;
+	--sidebar-plus-aside-width: calc(
+		var(--sidebar-width) + var(--sidebar-sub-width)
+	);
 
-  /* colors */
-  --white: #fff;
-  --brand: rgb(255, 108, 0);
-  --green: green;
-  --bg-body: #0a0a0a;
-  --bg-card: #111110;
-  --bg-card-hover: #171616;
-  --bg-section: #111110;
-  --bg-section-lighter: #171616;
-  --bg-iput: #171616;
-  --bg-dropdown: #171616;
-  --bg-modal: #161616;
-  --bg-modal-hover: #1a1b1a;
-  --avatar: #404040;
+	/* colors */
+	--white: #fff;
+	--brand: rgb(255, 108, 0);
+	--green: green;
+	--bg-body: #0a0a0a;
+	--bg-card: #111110;
+	--bg-card-hover: #171616;
+	--bg-section: #111110;
+	--bg-section-lighter: #171616;
+	--bg-iput: #171616;
+	--bg-dropdown: #171616;
+	--bg-modal: #161616;
+	--bg-modal-hover: #1a1b1a;
+	--avatar: #404040;
 
-  /* Border & Outline Colors */
-  --border-default: #404141;
-  --border-outline: rgb(39, 38, 39);
-  --border-outline-10: #3d3c3d;
-  --border-outline-5r: #404141;
-  --border-separator: #272627;
+	/* Border & Outline Colors */
+	--border-default: #404141;
+	--border-outline: rgb(39, 38, 39);
+	--border-outline-10: #3d3c3d;
+	--border-outline-5r: #404141;
+	--border-separator: #272627;
 
-  /* Text Colors */
-  --text-title: #fefeff;
-  --text-subtitle: #a2a3a2;
-  --text-muted: #727273;
-  --text-regular-nav: #a2a3a2;
-  --text-button: #e5e5e5;
-  --text-button-alt: #171616;
-  --text-dropdown-item: #d5d4d5;
-  --green: var(--green);
+	/* Text Colors */
+	--text-title: #fefeff;
+	--text-subtitle: #a2a3a2;
+	--text-muted: #727273;
+	--text-regular-nav: #a2a3a2;
+	--text-button: #e5e5e5;
+	--text-button-alt: #171616;
+	--text-dropdown-item: #d5d4d5;
+	--green: var(--green);
 
-  /* Button Colors */
-  --button-default: #1e1e1f;
-  --button-hover: #272627;
+	/* Button Colors */
+	--button-default: #1e1e1f;
+	--button-hover: #272627;
 
-  /* Miscellaneous Colors */
-  --color-success: #23c45e;
-  --color-error: #e26969;
-  --color-menu-icon: #545454;
-  --color-placeholder: #727373;
-  --color-input-focus: #535253;
+	/* Miscellaneous Colors */
+	--color-success: #23c45e;
+	--color-error: #e26969;
+	--color-menu-icon: #545454;
+	--color-placeholder: #727373;
+	--color-input-focus: #535253;
 
-  --focus-ring: #4a90e2;
-  --focus-ring-shadow: rgba(74, 144, 226, 0.3);
+	--focus-ring: #4a90e2;
+	--focus-ring-shadow: rgba(74, 144, 226, 0.3);
 
-  /* Badge Colors */
-  --badge-default: #272627;
-  --badge-hover: #404141;
-  --background: 0 0% 100%;
-  --foreground: 0 0% 3.9%;
-  --card: 0 0% 100%;
-  --card-foreground: 0 0% 3.9%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 3.9%;
-  --primary: 0 0% 9%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 0 0% 96.1%;
-  --secondary-foreground: 0 0% 9%;
-  --muted: 0 0% 96.1%;
-  --muted-foreground: 0 0% 45.1%;
-  --accent: 0 0% 96.1%;
-  --accent-foreground: 0 0% 9%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 89.8%;
-  --input: 0 0% 89.8%;
-  --ring: 0 0% 3.9%;
-  --radius: 0.5rem;
-  --chart-1: 12 76% 61%;
-  --chart-2: 173 58% 39%;
-  --chart-3: 197 37% 24%;
-  --chart-4: 43 74% 66%;
-  --green: green;
-  --chart-5: 27 87% 67%;
+	/* Badge Colors */
+	--badge-default: #272627;
+	--badge-hover: #404141;
+	--background: 0 0% 100%;
+	--foreground: 0 0% 3.9%;
+	--card: 0 0% 100%;
+	--card-foreground: 0 0% 3.9%;
+	--popover: 0 0% 100%;
+	--popover-foreground: 0 0% 3.9%;
+	--primary: 0 0% 9%;
+	--primary-foreground: 0 0% 98%;
+	--secondary: 0 0% 96.1%;
+	--secondary-foreground: 0 0% 9%;
+	--muted: 0 0% 96.1%;
+	--muted-foreground: 0 0% 45.1%;
+	--accent: 0 0% 96.1%;
+	--accent-foreground: 0 0% 9%;
+	--destructive: 0 84.2% 60.2%;
+	--destructive-foreground: 0 0% 98%;
+	--border: 0 0% 89.8%;
+	--input: 0 0% 89.8%;
+	--ring: 0 0% 3.9%;
+	--radius: 0.5rem;
+	--chart-1: 12 76% 61%;
+	--chart-2: 173 58% 39%;
+	--chart-3: 197 37% 24%;
+	--chart-4: 43 74% 66%;
+	--green: green;
+	--chart-5: 27 87% 67%;
 }
 
 .dark {
-  --background: 0 0% 3.9%;
-  --foreground: 0 0% 98%;
-  --white: #fff;
-  --card: 0 0% 3.9%;
-  --card-foreground: 0 0% 98%;
-  --green: green;
-  --popover: 0 0% 3.9%;
-  --popover-foreground: 0 0% 98%;
-  --primary: 0 0% 98%;
-  --primary-foreground: 0 0% 9%;
-  --secondary: 0 0% 14.9%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 0 0% 14.9%;
-  --muted-foreground: 0 0% 63.9%;
-  --accent: 0 0% 14.9%;
-  --accent-foreground: 0 0% 98%;
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 14.9%;
-  --input: 0 0% 14.9%;
-  --ring: 0 0% 83.1%;
-  --chart-1: 220 70% 50%;
-  --chart-2: 160 60% 45%;
-  --chart-3: 30 80% 55%;
-  --chart-4: 280 65% 60%;
-  --chart-5: 340 75% 55%;
+	--background: 0 0% 3.9%;
+	--foreground: 0 0% 98%;
+	--white: #fff;
+	--card: 0 0% 3.9%;
+	--card-foreground: 0 0% 98%;
+	--green: green;
+	--popover: 0 0% 3.9%;
+	--popover-foreground: 0 0% 98%;
+	--primary: 0 0% 98%;
+	--primary-foreground: 0 0% 9%;
+	--secondary: 0 0% 14.9%;
+	--secondary-foreground: 0 0% 98%;
+	--muted: 0 0% 14.9%;
+	--muted-foreground: 0 0% 63.9%;
+	--accent: 0 0% 14.9%;
+	--accent-foreground: 0 0% 98%;
+	--destructive: 0 62.8% 30.6%;
+	--destructive-foreground: 0 0% 98%;
+	--border: 0 0% 14.9%;
+	--input: 0 0% 14.9%;
+	--ring: 0 0% 83.1%;
+	--chart-1: 220 70% 50%;
+	--chart-2: 160 60% 45%;
+	--chart-3: 30 80% 55%;
+	--chart-4: 280 65% 60%;
+	--chart-5: 340 75% 55%;
 }

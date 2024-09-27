@@ -1,22 +1,20 @@
-"use client";
+import { signOutAction } from '@/lib/actions/users'
+import { getUserAuth } from '@/lib/auth/utils'
+import { redirect } from 'next/navigation'
+import { Button } from '../ui/button'
 
-import { Button } from "../ui/button";
-import { useFormStatus } from "react-dom";
-import { signOutAction } from "@/lib/actions/users";
+export default async function SignOutBtn() {
+	const { session } = await getUserAuth()
 
-export default function SignOutBtn() {
-  return (
-    <form action={signOutAction} className="w-full text-left">
-      <Btn />
-    </form>
-  );
+	if (!session) {
+		redirect('/sign-in')
+	}
+
+	return (
+		<form onSubmit={signOutAction} className="w-full text-left">
+			<Button type="submit" variant={'destructive'}>
+				Sign out
+			</Button>
+		</form>
+	)
 }
-
-const Btn = () => {
-  const { pending } = useFormStatus();
-  return (
-    <Button type="submit" disabled={pending} variant={"destructive"}>
-      Sign{pending ? "ing" : ""} out
-    </Button>
-  );
-};

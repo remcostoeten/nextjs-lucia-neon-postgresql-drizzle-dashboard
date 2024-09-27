@@ -1,11 +1,11 @@
-import ThemeWrapper, { metadata } from "@/components/base/ThemeWrapper";
-import "../styles/app.scss";
-export { metadata };
+import ThemeWrapper, { metadata } from '@/components/base/ThemeWrapper'
+import '../styles/app.scss'
+export { metadata }
 
 export default function RootLayout({
-  children,
+	children
 }: {
-  children: React.ReactNode;
+	children: React.ReactNode
 }) {
-  return <ThemeWrapper>{children}</ThemeWrapper>;
+	return <ThemeWrapper>{children}</ThemeWrapper>
 }

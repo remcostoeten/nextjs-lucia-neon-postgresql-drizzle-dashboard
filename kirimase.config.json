@@ -1,14 +1,14 @@
 {
-  "hasSrc": true,
-  "packages": ["shadcn-ui", "drizzle", "lucia"],
-  "preferredPackageManager": "bun",
-  "t3": false,
-  "alias": "@",
-  "analytics": true,
-  "rootPath": "src/",
-  "componentLib": "shadcn-ui",
-  "driver": "pg",
-  "provider": "neon",
-  "orm": "drizzle",
-  "auth": "lucia"
+	"hasSrc": true,
+	"packages": ["shadcn-ui", "drizzle", "lucia"],
+	"preferredPackageManager": "bun",
+	"t3": false,
+	"alias": "@",
+	"analytics": true,
+	"rootPath": "src/",
+	"componentLib": "shadcn-ui",
+	"driver": "pg",
+	"provider": "neon",
+	"orm": "drizzle",
+	"auth": "lucia"
 }
