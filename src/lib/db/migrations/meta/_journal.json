@@ -29,6 +29,13 @@
       "when": 1727390966815,
       "tag": "0003_easy_the_fury",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1727403631613,
+      "tag": "0004_majestic_terror",
+      "breakpoints": true
     }
   ]
 }

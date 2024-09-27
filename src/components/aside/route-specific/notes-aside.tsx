@@ -1,11 +1,35 @@
 "use client";
 
+import { getFolders } from "@/lib/api/folders";
 import { motion } from "framer-motion";
-import { FolderOpen, PlusCircle, Search, Star, Tag } from "lucide-react";
-import React, { useState } from "react";
+import {
+  Folder,
+  FolderOpen,
+  PlusCircle,
+  Search,
+  Star,
+  Tag,
+} from "lucide-react";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+
+interface FolderType {
+  id: string;
+  name: string;
+}
 
 const NotesSidebar: React.FC = () => {
+  const [folders, setFolders] = useState<FolderType[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    const fetchFolders = async () => {
+      const fetchedFolders = await getFolders();
+      setFolders(fetchedFolders?.folders || []);
+    };
+
+    fetchFolders();
+  }, []);
 
   const menuItems = [
     { icon: FolderOpen, text: "All Notes" },
@@ -82,6 +106,33 @@ const NotesSidebar: React.FC = () => {
               </motion.li>
             ),
           )}
+        </ul>
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="mt-8"
+      >
+        <h3 className="text-lg font-semibold mb-4">Folders</h3>
+        <ul className="space-y-2">
+          {folders.map((folder, index) => (
+            <motion.li
+              key={folder.id}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6 + index * 0.1 }}
+              className="text-sm hover:bg-card border-outline p-2 rounded-md cursor-pointer transition-colors trans-all"
+            >
+              <Link
+                href={`/dashboard/notes/folders/${folder.id}`}
+                className="flex items-center space-x-3"
+              >
+                <Folder size={16} className="text-zinc-400" />
+                <span className="text-subtitle">{folder.name}</span>
+              </Link>
+            </motion.li>
+          ))}
         </ul>
       </motion.div>
     </div>

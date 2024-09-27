@@ -44,8 +44,8 @@ export async function getNotes(folderId: string) {
       .where(
         and(
           eq(notes.userId, session.user.id),
-          folderId ? eq(notes.folderId, folderId) : undefined
-        )
+          folderId ? eq(notes.folderId, folderId) : undefined,
+        ),
       )
       .execute();
     console.log("Fetched notes:", userNotes);
