@@ -62,7 +62,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   });
 
   return (
-    <div className="border border-input bg-background rounded-md">
+    <div className="border text-subtitle border-input bg-background rounded-md">
       <MenuBar editor={editor} />
       <EditorContent editor={editor} className="p-3 min-h-[200px]" />
     </div>

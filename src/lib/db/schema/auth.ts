@@ -1,6 +1,8 @@
+import { folders } from "@/lib/db/schema/folders";
 import { date, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { z } from "zod";
 
+// User table
 export const users = pgTable("user", {
   id: text("id").primaryKey(),
   email: text("email").notNull().unique(),
@@ -8,6 +10,7 @@ export const users = pgTable("user", {
   name: text("name"),
 });
 
+// Session table
 export const sessions = pgTable("session", {
   id: text("id").primaryKey(),
   userId: text("user_id")
@@ -19,6 +22,7 @@ export const sessions = pgTable("session", {
   }).notNull(),
 });
 
+// User profile info table
 export const userProfiles = pgTable("user_profiles", {
   id: text("id").primaryKey(),
   userId: text("user_id")
@@ -38,6 +42,7 @@ export const userProfiles = pgTable("user_profiles", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Schemas
 export const authenticationSchema = z.object({
   email: z.string().email().min(5).max(31),
   password: z
@@ -64,5 +69,36 @@ export const userProfileSchema = z.object({
   twitter: z.string().url().optional(),
 });
 
+// Types
 export type UsernameAndPassword = z.infer<typeof authenticationSchema>;
 export type UserProfile = z.infer<typeof userProfileSchema>;
+
+// Relationships (if you're using Drizzle ORM's relations)
+export const relations = {
+  users: {
+    userProfile: {
+      relationshipType: "one-to-one",
+      schema: userProfiles,
+      fields: [users.id, userProfiles.userId],
+    },
+    folders: {
+      relationshipType: "one-to-many",
+      schema: folders,
+      fields: [users.id, folders.userId],
+    },
+  },
+  userProfiles: {
+    user: {
+      relationshipType: "one-to-one",
+      schema: users,
+      fields: [userProfiles.userId, users.id],
+    },
+  },
+  folders: {
+    user: {
+      relationshipType: "one-to-one",
+      schema: users,
+      fields: [folders.userId, users.id],
+    },
+  },
+};

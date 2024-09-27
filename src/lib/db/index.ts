@@ -31,4 +31,3 @@ export const pool = new Pool({ connectionString: env.DATABASE_URL });
 // Re-export all schemas and types for convenience
 export * from "./schema/auth";
 export * from "./schema/folders";
-export * from "./schema/notes";

@@ -1,4 +1,4 @@
-import FolderStructure from "./FodlerStructure";
+import FolderStructure from "@/app/dashboard/notes/folder-structure";
 
 export default function NotesPage() {
   return (
