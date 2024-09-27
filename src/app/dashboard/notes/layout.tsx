@@ -1,8 +1,6 @@
 "use client";
 
-import { Plus } from "lucide-react";
 import { useState } from "react";
-import { Button, Input } from "ui";
 import { CreateFolderButton } from "./_components/create-folder-button";
 import { CreateNoteButton } from "./_components/create-note-button";
 export default function NotesLayout({
@@ -23,7 +21,7 @@ export default function NotesLayout({
           </div>
         </header>
         <div className="flex flex-1 overflow-hidden">
-          <main className="flex-1 p-4 overflow-y-auto">{children}</main>
+          <main className="flex-1 overflow-y-auto">{children}</main>
         </div>
       </div>
     </div>

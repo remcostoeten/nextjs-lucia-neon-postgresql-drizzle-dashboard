@@ -13,13 +13,14 @@ type DashboardLayoutProps = {
 
 export { metadata };
 
-const DashboardLayout = ({
+export default async function DashboardLayout({
   children,
   isSubSidebarOpen,
   toggleSubSidebar,
   isMainSidebarCollapsed,
   toggleMainSidebar,
-}: DashboardLayoutProps) => {
+}: DashboardLayoutProps) {
+
   return (
     <div className="flex flex-col h-screen bg-body w-screen">
       <Navigation />
@@ -36,5 +37,3 @@ const DashboardLayout = ({
     </div>
   );
 };
-
-export default DashboardLayout;
