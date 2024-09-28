@@ -19,4 +19,18 @@ export type SiteSettingsMenuProps = {
 
 export type SubSidebarShellProps = {
 	isSubSidebarOpen: boolean
+	// isMainSidebarCollapsed: boolean
+}
+
+export type FolderType = {
+	id: string
+	name: string
+	description: string | null
+	color: string
+}
+
+export type DropdownAction = {
+	label: string
+	icon: React.ReactNode
+	onClick: () => void
 }

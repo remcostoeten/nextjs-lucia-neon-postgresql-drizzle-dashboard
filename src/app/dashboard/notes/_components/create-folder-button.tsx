@@ -16,10 +16,16 @@ import {
 } from 'ui'
 
 interface CreateFolderButtonProps {
-	onFolderCreated: (newFolder: { id: string; name: string; color: string }) => void;
+	onFolderCreated: (newFolder: {
+		id: string
+		name: string
+		color: string
+	}) => void
 }
 
-export function CreateFolderButton({ onFolderCreated }: CreateFolderButtonProps) {
+export function CreateFolderButton({
+	onFolderCreated
+}: CreateFolderButtonProps) {
 	const [open, setOpen] = useState(false)
 	const [folderColor, setFolderColor] = useState('#000000')
 	const router = useRouter()
@@ -39,7 +45,11 @@ export function CreateFolderButton({ onFolderCreated }: CreateFolderButtonProps)
 				throw new Error(result.error || 'Failed to create folder')
 			}
 		} catch (error) {
-			toast.error(error instanceof Error ? error.message : 'Failed to create folder')
+			toast.error(
+				error instanceof Error
+					? error.message
+					: 'Failed to create folder'
+			)
 		}
 	}
 
@@ -54,8 +64,15 @@ export function CreateFolderButton({ onFolderCreated }: CreateFolderButtonProps)
 				</DialogHeader>
 				<form onSubmit={handleSubmit}>
 					<Input name="name" placeholder="Folder Name" required />
-					<Input name="description" placeholder="Folder Description" />
-					<ColorPicker color={folderColor} onChange={setFolderColor} value={''} />
+					<Input
+						name="description"
+						placeholder="Folder Description"
+					/>
+					<ColorPicker
+						color={folderColor}
+						onChange={setFolderColor}
+						value={''}
+					/>
 					<Button type="submit">Create Folder</Button>
 				</form>
 			</DialogContent>

@@ -1,7 +1,8 @@
 import DashboardSidebar from '@/components/aside/route-specific/dashboard-home-aside'
 import NotesSidebar from '@/components/aside/route-specific/notes-aside'
 import SettingsSidebar from '@/components/aside/route-specific/settings-aside'
-import { Edit, Home, LucideIcon, Mail, Settings2, User } from 'lucide-react'
+import { DashboardIcon } from '@radix-ui/react-icons'
+import { Edit, LucideIcon, Mail, Settings2, User } from 'lucide-react'
 
 export type SidebarItem = {
 	name: string
@@ -14,7 +15,7 @@ export type SidebarItem = {
 }
 
 export const sidebarItems: SidebarItem[] = [
-	{ realName: 'Home', name: 'Dashboard', path: '/', icon: Home },
+	{ name: 'Dashboard', path: '/dashboard', icon: DashboardIcon },
 
 	{ name: 'Profile', path: '/dashboard/profile', icon: User },
 	{ name: 'Notes', path: '/dashboard/notes', icon: Edit },

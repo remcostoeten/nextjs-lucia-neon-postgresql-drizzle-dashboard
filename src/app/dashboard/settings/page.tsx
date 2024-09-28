@@ -1,4 +1,3 @@
-import { getUserProfile } from '@/lib/actions/users'
 import { checkAuth, getUserAuth } from '@/lib/auth/utils'
 import UserSettings from './_components/UserSettings'
 

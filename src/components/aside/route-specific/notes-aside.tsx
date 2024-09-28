@@ -1,9 +1,8 @@
 'use client'
 
 import Flex from '@/components/atoms/Flex'
-import { CustomDropdown } from '@/components/elements'
+import { CustomDropdown, DropdownAction } from '@/components/elements'
 import ConfirmationModal from '@/components/elements/crud/confirmation-modal'
-import { ColorPicker } from '@/components/ui/color-picker'
 import { useNotesStore, useSiteSettingsStore } from '@/core/stores'
 import {
 	createFolder,
@@ -21,34 +20,23 @@ import {
 	Tag,
 	Trash2
 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import {
 	Button,
+	ColorPicker,
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 	Input
 } from 'ui'
-
-type FolderType = {
-	id: string
-	name: string
-	description: string | null
-	color: string
-}
-
-type DropdownAction = {
-	label: string
-	icon: React.ReactNode
-	onClick: () => void
-}
+import { FolderType } from '../types.sidear'
 
 export default function NotesSidebar() {
 	const [folders, setFolders] = useState<FolderType[]>([])
 	const [searchTerm, setSearchTerm] = useState('')
+	const [filteredFolders, setFilteredFolders] = useState<FolderType[]>([])
 	const [isNewFolderDialogOpen, setIsNewFolderDialogOpen] = useState(false)
 	const [isEditFolderDialogOpen, setIsEditFolderDialogOpen] = useState(false)
 	const [editingFolder, setEditingFolder] = useState<FolderType | null>(null)
@@ -57,7 +45,6 @@ export default function NotesSidebar() {
 	const [newFolderColor, setNewFolderColor] = useState('#000000')
 	const { selectedFolderId, setSelectedFolderId } = useNotesStore()
 	const { disableSidebarAnimations } = useSiteSettingsStore()
-	const router = useRouter()
 	const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
 		useState(false)
 	const [folderToDelete, setFolderToDelete] = useState<FolderType | null>(
@@ -67,6 +54,18 @@ export default function NotesSidebar() {
 	useEffect(() => {
 		fetchFolders()
 	}, [])
+
+	useEffect(() => {
+		const filtered = folders.filter(
+			folder =>
+				folder.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				(folder.description &&
+					folder.description
+						.toLowerCase()
+						.includes(searchTerm.toLowerCase()))
+		)
+		setFilteredFolders(filtered)
+	}, [searchTerm, folders])
 
 	const fetchFolders = async () => {
 		const fetchedFolders = await getFolders()
@@ -114,12 +113,16 @@ export default function NotesSidebar() {
 		formData.append('description', newFolderDescription)
 		formData.append('color', newFolderColor)
 		try {
-			const newFolder = await createFolder(formData)
-			setFolders(prevFolders => [...prevFolders, newFolder])
-			setIsNewFolderDialogOpen(false)
-			setNewFolderName('')
-			setNewFolderDescription('')
-			setNewFolderColor('#000000')
+			const { success, folder } = await createFolder(formData)
+			if (success && folder) {
+				setFolders(prevFolders => [...prevFolders, folder])
+				setIsNewFolderDialogOpen(false)
+				setNewFolderName('')
+				setNewFolderDescription('')
+				setNewFolderColor('#000000')
+			} else {
+				throw new Error('Failed to create folder')
+			}
 			toast.success('Folder created successfully')
 		} catch (error) {
 			toast.error('Failed to create folder')
@@ -188,7 +191,6 @@ export default function NotesSidebar() {
 			transition: { delay }
 		}
 	}
-
 	return (
 		<div className="text-white p-4 h-full w-full overflow-y-auto">
 			<motion.div
@@ -241,7 +243,7 @@ export default function NotesSidebar() {
 			<motion.div {...getAnimationProps(0.5)} className="mt-8">
 				<h3 className="text-lg font-semibold mb-4">Folders</h3>
 				<ul className="space-y-2">
-					{folders.map((folder, index) => (
+					{filteredFolders.map((folder, index) => (
 						<motion.li
 							key={folder.id}
 							{...getAnimationProps(0.6 + index * 0.1)}

@@ -78,7 +78,6 @@ export async function updateFolder(data: FormData) {
 	}
 }
 
-
 export async function deleteFolder(formData: FormData) {
 	const { session } = await getUserAuth()
 	if (!session) throw new Error('Not authenticated')

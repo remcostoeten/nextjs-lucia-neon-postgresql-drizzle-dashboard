@@ -23,7 +23,10 @@ export async function createFolder(data: FormData) {
 	}
 
 	try {
-		const [newFolder] = await db.insert(folders).values(result.data).returning()
+		const [newFolder] = await db
+			.insert(folders)
+			.values(result.data)
+			.returning()
 		revalidatePath('/folders')
 		return { success: true, folder: newFolder }
 	} catch (error) {

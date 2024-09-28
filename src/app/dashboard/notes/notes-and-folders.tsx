@@ -33,10 +33,13 @@ export type Note = {
 export default function NotesAndFolders() {
 	const [folders, setFolders] = useState<Folder[]>([])
 	const [notes, setNotes] = useState<Note[]>([])
-	const [isNewNoteDialogOpen, setIsNewNoteDialogOpen] = useState<boolean>(false)
+	const [isNewNoteDialogOpen, setIsNewNoteDialogOpen] =
+		useState<boolean>(false)
 	const [newNoteTitle, setNewNoteTitle] = useState<string>('')
 	const [newNoteContent, setNewNoteContent] = useState<string>('')
-	const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null)
+	const [selectedFolderId, setSelectedFolderId] = useState<string | null>(
+		null
+	)
 
 	useEffect(() => {
 		fetchData()
@@ -86,7 +89,9 @@ export default function NotesAndFolders() {
 			await updateNote(formData)
 			setNotes(prevNotes =>
 				prevNotes.map(note =>
-					note.id === noteId ? { ...note, title, content, folderId } : note
+					note.id === noteId
+						? { ...note, title, content, folderId }
+						: note
 				)
 			)
 			toast.success('Note updated successfully')
@@ -100,8 +105,12 @@ export default function NotesAndFolders() {
 		formData.append('id', folderId)
 		try {
 			await deleteFolder(formData)
-			setFolders(prevFolders => prevFolders.filter(folder => folder.id !== folderId))
-			setNotes(prevNotes => prevNotes.filter(note => note.folderId !== folderId))
+			setFolders(prevFolders =>
+				prevFolders.filter(folder => folder.id !== folderId)
+			)
+			setNotes(prevNotes =>
+				prevNotes.filter(note => note.folderId !== folderId)
+			)
 			toast.success('Folder deleted successfully')
 		} catch (error) {
 			toast.error('Failed to delete folder')
@@ -120,7 +129,11 @@ export default function NotesAndFolders() {
 		}
 	}
 
-	const handleEditFolder = async (id: string, name: string, color: string) => {
+	const handleEditFolder = async (
+		id: string,
+		name: string,
+		color: string
+	) => {
 		try {
 			const formData = new FormData()
 			formData.append('id', id)
@@ -138,7 +151,11 @@ export default function NotesAndFolders() {
 				throw new Error(result.error || 'Failed to update folder')
 			}
 		} catch (error) {
-			toast.error(error instanceof Error ? error.message : 'Failed to update folder')
+			toast.error(
+				error instanceof Error
+					? error.message
+					: 'Failed to update folder'
+			)
 		}
 	}
 
@@ -146,7 +163,7 @@ export default function NotesAndFolders() {
 		<div className="flex h-full">
 			<div className="w-1/4 pr-4 overflow-y-auto">
 				<CreateFolderButton
-					onFolderCreated={(newFolder) => {
+					onFolderCreated={newFolder => {
 						setFolders(prevFolders => [
 							...prevFolders,
 							{
@@ -179,7 +196,9 @@ export default function NotesAndFolders() {
 												folder.id
 											)
 										}
-										onDelete={() => handleDeleteNote(note.id)}
+										onDelete={() =>
+											handleDeleteNote(note.id)
+										}
 									/>
 								))}
 						</div>
@@ -199,7 +218,12 @@ export default function NotesAndFolders() {
 									key={note.id}
 									note={note}
 									onUpdate={(title, content) =>
-										handleUpdateNote(note.id, title, content, null)
+										handleUpdateNote(
+											note.id,
+											title,
+											content,
+											null
+										)
 									}
 									onDelete={() => handleDeleteNote(note.id)}
 								/>

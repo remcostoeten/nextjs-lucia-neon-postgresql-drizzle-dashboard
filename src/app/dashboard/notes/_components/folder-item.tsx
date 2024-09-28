@@ -1,4 +1,4 @@
-import { EditFolderDialog } from '@/components/elements/crud/edit-folder-modal';
+import { EditFolderDialog } from '@/components/elements/crud/edit-folder-modal'
 import { Button } from '@/components/ui/button'
 import {
 	DropdownMenu,
@@ -11,24 +11,25 @@ import React, { useState } from 'react'
 
 interface FolderItemProps {
 	folder: {
-		id: string;
-		name: string;
-		color: string;
-	};
-	onDelete: () => void;
-	onEdit: (id: string, name: string, color: string) => void;
+		id: string
+		name: string
+		color: string
+	}
+	onDelete: () => void
+	onEdit: (id: string, name: string, color: string) => void
 }
 
-const FolderItem: React.FC<FolderItemProps> = ({ folder, onDelete, onEdit }) => {
+const FolderItem: React.FC<FolderItemProps> = ({
+	folder,
+	onDelete,
+	onEdit
+}) => {
 	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
 
 	return (
 		<>
 			<div className="flex items-center justify-between mb-2">
-				<Button
-					variant="ghost"
-					className="w-full justify-start"
-				>
+				<Button variant="ghost" className="w-full justify-start">
 					<FolderOpen
 						size={16}
 						className="mr-2"
@@ -43,7 +44,9 @@ const FolderItem: React.FC<FolderItemProps> = ({ folder, onDelete, onEdit }) => 
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
-						<DropdownMenuItem onClick={() => setIsEditDialogOpen(true)}>
+						<DropdownMenuItem
+							onClick={() => setIsEditDialogOpen(true)}
+						>
 							<Pencil className="mr-2 h-4 w-4" />
 							<span>Edit</span>
 						</DropdownMenuItem>
