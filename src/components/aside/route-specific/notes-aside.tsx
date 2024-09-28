@@ -245,7 +245,7 @@ export default function NotesSidebar() {
 						<motion.li
 							key={folder.id}
 							{...getAnimationProps(0.6 + index * 0.1)}
-							className="flex items-center justify-between bg-gray-800 rounded-lg p-2"
+							className="flex items-center justify-between"
 						>
 							<div className="flex items-center min-w-0 flex-grow">
 								<FolderOpen

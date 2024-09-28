@@ -1,5 +1,6 @@
 'use server'
 
+import { updateFolderSchema } from '@/core/models'
 import { db } from '@/lib/db'
 import { folders } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
@@ -55,27 +56,28 @@ export async function createFolder(data: FormData) {
 	}
 }
 
-export async function updateFolder(formData: FormData) {
-	const { session } = await getUserAuth()
-	if (!session) throw new Error('Not authenticated')
+export async function updateFolder(data: FormData) {
+	const result = updateFolderSchema.safeParse(Object.fromEntries(data))
 
-	const id = formData.get('id') as string
-	const name = formData.get('name') as string
-	const color = formData.get('color') as string
+	if (!result.success) {
+		return { error: 'Invalid folder data' }
+	}
 
 	try {
-		await db
+		const [updatedFolder] = await db
 			.update(folders)
-			.set({ name, color })
-			.where(eq(folders.id, id))
-			.where(eq(folders.userId, session.user.id))
-		revalidatePath('/dashboard/notes')
-		return { success: true }
+			.set({ name: result.data.name, color: result.data.color })
+			.where(eq(folders.id, result.data.id))
+			.returning()
+
+		revalidatePath('/folders')
+		return { success: true, folder: updatedFolder }
 	} catch (error) {
 		console.error('Failed to update folder:', error)
 		return { error: 'Failed to update folder' }
 	}
 }
+
 
 export async function deleteFolder(formData: FormData) {
 	const { session } = await getUserAuth()

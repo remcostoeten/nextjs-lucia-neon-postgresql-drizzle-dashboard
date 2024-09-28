@@ -30,6 +30,10 @@ const config: Config = {
 			maxWidth: {
 				search: 'var(--search-width)'
 			},
+			width: {
+				'sub-sidebar': 'var(--sidebar-sub-width)',
+				sidebar: 'var(--sidebar-width)'
+			},
 			colors: {
 				// custom colors
 				/* Background Colors */

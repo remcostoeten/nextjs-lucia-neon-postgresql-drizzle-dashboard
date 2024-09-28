@@ -1,8 +1,6 @@
-'use client'
-
 import { sidebarItems } from '@/core/config/menu-items/sidebar-menu-items'
 import { useSiteSettingsStore } from '@/core/stores'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
 	ChevronLeft,
 	ChevronRight,
@@ -34,18 +32,20 @@ function useActivePath(): (path: string) => boolean {
 
 function SidebarIcon({ item, isActive, onClick }: SidebarIconProps) {
 	const [isHovered, setIsHovered] = useState<boolean>(false)
+	const { disableAllAnimations, disableSidebarAnimations } = useSiteSettingsStore()
+
+	const MotionComponent = disableAllAnimations || disableSidebarAnimations ? 'div' : motion.div
 
 	return (
-		<motion.div
-			className={`relative z-50 flex items-center justify-center size-10 mb-2 rounded-md transition-colors duration-200 border-r-outline ${
-				isActive
-					? 'bg-body border-outline text-white'
-					: '!border-transparent text-zinc-400 hover:text-title hover:bg-body hover:border-outline'
-			}`}
+		<MotionComponent
+			className={`relative z-50 flex items-center justify-center size-10 mb-2 rounded-md transition-colors duration-200 border-r-outline ${isActive
+				? 'bg-body border-outline text-white'
+				: '!border-transparent text-zinc-400 hover:text-title hover:bg-body hover:border-outline'
+				}`}
 			onHoverStart={() => setIsHovered(true)}
 			onHoverEnd={() => setIsHovered(false)}
-			whileHover={{ scale: 1.1 }}
-			whileTap={{ scale: 0.95 }}
+			whileHover={disableAllAnimations || disableSidebarAnimations ? undefined : { scale: 1.1 }}
+			whileTap={disableAllAnimations || disableSidebarAnimations ? undefined : { scale: 0.95 }}
 			onClick={onClick}
 		>
 			<item.icon className="w-4 h-4" aria-hidden="true" />
@@ -60,18 +60,20 @@ function SidebarIcon({ item, isActive, onClick }: SidebarIconProps) {
 					</span>
 				</div>
 			)}
-			{isHovered && (
-				<motion.div
-					className="absolute left-full -z-10 ml-2 px-2 py-1 bg-body border border-outline text-white text-xs font-medium rounded-md whitespace-nowrap !pointer-events-none"
-					initial={{ opacity: 0, x: -10 }}
-					animate={{ opacity: 1, x: 0 }}
-					exit={{ opacity: 0, x: -10 }}
-					transition={{ duration: 0.2 }}
-				>
-					{item.name}
-				</motion.div>
-			)}
-		</motion.div>
+			<AnimatePresence>
+				{isHovered && !disableAllAnimations && !disableSidebarAnimations && (
+					<motion.div
+						className="absolute left-full -z-10 ml-2 px-2 py-1 bg-body border border-outline text-white text-xs font-medium rounded-md whitespace-nowrap !pointer-events-none"
+						initial={{ opacity: 0, x: -10 }}
+						animate={{ opacity: 1, x: 0 }}
+						exit={{ opacity: 0, x: -10 }}
+						transition={{ duration: 0.2 }}
+					>
+						{item.name}
+					</motion.div>
+				)}
+			</AnimatePresence>
+		</MotionComponent>
 	)
 }
 
@@ -83,8 +85,7 @@ export default function MainSidebar({
 }: MainSidebarProps) {
 	const isActivePath = useActivePath()
 	const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-	const { disableAllAnimations, disableSidebarAnimations } =
-		useSiteSettingsStore()
+	const { disableAllAnimations, disableSidebarAnimations } = useSiteSettingsStore()
 
 	const handleSettingsChange = (setting: string, value: boolean) => {
 		if (setting === 'disableAllAnimations') {
@@ -96,36 +97,40 @@ export default function MainSidebar({
 		}
 	}
 
+	const MotionAside = disableAllAnimations || disableSidebarAnimations ? 'aside' : motion.aside
+	const MotionDiv = disableAllAnimations || disableSidebarAnimations ? 'div' : motion.div
+	const MotionNav = disableAllAnimations || disableSidebarAnimations ? 'nav' : motion.nav
+	const MotionButton = disableAllAnimations || disableSidebarAnimations ? 'button' : motion.button
+
 	return (
 		<>
-			<motion.aside
-				initial={{ width: 0, opacity: 0 }}
-				animate={{
+			<MotionAside
+				initial={disableAllAnimations || disableSidebarAnimations ? false : { width: 0, opacity: 0 }}
+				animate={disableAllAnimations || disableSidebarAnimations ? undefined : {
 					width: isCollapsed ? 0 : 'var(--sidebar-width)',
 					opacity: isCollapsed ? 0 : 1
 				}}
 				transition={{ duration: 0.3, ease: 'easeInOut' }}
-				className="fixed left-0 top-[var(--header-height)] bottom-0 flex items-center transition-all duration-300 ease-in-out z-10"
+				className="fixed left-0 top-[var(--header-height)] w-sidebar bottom-0 flex items-center transition-all duration-300 ease-in-out z-10"
 			>
-				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: isCollapsed ? 0 : 1 }}
+				<MotionDiv
+					initial={disableAllAnimations || disableSidebarAnimations ? false : { opacity: 0 }}
+					animate={disableAllAnimations || disableSidebarAnimations ? undefined : { opacity: isCollapsed ? 0 : 1 }}
 					transition={{ duration: 0.3, delay: 0.1 }}
-					className={`h-full bg-body border-r-outline flex flex-col items-center py-4 z-40 transition-all duration-300 ease-in-out ${
-						isCollapsed ? 'w-0' : 'w-full'
-					}`}
+					className={`h-full bg-body border-r-outline flex flex-col items-center py-4 z-40 transition-all duration-300 ease-in-out ${isCollapsed ? 'w-0' : 'w-full'
+						}`}
 				>
-					<motion.nav
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
+					<MotionNav
+						initial={disableAllAnimations || disableSidebarAnimations ? false : { opacity: 0, y: 20 }}
+						animate={disableAllAnimations || disableSidebarAnimations ? undefined : { opacity: 1, y: 0 }}
 						transition={{ duration: 0.3, delay: 0.2 }}
 						className="flex gap-2 flex-col items-center flex-grow"
 					>
 						{sidebarItems.map((item, index) => (
-							<motion.div
+							<MotionDiv
 								key={item.path}
-								initial={{ opacity: 0, x: -20 }}
-								animate={{ opacity: 1, x: 0 }}
+								initial={disableAllAnimations || disableSidebarAnimations ? false : { opacity: 0, x: -20 }}
+								animate={disableAllAnimations || disableSidebarAnimations ? undefined : { opacity: 1, x: 0 }}
 								transition={{
 									duration: 0.3,
 									delay: 0.1 * (index + 1)
@@ -137,12 +142,12 @@ export default function MainSidebar({
 										isActive={isActivePath(item.path)}
 									/>
 								</Link>
-							</motion.div>
+							</MotionDiv>
 						))}
-					</motion.nav>
-					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
+					</MotionNav>
+					<MotionDiv
+						initial={disableAllAnimations || disableSidebarAnimations ? false : { opacity: 0, y: 20 }}
+						animate={disableAllAnimations || disableSidebarAnimations ? undefined : { opacity: 1, y: 0 }}
 						transition={{ duration: 0.3, delay: 0.4 }}
 						className="flex flex-col items-center mt-auto"
 					>
@@ -176,11 +181,11 @@ export default function MainSidebar({
 								/>
 							)}
 						</button>
-					</motion.div>
-				</motion.div>
-				<motion.button
-					initial={{ opacity: 0, x: 20 }}
-					animate={{ opacity: 1, x: 0 }}
+					</MotionDiv>
+				</MotionDiv>
+				<MotionButton
+					initial={disableAllAnimations || disableSidebarAnimations ? false : { opacity: 0, x: 20 }}
+					animate={disableAllAnimations || disableSidebarAnimations ? undefined : { opacity: 1, x: 0 }}
 					transition={{ duration: 0.3, delay: 0.5 }}
 					onClick={toggleCollapse}
 					className="absolute -right-4 top-1/2 transform -translate-y-1/2 p-1 rounded-full bg-body border border-outline text-white hover:bg-opacity-80 z-10"
@@ -193,8 +198,8 @@ export default function MainSidebar({
 					) : (
 						<ChevronLeft size={20} aria-hidden="true" />
 					)}
-				</motion.button>
-			</motion.aside>
+				</MotionButton>
+			</MotionAside>
 			<SiteSettingsMenu
 				isOpen={isSettingsOpen}
 				onClose={() => setIsSettingsOpen(false)}
