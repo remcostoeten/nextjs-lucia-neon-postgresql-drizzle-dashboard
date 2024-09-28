@@ -67,7 +67,7 @@ export default function NotesSidebar() {
 		setFolders(
 			fetchedFolders?.folders?.map(folder => ({
 				...folder,
-				color: '#000000'
+				color: folder.color || '#000000'
 			})) || []
 		)
 	}
