@@ -40,7 +40,7 @@ I have a lot of dashboard repositories and build dozens of dashboards, each have
 
 ## Idea, todo, sketch whiteoard
 
-A small dump thought's/todo whiteoard which is far from complete. [View here](https://excalidraw.com/#json=4C-pL1uB98nUyzA0OV_kR,LqFlFCnFiexyEOFjyOQ9rg)
+A small dump thought's/todo whiteoard which is far from complete. [View here](https://excalidraw.com/#json=P3ItY8opP8DRc1lv1rw_c,wTbJ7r4MeS0ekI7WnTl_yg)
 
 ## Future features
 
