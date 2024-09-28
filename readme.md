@@ -21,7 +21,7 @@ This won't be a SaaS for others or an attempt to monotize anything. Although, if
 
 ### Authentication
 
-- Lucia aut                                                                                                      
+- [lucia](https://lucia-auth.com) authentication                                                                                                   
 <sub>Stored in postgress database with hashed password, sessions table and relation tables.</sub>
 - Email and password registration
      
