@@ -437,11 +437,6 @@ export default function SpotlightPage() {
 					</div>
 				</div>
 			</main>
-
-			<Banner
-				tutorialUrl="https://cruip.com/how-to-create-a-spotlight-card-hover-effect-with-tailwind-css/"
-				downloadUrl="https://github.com/cruip/cruip-tutorials-next/blob/main/components/spotlight.tsx"
-			/>
 		</DesignSystemWrapper>
 	)
 }

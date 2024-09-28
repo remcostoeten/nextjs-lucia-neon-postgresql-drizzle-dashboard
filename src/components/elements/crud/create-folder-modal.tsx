@@ -3,7 +3,6 @@
 import Flex from '@/components/atoms/Flex'
 import { ColorPicker } from '@/components/ui/color-picker'
 import { createFolder } from '@/lib/api/folders'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import {
@@ -16,20 +15,41 @@ import {
 	Input
 } from 'ui'
 
-export function CreateFolderButton() {
+type FolderType = {
+	id: string
+	name: string
+	description: string | null
+	color: string
+}
+
+type CreateFolderModalProps = {
+	onSuccess?: (newFolder: FolderType) => void
+	trigger?: React.ReactNode
+}
+
+export function CreateFolderModal({
+	onSuccess,
+	trigger
+}: CreateFolderModalProps) {
 	const [open, setOpen] = useState(false)
+	const [folderName, setFolderName] = useState('')
+	const [folderDescription, setFolderDescription] = useState('')
 	const [folderColor, setFolderColor] = useState('#000000')
-	const router = useRouter()
 
 	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault()
-		const formData = new FormData(event.target as HTMLFormElement)
+		const formData = new FormData()
+		formData.append('name', folderName)
+		formData.append('description', folderDescription)
 		formData.append('color', folderColor)
 		try {
-			await createFolder(formData)
+			const newFolder = await createFolder(formData)
 			setOpen(false)
-			router.refresh()
 			toast.success('Folder created successfully')
+			onSuccess?.(newFolder)
+			setFolderName('')
+			setFolderDescription('')
+			setFolderColor('#000000')
 		} catch (error) {
 			toast.error('Failed to create folder')
 		}
@@ -38,16 +58,22 @@ export function CreateFolderButton() {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button variant="outline">New Folder</Button>
+				{trigger || <Button variant="outline">New Folder</Button>}
 			</DialogTrigger>
-			<DialogContent>
+			<DialogContent className="w-full max-w-[450px]">
 				<DialogHeader>
 					<DialogTitle>Create a new folder</DialogTitle>
 				</DialogHeader>
 				<form onSubmit={handleSubmit} className="space-y-4">
-					<Input name="name" placeholder="Folder name" required />
 					<Input
-						name="description"
+						value={folderName}
+						onChange={e => setFolderName(e.target.value)}
+						placeholder="Folder name"
+						required
+					/>
+					<Input
+						value={folderDescription}
+						onChange={e => setFolderDescription(e.target.value)}
 						placeholder="Folder description (optional)"
 					/>
 					<Flex dir="col" gap="2">

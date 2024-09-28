@@ -38,7 +38,7 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 	}
 
 	return (
-		<nav className="text-subtitle flex h-[77px] w-full items-center justify-between pl-2 pr-8">
+		<nav className="text-subtitle flex h-[77px] w-full items-center justify-between pl-6 pr-4 border-b ">
 			<div className="flex items-center space-x-4">
 				<Link href="/" className="text-title font-semibold">
 					<LogoIcon />

@@ -1,48 +1,20 @@
 {
-  "version": "5",
-  "dialect": "pg",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "5",
-      "when": 1727388099880,
-      "tag": "0000_new_blonde_phantom",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1727389239034,
-      "tag": "0001_previous_garia",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1727389582811,
-      "tag": "0002_loud_blade",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1727390966815,
-      "tag": "0003_easy_the_fury",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1727403631613,
-      "tag": "0004_majestic_terror",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1727464246244,
-      "tag": "0005_nifty_excalibur",
-      "breakpoints": true
-    }
-  ]
+	"version": "5",
+	"dialect": "pg",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "5",
+			"when": 1727489740329,
+			"tag": "0000_past_revanche",
+			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "5",
+			"when": 1727489833169,
+			"tag": "0001_rare_lucky_pierre",
+			"breakpoints": true
+		}
+	]
 }

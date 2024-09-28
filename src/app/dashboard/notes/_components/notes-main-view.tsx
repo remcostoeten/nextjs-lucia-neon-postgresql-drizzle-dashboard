@@ -1,47 +1,36 @@
 'use client'
 
-import RichTextEditor from '@/components/rich-text-editor'
+import NewNoteModal from '@/components/elements/crud/add-note-modal'
+import NoticeBox from '@/components/elements/notice-box'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
 import { createNote, deleteNote, getNotes, updateNote } from '@/lib/api/notes'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useNotesStore } from 'stores'
 import NoteItem from './note-item'
-
 export default function NotesMainView() {
 	const [notes, setNotes] = useState([])
 	const [isNewNoteDialogOpen, setIsNewNoteDialogOpen] = useState(false)
-	const [newNoteTitle, setNewNoteTitle] = useState('')
-	const [newNoteContent, setNewNoteContent] = useState('')
 	const { selectedFolderId } = useNotesStore()
+
+	const fetchNotes = useCallback(async () => {
+		const fetchedNotes = await getNotes(selectedFolderId)
+		setNotes(fetchedNotes || [])
+	}, [selectedFolderId])
 
 	useEffect(() => {
 		fetchNotes()
-	}, [selectedFolderId])
+	}, [fetchNotes])
 
-	const fetchNotes = async () => {
-		const fetchedNotes = await getNotes(selectedFolderId)
-		setNotes(fetchedNotes || [])
-	}
-
-	const handleCreateNote = async () => {
+	const handleCreateNote = async (title, content) => {
 		const formData = new FormData()
-		formData.append('title', newNoteTitle)
-		formData.append('content', newNoteContent)
+		formData.append('title', title)
+		formData.append('content', content)
 		if (selectedFolderId) {
 			formData.append('folderId', selectedFolderId)
 		}
 		await createNote(formData)
 		setIsNewNoteDialogOpen(false)
-		setNewNoteTitle('')
-		setNewNoteContent('')
 		fetchNotes()
 	}
 
@@ -66,7 +55,7 @@ export default function NotesMainView() {
 
 	return (
 		<>
-			<Card>
+			<Card className="w-full">
 				<CardHeader className="flex flex-row items-center justify-between">
 					<CardTitle className="text-2xl font-bold">
 						{selectedFolderId ? 'Folder Notes' : 'All Notes'}
@@ -88,30 +77,17 @@ export default function NotesMainView() {
 							/>
 						))
 					) : (
-						<p className="text-muted-foreground">No notes found.</p>
+						<div className="flex justify-center items-center h-full mx-auto w-64">
+							<NoticeBox title="No notes found" />
+						</div>
 					)}
 				</CardContent>
 			</Card>
-			<Dialog
-				open={isNewNoteDialogOpen}
-				onOpenChange={setIsNewNoteDialogOpen}
-			>
-				<DialogContent>
-					<DialogHeader>
-						<DialogTitle>Create New Note</DialogTitle>
-					</DialogHeader>
-					<Input
-						value={newNoteTitle}
-						onChange={e => setNewNoteTitle(e.target.value)}
-						placeholder="Note Title"
-					/>
-					<RichTextEditor
-						content={newNoteContent}
-						onChange={setNewNoteContent}
-					/>
-					<Button onClick={handleCreateNote}>Create Note</Button>
-				</DialogContent>
-			</Dialog>
+			<NewNoteModal
+				isOpen={isNewNoteDialogOpen}
+				onClose={() => setIsNewNoteDialogOpen(false)}
+				onCreateNote={handleCreateNote}
+			/>
 		</>
 	)
 }

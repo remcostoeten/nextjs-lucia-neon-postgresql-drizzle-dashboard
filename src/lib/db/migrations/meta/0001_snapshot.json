@@ -1,6 +1,6 @@
 {
-	"id": "d4b2fb6f-5d00-46f2-8fac-59fbb2dbf994",
-	"prevId": "85689b78-3805-44e7-837a-8db2f0af1e54",
+	"id": "00682470-c652-4ff0-aa7a-02aaed896ed0",
+	"prevId": "f84f2eb4-08eb-400a-bf15-4d540b8cb7bb",
 	"version": "5",
 	"dialect": "pg",
 	"tables": {
@@ -21,6 +21,25 @@
 					"primaryKey": false,
 					"notNull": true
 				},
+				"description": {
+					"name": "description",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"color": {
+					"name": "color",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "'#000000'"
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
 				"created_at": {
 					"name": "created_at",
 					"type": "timestamp",
@@ -37,7 +56,55 @@
 				}
 			},
 			"indexes": {},
-			"foreignKeys": {},
+			"foreignKeys": {
+				"folders_user_id_user_id_fk": {
+					"name": "folders_user_id_user_id_fk",
+					"tableFrom": "folders",
+					"tableTo": "user",
+					"columnsFrom": ["user_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {}
+		},
+		"key": {
+			"name": "key",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"hashed_password": {
+					"name": "hashed_password",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"key_user_id_user_id_fk": {
+					"name": "key_user_id_user_id_fk",
+					"tableFrom": "key",
+					"tableTo": "user",
+					"columnsFrom": ["user_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				}
+			},
 			"compositePrimaryKeys": {},
 			"uniqueConstraints": {}
 		},
@@ -62,13 +129,27 @@
 					"name": "content",
 					"type": "text",
 					"primaryKey": false,
-					"notNull": false
+					"notNull": true
 				},
 				"folder_id": {
 					"name": "folder_id",
 					"type": "uuid",
 					"primaryKey": false,
 					"notNull": true
+				},
+				"is_pinned": {
+					"name": "is_pinned",
+					"type": "boolean",
+					"primaryKey": false,
+					"notNull": true,
+					"default": false
+				},
+				"tags": {
+					"name": "tags",
+					"type": "jsonb",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "'[]'::jsonb"
 				},
 				"created_at": {
 					"name": "created_at",
@@ -83,6 +164,12 @@
 					"primaryKey": false,
 					"notNull": true,
 					"default": "now()"
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "uuid",
+					"primaryKey": false,
+					"notNull": true
 				}
 			},
 			"indexes": {},
@@ -138,112 +225,6 @@
 			"compositePrimaryKeys": {},
 			"uniqueConstraints": {}
 		},
-		"user_profiles": {
-			"name": "user_profiles",
-			"schema": "",
-			"columns": {
-				"id": {
-					"name": "id",
-					"type": "text",
-					"primaryKey": true,
-					"notNull": true
-				},
-				"user_id": {
-					"name": "user_id",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": true
-				},
-				"first_name": {
-					"name": "first_name",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": false
-				},
-				"last_name": {
-					"name": "last_name",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": false
-				},
-				"date_of_birth": {
-					"name": "date_of_birth",
-					"type": "date",
-					"primaryKey": false,
-					"notNull": false
-				},
-				"occupation": {
-					"name": "occupation",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": false
-				},
-				"gender": {
-					"name": "gender",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": false
-				},
-				"bio": {
-					"name": "bio",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": false
-				},
-				"github": {
-					"name": "github",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": false
-				},
-				"facebook": {
-					"name": "facebook",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": false
-				},
-				"linkedin": {
-					"name": "linkedin",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": false
-				},
-				"twitter": {
-					"name": "twitter",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": false
-				},
-				"created_at": {
-					"name": "created_at",
-					"type": "timestamp",
-					"primaryKey": false,
-					"notNull": false,
-					"default": "now()"
-				},
-				"updated_at": {
-					"name": "updated_at",
-					"type": "timestamp",
-					"primaryKey": false,
-					"notNull": false,
-					"default": "now()"
-				}
-			},
-			"indexes": {},
-			"foreignKeys": {
-				"user_profiles_user_id_user_id_fk": {
-					"name": "user_profiles_user_id_user_id_fk",
-					"tableFrom": "user_profiles",
-					"tableTo": "user",
-					"columnsFrom": ["user_id"],
-					"columnsTo": ["id"],
-					"onDelete": "no action",
-					"onUpdate": "no action"
-				}
-			},
-			"compositePrimaryKeys": {},
-			"uniqueConstraints": {}
-		},
 		"user": {
 			"name": "user",
 			"schema": "",
@@ -283,6 +264,57 @@
 					"columns": ["email"]
 				}
 			}
+		},
+		"activity_logs": {
+			"name": "activity_logs",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"action": {
+					"name": "action",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"details": {
+					"name": "details",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"timestamp": {
+					"name": "timestamp",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"activity_logs_user_id_user_id_fk": {
+					"name": "activity_logs_user_id_user_id_fk",
+					"tableFrom": "activity_logs",
+					"tableTo": "user",
+					"columnsFrom": ["user_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {}
 		}
 	},
 	"enums": {},

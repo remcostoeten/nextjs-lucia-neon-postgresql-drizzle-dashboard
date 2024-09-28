@@ -1,16 +1,18 @@
 'use client'
 
-import Link from 'next/link'
-import { useState, useEffect } from 'react'
-import { useFormState, useFormStatus } from 'react-dom'
 import { motion } from 'framer-motion'
-import { toast } from 'sonner'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { useFormState, useFormStatus } from 'react-dom'
+import { toast } from 'sonner'
 
 import AuthFormError from '@/components/auth/AuthFormError'
 import LogoIcon from '@/components/base/logo'
 import { Button, Input } from '@/components/ui'
 import { signUpAction } from '@/lib/actions/users'
+import { EyeClosedIcon } from '@radix-ui/react-icons'
+import { EyeIcon } from 'lucide-react'
 
 const fadeInUp = (delay: number) => ({
 	initial: { opacity: 0, y: 20 },
@@ -20,7 +22,7 @@ const fadeInUp = (delay: number) => ({
 		transition: {
 			duration: 0.5,
 			delay: delay,
-			ease: "easeOut"
+			ease: 'easeOut'
 		}
 	}
 })
@@ -31,8 +33,9 @@ export default function SignUpPage() {
 		error: ''
 	})
 	const [email, setEmail] = useState('')
-	const [firstName, setFirstName] = useState('')
-	const [lastName, setLastName] = useState('')
+	const [password, setPassword] = useState('')
+	const [confirmPassword, setConfirmPassword] = useState('')
+	const [showPassword, setShowPassword] = useState(false)
 
 	useEffect(() => {
 		if (state.success) {
@@ -45,12 +48,14 @@ export default function SignUpPage() {
 		setEmail(e.target.value)
 	}
 
-	const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setFirstName(e.target.value)
+	const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setPassword(e.target.value)
 	}
 
-	const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setLastName(e.target.value)
+	const handleConfirmPasswordChange = (
+		e: React.ChangeEvent<HTMLInputElement>
+	) => {
+		setConfirmPassword(e.target.value)
 	}
 
 	return (
@@ -82,51 +87,7 @@ export default function SignUpPage() {
 							Create an account
 						</motion.h1>
 						<AuthFormError state={state} />
-						<form
-							className="space-y-4 md:space-y-6"
-							action={formAction}
-						>
-							<motion.div
-								className="flex space-x-4"
-								initial="initial"
-								animate="animate"
-								variants={fadeInUp(0.3)}
-							>
-								<div className="w-1/2">
-									<label
-										htmlFor="firstName"
-										className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-									>
-										First Name
-									</label>
-									<Input
-										type="text"
-										name="firstName"
-										id="firstName"
-										value={firstName}
-										onChange={handleFirstNameChange}
-										placeholder="John"
-										required
-									/>
-								</div>
-								<div className="w-1/2">
-									<label
-										htmlFor="lastName"
-										className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-									>
-										Last Name
-									</label>
-									<Input
-										type="text"
-										name="lastName"
-										id="lastName"
-										value={lastName}
-										onChange={handleLastNameChange}
-										placeholder="Doe"
-										required
-									/>
-								</div>
-							</motion.div>
+						<form className="space-y-2" action={formAction}>
 							<motion.div
 								initial="initial"
 								animate="animate"
@@ -159,18 +120,75 @@ export default function SignUpPage() {
 								>
 									Password
 								</label>
-								<Input
-									type="password"
-									name="password"
-									id="password"
-									placeholder="••••••••"
-									required
-								/>
+								<div className="relative">
+									<Input
+										type={
+											showPassword ? 'text' : 'password'
+										}
+										name="password"
+										id="password"
+										value={password}
+										onChange={handlePasswordChange}
+										placeholder="••••••••"
+										required
+									/>
+									<button
+										type="button"
+										className="absolute right-3 top-3"
+										onClick={() =>
+											setShowPassword(!showPassword)
+										}
+									>
+										{showPassword ? (
+											<EyeClosedIcon className="text-sutitle" />
+										) : (
+											<EyeIcon className="text-subtitle" />
+										)}
+									</button>
+								</div>
 							</motion.div>
 							<motion.div
 								initial="initial"
 								animate="animate"
 								variants={fadeInUp(0.6)}
+							>
+								<label
+									htmlFor="confirmPassword"
+									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+								>
+									Confirm Password
+								</label>
+								<div className="relative">
+									<Input
+										type={
+											showPassword ? 'text' : 'password'
+										}
+										name="confirmPassword"
+										id="confirmPassword"
+										value={confirmPassword}
+										onChange={handleConfirmPasswordChange}
+										placeholder="••••••••"
+										required
+									/>
+									<button
+										type="button"
+										className="absolute right-3 top-3"
+										onClick={() =>
+											setShowPassword(!showPassword)
+										}
+									>
+										{showPassword ? (
+											<EyeClosedIcon className="text-sutitle" />
+										) : (
+											<EyeIcon className="text-subtitle" />
+										)}
+									</button>
+								</div>
+							</motion.div>
+							<motion.div
+								initial="initial"
+								animate="animate"
+								variants={fadeInUp(0.7)}
 							>
 								<SubmitButton />
 							</motion.div>
@@ -178,7 +196,7 @@ export default function SignUpPage() {
 								className="text-sm font-light text-gray-500 dark:text-gray-400"
 								initial="initial"
 								animate="animate"
-								variants={fadeInUp(0.7)}
+								variants={fadeInUp(0.8)}
 							>
 								Already have an account?{' '}
 								<Link

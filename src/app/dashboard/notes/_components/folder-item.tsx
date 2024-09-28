@@ -3,6 +3,7 @@
 import RichTextEditor from '@/components/rich-text-editor'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { ColorPicker } from '@/components/ui/color-picker'
 import {
 	Dialog,
 	DialogContent,
@@ -10,11 +11,12 @@ import {
 	DialogTitle
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { createFolder, deleteFolder, getFolders } from '@/lib/actions/folders'
+import { createFolder, deleteFolder, getFolders } from '@/lib/api/folders'
 import { createNote, deleteNote, getNotes, updateNote } from '@/lib/api/notes'
-import { useEffect, useState } from 'react'
+import { SetStateAction, useEffect, useState } from 'react'
 import FolderItem from './folder-item'
 import NoteItem from './note-item'
+import { toast } from 'sonner'
 
 export default function NotesAndFolders() {
 	const [folders, setFolders] = useState([])
@@ -22,9 +24,9 @@ export default function NotesAndFolders() {
 	const [isNewFolderDialogOpen, setIsNewFolderDialogOpen] = useState(false)
 	const [isNewNoteDialogOpen, setIsNewNoteDialogOpen] = useState(false)
 	const [newFolderName, setNewFolderName] = useState('')
+	const [newFolderColor, setNewFolderColor] = useState('#000000')
 	const [newNoteTitle, setNewNoteTitle] = useState('')
 	const [newNoteContent, setNewNoteContent] = useState('')
-	const [selectedFolderId, setSelectedFolderId] = useState(null)
 	const [activeFolder, setActiveFolder] = useState(null)
 
 	useEffect(() => {
@@ -35,31 +37,26 @@ export default function NotesAndFolders() {
 		const foldersData = await getFolders()
 		const notesData = await getNotes()
 		setFolders(foldersData?.folders || [])
-		setNotes(notesData || [])
+		setNotes(notesData?.notes || [])
 	}
 
 	const handleCreateFolder = async () => {
 		const formData = new FormData()
 		formData.append('name', newFolderName)
+		formData.append('color', newFolderColor)
 		await createFolder(formData)
 		setIsNewFolderDialogOpen(false)
 		setNewFolderName('')
+		setNewFolderColor('#000000')
 		fetchData()
 	}
 
-	const handleCreateNote = async () => {
-		const formData = new FormData()
-		formData.append('title', newNoteTitle)
-		formData.append('content', newNoteContent)
-		formData.append('folderId', activeFolder || '')
-		await createNote(formData)
-		setIsNewNoteDialogOpen(false)
-		setNewNoteTitle('')
-		setNewNoteContent('')
-		fetchData()
-	}
-
-	const handleUpdateNote = async (noteId, title, content, folderId) => {
+	const handleUpdateNote = async (
+		noteId: string | Blob,
+		title: string | Blob,
+		content: string | Blob,
+		folderId: any
+	) => {
 		const formData = new FormData()
 		formData.append('id', noteId)
 		formData.append('title', title)
@@ -69,7 +66,30 @@ export default function NotesAndFolders() {
 		fetchData()
 	}
 
-	const handleDeleteFolder = async folderId => {
+	const handleCreateNote = async () => {
+		const formData = new FormData()
+		formData.append('title', newNoteTitle)
+		formData.append('content', newNoteContent)
+		if (activeFolder) {
+			formData.append('folderId', activeFolder)
+		}
+		try {
+			const newNote = await createNote(formData)
+			setNotes(prevNotes => [...prevNotes, newNote])
+			setIsNewNoteDialogOpen(false)
+			setNewNoteTitle('')
+			setNewNoteContent('')
+			toast.success('Note created successfully')
+		} catch (error: any) {
+			if (error.message === 'Invalid folder ID') {
+				toast.error('Invalid folder selected. Please try again.')
+			} else {
+				toast.error('Failed to create note. Please try again.')
+			}
+		}
+	}
+
+	const handleDeleteFolder = async (folderId: string | Blob | null) => {
 		const formData = new FormData()
 		formData.append('id', folderId)
 		await deleteFolder(formData)
@@ -79,21 +99,25 @@ export default function NotesAndFolders() {
 		fetchData()
 	}
 
-	const handleDeleteNote = async noteId => {
+	const handleDeleteNote = async (noteId: string | Blob) => {
 		const formData = new FormData()
 		formData.append('id', noteId)
 		await deleteNote(formData)
 		fetchData()
 	}
 
-	const handleFolderClick = folderId => {
+	const handleFolderClick = (folderId: SetStateAction<null>) => {
 		setActiveFolder(folderId === activeFolder ? null : folderId)
+	}
+	type Note = {
+		id: string
+		folderId?: string
 	}
 
 	const activeFolderNotes = notes.filter(
-		note => note.folderId === activeFolder
+		(note: Note) => note.folderId === activeFolder
 	)
-	const uncategorizedNotes = notes.filter(note => !note.folderId)
+	const uncategorizedNotes = notes.filter((note: Note) => !note.folderId)
 
 	return (
 		<div className="flex h-full">
@@ -107,7 +131,8 @@ export default function NotesAndFolders() {
 				{folders.map(folder => (
 					<FolderItem
 						key={folder.id}
-						folder={folder}
+						id={folder.id}
+						name={folder.name}
 						onDelete={() => handleDeleteFolder(folder.id)}
 						onClick={() => handleFolderClick(folder.id)}
 						isActive={folder.id === activeFolder}
@@ -168,6 +193,10 @@ export default function NotesAndFolders() {
 						value={newFolderName}
 						onChange={e => setNewFolderName(e.target.value)}
 						placeholder="Folder Name"
+					/>
+					<ColorPicker
+						value={newFolderColor}
+						onChange={setNewFolderColor}
 					/>
 					<Button onClick={handleCreateFolder}>Create Folder</Button>
 				</DialogContent>

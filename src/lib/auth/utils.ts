@@ -20,6 +20,10 @@ export type AuthSession = {
 export const getUserAuth = async (): Promise<AuthSession> => {
 	const { session, user } = await validateRequest()
 	if (!session) return { session: null }
+	if (!user.id || typeof user.id !== 'string') {
+		console.error('Invalid user ID:', user.id)
+		return { session: null }
+	}
 	return {
 		session: {
 			user: {
@@ -39,14 +43,18 @@ export const checkAuth = async () => {
 export const genericError = { error: 'Error, please try again.' }
 
 export const setAuthCookie = (cookie: Cookie) => {
-	// cookies().set(cookie.name, cookie.value, cookie.attributes); // <- suggested approach from the docs, but does not work with `next build` locally
-	cookies().set(cookie)
+	cookies().set(cookie.name, cookie.value, {
+		...cookie.attributes,
+		httpOnly: true,
+		secure: process.env.NODE_ENV === 'production',
+		sameSite: 'lax'
+	})
 }
 
 const getErrorMessage = (errors: any): string => {
 	if (errors.email) return 'Invalid Email'
 	if (errors.password) return 'Invalid Password - ' + errors.password[0]
-	return '' // return a default error message or an empty string
+	return 'An unexpected error occurred'
 }
 
 export const validateAuthFormData = (

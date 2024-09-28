@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 interface ModalProps {
 	isOpen: boolean
@@ -36,9 +36,9 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
 						transition={{ duration: 0.2 }}
 						className="fixed inset-0 flex items-center justify-center z-50"
 					>
-						<div className="bg-gray-900 rounded-lg shadow-lg p-6 w-full max-w-md">
+						<div className="bg-modal rounded-lg shadow-lg p-6 w-full max-w-md">
 							<div className="flex justify-between items-center mb-4">
-								<h2 className="text-xl font-bold text-gray-100">
+								<h2 className="text-xl font-bold text-title">
 									{title}
 								</h2>
 								<button

@@ -1,13 +1,13 @@
 import { cookies } from 'next/headers'
 import { cache } from 'react'
 
-import { type Session, type User, Lucia } from 'lucia'
 import { db } from '@/lib/db/index'
+import { type Session, type User, Lucia } from 'lucia'
 
 import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle'
-import { sessions, users } from '../db/schema/auth'
+import { keys, sessions, users } from '../db/schema/auth'
 
-export const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users)
+export const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users, keys)
 
 export const lucia = new Lucia(adapter, {
 	sessionCookie: {
@@ -18,7 +18,6 @@ export const lucia = new Lucia(adapter, {
 	},
 	getUserAttributes: attributes => {
 		return {
-			// attributes has the type of DatabaseUserAttributes
 			email: attributes.email,
 			name: attributes.name
 		}
@@ -49,9 +48,8 @@ export const validateRequest = cache(
 			}
 		}
 
-		const result = await lucia.validateSession(sessionId)
-		// next.js throws when you attempt to set cookie when rendering page
 		try {
+			const result = await lucia.validateSession(sessionId)
 			if (result.session && result.session.fresh) {
 				const sessionCookie = lucia.createSessionCookie(
 					result.session.id
@@ -70,7 +68,13 @@ export const validateRequest = cache(
 					sessionCookie.attributes
 				)
 			}
-		} catch {}
-		return result
+			return result
+		} catch (error) {
+			console.error('Error validating session:', error)
+			return {
+				user: null,
+				session: null
+			}
+		}
 	}
 )

@@ -17,20 +17,26 @@ interface NoteData {
 	isShared: boolean
 }
 
-export async function createNote(noteData: NoteData) {
+export async function createNote(formData: FormData) {
 	const { session } = await getUserAuth()
-	if (!session) return { error: 'Unauthorized' }
+	if (!session) throw new Error('Not authenticated')
 
-	try {
-		await db.insert(notes).values({
-			...noteData,
-			userId: session.user.id
+	const title = formData.get('title') as string
+	const content = formData.get('content') as string
+	const folderId = formData.get('folderId') as string | null
+
+	const [newNote] = await db
+		.insert(notes)
+		.values({
+			title,
+			content,
+			userId: session.user.id,
+			folderId: folderId || null
 		})
-		revalidatePath('/dashboard/notes')
-		return { success: true }
-	} catch (error) {
-		return { error: 'Failed to create note' }
-	}
+		.returning()
+
+	revalidatePath('/dashboard/notes')
+	return newNote
 }
 
 export async function getNotes(folderId: string) {

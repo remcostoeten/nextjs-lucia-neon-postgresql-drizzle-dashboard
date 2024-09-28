@@ -10,10 +10,11 @@ export type SidebarItem = {
 	hasAlert?: boolean
 	className?: string
 	alertCount?: number
+	realName?: string
 }
 
 export const sidebarItems: SidebarItem[] = [
-	{ name: 'Home', path: '/', icon: Home },
+	{ realName: 'Home', name: 'Dashboard', path: '/', icon: Home },
 
 	{ name: 'Profile', path: '/dashboard/profile', icon: User },
 	{ name: 'Notes', path: '/dashboard/notes', icon: Edit },

@@ -27,16 +27,21 @@ export async function createFolder(formData: FormData) {
 	if (!session) throw new Error('Not authenticated')
 
 	const name = formData.get('name') as string
-	const description = formData.get('description') as string | null
+	const description = formData.get('description') as string
+	const color = formData.get('color') as string
 
 	try {
-		await db.insert(folders).values({
-			name,
-			description: description || null,
-			userId: session.user.id
-		})
+		const newFolder = await db
+			.insert(folders)
+			.values({
+				name,
+				description,
+				color,
+				userId: session.user.id
+			})
+			.returning()
 		revalidatePath('/dashboard/notes')
-		return { success: true }
+		return newFolder[0]
 	} catch (error) {
 		console.error('Failed to create folder:', error)
 		return { error: 'Failed to create folder' }
@@ -49,12 +54,12 @@ export async function updateFolder(formData: FormData) {
 
 	const id = formData.get('id') as string
 	const name = formData.get('name') as string
-	const description = formData.get('description') as string | null
+	const color = formData.get('color') as string
 
 	try {
 		await db
 			.update(folders)
-			.set({ name, description: description || null })
+			.set({ name, color })
 			.where(eq(folders.id, id))
 			.where(eq(folders.userId, session.user.id))
 		revalidatePath('/dashboard/notes')

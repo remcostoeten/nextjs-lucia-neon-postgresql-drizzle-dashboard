@@ -10,11 +10,16 @@ export async function getNotes() {
 	const { session } = await getUserAuth()
 	if (!session) throw new Error('Not authenticated')
 
-	const userNotes = await db
-		.select()
-		.from(notes)
-		.where(eq(notes.userId, session.user.id))
-	return userNotes
+	try {
+		const userNotes = await db
+			.select()
+			.from(notes)
+			.where(eq(notes.userId, session.user.id))
+		return userNotes
+	} catch (error) {
+		console.error('Failed to fetch notes:', error)
+		return []
+	}
 }
 
 export async function deleteNote(formData: FormData) {
@@ -53,12 +58,24 @@ export async function createNote(formData: FormData) {
 	const content = formData.get('content') as string
 	const folderId = formData.get('folderId') as string | null
 
-	await db.insert(notes).values({
-		title,
-		content,
-		userId: session.user.id,
-		folderId: folderId || null
-	})
+	try {
+		const [newNote] = await db
+			.insert(notes)
+			.values({
+				title,
+				content,
+				userId: session.user.id,
+				folderId: folderId ? folderId : null
+			})
+			.returning()
 
-	revalidatePath('/dashboard/notes')
+		revalidatePath('/dashboard/notes')
+		return newNote
+	} catch (error: any) {
+		console.error('Failed to create note:', error)
+		if (error.code === '22P02') {
+			throw new Error('Invalid folder ID')
+		}
+		throw new Error('Failed to create note')
+	}
 }

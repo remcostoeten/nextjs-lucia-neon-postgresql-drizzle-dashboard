@@ -9,11 +9,13 @@ import {
 	DialogTitle
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { createFolder, deleteFolder, getFolders } from '@/lib/actions/folders'
+import { deleteFolder, getFolders } from '@/lib/actions/folders'
 import { createNote, deleteNote, getNotes, updateNote } from '@/lib/api/notes'
 import { useEffect, useState } from 'react'
+import { CreateFolderButton } from './_components/create-folder-button'
 import FolderItem from './_components/folder-item'
 import NoteItem from './_components/note-item'
+import { toast } from 'sonner'
 
 export type Folder = {
 	id: string
@@ -52,15 +54,6 @@ export default function NotesAndFolders() {
 		setNotes(notesData || [])
 	}
 
-	const handleCreateFolder = async () => {
-		const formData = new FormData()
-		formData.append('name', newFolderName)
-		await createFolder(formData)
-		setIsNewFolderDialogOpen(false)
-		setNewFolderName('')
-		fetchData()
-	}
-
 	const handleCreateNote = async () => {
 		const formData = new FormData()
 		formData.append('title', newNoteTitle)
@@ -68,12 +61,17 @@ export default function NotesAndFolders() {
 		if (selectedFolderId) {
 			formData.append('folderId', selectedFolderId)
 		}
-		await createNote(formData)
-		setIsNewNoteDialogOpen(false)
-		setNewNoteTitle('')
-		setNewNoteContent('')
-		setSelectedFolderId(null)
-		fetchData()
+		try {
+			const newNote = await createNote(formData)
+			setNotes(prevNotes => [...prevNotes, newNote])
+			setIsNewNoteDialogOpen(false)
+			setNewNoteTitle('')
+			setNewNoteContent('')
+			setSelectedFolderId(null)
+			toast.success('Note created successfully')
+		} catch (error) {
+			toast.error('Failed to create note')
+		}
 	}
 
 	const handleUpdateNote = async (
@@ -152,7 +150,7 @@ export default function NotesAndFolders() {
 					{notes
 						.filter(note => !note.folderId)
 						.map(note => (
-							<NoteItem
+							<NfoteItem
 								key={note.id}
 								note={note}
 								onUpdate={(title, content) =>
@@ -163,24 +161,7 @@ export default function NotesAndFolders() {
 						))}
 				</div>
 			</div>
-
-			<Dialog
-				open={isNewFolderDialogOpen}
-				onOpenChange={setIsNewFolderDialogOpen}
-			>
-				<DialogContent>
-					<DialogHeader>
-						<DialogTitle>Create New Folder</DialogTitle>
-					</DialogHeader>
-					<Input
-						value={newFolderName}
-						onChange={e => setNewFolderName(e.target.value)}
-						placeholder="Folder Name"
-					/>
-					<Button onClick={handleCreateFolder}>Create Folder</Button>
-				</DialogContent>
-			</Dialog>
-
+			<CreateFolderButton />
 			<Dialog
 				open={isNewNoteDialogOpen}
 				onOpenChange={setIsNewNoteDialogOpen}

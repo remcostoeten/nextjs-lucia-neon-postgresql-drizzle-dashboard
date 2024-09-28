@@ -1,6 +1,9 @@
 'use client'
 
-import { CustomDropdown, DropdownAction } from '@/components/elements'
+import Flex from '@/components/atoms/Flex'
+import { CustomDropdown } from '@/components/elements'
+import { ColorPicker } from '@/components/ui/color-picker'
+import { useNotesStore, useSiteSettingsStore } from '@/core/stores'
 import {
 	createFolder,
 	deleteFolder,
@@ -10,7 +13,6 @@ import {
 import { motion } from 'framer-motion'
 import {
 	Edit,
-	Folder,
 	FolderOpen,
 	PlusCircle,
 	Search,
@@ -18,8 +20,9 @@ import {
 	Tag,
 	Trash2
 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useNotesStore, useSiteSettingsStore } from 'stores'
+import { toast } from 'sonner'
 import {
 	Button,
 	Dialog,
@@ -33,6 +36,13 @@ type FolderType = {
 	id: string
 	name: string
 	description: string | null
+	color: string
+}
+
+type DropdownAction = {
+	label: string
+	icon: React.ReactNode
+	onClick: () => void
 }
 
 export default function NotesSidebar() {
@@ -40,11 +50,13 @@ export default function NotesSidebar() {
 	const [searchTerm, setSearchTerm] = useState('')
 	const [isNewFolderDialogOpen, setIsNewFolderDialogOpen] = useState(false)
 	const [isEditFolderDialogOpen, setIsEditFolderDialogOpen] = useState(false)
+	const [editingFolder, setEditingFolder] = useState<FolderType | null>(null)
 	const [newFolderName, setNewFolderName] = useState('')
 	const [newFolderDescription, setNewFolderDescription] = useState('')
-	const [editingFolder, setEditingFolder] = useState<FolderType | null>(null)
+	const [newFolderColor, setNewFolderColor] = useState('#000000')
 	const { selectedFolderId, setSelectedFolderId } = useNotesStore()
 	const { disableSidebarAnimations } = useSiteSettingsStore()
+	const router = useRouter()
 
 	useEffect(() => {
 		fetchFolders()
@@ -52,40 +64,76 @@ export default function NotesSidebar() {
 
 	const fetchFolders = async () => {
 		const fetchedFolders = await getFolders()
-		setFolders(fetchedFolders?.folders || [])
+		setFolders(
+			fetchedFolders?.folders?.map(folder => ({
+				...folder,
+				color: '#000000'
+			})) || []
+		)
+	}
+
+	const handleEditFolder = async () => {
+		if (editingFolder) {
+			const formData = new FormData()
+			formData.append('id', editingFolder.id)
+			formData.append('name', editingFolder.name)
+			formData.append('description', editingFolder.description || '')
+			formData.append('color', editingFolder.color)
+			try {
+				const result = await updateFolder(formData)
+				if (result.success) {
+					setFolders(prevFolders =>
+						prevFolders.map(folder =>
+							folder.id === editingFolder.id
+								? editingFolder
+								: folder
+						)
+					)
+					setIsEditFolderDialogOpen(false)
+					setEditingFolder(null)
+					toast.success('Folder updated successfully')
+				} else {
+					throw new Error(result.error)
+				}
+			} catch (error) {
+				console.error('Failed to update folder:', error)
+				toast.error('Failed to update folder')
+			}
+		}
 	}
 
 	const handleCreateFolder = async () => {
 		const formData = new FormData()
 		formData.append('name', newFolderName)
 		formData.append('description', newFolderDescription)
-		await createFolder(formData)
-		setIsNewFolderDialogOpen(false)
-		setNewFolderName('')
-		setNewFolderDescription('')
-		fetchFolders()
-	}
-
-	const handleUpdateFolder = async () => {
-		if (editingFolder) {
-			const formData = new FormData()
-			formData.append('id', editingFolder.id)
-			formData.append('name', editingFolder.name)
-			formData.append('description', editingFolder.description || '')
-			await updateFolder(formData)
-			setIsEditFolderDialogOpen(false)
-			setEditingFolder(null)
-			fetchFolders()
+		formData.append('color', newFolderColor)
+		try {
+			const newFolder = await createFolder(formData)
+			setFolders(prevFolders => [...prevFolders, newFolder])
+			setIsNewFolderDialogOpen(false)
+			setNewFolderName('')
+			setNewFolderDescription('')
+			setNewFolderColor('#000000')
+			toast.success('Folder created successfully')
+		} catch (error) {
+			toast.error('Failed to create folder')
 		}
 	}
 
 	const handleDeleteFolder = async (folderId: string) => {
 		const formData = new FormData()
 		formData.append('id', folderId)
-		await deleteFolder(formData)
-		fetchFolders()
-		if (selectedFolderId === folderId) {
-			setSelectedFolderId(null)
+		try {
+			await deleteFolder(formData)
+			setFolders(prevFolders =>
+				prevFolders.filter(folder => folder.id !== folderId)
+			)
+			if (selectedFolderId === folderId) {
+				setSelectedFolderId(null)
+			}
+			toast.success('Folder deleted successfully')
+		} catch (error) {
+			toast.error('Failed to delete folder')
 		}
 	}
 
@@ -116,11 +164,9 @@ export default function NotesSidebar() {
 	]
 
 	const getAnimationProps = (delay: number) => {
-		if (disableSidebarAnimations) {
-			return {}
-		}
+		if (disableSidebarAnimations) return {}
 		return {
-			initial: { opacity: 0, y: -20 },
+			initial: { opacity: 0, y: 20 },
 			animate: { opacity: 1, y: 0 },
 			transition: { delay }
 		}
@@ -167,7 +213,9 @@ export default function NotesSidebar() {
 								onClick={() => handleFolderSelect(item.id)}
 							>
 								<item.icon size={20} className="mr-2" />
-								<span>{item.text}</span>
+								<span className="text-subtitle">
+									{item.text}
+								</span>
 							</Button>
 						</motion.li>
 					))}
@@ -187,7 +235,13 @@ export default function NotesSidebar() {
 								className={`w-full justify-start ${selectedFolderId === folder.id ? 'bg-primary text-primary-foreground' : ''}`}
 								onClick={() => handleFolderSelect(folder.id)}
 							>
-								<Folder size={16} className="mr-2" />
+								<FolderOpen
+									size={16}
+									className="mr-2"
+									style={{
+										color: folder.color || 'currentColor'
+									}}
+								/>
 								<span>{folder.name}</span>
 							</Button>
 							<CustomDropdown
@@ -216,6 +270,15 @@ export default function NotesSidebar() {
 						onChange={e => setNewFolderDescription(e.target.value)}
 						placeholder="Folder Description (optional)"
 					/>
+					<Flex dir="col" gap="2">
+						<label className="text-xs" htmlFor="folder-color">
+							Folder Color:
+						</label>
+						<ColorPicker
+							value={newFolderColor}
+							onChange={setNewFolderColor}
+						/>
+					</Flex>
 					<Button onClick={handleCreateFolder}>Create Folder</Button>
 				</DialogContent>
 			</Dialog>
@@ -248,7 +311,20 @@ export default function NotesSidebar() {
 						}
 						placeholder="Folder Description (optional)"
 					/>
-					<Button onClick={handleUpdateFolder}>Update Folder</Button>
+					<Flex dir="col" gap="2">
+						<label className="text-xs" htmlFor="folder-color">
+							Folder Color:
+						</label>
+						<ColorPicker
+							value={editingFolder?.color || '#000000'}
+							onChange={color =>
+								setEditingFolder(prev =>
+									prev ? { ...prev, color } : null
+								)
+							}
+						/>
+					</Flex>
+					<Button onClick={handleEditFolder}>Save Changes</Button>
 				</DialogContent>
 			</Dialog>
 		</div>

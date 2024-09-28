@@ -14,7 +14,8 @@ export const folders = pgTable('folders', {
 	name: text('name').notNull(),
 	color: text('color').default('#000000').notNull(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
-	updatedAt: timestamp('updated_at').defaultNow().notNull()
+	updatedAt: timestamp('updated_at').defaultNow().notNull(),
+	userId: uuid('user_id').notNull()
 })
 
 export const notes = pgTable('notes', {
@@ -27,7 +28,8 @@ export const notes = pgTable('notes', {
 	isPinned: boolean('is_pinned').default(false).notNull(),
 	tags: jsonb('tags').default([]).notNull(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
-	updatedAt: timestamp('updated_at').defaultNow().notNull()
+	updatedAt: timestamp('updated_at').defaultNow().notNull(),
+	userId: uuid('user_id').notNull()
 })
 
 export const insertFolderSchema = createInsertSchema(folders).omit({

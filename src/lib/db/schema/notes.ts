@@ -1,11 +1,19 @@
 import { relations } from 'drizzle-orm'
-import { pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+import {
+	boolean,
+	jsonb,
+	pgTable,
+	text,
+	timestamp,
+	uuid
+} from 'drizzle-orm/pg-core'
 import { users } from './auth'
 
 export const folders = pgTable('folders', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	name: text('name').notNull(),
 	description: text('description'),
+	color: text('color').default('#000000').notNull(),
 	userId: text('user_id')
 		.notNull()
 		.references(() => users.id),
@@ -17,12 +25,14 @@ export const notes = pgTable('notes', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	title: text('title').notNull(),
 	content: text('content').notNull(),
-	userId: text('user_id')
-		.notNull()
-		.references(() => users.id),
-	folderId: uuid('folder_id').references(() => folders.id),
+	folderId: uuid('folder_id')
+		.references(() => folders.id)
+		.notNull(),
+	isPinned: boolean('is_pinned').default(false).notNull(),
+	tags: jsonb('tags').default([]).notNull(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
-	updatedAt: timestamp('updated_at').defaultNow().notNull()
+	updatedAt: timestamp('updated_at').defaultNow().notNull(),
+	userId: uuid('user_id').notNull()
 })
 
 export const foldersRelations = relations(folders, ({ many, one }) => ({

@@ -14,8 +14,9 @@ import {
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { SiteSettingsMenu } from './site-settings-menu'
-import { MainSidebarProps, SidebarIconProps } from './types.sidebar'
+import { toast } from 'sonner'
+import SiteSettingsMenu from './site-settings-menu'
+import { MainSidebarProps, SidebarIconProps } from './types.sidear'
 
 function useActivePath(): (path: string) => boolean {
 	const pathname = usePathname()
@@ -24,6 +25,7 @@ function useActivePath(): (path: string) => boolean {
 		if (path === '/' && pathname !== path) {
 			return false
 		}
+
 		return pathname.startsWith(path)
 	}
 
@@ -84,18 +86,6 @@ export default function MainSidebar({
 	const { disableAllAnimations, disableSidebarAnimations } =
 		useSiteSettingsStore()
 
-	const sidebarAnimation =
-		disableAllAnimations || disableSidebarAnimations
-			? {}
-			: {
-					initial: { width: 0, opacity: 0 },
-					animate: {
-						width: isCollapsed ? 0 : 'var(--sidebar-width)',
-						opacity: isCollapsed ? 0 : 1
-					},
-					transition: { duration: 0.3, ease: 'easeInOut' }
-				}
-
 	const handleSettingsChange = (setting: string, value: boolean) => {
 		if (setting === 'disableAllAnimations') {
 			toast.success(`All animations ${value ? 'disabled' : 'enabled'}`)
@@ -104,7 +94,6 @@ export default function MainSidebar({
 				`Sidebar animations ${value ? 'disabled' : 'enabled'}`
 			)
 		}
-		// Add more conditions here for other settings as needed
 	}
 
 	return (
