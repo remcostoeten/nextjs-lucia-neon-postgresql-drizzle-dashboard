@@ -1,7 +1,7 @@
 'use server'
 
 import { db } from '@/lib/db'
-import { folders, insertFolderSchema } from '@/lib/db/schema'
+import { folders } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 

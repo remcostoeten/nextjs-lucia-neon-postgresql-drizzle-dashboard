@@ -117,7 +117,9 @@ export default function NotesAndFolders() {
 		formData.append('id', folderId)
 		try {
 			await deleteFolder(formData)
-			setFolders(prevFolders => prevFolders.filter(folder => folder.id !== folderId))
+			setFolders(prevFolders =>
+				prevFolders.filter(folder => folder.id !== folderId)
+			)
 			if (activeFolder === folderId) {
 				setActiveFolder(null)
 			}
@@ -143,7 +145,9 @@ export default function NotesAndFolders() {
 		setActiveFolder(folderId === activeFolder ? null : folderId)
 	}
 
-	const activeFolderNotes = notes.filter(note => note.folderId === activeFolder)
+	const activeFolderNotes = notes.filter(
+		note => note.folderId === activeFolder
+	)
 	const uncategorizedNotes = notes.filter(note => !note.folderId)
 
 	return (
@@ -156,7 +160,10 @@ export default function NotesAndFolders() {
 					New Folder
 				</Button>
 				{folders.map(folder => (
-					<div key={folder.id} className="flex items-center justify-between mb-2">
+					<div
+						key={folder.id}
+						className="flex items-center justify-between mb-2"
+					>
 						<Button
 							variant="ghost"
 							className={`w-full justify-start ${activeFolder === folder.id ? 'bg-primary text-primary-foreground' : ''}`}
@@ -176,11 +183,19 @@ export default function NotesAndFolders() {
 								</Button>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent align="end">
-								<DropdownMenuItem onClick={() => {/* Implement edit folder */ }}>
+								<DropdownMenuItem
+									onClick={() => {
+										/* Implement edit folder */
+									}}
+								>
 									<Pencil className="mr-2 h-4 w-4" />
 									<span>Edit</span>
 								</DropdownMenuItem>
-								<DropdownMenuItem onClick={() => handleDeleteFolder(folder.id)}>
+								<DropdownMenuItem
+									onClick={() =>
+										handleDeleteFolder(folder.id)
+									}
+								>
 									<Trash className="mr-2 h-4 w-4" />
 									<span>Delete</span>
 								</DropdownMenuItem>
@@ -194,7 +209,8 @@ export default function NotesAndFolders() {
 					<CardHeader className="flex flex-row items-center justify-between">
 						<CardTitle className="text-2xl font-bold">
 							{activeFolder
-								? folders.find(f => f.id === activeFolder)?.name || 'Selected Folder'
+								? folders.find(f => f.id === activeFolder)
+										?.name || 'Selected Folder'
 								: 'All Notes'}
 						</CardTitle>
 						<Button onClick={() => setIsNewNoteDialogOpen(true)}>
@@ -202,16 +218,28 @@ export default function NotesAndFolders() {
 						</Button>
 					</CardHeader>
 					<CardContent>
-						{(activeFolder ? activeFolderNotes : uncategorizedNotes).map(note => (
-							<div key={note.id} className="mb-4 p-4 border rounded">
-								<h3 className="text-lg font-semibold mb-2">{note.title}</h3>
+						{(activeFolder
+							? activeFolderNotes
+							: uncategorizedNotes
+						).map(note => (
+							<div
+								key={note.id}
+								className="mb-4 p-4 border rounded"
+							>
+								<h3 className="text-lg font-semibold mb-2">
+									{note.title}
+								</h3>
 								<p className="mb-2">{note.content}</p>
-								<Button onClick={() => handleDeleteNote(note.id)} variant="destructive">
+								<Button
+									onClick={() => handleDeleteNote(note.id)}
+									variant="destructive"
+								>
 									Delete Note
 								</Button>
 							</div>
 						))}
-						{(activeFolder ? activeFolderNotes : uncategorizedNotes).length === 0 && (
+						{(activeFolder ? activeFolderNotes : uncategorizedNotes)
+							.length === 0 && (
 							<p className="text-muted-foreground">
 								No notes in this folder.
 							</p>

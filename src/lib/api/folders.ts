@@ -23,6 +23,9 @@ export async function getFolders() {
 }
 
 export async function createFolder(data: FormData) {
+	const { session } = await getUserAuth()
+	if (!session) throw new Error('Not authenticated')
+
 	const name = data.get('name') as string
 	const description = data.get('description') as string
 	const color = data.get('color') as string
@@ -32,15 +35,22 @@ export async function createFolder(data: FormData) {
 	}
 
 	try {
-		const newFolder = await db.insert(folders).values({
-			name,
-			description,
-			color
-		}).returning()
+		const newFolder = await db
+			.insert(folders)
+			.values({
+				name,
+				description,
+				color,
+				userId: session.user.id
+			})
+			.returning()
 		revalidatePath('/folders')
 		return { success: true, folder: newFolder[0] }
 	} catch (error) {
 		console.error('Failed to create folder:', error)
+		if (error instanceof Error) {
+			return { error: error.message }
+		}
 		return { error: 'Failed to create folder' }
 	}
 }

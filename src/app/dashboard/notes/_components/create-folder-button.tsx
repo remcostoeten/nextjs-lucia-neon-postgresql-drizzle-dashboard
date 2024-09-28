@@ -16,7 +16,11 @@ import {
 	Input
 } from 'ui'
 
-export function CreateFolderButton() {
+export function CreateFolderButton({
+	onFolderCreated
+}: {
+	onFolderCreated?: () => void
+}) {
 	const [open, setOpen] = useState(false)
 	const [folderColor, setFolderColor] = useState('#000000')
 	const router = useRouter()
@@ -26,12 +30,21 @@ export function CreateFolderButton() {
 		const formData = new FormData(event.target as HTMLFormElement)
 		formData.append('color', folderColor)
 		try {
-			await createFolder(formData)
-			setOpen(false)
-			router.refresh()
-			toast.success('Folder created successfully')
+			const result = await createFolder(formData)
+			if (result.success) {
+				setOpen(false)
+				router.refresh()
+				toast.success('Folder created successfully')
+				if (onFolderCreated) onFolderCreated()
+			} else {
+				throw new Error(result.error)
+			}
 		} catch (error) {
-			toast.error('Failed to create folder')
+			toast.error(
+				error instanceof Error
+					? error.message
+					: 'Failed to create folder'
+			)
 		}
 	}
 

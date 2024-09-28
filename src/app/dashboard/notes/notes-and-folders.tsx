@@ -12,10 +12,10 @@ import { Input } from '@/components/ui/input'
 import { deleteFolder, getFolders } from '@/lib/actions/folders'
 import { createNote, deleteNote, getNotes, updateNote } from '@/lib/api/notes'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { CreateFolderButton } from './_components/create-folder-button'
 import FolderItem from './_components/folder-item'
 import NoteItem from './_components/note-item'
-import { toast } from 'sonner'
 
 export type Folder = {
 	id: string
@@ -50,8 +50,8 @@ export default function NotesAndFolders() {
 	const fetchData = async () => {
 		const foldersData = await getFolders()
 		const notesData = await getNotes()
-		setFolders(foldersData?.folders || [])
-		setNotes(notesData || [])
+		if (foldersData.folders) setFolders(foldersData.folders)
+		if (notesData) setNotes(notesData)
 	}
 
 	const handleCreateNote = async () => {

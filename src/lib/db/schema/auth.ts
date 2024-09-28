@@ -18,7 +18,6 @@ export const sessions = pgTable('session', {
 	expiresAt: timestamp('expires_at', {
 		withTimezone: true,
 		mode: 'date'
-		
 	}).notNull()
 })
 

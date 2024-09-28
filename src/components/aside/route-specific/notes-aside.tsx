@@ -2,6 +2,7 @@
 
 import Flex from '@/components/atoms/Flex'
 import { CustomDropdown } from '@/components/elements'
+import ConfirmationModal from '@/components/elements/crud/confirmation-modal'
 import { ColorPicker } from '@/components/ui/color-picker'
 import { useNotesStore, useSiteSettingsStore } from '@/core/stores'
 import {
@@ -21,7 +22,7 @@ import {
 	Trash2
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import {
 	Button,
@@ -57,6 +58,11 @@ export default function NotesSidebar() {
 	const { selectedFolderId, setSelectedFolderId } = useNotesStore()
 	const { disableSidebarAnimations } = useSiteSettingsStore()
 	const router = useRouter()
+	const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
+		useState(false)
+	const [folderToDelete, setFolderToDelete] = useState<FolderType | null>(
+		null
+	)
 
 	useEffect(() => {
 		fetchFolders()
@@ -120,21 +126,32 @@ export default function NotesSidebar() {
 		}
 	}
 
-	const handleDeleteFolder = async (folderId: string) => {
-		const formData = new FormData()
-		formData.append('id', folderId)
-		try {
-			await deleteFolder(formData)
-			setFolders(prevFolders =>
-				prevFolders.filter(folder => folder.id !== folderId)
-			)
-			if (selectedFolderId === folderId) {
-				setSelectedFolderId(null)
+	const handleDeleteFolder = (folder: FolderType) => {
+		setFolderToDelete(folder)
+		setIsDeleteConfirmationOpen(true)
+	}
+
+	const confirmDelete = async () => {
+		if (folderToDelete) {
+			const formData = new FormData()
+			formData.append('id', folderToDelete.id)
+			try {
+				await deleteFolder(formData)
+				setFolders(prevFolders =>
+					prevFolders.filter(
+						folder => folder.id !== folderToDelete.id
+					)
+				)
+				if (selectedFolderId === folderToDelete.id) {
+					setSelectedFolderId(null)
+				}
+				toast.success('Folder deleted successfully')
+			} catch (error) {
+				toast.error('Failed to delete folder')
 			}
-			toast.success('Folder deleted successfully')
-		} catch (error) {
-			toast.error('Failed to delete folder')
 		}
+		setIsDeleteConfirmationOpen(false)
+		setFolderToDelete(null)
 	}
 
 	const handleFolderSelect = (folderId: string | null) => {
@@ -153,7 +170,7 @@ export default function NotesSidebar() {
 		{
 			label: 'Delete',
 			icon: <Trash2 className="h-4 w-4" />,
-			onClick: () => handleDeleteFolder(folder.id)
+			onClick: () => handleDeleteFolder(folder)
 		}
 	]
 
@@ -228,25 +245,25 @@ export default function NotesSidebar() {
 						<motion.li
 							key={folder.id}
 							{...getAnimationProps(0.6 + index * 0.1)}
-							className="flex items-center justify-between"
+							className="flex items-center justify-between bg-gray-800 rounded-lg p-2"
 						>
-							<Button
-								variant="ghost"
-								className={`w-full justify-start ${selectedFolderId === folder.id ? 'bg-primary text-primary-foreground' : ''}`}
-								onClick={() => handleFolderSelect(folder.id)}
-							>
+							<div className="flex items-center min-w-0 flex-grow">
 								<FolderOpen
 									size={16}
-									className="mr-2"
+									className="mr-2 flex-shrink-0"
 									style={{
 										color: folder.color || 'currentColor'
 									}}
 								/>
-								<span>{folder.name}</span>
-							</Button>
-							<CustomDropdown
-								actions={getFolderActions(folder)}
-							/>
+								<span className="truncate flex-grow">
+									{folder.name}
+								</span>
+							</div>
+							<div className="flex-shrink-0 ml-2">
+								<CustomDropdown
+									actions={getFolderActions(folder)}
+								/>
+							</div>
 						</motion.li>
 					))}
 				</ul>
@@ -327,6 +344,17 @@ export default function NotesSidebar() {
 					<Button onClick={handleEditFolder}>Save Changes</Button>
 				</DialogContent>
 			</Dialog>
+
+			<ConfirmationModal
+				isOpen={isDeleteConfirmationOpen}
+				onClose={() => setIsDeleteConfirmationOpen(false)}
+				onConfirm={confirmDelete}
+				title="Delete Folder"
+				message={`Are you sure you want to delete the folder "${folderToDelete?.name}"? This action cannot be undone.`}
+				confirmText="Delete"
+				cancelText="Cancel"
+				icon={<Trash2 className="h-12 w-12 text-red-500" />}
+			/>
 		</div>
 	)
 }
