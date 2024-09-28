@@ -1,14 +1,48 @@
----
-title: Notevault - by Remco Stoeten
----
+<sub>tl;dr - another application which I say will be the end all.</sub>
+## Notevault - by Remco Stoeten
 
-This is an application that in the future will be a collection of all kinds of application, features, and utility tools I've made over the past year(s) for easy personal access. This won't be a SaaS for others, although, if others want to use the features I'm building or use code as an example for their own projects you're free to. Hence I'm developing it in open source.
+This is an application that in the future will be a collection of all kinds of application, features, and utility tools I've made over the past year(s) for easy personal access. 
+
+This won't be a SaaS for others or an attempt to monotize anything. Although, if others want to use the features I'm building or use code as an example for their own projects you're free to. Hence I'm developing it in open source.
+
+## Tech stack
+
+- Nextjs 14+
+- React 18-19
+- Database(s)
+    - Postgresql - Through cloud provider: [Neon](https://neon.tech/)
+    - SQLite - Not implemented yet.  Will be a cloud provider: [Turso](https://turso.tech).                               
+        <sub>In the future I might implement a second database for the Whatsapp-chat function due to the 1 billion free reads.</sub>
+### UI
+
+- TailwindCSS
+- ShadCN/other misc. libraries and a lot of own coded components.
+- Framer motion
+
+### Authentication
+
+- Lucia aut                                                                                                      
+<sub>Stored in postgress database with hashed password, sessions table and relation tables.</sub>
+- Email and password registration
+     
+        ToDo: integrate email verification/reset password
+        ToDo: Integrate oAuth2 social login
+
+### Core packages
+
+- DrizzleORM
+- Zustand - state management
+- Zod - validation
+- TipTap - richtexteditor
+
 
 I have a lot of dashboard repositories and build dozens of dashboards, each have individual features in them which will slowly get merged over time into here. For now, I'm focusing on note creation. Hence the Notevault.
 
-### Small to-do list for the Notevault (far from complete): https://excalidraw.com/#json=4C-pL1uB98nUyzA0OV_kR,LqFlFCnFiexyEOFjyOQ9rg
+## Idea, todo, sketch whiteoard
 
-### Future features
+A small dump thought's/todo whiteoard which is far from complete. [View here](https://excalidraw.com/#json=4C-pL1uB98nUyzA0OV_kR,LqFlFCnFiexyEOFjyOQ9rg)
+
+## Future features
 
 Like I said I will slowly be merging features into here and you can expect the following over time:
 - Kanban board
@@ -32,39 +66,11 @@ Like I said I will slowly be merging features into here and you can expect the f
 - SVG to CSS-pseudo selector/SVG to react component converter
 ... And many more I can't remember.
 
-### Tech stack
 
-- Nextjs 14+
-- React 18-19
-- Database managed through drizzleORM
-   - Postgress through Neon.tech's service.
-   - For WhatsApp, I might incorporate a second one, SQLite through Turso.tech
-
-### UI
-
-- TailwindCSS
-- ShadCN/other misc. libraries and a lot of own coded components.
-- Framer motion
-
-### Authentication
-
--Lucia auth
-   - Email and password registration 
-         -   ToDo: integrate email verification/reset password
-         -   ToDo: Integrate oAuth2 social login
-Stored in postgress database with hashed password and relation tables.
-
-### Core packages
-
-- DrizzleORM
-- Zustand - state management
-- Zod - validation
-- TipTap - richtexteditor
-
-tl;dr - another application which I say will be the end all.
 
 Much love xxxx,
 
-Remco Stoeten
-💗 remcostoeten.com
+Remco Stoeten                                                                           
+<sub>[remcostoeten.com](https://remcostoeten.com)</sub>
 
+<sub>A ✨ is appreciated for growning my e-penor</sub>
