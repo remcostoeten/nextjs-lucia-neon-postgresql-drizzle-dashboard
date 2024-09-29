@@ -1,6 +1,6 @@
 import { cn } from 'cn'
 
-export default function ModernDetailedKbdVariant1() {
+export default function Kbd({ children }: PageProps) {
 	return (
 		<kbd
 			className={cn(
@@ -14,7 +14,7 @@ export default function ModernDetailedKbdVariant1() {
 				'dark:active:shadow-[0_0_0_0_rgba(0,0,0,0),_0_0_1px_1px_rgba(0,0,0,1),_inset_0_2px_2px_1px_rgba(0,0,0,1),_inset_0_2px_2px_0_rgba(255,255,255,0.1)]'
 			)}
 		>
-			⌘ + Option + Shift + K
+			{children}
 		</kbd>
 	)
 }

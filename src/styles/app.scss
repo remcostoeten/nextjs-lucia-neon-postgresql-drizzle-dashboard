@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 @import './themes/_regular.scss';
+@import './theme/_scrollar.scss';
 @import './utillities/_border.scss';
 @import './utillities/_animations.scss';
-
 .trans-all {
 	transition: 500ms ease-in-out all;
 }

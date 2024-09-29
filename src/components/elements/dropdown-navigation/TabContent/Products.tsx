@@ -23,8 +23,13 @@ const productCategories: ProductCategory[] = [
 		]
 	},
 	{
-		name: 'Showcase',
-		links: [{ name: 'FileTree', href: '/design-system/tree' }]
+		name: 'Tools',
+		links: [
+			{
+				name: 'Background creator',
+				href: '/dashboard/background-creator'
+			}
+		]
 	}
 	//   name: "Components",
 	//   links: [

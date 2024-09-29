@@ -10,15 +10,14 @@ const DropdownMenuPortal = DropdownMenuPrimitive.Portal
 const DropdownMenuSub = DropdownMenuPrimitive.Sub
 const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
 
-
 // export const BG_COLOR = 'bg-section-lighter';
-export const BG_COLOR = 'bg-modal';
+export const BG_COLOR = 'bg-modal'
 // export const BG_COLOR = 'bg-card';
-export const HOVER_BG_COLOR = 'focus:bg-input';
-export const TEXT_COLOR = 'text-subtitle';
-export const HOVER_TEXT_COLOR = 'focus:text-title';
-export const BORDER_RADIUS = 'rounded-sm';
-export const TEXT_SIZE = 'text-sm';
+export const HOVER_BG_COLOR = 'focus:bg-input'
+export const TEXT_COLOR = 'text-subtitle'
+export const HOVER_TEXT_COLOR = 'focus:text-title'
+export const BORDER_RADIUS = 'rounded-sm'
+export const TEXT_SIZE = 'text-sm'
 
 const DropdownMenuSubTrigger = React.forwardRef<
 	React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,

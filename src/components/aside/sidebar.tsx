@@ -40,10 +40,11 @@ function SidebarIcon({ item, isActive, onClick }: SidebarIconProps) {
 
 	return (
 		<MotionComponent
-			className={`relative z-50 flex items-center justify-center size-10 mb-2 rounded-md transition-colors duration-200 border-r-outline ${isActive
-				? 'bg-body border-outline text-white'
-				: '!border-transparent text-zinc-400 hover:text-title hover:bg-body hover:border-outline'
-				}`}
+			className={`relative z-50 flex items-center justify-center size-10 mb-2 rounded-md transition-colors duration-200 border-r-outline ${
+				isActive
+					? 'bg-body border-outline text-white'
+					: '!border-transparent text-zinc-400 hover:text-title hover:bg-body hover:border-outline'
+			}`}
 			onHoverStart={() => setIsHovered(true)}
 			onHoverEnd={() => setIsHovered(false)}
 			whileHover={
@@ -159,13 +160,13 @@ export default function MainSidebar({
 								<MotionNav
 									initial={
 										disableAllAnimations ||
-											disableSidebarAnimations
+										disableSidebarAnimations
 											? false
 											: { opacity: 0, y: 20 }
 									}
 									animate={
 										disableAllAnimations ||
-											disableSidebarAnimations
+										disableSidebarAnimations
 											? undefined
 											: { opacity: 1, y: 0 }
 									}
@@ -177,13 +178,13 @@ export default function MainSidebar({
 											key={item.path}
 											initial={
 												disableAllAnimations ||
-													disableSidebarAnimations
+												disableSidebarAnimations
 													? false
 													: { opacity: 0, x: -20 }
 											}
 											animate={
 												disableAllAnimations ||
-													disableSidebarAnimations
+												disableSidebarAnimations
 													? undefined
 													: { opacity: 1, x: 0 }
 											}
@@ -206,13 +207,13 @@ export default function MainSidebar({
 								<MotionDiv
 									initial={
 										disableAllAnimations ||
-											disableSidebarAnimations
+										disableSidebarAnimations
 											? false
 											: { opacity: 0, y: 20 }
 									}
 									animate={
 										disableAllAnimations ||
-											disableSidebarAnimations
+										disableSidebarAnimations
 											? undefined
 											: { opacity: 1, y: 0 }
 									}

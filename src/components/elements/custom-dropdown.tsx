@@ -28,8 +28,12 @@ export function CustomDropdown({ actions }: CustomDropdownProps) {
 	return (
 		<DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
 			<DropdownMenuTrigger asChild>
-				<Button variant="ghost" size="icon">
-					<MoreHorizontal className="h-4 w-4" />
+				<Button
+					variant="ghost"
+					size="icon"
+					className="hover:text-title "
+				>
+					<MoreHorizontal className="h-4 w-4 text-subtitle hove" />
 				</Button>
 			</DropdownMenuTrigger>
 			<AnimatePresence>

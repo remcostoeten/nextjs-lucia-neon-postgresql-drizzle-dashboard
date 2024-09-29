@@ -29,9 +29,7 @@ export default function ClientWrapper({ children }: ClientWrapperProps) {
 					toggleCollapse={toggleMainSidebar}
 				/>
 			</Suspense>
-			<SubSidebarShell
-				isSubSidebarOpen={isSubSidebarOpen}
-			/>
+			<SubSidebarShell isSubSidebarOpen={isSubSidebarOpen} />
 			<MainContentWrapper>{children}</MainContentWrapper>
 		</>
 	)
