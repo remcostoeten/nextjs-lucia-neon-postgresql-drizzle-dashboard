@@ -15,7 +15,6 @@ import {
 	Edit,
 	FolderOpen,
 	PlusCircle,
-	Search,
 	Star,
 	Tag,
 	Trash2
@@ -45,11 +44,8 @@ export default function NotesSidebar() {
 	const [newFolderColor, setNewFolderColor] = useState('#000000')
 	const { selectedFolderId, setSelectedFolderId } = useNotesStore()
 	const { disableSidebarAnimations } = useSiteSettingsStore()
-	const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
-		useState(false)
-	const [folderToDelete, setFolderToDelete] = useState<FolderType | null>(
-		null
-	)
+	const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false)
+	const [folderToDelete, setFolderToDelete] = useState<FolderType | null>(null)
 
 	useEffect(() => {
 		fetchFolders()
@@ -67,26 +63,44 @@ export default function NotesSidebar() {
 		setFilteredFolders(filtered)
 	}, [searchTerm, folders])
 
-	useEffect(() => {
-		const filtered = folders.filter(
-			folder =>
-				folder.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				(folder.description &&
-					folder.description
-						.toLowerCase()
-						.includes(searchTerm.toLowerCase()))
-		)
-		setFilteredFolders(filtered)
-	}, [searchTerm, folders])
-
 	const fetchFolders = async () => {
-		const fetchedFolders = await getFolders()
-		setFolders(
-			fetchedFolders?.folders?.map(folder => ({
-				...folder,
-				color: folder.color || '#000000'
-			})) || []
-		)
+		try {
+			const fetchedFolders = await getFolders()
+			console.log('Fetched folders:', fetchedFolders)
+			if (fetchedFolders?.folders) {
+				const formattedFolders = fetchedFolders.folders.map(folder => ({
+					...folder,
+					color: folder.color || '#000000'
+				}))
+				setFolders(formattedFolders)
+				setFilteredFolders(formattedFolders)
+			}
+		} catch (error) {
+			console.error('Error fetching folders:', error)
+			toast.error('Failed to fetch folders')
+		}
+	}
+
+	const handleCreateFolder = async () => {
+		const formData = new FormData()
+		formData.append('name', newFolderName)
+		formData.append('description', newFolderDescription)
+		formData.append('color', newFolderColor)
+		try {
+			const { success, folder } = await createFolder(formData)
+			if (success && folder) {
+				setFolders(prevFolders => [...prevFolders, folder])
+				setIsNewFolderDialogOpen(false)
+				setNewFolderName('')
+				setNewFolderDescription('')
+				setNewFolderColor('#000000')
+				toast.success('Folder created successfully')
+			} else {
+				throw new Error('Failed to create folder')
+			}
+		} catch (error) {
+			toast.error('Failed to create folder')
+		}
 	}
 
 	const handleEditFolder = async () => {
@@ -119,28 +133,6 @@ export default function NotesSidebar() {
 		}
 	}
 
-	const handleCreateFolder = async () => {
-		const formData = new FormData()
-		formData.append('name', newFolderName)
-		formData.append('description', newFolderDescription)
-		formData.append('color', newFolderColor)
-		try {
-			const { success, folder } = await createFolder(formData)
-			if (success && folder) {
-				setFolders(prevFolders => [...prevFolders, folder])
-				setIsNewFolderDialogOpen(false)
-				setNewFolderName('')
-				setNewFolderDescription('')
-				setNewFolderColor('#000000')
-			} else {
-				throw new Error('Failed to create folder')
-			}
-			toast.success('Folder created successfully')
-		} catch (error) {
-			toast.error('Failed to create folder')
-		}
-	}
-
 	const handleDeleteFolder = (folder: FolderType) => {
 		setFolderToDelete(folder)
 		setIsDeleteConfirmationOpen(true)
@@ -169,14 +161,10 @@ export default function NotesSidebar() {
 		setFolderToDelete(null)
 	}
 
-	const handleFolderSelect = (folderId: string | null) => {
-		setSelectedFolderId(folderId)
-	}
-
 	const getFolderActions = (folder: FolderType): DropdownAction[] => [
 		{
 			label: 'Edit',
-			icon: <Edit className="h-4 w-4" />,
+			icon: <Edit size={16} />,
 			onClick: () => {
 				setEditingFolder(folder)
 				setIsEditFolderDialogOpen(true)
@@ -184,103 +172,97 @@ export default function NotesSidebar() {
 		},
 		{
 			label: 'Delete',
-			icon: <Trash2 className="h-4 w-4" />,
+			icon: <Trash2 size={16} />,
 			onClick: () => handleDeleteFolder(folder)
 		}
 	]
 
-	const menuItems = [
-		{ icon: FolderOpen, text: 'All Notes', id: null },
-		{ icon: Star, text: 'Favorites', id: 'favorites' },
-		{ icon: Tag, text: 'Tags', id: 'tags' }
-	]
+	const getAnimationProps = (delay: number) => ({
+		initial: { opacity: 0, y: 20 },
+		animate: { opacity: 1, y: 0 },
+		transition: { delay, duration: 0.3 }
+	})
 
-	const getAnimationProps = (delay: number) => {
-		if (disableSidebarAnimations) return {}
-		return {
-			initial: { opacity: 0, y: 20 },
-			animate: { opacity: 1, y: 0 },
-			transition: { delay }
-		}
+	const handleFolderSelect = (folderId: string) => {
+		setSelectedFolderId(folderId)
 	}
+
 	return (
-		<div className="text-white p-4 h-full w-full overflow-y-auto">
-			<motion.div
-				{...getAnimationProps(0.1)}
-				className="flex justify-between items-center mb-6"
-			>
-				<h2 className="text-2xl font-bold">Notes</h2>
-				<Button
-					variant="ghost"
-					size="icon"
-					onClick={() => setIsNewFolderDialogOpen(true)}
-				>
-					<PlusCircle size={24} />
-				</Button>
+		<aside className="w-64 bg-background p-4 border-r border-border h-full overflow-y-auto">
+			<motion.div {...getAnimationProps(0.1)}>
+				<h2 className="text-xl font-semibold mb-4">Notes</h2>
 			</motion.div>
-			<motion.div {...getAnimationProps(0.2)} className="relative mb-6">
+
+			<motion.div {...getAnimationProps(0.2)}>
 				<Input
 					type="text"
-					placeholder="Search notes"
+					placeholder="Search folders..."
 					value={searchTerm}
 					onChange={e => setSearchTerm(e.target.value)}
-					className="pl-10"
-				/>
-				<Search
-					size={18}
-					className="absolute left-3 top-2.5 text-gray-400"
+					className="mb-4"
 				/>
 			</motion.div>
-			<nav>
+
+			<motion.div {...getAnimationProps(0.3)}>
+				<Button
+					onClick={() => setIsNewFolderDialogOpen(true)}
+					className="w-full mb-4"
+				>
+					<PlusCircle size={16} className="mr-2" />
+					New Folder
+				</Button>
+			</motion.div>
+
+			<motion.div {...getAnimationProps(0.4)}>
+				<h3 className="text-lg font-semibold mb-2">Quick Access</h3>
 				<ul className="space-y-2">
-					{menuItems.map((item, index) => (
-						<motion.li
-							key={item.text}
-							{...getAnimationProps(0.1 * (index + 1))}
-						>
-							<Button
-								variant="ghost"
-								className={`w-full justify-start ${selectedFolderId === item.id ? 'bg-primary text-primary-foreground' : ''}`}
-								onClick={() => handleFolderSelect(item.id)}
+					<li className="flex items-center">
+						<Star size={16} className="mr-2" />
+						<span>Favorites</span>
+					</li>
+					<li className="flex items-center">
+						<Tag size={16} className="mr-2" />
+						<span>Tags</span>
+					</li>
+				</ul>
+			</motion.div>
+
+			<motion.div {...getAnimationProps(0.5)}>
+				<h3 className="text-lg font-semibold my-4">Folders</h3>
+				{filteredFolders.length === 0 ? (
+					<p className="text-sm text-muted-foreground">No folders found</p>
+				) : (
+					<ul className="space-y-2">
+						{filteredFolders.map((folder, index) => (
+							<motion.li
+								key={folder.id}
+								{...getAnimationProps(0.6 + index * 0.1)}
+								className="flex items-center justify-between"
 							>
-								<item.icon size={20} className="mr-2" />
-								<span className="text-subtitle">
-									{item.text}
-								</span>
-							</Button>
-						</motion.li>
-					))}
-				</ul>
-			</nav>
-			<motion.div {...getAnimationProps(0.5)} className="mt-8">
-				<h3 className="text-lg font-semibold mb-4">Folders</h3>
-				<ul className="space-y-2">
-					{filteredFolders.map((folder, index) => (
-						<motion.li
-							key={folder.id}
-							{...getAnimationProps(0.6 + index * 0.1)}
-							className="flex items-center justify-between"
-						>
-							<div className="flex items-center min-w-0 flex-grow">
-								<FolderOpen
-									size={16}
-									className="mr-2 flex-shrink-0"
-									style={{
-										color: folder.color || 'currentColor'
-									}}
-								/>
-								<span className="text-subtitle truncate flex-grow">
-									{folder.name}
-								</span>
-							</div>
-							<div className="flex-shrink-0 ml-2">
-								<CustomDropdown
-									actions={getFolderActions(folder)}
-								/>
-							</div>
-						</motion.li>
-					))}
-				</ul>
+								<div
+									className="flex items-center min-w-0 flex-grow cursor-pointer"
+									onClick={() => handleFolderSelect(folder.id)}
+								>
+									<FolderOpen
+										size={16}
+										className="mr-2 flex-shrink-0"
+										style={{
+											color: folder.color || 'currentColor'
+										}}
+									/>
+									<span className={`text-subtitle truncate flex-grow ${selectedFolderId === folder.id ? 'font-bold' : ''}`}>
+										{folder.name}
+									</span>
+								</div>
+								<div className="flex-shrink-0 ml-2">
+									<CustomDropdown
+										actions={getFolderActions(folder)}
+									/>
+								</div>
+							</motion.li>
+						))}
+					</ul>
+				)}
 			</motion.div>
 
 			<Dialog
@@ -293,12 +275,12 @@ export default function NotesSidebar() {
 					</DialogHeader>
 					<Input
 						value={newFolderName}
-						onChange={e => setNewFolderName(e.target.value)}
+						onChange={(e) => setNewFolderName(e.target.value)}
 						placeholder="Folder Name"
 					/>
 					<Input
 						value={newFolderDescription}
-						onChange={e => setNewFolderDescription(e.target.value)}
+						onChange={(e) => setNewFolderDescription(e.target.value)}
 						placeholder="Folder Description (optional)"
 					/>
 					<Flex dir="col" gap="2">
@@ -324,8 +306,8 @@ export default function NotesSidebar() {
 					</DialogHeader>
 					<Input
 						value={editingFolder?.name || ''}
-						onChange={e =>
-							setEditingFolder(prev =>
+						onChange={(e) =>
+							setEditingFolder((prev) =>
 								prev ? { ...prev, name: e.target.value } : null
 							)
 						}
@@ -333,8 +315,8 @@ export default function NotesSidebar() {
 					/>
 					<Input
 						value={editingFolder?.description || ''}
-						onChange={e =>
-							setEditingFolder(prev =>
+						onChange={(e) =>
+							setEditingFolder((prev) =>
 								prev
 									? { ...prev, description: e.target.value }
 									: null
@@ -348,8 +330,8 @@ export default function NotesSidebar() {
 						</label>
 						<ColorPicker
 							value={editingFolder?.color || '#000000'}
-							onChange={color =>
-								setEditingFolder(prev =>
+							onChange={(color) =>
+								setEditingFolder((prev) =>
 									prev ? { ...prev, color } : null
 								)
 							}
@@ -369,6 +351,6 @@ export default function NotesSidebar() {
 				cancelText="Cancel"
 				icon={<Trash2 className="h-12 w-12 text-red-500" />}
 			/>
-		</div>
+		</aside>
 	)
 }

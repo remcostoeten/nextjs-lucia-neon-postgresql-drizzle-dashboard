@@ -9,7 +9,7 @@ interface PatternSelectorProps {
 	onChange: (pattern: Pattern, color: string, opacity: number) => void
 }
 
-export function PatternSelector({
+export default function PatternSelector({
 	pattern,
 	color,
 	opacity,

@@ -15,7 +15,25 @@ import {
 	Input
 } from 'ui'
 
-export function CreateNoteButton() {
+type CreateNoteButtonProps = {
+	isOpen: boolean
+	onOpenChange: (open: boolean) => void
+	title: string
+	onTitleChange: (title: string) => void
+	content: string
+	onContentChange: (content: string) => void
+	onCreateNote: () => Promise<void>
+}
+
+export function CreateNoteButton({
+	isOpen,
+	onOpenChange,
+	title,
+	onTitleChange,
+	content,
+	onContentChange,
+	onCreateNote
+}: CreateNoteButtonProps) {
 	const [open, setOpen] = useState(false)
 	const [content, setContent] = useState('')
 	const router = useRouter()

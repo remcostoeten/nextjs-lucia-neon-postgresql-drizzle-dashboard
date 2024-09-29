@@ -6,7 +6,7 @@ import { notes } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
-export async function getNotes() {
+export async function getNotes(currentPage: number) {
 	const { session } = await getUserAuth()
 	if (!session) throw new Error('Not authenticated')
 

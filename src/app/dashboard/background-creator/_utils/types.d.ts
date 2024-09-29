@@ -1,21 +1,11 @@
 export type Pattern = 'dot' | 'grid'
-export type GradientDirection =
-	| 'radial'
-	| 'top'
-	| 'bottom'
-	| 'left'
-	| 'right'
-	| 'top-left'
-	| 'top-right'
-	| 'bottom-left'
-	| 'bottom-right'
+export type GradientDirection = 'radial' | 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+export type AnimationType = 'none' | 'shift' | 'rotate' | 'scale' | 'color'
 
-export interface BackgroundConfig {
+export type Layer = {
+	id: string
 	pattern: Pattern
-	dotSize: number
-	dotSpacing: number
-	gridSize: number
-	lineWidth: number
+	tileSize: number
 	patternColor: string
 	backgroundColor: string
 	gradientEnabled: boolean
@@ -24,6 +14,15 @@ export interface BackgroundConfig {
 	gradientEndColor: string
 	gradientExtent: number
 	animationEnabled: boolean
-	animationType: 'shift' | 'color'
+	animationType: AnimationType
 	animationDuration: number
+	animationDirection: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse'
+	opacity: number
+	blendMode: GlobalCompositeOperation
 }
+
+export interface BackgroundConfig {
+	layers: Layer[]
+}
+
+export type DeviceSize = 'mobile' | 'tablet' | 'desktop'

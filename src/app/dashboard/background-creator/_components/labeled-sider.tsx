@@ -1,8 +1,7 @@
 import { Label } from '@/components/ui/label'
-import React from 'react'
 import { Slider } from 'ui'
 
-interface LabeledSliderProps {
+type LabeledSliderProps = {
 	label: string
 	value: number[]
 	onValueChange: (value: number[]) => void
@@ -11,7 +10,7 @@ interface LabeledSliderProps {
 	step?: number
 }
 
-export function LabeledSlider({
+export default function LabeledSlider({
 	label,
 	value,
 	onValueChange,

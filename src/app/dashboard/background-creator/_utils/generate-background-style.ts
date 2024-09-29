@@ -1,40 +1,36 @@
-import { BackgroundConfig } from './types'
+import { Layer } from './types'
 
-export function generateBackgroundStyle(
-	config: BackgroundConfig
-): React.CSSProperties {
+export function generateBackgroundStyle(layer: Layer): React.CSSProperties {
 	const style: React.CSSProperties = {
-		backgroundColor: config.backgroundColor
+		backgroundColor: layer.backgroundColor,
 	}
 
-	if (config.pattern === 'dot') {
-		style.backgroundImage = `radial-gradient(${config.patternColor} ${config.dotSize}px, transparent ${config.dotSize}px)`
-		style.backgroundSize = `${config.dotSpacing}px ${config.dotSpacing}px`
+	if (layer.pattern === 'dot') {
+		const dotSize = layer.tileSize / 2
+		style.backgroundImage = `radial-gradient(${layer.patternColor} ${dotSize}px, transparent ${dotSize}px)`
+		style.backgroundSize = `${layer.tileSize}px ${layer.tileSize}px`
+		style.backgroundPosition = '0 0, 0 0'
 	} else {
-		style.backgroundImage = `linear-gradient(to right, ${config.patternColor} ${config.lineWidth}px, transparent ${config.lineWidth}px),
-      linear-gradient(to bottom, ${config.patternColor} ${config.lineWidth}px, transparent ${config.lineWidth}px)`
-		style.backgroundSize = `${config.gridSize}px ${config.gridSize}px`
+		style.backgroundImage = `linear-gradient(to right, ${layer.patternColor} 1px, transparent 1px),
+      linear-gradient(to bottom, ${layer.patternColor} 1px, transparent 1px)`
+		style.backgroundSize = `${layer.tileSize}px ${layer.tileSize}px`
+		style.backgroundPosition = '0 0'
 	}
 
-	if (config.gradientEnabled) {
-		const gradientStyle = generateGradientStyle(config)
+	if (layer.gradientEnabled) {
+		const gradientStyle = generateGradientStyle(layer)
 		style.backgroundImage = `${gradientStyle}, ${style.backgroundImage}`
 	}
 
-	if (config.animationEnabled) {
-		style.animation = generateAnimationStyle(config)
+	if (layer.animationEnabled) {
+		style.animation = generateAnimationStyle(layer)
 	}
 
 	return style
 }
 
-function generateGradientStyle(config: BackgroundConfig): string {
-	const {
-		gradientDirection,
-		gradientStartColor,
-		gradientEndColor,
-		gradientExtent
-	} = config
+function generateGradientStyle(layer: Layer): string {
+	const { gradientDirection, gradientStartColor, gradientEndColor, gradientExtent } = layer
 
 	if (gradientDirection === 'radial') {
 		return `radial-gradient(circle, ${gradientStartColor} 0%, ${gradientEndColor} ${gradientExtent}%)`
@@ -44,12 +40,50 @@ function generateGradientStyle(config: BackgroundConfig): string {
 	}
 }
 
-function generateAnimationStyle(config: BackgroundConfig): string {
-	const { animationType, animationDuration } = config
+function generateAnimationStyle(layer: Layer): string {
+	const { animationType, animationDuration, animationDirection } = layer
 
-	if (animationType === 'shift') {
-		return `backgroundShift ${animationDuration}s infinite alternate`
-	} else {
-		return `colorChange ${animationDuration}s infinite alternate`
+	let keyframes = ''
+	switch (animationType) {
+		case 'shift':
+			keyframes = 'backgroundShift'
+			break
+		case 'rotate':
+			keyframes = 'backgroundRotate'
+			break
+		case 'scale':
+			keyframes = 'backgroundScale'
+			break
+		case 'color':
+			keyframes = 'backgroundColorChange'
+			break
+		default:
+			return ''
 	}
+
+	return `${keyframes} ${animationDuration}s ${animationDirection} infinite`
 }
+
+// Add these keyframe animations to your global CSS file
+/*
+@keyframes backgroundShift {
+  0% { background-position: 0 0; }
+  100% { background-position: 100% 100%; }
+}
+
+@keyframes backgroundRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes backgroundScale {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.5); }
+  100% { transform: scale(1); }
+}
+
+@keyframes backgroundColorChange {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+*/
