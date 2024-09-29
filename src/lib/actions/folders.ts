@@ -1,6 +1,6 @@
 'use server'
 
-import { db } from '@/lib/db'
+import { db, insertFolderSchema } from '@/lib/db'
 import { folders } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
@@ -23,9 +23,12 @@ export async function createFolder(data: FormData) {
 	}
 
 	try {
-		await db.insert(folders).values(result.data)
+		const [newFolder] = await db
+			.insert(folders)
+			.values(result.data)
+			.returning()
 		revalidatePath('/folders')
-		return { success: true }
+		return { success: true, folder: newFolder }
 	} catch (error) {
 		console.error('Failed to create folder:', error)
 		return { error: 'Failed to create folder' }
@@ -43,13 +46,24 @@ export async function deleteFolder(id: string) {
 	}
 }
 
-export async function updateFolderColor(id: string, color: string) {
+export async function updateFolder(data: FormData) {
+	const result = updateFolderSchema.safeParse(Object.fromEntries(data))
+
+	if (!result.success) {
+		return { error: 'Invalid folder data' }
+	}
+
 	try {
-		await db.update(folders).set({ color }).where(eq(folders.id, id))
+		const [updatedFolder] = await db
+			.update(folders)
+			.set({ name: result.data.name, color: result.data.color })
+			.where(eq(folders.id, result.data.id))
+			.returning()
+
 		revalidatePath('/folders')
-		return { success: true }
+		return { success: true, folder: updatedFolder }
 	} catch (error) {
-		console.error('Failed to update folder color:', error)
-		return { error: 'Failed to update folder color' }
+		console.error('Failed to update folder:', error)
+		return { error: 'Failed to update folder' }
 	}
 }

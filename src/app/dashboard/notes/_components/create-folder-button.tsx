@@ -1,6 +1,5 @@
 'use client'
 
-import Flex from '@/components/atoms/Flex'
 import { ColorPicker } from '@/components/ui/color-picker'
 import { createFolder } from '@/lib/api/folders'
 import { useRouter } from 'next/navigation'
@@ -16,11 +15,17 @@ import {
 	Input
 } from 'ui'
 
+interface CreateFolderButtonProps {
+	onFolderCreated: (newFolder: {
+		id: string
+		name: string
+		color: string
+	}) => void
+}
+
 export function CreateFolderButton({
 	onFolderCreated
-}: {
-	onFolderCreated?: () => void
-}) {
+}: CreateFolderButtonProps) {
 	const [open, setOpen] = useState(false)
 	const [folderColor, setFolderColor] = useState('#000000')
 	const router = useRouter()
@@ -31,13 +36,13 @@ export function CreateFolderButton({
 		formData.append('color', folderColor)
 		try {
 			const result = await createFolder(formData)
-			if (result.success) {
+			if (result.success && result.folder) {
 				setOpen(false)
 				router.refresh()
 				toast.success('Folder created successfully')
-				if (onFolderCreated) onFolderCreated()
+				onFolderCreated(result.folder)
 			} else {
-				throw new Error(result.error)
+				throw new Error(result.error || 'Failed to create folder')
 			}
 		} catch (error) {
 			toast.error(
@@ -51,27 +56,23 @@ export function CreateFolderButton({
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button variant="outline">New Folder</Button>
+				<Button>Create Folder</Button>
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Create a new folder</DialogTitle>
+					<DialogTitle>Create Folder</DialogTitle>
 				</DialogHeader>
-				<form onSubmit={handleSubmit} className="space-y-4">
-					<Input name="name" placeholder="Folder name" required />
+				<form onSubmit={handleSubmit}>
+					<Input name="name" placeholder="Folder Name" required />
 					<Input
 						name="description"
-						placeholder="Folder description (optional)"
+						placeholder="Folder Description"
 					/>
-					<Flex dir="col" gap="2">
-						<label className="text-xs" htmlFor="folder-color">
-							Folder Color:
-						</label>
-						<ColorPicker
-							value={folderColor}
-							onChange={setFolderColor}
-						/>
-					</Flex>
+					<ColorPicker
+						color={folderColor}
+						onChange={setFolderColor}
+						value={''}
+					/>
 					<Button type="submit">Create Folder</Button>
 				</form>
 			</DialogContent>

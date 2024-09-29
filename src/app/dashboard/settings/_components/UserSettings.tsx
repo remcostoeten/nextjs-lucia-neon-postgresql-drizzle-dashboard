@@ -1,4 +1,5 @@
 'use client'
+
 import { AuthSession } from '@/lib/auth/utils'
 import UpdateEmailCard from './UpdateEmailCard'
 import UpdateNameCard from './UpdateNameCard'

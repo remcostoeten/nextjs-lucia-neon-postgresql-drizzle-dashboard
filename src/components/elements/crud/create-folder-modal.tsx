@@ -3,6 +3,7 @@
 import Flex from '@/components/atoms/Flex'
 import { ColorPicker } from '@/components/ui/color-picker'
 import { createFolder } from '@/lib/api/folders'
+import { FolderType } from '@/types/types.folder'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import {
@@ -14,13 +15,6 @@ import {
 	DialogTrigger,
 	Input
 } from 'ui'
-
-type FolderType = {
-	id: string
-	name: string
-	description: string | null
-	color: string
-}
 
 type CreateFolderModalProps = {
 	onSuccess?: (newFolder: FolderType) => void

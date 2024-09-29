@@ -1,3 +1,5 @@
+'use client'
+
 import MainSidebar from '@/components/aside/sidebar'
 import SubSidebarShell from '@/components/aside/sub-sidebar-shell'
 import Navbar from '@/components/Navbar'
@@ -27,7 +29,9 @@ export default function MainContentWrapper({
 	}, [pathname])
 
 	const marginClass = isMainSidebarCollapsed
-		? ''
+		? hasSubSidebar && isSubSidebarOpen
+			? 'ml-[var(--sidebar-sub-width)]'
+			: 'ml-0'
 		: hasSubSidebar && isSubSidebarOpen
 			? 'ml-[calc(var(--sidebar-width)+var(--sidebar-sub-width))]'
 			: 'ml-[var(--sidebar-width)]'
@@ -45,7 +49,7 @@ export default function MainContentWrapper({
 				<SubSidebarShell isSubSidebarOpen={isSubSidebarOpen} />
 			)}
 			<main
-				className={`flex-1 overflow-x-hidden overflow-y-auto  transition-all duration-300 ease-in-out ${marginClass}`}
+				className={`flex-1 overflow-x-hidden overflow-y-auto transition-all duration-300 ease-in-out ${marginClass}`}
 			>
 				{children}
 			</main>

@@ -32,13 +32,18 @@ type NavigationProps = {
 
 export default function Navigation({ userName, userEmail }: NavigationProps) {
 	const [theme, setTheme] = useState<'light' | 'dark'>('dark')
+	const [isMenuOpen, setMenuOpen] = useState(false)
 
 	const toggleTheme = () => {
 		setTheme(theme === 'light' ? 'dark' : 'light')
 	}
 
+	const handleMenuToggle = () => {
+		setMenuOpen(!isMenuOpen)
+	}
+
 	return (
-		<nav className="text-subtitle flex h-[77px] w-full items-center justify-between pl-6 pr-4 border-b  fixed-top">
+		<nav className="text-subtitle flex h-[77px] w-full items-center justify-between border-b  fixed-top">
 			<div className="flex items-center space-x-4">
 				<Link href="/" className="text-title font-semibold">
 					<LogoIcon />
@@ -86,7 +91,7 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 					</Tooltip>
 				))}
 
-				<DropdownMenu>
+				<DropdownMenu onOpenChange={handleMenuToggle}>
 					<DropdownMenuTrigger asChild>
 						<button>
 							<div className="bg-neutral-900 flex items-center gap-1.5 transition-all duration-150 pl-0.5 pr-2 py-0.5 rounded-full">
@@ -94,8 +99,8 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 									<AvatarFallback>
 										{userName
 											? userName
-													.substring(0, 2)
-													.toUpperCase()
+												.substring(0, 2)
+												.toUpperCase()
 											: 'U'}
 									</AvatarFallback>
 								</Avatar>
@@ -103,7 +108,7 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 							</div>
 						</button>
 					</DropdownMenuTrigger>
-					<DropdownMenuContent className="w-56">
+					<DropdownMenuContent className="w-56" open={isMenuOpen}>
 						<DropdownMenuLabel>
 							<div className="flex flex-col space-y-1">
 								<p className="text-sm font-medium leading-none">

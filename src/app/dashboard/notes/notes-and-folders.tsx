@@ -1,6 +1,7 @@
 'use client'
 
-import RichTextEditor from '@/components/rich-text-editor'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import {
 	Dialog,
@@ -9,10 +10,9 @@ import {
 	DialogTitle
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { deleteFolder, getFolders } from '@/lib/actions/folders'
+import RichTextEditor from '@/components/rich-text-editor'
+import { deleteFolder, getFolders, updateFolder } from '@/lib/actions/folders'
 import { createNote, deleteNote, getNotes, updateNote } from '@/lib/api/notes'
-import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
 import { CreateFolderButton } from './_components/create-folder-button'
 import FolderItem from './_components/folder-item'
 import NoteItem from './_components/note-item'
@@ -20,6 +20,7 @@ import NoteItem from './_components/note-item'
 export type Folder = {
 	id: string
 	name: string
+	color: string
 }
 
 export type Note = {
@@ -32,11 +33,8 @@ export type Note = {
 export default function NotesAndFolders() {
 	const [folders, setFolders] = useState<Folder[]>([])
 	const [notes, setNotes] = useState<Note[]>([])
-	const [isNewFolderDialogOpen, setIsNewFolderDialogOpen] =
-		useState<boolean>(false)
 	const [isNewNoteDialogOpen, setIsNewNoteDialogOpen] =
 		useState<boolean>(false)
-	const [newFolderName, setNewFolderName] = useState<string>('')
 	const [newNoteTitle, setNewNoteTitle] = useState<string>('')
 	const [newNoteContent, setNewNoteContent] = useState<string>('')
 	const [selectedFolderId, setSelectedFolderId] = useState<string | null>(
@@ -87,43 +85,134 @@ export default function NotesAndFolders() {
 		if (folderId) {
 			formData.append('folderId', folderId)
 		}
-		await updateNote(formData)
-		fetchData()
+		try {
+			await updateNote(formData)
+			setNotes(prevNotes =>
+				prevNotes.map(note =>
+					note.id === noteId
+						? { ...note, title, content, folderId }
+						: note
+				)
+			)
+			toast.success('Note updated successfully')
+		} catch (error) {
+			toast.error('Failed to update note')
+		}
 	}
 
 	const handleDeleteFolder = async (folderId: string) => {
 		const formData = new FormData()
 		formData.append('id', folderId)
-		await deleteFolder(formData)
-		fetchData()
+		try {
+			await deleteFolder(formData)
+			setFolders(prevFolders =>
+				prevFolders.filter(folder => folder.id !== folderId)
+			)
+			setNotes(prevNotes =>
+				prevNotes.filter(note => note.folderId !== folderId)
+			)
+			toast.success('Folder deleted successfully')
+		} catch (error) {
+			toast.error('Failed to delete folder')
+		}
 	}
 
 	const handleDeleteNote = async (noteId: string) => {
 		const formData = new FormData()
 		formData.append('id', noteId)
-		await deleteNote(formData)
-		fetchData()
+		try {
+			await deleteNote(formData)
+			setNotes(prevNotes => prevNotes.filter(note => note.id !== noteId))
+			toast.success('Note deleted successfully')
+		} catch (error) {
+			toast.error('Failed to delete note')
+		}
+	}
+
+	const handleEditFolder = async (
+		id: string,
+		name: string,
+		color: string
+	) => {
+		try {
+			const formData = new FormData()
+			formData.append('id', id)
+			formData.append('name', name)
+			formData.append('color', color)
+			const result = await updateFolder(formData)
+			if (result.success) {
+				setFolders(prevFolders =>
+					prevFolders.map(folder =>
+						folder.id === id ? { ...folder, name, color } : folder
+					)
+				)
+				toast.success('Folder updated successfully')
+			} else {
+				throw new Error(result.error || 'Failed to update folder')
+			}
+		} catch (error) {
+			toast.error(
+				error instanceof Error
+					? error.message
+					: 'Failed to update folder'
+			)
+		}
 	}
 
 	return (
-		<div className="space-y-4">
-			<div className="flex justify-between mb-4">
-				<Button onClick={() => setIsNewFolderDialogOpen(true)}>
-					New Folder
-				</Button>
-				<Button onClick={() => setIsNewNoteDialogOpen(true)}>
-					New Note
-				</Button>
+		<div className="flex h-full">
+			<div className="w-1/4 pr-4 overflow-y-auto">
+				<CreateFolderButton
+					onFolderCreated={newFolder => {
+						setFolders(prevFolders => [
+							...prevFolders,
+							{
+								id: newFolder.id,
+								name: newFolder.name || 'Untitled Folder',
+								color: newFolder.color || '#000000'
+							}
+						])
+					}}
+				/>
+				{folders.map(folder => (
+					<div key={folder.id} className="mb-6">
+						<FolderItem
+							folder={folder}
+							onDelete={() => handleDeleteFolder(folder.id)}
+							onEdit={handleEditFolder}
+						/>
+						<div className="ml-6 mt-2 space-y-2">
+							{notes
+								.filter(note => note.folderId === folder.id)
+								.map(note => (
+									<NoteItem
+										key={note.id}
+										note={note}
+										onUpdate={(title, content) =>
+											handleUpdateNote(
+												note.id,
+												title,
+												content,
+												folder.id
+											)
+										}
+										onDelete={() =>
+											handleDeleteNote(note.id)
+										}
+									/>
+								))}
+						</div>
+					</div>
+				))}
 			</div>
-			{folders.map(folder => (
-				<div key={folder.id} className="mb-6">
-					<FolderItem
-						folder={folder}
-						onDelete={() => handleDeleteFolder(folder.id)}
-					/>
-					<div className="ml-6 mt-2 space-y-2">
+			<div className="w-3/4 pl-4 overflow-y-auto">
+				<div className="mt-6">
+					<h3 className="text-lg font-semibold mb-2">
+						Uncategorized Notes
+					</h3>
+					<div className="space-y-2">
 						{notes
-							.filter(note => note.folderId === folder.id)
+							.filter(note => !note.folderId)
 							.map(note => (
 								<NoteItem
 									key={note.id}
@@ -133,7 +222,7 @@ export default function NotesAndFolders() {
 											note.id,
 											title,
 											content,
-											folder.id
+											null
 										)
 									}
 									onDelete={() => handleDeleteNote(note.id)}
@@ -141,58 +230,38 @@ export default function NotesAndFolders() {
 							))}
 					</div>
 				</div>
-			))}
-			<div className="mt-6">
-				<h3 className="text-lg font-semibold mb-2">
-					Uncategorized Notes
-				</h3>
-				<div className="space-y-2">
-					{notes
-						.filter(note => !note.folderId)
-						.map(note => (
-							<NfoteItem
-								key={note.id}
-								note={note}
-								onUpdate={(title, content) =>
-									handleUpdateNote(note.id, title, content)
-								}
-								onDelete={() => handleDeleteNote(note.id)}
-							/>
-						))}
-				</div>
+				<Dialog
+					open={isNewNoteDialogOpen}
+					onOpenChange={setIsNewNoteDialogOpen}
+				>
+					<DialogContent>
+						<DialogHeader>
+							<DialogTitle>Create New Note</DialogTitle>
+						</DialogHeader>
+						<Input
+							value={newNoteTitle}
+							onChange={e => setNewNoteTitle(e.target.value)}
+							placeholder="Note Title"
+						/>
+						<RichTextEditor
+							content={newNoteContent}
+							onChange={setNewNoteContent}
+						/>
+						<select
+							value={selectedFolderId || ''}
+							onChange={e => setSelectedFolderId(e.target.value)}
+						>
+							<option value="">No Folder</option>
+							{folders.map(folder => (
+								<option key={folder.id} value={folder.id}>
+									{folder.name}
+								</option>
+							))}
+						</select>
+						<Button onClick={handleCreateNote}>Create Note</Button>
+					</DialogContent>
+				</Dialog>
 			</div>
-			<CreateFolderButton />
-			<Dialog
-				open={isNewNoteDialogOpen}
-				onOpenChange={setIsNewNoteDialogOpen}
-			>
-				<DialogContent>
-					<DialogHeader>
-						<DialogTitle>Create New Note</DialogTitle>
-					</DialogHeader>
-					<Input
-						value={newNoteTitle}
-						onChange={e => setNewNoteTitle(e.target.value)}
-						placeholder="Note Title"
-					/>
-					<RichTextEditor
-						content={newNoteContent}
-						onChange={setNewNoteContent}
-					/>
-					<select
-						value={selectedFolderId || ''}
-						onChange={e => setSelectedFolderId(e.target.value)}
-					>
-						<option value="">No Folder</option>
-						{folders.map(folder => (
-							<option key={folder.id} value={folder.id}>
-								{folder.name}
-							</option>
-						))}
-					</select>
-					<Button onClick={handleCreateNote}>Create Note</Button>
-				</DialogContent>
-			</Dialog>
 		</div>
 	)
 }

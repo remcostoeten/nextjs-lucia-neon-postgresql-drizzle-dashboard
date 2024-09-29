@@ -1,12 +1,8 @@
 'use client'
 
 import { getFolders } from '@/lib/actions/folders'
+import { FolderType } from '@/types/types.folder'
 import { useEffect, useState } from 'react'
-
-type FolderType = {
-	id: string
-	name: string
-}
 
 const FolderList: React.FC = () => {
 	const [folders, setFolders] = useState<FolderType[]>([])
@@ -14,7 +10,14 @@ const FolderList: React.FC = () => {
 	useEffect(() => {
 		const fetchFolders = async () => {
 			const fetchedFolders = await getFolders()
-			setFolders(fetchedFolders?.folders || [])
+			if (fetchedFolders?.folders) {
+				setFolders(
+					fetchedFolders.folders.map(folder => ({
+						...folder,
+						description: folder.description ?? null
+					}))
+				)
+			}
 		}
 
 		fetchFolders()
