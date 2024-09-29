@@ -1,7 +1,7 @@
 'use client'
 
 import Flex from '@/components/atoms/Flex'
-import { CustomDropdown, DropdownAction, DropdownAction } from '@/components/elements'
+import { CustomDropdown, DropdownAction } from '@/components/elements'
 import ConfirmationModal from '@/components/elements/crud/confirmation-modal'
 import { useNotesStore, useSiteSettingsStore } from '@/core/stores'
 import {
@@ -47,19 +47,25 @@ export default function NotesSidebar() {
 	const { disableSidebarAnimations } = useSiteSettingsStore()
 	const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
 		useState(false)
-	const [folderToDelete, setFolderToDelete] = useState<FolderType | null>(null);
+	const [folderToDelete, setFolderToDelete] = useState<FolderType | null>(
+		null
+	)
 
 	useEffect(() => {
-		fetchFolders();
-	}, []);
+		fetchFolders()
+	}, [])
 
 	useEffect(() => {
-		const filtered = folders.filter(folder =>
-			folder.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			(folder.description && folder.description.toLowerCase().includes(searchTerm.toLowerCase()))
-		);
-		setFilteredFolders(filtered);
-	}, [searchTerm, folders]);
+		const filtered = folders.filter(
+			folder =>
+				folder.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				(folder.description &&
+					folder.description
+						.toLowerCase()
+						.includes(searchTerm.toLowerCase()))
+		)
+		setFilteredFolders(filtered)
+	}, [searchTerm, folders])
 
 	useEffect(() => {
 		const filtered = folders.filter(
@@ -74,14 +80,14 @@ export default function NotesSidebar() {
 	}, [searchTerm, folders])
 
 	const fetchFolders = async () => {
-		const fetchedFolders = await getFolders();
+		const fetchedFolders = await getFolders()
 		setFolders(
 			fetchedFolders?.folders?.map(folder => ({
 				...folder,
 				color: folder.color || '#000000'
 			})) || []
-		);
-	};
+		)
+	}
 
 	const handleEditFolder = async () => {
 		if (editingFolder) {
@@ -263,7 +269,7 @@ export default function NotesSidebar() {
 										color: folder.color || 'currentColor'
 									}}
 								/>
-								<span className="truncate flex-grow">
+								<span className="text-subtitle truncate flex-grow">
 									{folder.name}
 								</span>
 							</div>

@@ -1,0 +1,37 @@
+/* Styling for Webkit browsers (Chrome, Safari, newer versions of Edge) */
+::-webkit-scrollbar {
+	width: 6px;
+	/* Even thinner width */
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+	/* Transparent track */
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgba(255, 255, 255, 0.1);
+	/* Very faint light color */
+	border-radius: 3px;
+	/* Slightly rounded corners */
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: rgba(255, 255, 255, 0.2);
+	/* Slightly more visible on hover */
+}
+
+/* Styling for Firefox */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+/* Hide scrollbar when not in use (optional) */
+::-webkit-scrollbar-thumb {
+	visibility: hidden;
+}
+
+:hover::-webkit-scrollbar-thumb {
+	visibility: visible;
+}

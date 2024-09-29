@@ -2,7 +2,7 @@ import DashboardSidebar from '@/components/aside/route-specific/dashboard-home-a
 import NotesSidebar from '@/components/aside/route-specific/notes-aside'
 import SettingsSidebar from '@/components/aside/route-specific/settings-aside'
 import { DashboardIcon } from '@radix-ui/react-icons'
-import { Edit, LucideIcon, Mail, Settings2, User } from 'lucide-react'
+import { Edit, LucideIcon, Mail, Paintbrush, User } from 'lucide-react'
 
 export type SidebarItem = {
 	name: string
@@ -26,7 +26,11 @@ export const sidebarItems: SidebarItem[] = [
 		hasAlert: true,
 		alertCount: 3
 	},
-	{ name: 'Settings', path: '/dashboard/settings', icon: Settings2 }
+	{
+		name: 'Generate background',
+		path: '/dashboard/background-creator',
+		icon: Paintbrush
+	}
 ]
 
 type SubSidebarConfig = {

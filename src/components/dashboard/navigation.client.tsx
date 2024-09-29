@@ -99,8 +99,8 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 									<AvatarFallback>
 										{userName
 											? userName
-												.substring(0, 2)
-												.toUpperCase()
+													.substring(0, 2)
+													.toUpperCase()
 											: 'U'}
 									</AvatarFallback>
 								</Avatar>
