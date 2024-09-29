@@ -1,7 +1,13 @@
-import MainContentWrapper from '@/components/base/layout/main-content-wrapper'
-import Navigation from '@/components/dashboard/navigation'
-import { dashboardMetadata as metadata } from '@/core/config/metadata/dashboard.metadata'
-import { ReactNode } from 'react'
+'use client';
+
+
+import MainSidebar from '@/components/aside/sidebar';
+import SidebarSkeletonLoader from '@/components/aside/skeleton.sidebbar';
+import SubSidebarShell from '@/components/aside/sub-sidebar-shell';
+import MainContentWrapper from '@/components/base/layout/main-content-wrapper';
+import Navigation from '@/components/dashboard/navigation.client';
+import { useMainSidebarStore, useSubSidebarStore } from '@/core/stores';
+import { ReactNode, Suspense } from 'react';
 
 type DashboardLayoutProps = {
 	children: ReactNode
@@ -11,28 +17,29 @@ type DashboardLayoutProps = {
 	toggleMainSidebar: () => void
 }
 
-export { metadata }
+export default function ClientWrapper({ children }: PageProps) {
+	const {
+		isCollapsed: isMainSidebarCollapsed,
+		toggleCollapse: toggleMainSidebar
+	} = useMainSidebarStore()
+	const { isOpen: isSubSidebarOpen, toggle: toggleSubSidebar } =
+		useSubSidebarStore()
 
-export default async function DashboardLayout({
-	children,
-	isSubSidebarOpen,
-	toggleSubSidebar,
-	isMainSidebarCollapsed,
-	toggleMainSidebar
-}: DashboardLayoutProps) {
 	return (
-		<div className="flex flex-col h-screen bg-body w-screen">
+		<>
 			<Navigation />
-			<div className="flex flex-1 overflow-hidden">
-				<MainContentWrapper>{children}</MainContentWrapper>
-				{/* <ClientWrapper
+			<Suspense fallback={<SidebarSkeletonLoader />}>
+				<MainSidebar
+					isSubSidebarOpen={isSubSidebarOpen}
 					toggleSubSidebar={toggleSubSidebar}
-					mainSidebarCollapsed={isMainSidebarCollapsed}
-					toggleMainSidebar={toggleMainSidebar}
-				> */}
-				{children}
-				{/* </ClientWrapper> */}
-			</div>
-		</div>
+					isCollapsed={isMainSidebarCollapsed}
+					toggleCollapse={toggleMainSidebar}
+				/>
+			</Suspense>
+			<SubSidebarShell
+				isSubSidebarOpen={isSubSidebarOpen}
+			/>
+			<MainContentWrapper>{children}</MainContentWrapper>
+		</>
 	)
 }

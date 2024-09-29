@@ -21,7 +21,6 @@ export default function ClientWrapper({ children }: ClientWrapperProps) {
 
 	return (
 		<>
-			<h1>hi</h1>
 			<Suspense fallback={<SidebarSkeletonLoader />}>
 				<MainSidebar
 					isSubSidebarOpen={isSubSidebarOpen}
@@ -30,7 +29,9 @@ export default function ClientWrapper({ children }: ClientWrapperProps) {
 					toggleCollapse={toggleMainSidebar}
 				/>
 			</Suspense>
-			<SubSidebarShell isSubSidebarOpen={isSubSidebarOpen} />
+			<SubSidebarShell
+				isSubSidebarOpen={isSubSidebarOpen}
+			/>
 			<MainContentWrapper>{children}</MainContentWrapper>
 		</>
 	)

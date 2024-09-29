@@ -5,7 +5,7 @@ import { useSiteSettingsStore } from 'stores'
 
 type DashboardSidebarProps = {}
 
-export default function DashboardSidebar({}: DashboardSidebarProps) {
+export default function DashboardSidebar({ }: DashboardSidebarProps) {
 	const { disableAllAnimations, disableSidebarAnimations } =
 		useSiteSettingsStore()
 

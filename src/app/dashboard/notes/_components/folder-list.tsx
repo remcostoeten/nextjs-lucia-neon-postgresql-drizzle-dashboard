@@ -14,7 +14,7 @@ const FolderList: React.FC = () => {
 				setFolders(
 					fetchedFolders.folders.map(folder => ({
 						...folder,
-						description: folder.description ?? undefined
+						description: folder.description ?? null
 					}))
 				)
 			}

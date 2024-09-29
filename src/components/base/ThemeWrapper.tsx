@@ -1,8 +1,8 @@
 import { geistMono, geistSans } from '@/core/config/fonts/fonts'
 import { metadata } from '@/core/config/metadata/metadata.root-layout'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Toaster, TooltipProvider } from 'ui'
 export { metadata }
-
 export default function ThemeWrapper({
 	children
 }: Readonly<{
@@ -25,6 +25,7 @@ export default function ThemeWrapper({
 						{children}
 					</main>
 				</TooltipProvider>
+				<SpeedInsights />
 			</body>
 		</html>
 	)
