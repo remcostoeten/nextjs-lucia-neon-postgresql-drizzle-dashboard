@@ -2,7 +2,14 @@ import { cn } from '@/lib/utils'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { DayPicker } from 'react-day-picker'
 
-const StyledCalendarHeatmap = ({ className, ...props }) => {
+type CalendarHeatmapProps = {
+	className?: string
+}
+
+const StyledCalendarHeatmap = ({
+	className,
+	...props
+}: CalendarHeatmapProps) => {
 	// Sample data for the heatmap
 	const today = new Date()
 	const heatmapData = [
@@ -81,11 +88,9 @@ const styles = `
   .heatmap-5 { background-color: #26a69a; }
 `
 
-const CalendarWithStyles = () => (
+const CalendarWithStyles = ({ className }: CalendarHeatmapProps) => (
 	<div
-		className='
-      className="absolute inset-0 origin-top rounded-md border transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_40%,#000_100%)] group-hover:scale-105
-    '
+		className={`absolute inset-0 origin-top rounded-md border transition-all duration-300 height-[200px] ease-out mask-image-linear-gradient-to_top-transparent_40%-#000_100%-group-hover-scale-105 ${className}`}
 	>
 		<style>{styles}</style>
 		<StyledCalendarHeatmap />

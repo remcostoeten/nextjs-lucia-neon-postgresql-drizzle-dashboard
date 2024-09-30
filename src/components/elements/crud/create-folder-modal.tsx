@@ -1,9 +1,9 @@
 'use client'
 
-import Flex from '@/components/atoms/Flex'
 import { ColorPicker } from '@/components/ui/color-picker'
 import { createFolder } from '@/lib/api/folders'
 import { FolderType } from '@/types/types.folder'
+import { Flex } from 'atoms'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import {

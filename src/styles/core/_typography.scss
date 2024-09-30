@@ -1,0 +1,29 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span {
+	color: var(--text-title);
+
+	&.subtitle {
+		color: var(--text-subtitle) !important;
+	}
+}
+
+/* Indeed, the <spa> tag does not exists, it's nota typo but I wanted a span value to have this color, but can't globally change the color of all spans so I opted to crate a new element, also beacuse I didn't knew this was possible. */
+spa {
+	color: var(--text-subtitle);
+}
+
+title,
+ptitle {
+	color: var(--text-title);
+}
+
+subtitle,
+psub {
+	color: var(--text-subtitle);
+}

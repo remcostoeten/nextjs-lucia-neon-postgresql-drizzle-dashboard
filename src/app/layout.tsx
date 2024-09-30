@@ -1,11 +1,17 @@
+import AuthStatusIndicator from '@/components/_development-utils/auth-status-indicator'
 import ThemeWrapper, { metadata } from '@/components/base/ThemeWrapper'
 import '../styles/app.scss'
 export { metadata }
 
-export default function RootLayout({
-	children
-}: {
+type PageProps = {
 	children: React.ReactNode
-}) {
-	return <ThemeWrapper>{children}</ThemeWrapper>
+}
+
+export default function RootLayout({ children }: PageProps) {
+	return (
+		<ThemeWrapper>
+			<AuthStatusIndicator />
+			{children}
+		</ThemeWrapper>
+	)
 }

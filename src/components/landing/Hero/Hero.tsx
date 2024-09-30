@@ -19,39 +19,39 @@ export default function Hero() {
 	const isInView = useInView(ref)
 
 	return (
-		<div className="relative  w-full min-h-full -z-10 pointer-events-none">
+		<div className="">
 			<TopLeftShiningLight />
 			<Spotlight
 				className="-top-40 left-0 md:left-60 md:-top-20"
 				fill="white"
 			/>
-			<div className="absolute -z-1 inset-0  h-[600px] w-full bg-transparent opacity-5 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradieznt(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
+			<div className="absolute -z-1 inset-0 pointer-events-none  h-[600px] w-full bg-transparent opacity-5 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradieznt(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
 			<div className="justify-between md:flex">
 				<Container className="relative mt-36 pb-8 mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
 					<div ref={ref}>
 						<GradualSpacing
 							textClassName="justify-start"
 							visiblity={isInView}
-							className="max-w-2xl text-5xl font-normal tracking-tighter  text-title sm:text-7xl font-geist"
-							text={'A design conference'}
+							className="max-w-2xl text-5xl font-normal tracking-tighter  text-title sm:text-6xl font-geist"
+							text={'Notevault, a place for everything'}
 						/>
 						<GradualSpacing
 							textClassName="justify-start"
 							visiblity={isInView}
-							className="max-w-2xl text-5xl font-normal tracking-tighter x text-title sm:text-7xl font-geist"
-							text={'for a dark side'}
+							className="max-w-2xl text-5xl font-normal tracking-tighter x text-title sm:text-xl font-geist"
+							text={'related to being effective'}
 						/>
 
 						<div className="mt-6 space-y-6 tracking-tight text-subtitle sm:text-xl font-geist text-md mb-6">
 							<FadeIn delay={0.2}>
-								Modern users crave efficiency and security. They
-								need quick access to data and seamless
-								organization. Scattered workflows are obsolete.
-							</FadeIn>
-							<FadeIn delay={0.4}>
 								Your dashboard: a central hub for digital life.
 								Manage notes, files, and tools in one place.
 								Boost productivity with a streamlined interface.
+							</FadeIn>
+							<FadeIn delay={0.4}>
+								Built by a developer, for myself. Without the
+								well-known annoyance of having to wait for
+								Cloudflare security checks, ads or reCAPTCHAs
 							</FadeIn>
 						</div>
 						<FadeIn delay={0.6}>

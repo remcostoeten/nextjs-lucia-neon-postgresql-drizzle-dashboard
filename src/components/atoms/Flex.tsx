@@ -25,7 +25,8 @@ type FlexProps = {
  * @param {'nowrap' | 'wrap' | 'wrap-reverse'} [wrap='nowrap'] - The wrapping of the flex items.
  * @returns {JSX.Element} The rendered Flex component.
  */
-const Flex: React.FC<FlexProps> = ({
+
+export function Flex({
 	children,
 	dir = 'row',
 	justify = 'start',
@@ -35,7 +36,7 @@ const Flex: React.FC<FlexProps> = ({
 	as: Component = 'div',
 	wrap = 'nowrap',
 	...props
-}) => {
+}: FlexProps) {
 	const classes = clsx(
 		'flex',
 		{
@@ -69,5 +70,3 @@ const Flex: React.FC<FlexProps> = ({
 		</Component>
 	)
 }
-
-export default Flex

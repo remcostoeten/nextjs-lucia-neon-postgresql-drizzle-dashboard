@@ -4,7 +4,7 @@ type KeyCombo = string
 type ShortcutAction = () => void
 type ShortcutMap = Record<KeyCombo, ShortcutAction>
 
-interface ShortcutOptions {
+type ShortcutOptions = {
     preventDefault?: boolean
     stopPropagation?: boolean
     capture?: boolean

@@ -3,6 +3,12 @@
 	"version": "0.1.0",
 	"private": true,
 	"type": "module",
+	"author": "Remco Stoeten",
+	"homepage": "https://github.com/remcostoeten/nextjs-lucia-neon-postgresql-drizzle-dashboard",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/remcostoeten/nextjs-lucia-neon-postgresql-drizzle-dashboard.git"
+	},
 	"scripts": {
 		"dev": "next dev",
 		"turbo": "next dev --turbo",
@@ -22,6 +28,7 @@
 		"shad": "npx shadcn@latest add"
 	},
 	"dependencies": {
+		"@kinfe123/farm-ui": "^1.0.12",
 		"@lucia-auth/adapter-drizzle": "^1.0.2",
 		"@neondatabase/serverless": "^0.8.1",
 		"@node-rs/argon2": "^1.7.2",
@@ -66,7 +73,7 @@
 		"framer-motion": "^11.7.0",
 		"lowlight": "^3.1.0",
 		"lucia": "^3.0.1",
-		"lucide-react": "^0.341.0",
+		"lucide-react": "^0.446.0",
 		"nanoid": "^5.0.6",
 		"next": "14.1.0",
 		"next-themes": "^0.3.0",
@@ -102,5 +109,14 @@
 		"tailwindcss": "^3.3.0",
 		"tsx": "^4.7.1",
 		"typescript": "^5"
-	}
+	},
+	"eslintConfig": {
+		"globals": {
+			"spa": "readonly"
+		}
+	},
+	"bugs": {
+		"url": "https://github.com/remcostoeten/nextjs-lucia-neon-postgresql-drizzle-dashboard/issues"
+	},
+	"license": "MIT"
 }

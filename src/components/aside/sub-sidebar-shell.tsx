@@ -37,7 +37,7 @@ function SubSidebarShell({ isSubSidebarOpen }: SubSidebarShellProps) {
 					transition={
 						disableSidebarAnimations ? {} : { duration: 0.3 }
 					}
-					className="fixed z-[1] top-[var(--header-height)] bottom-0 bg-body border-outline-right overflow-y-scroll"
+					className="fixed z-[1] top-[var(--header-height)] bottom-0 bg-body border-outline-right overflow-hidden border-right"
 				>
 					<Suspense fallback={<SubSidebarSkeletonLoader />}>
 						<SidebarContent />

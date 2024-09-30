@@ -19,12 +19,17 @@ const productCategories: ProductCategory[] = [
 	{
 		name: 'Fancy stuff',
 		links: [
-			{ name: 'Spotlight cards', href: '/design-system/card-spotlight' }
+			{ name: 'Spotlight cards', href: '/design-system/card-spotlight' },
+			{ name: 'Card mouse', href: '/design-system/mouse-demo' }
 		]
 	},
 	{
 		name: 'Tools',
 		links: [
+			{
+				name: 'KBD hook',
+				href: '/design-system/kbd-hook-showoff'
+			},
 			{
 				name: 'Background creator',
 				href: '/dashboard/background-creator'

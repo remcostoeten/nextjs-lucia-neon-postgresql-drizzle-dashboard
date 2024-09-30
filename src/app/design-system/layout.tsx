@@ -1,13 +1,16 @@
+import { DropdownNavigation } from '@/components/elements'
+
 export default function DashboardLayout({
 	children
 }: {
 	children: React.ReactNode
 }) {
 	return (
-		<section>
+		<>
+			<DropdownNavigation />
 			<main className="min-h-screen mt-24 mx-auto  max-w-[90vw]">
 				{children}
 			</main>
-		</section>
+		</>
 	)
 }

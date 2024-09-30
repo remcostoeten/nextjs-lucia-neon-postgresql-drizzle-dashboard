@@ -1,5 +1,5 @@
 import { Button } from 'ui'
-import { BackgroundConfig } from '../_utils/types'
+import { BackgroundConfig } from '../_utils/bg-creator.types'
 
 interface SavedConfigsProps {
 	savedConfigs: BackgroundConfig[]

@@ -1,3 +1,4 @@
+import BackgroundGeneratorSidebar from '@/components/aside/route-specific/background-creator-aside'
 import DashboardSidebar from '@/components/aside/route-specific/dashboard-home-aside'
 import NotesSidebar from '@/components/aside/route-specific/notes-aside'
 import SettingsSidebar from '@/components/aside/route-specific/settings-aside'
@@ -43,5 +44,9 @@ type SubSidebarConfig = {
 export const subSidebarConfig: SubSidebarConfig = {
 	'/dashboard': { component: DashboardSidebar, allowToggle: true },
 	'/dashboard/settings': { component: SettingsSidebar, allowToggle: true },
-	'/dashboard/notes': { component: NotesSidebar, allowToggle: false }
+	'/dashboard/notes': { component: NotesSidebar, allowToggle: false },
+	'/dashboard/background-creator': {
+		component: BackgroundGeneratorSidebar,
+		allowToggle: false
+	}
 }

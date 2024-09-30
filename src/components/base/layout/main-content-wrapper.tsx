@@ -49,7 +49,7 @@ export default function MainContentWrapper({
 				<SubSidebarShell isSubSidebarOpen={isSubSidebarOpen} />
 			)}
 			<main
-				className={`flex-1 overflow-x-hidden overflow-y-auto transition-all duration-300 ease-in-out ${marginClass}`}
+				className={`border-left pl-6 pt-4 mt-[77px] flex-1 overflow-x-hidden overflow-y-auto  transition-all duration-300 ease-in-out ${marginClass}`}
 			>
 				{children}
 			</main>

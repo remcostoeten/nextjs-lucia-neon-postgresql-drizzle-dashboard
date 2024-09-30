@@ -1,5 +1,5 @@
 import { Slider } from 'ui'
-import { BackgroundConfig } from '../_utils/types'
+import { BackgroundConfig } from '../_utils/bg-creator.types'
 import { AnimationControls } from './animation-controls'
 import { ColorPicker } from './color-picker'
 import { GradientControls } from './gradient-controls'

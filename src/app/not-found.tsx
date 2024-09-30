@@ -1,7 +1,7 @@
 'use client'
 
-import Flex from '@/components/atoms/Flex'
 import Spotlight from '@/components/effects/card-spotlight/card-spotlight'
+import { Flex } from 'atoms'
 import { motion } from 'framer-motion'
 import { FileQuestion, Home, Search } from 'lucide-react'
 import Link from 'next/link'
@@ -15,7 +15,7 @@ import {
 	CardTitle
 } from 'ui'
 
-export default function NotFound({}: { prop: string }) {
+export default function NotFound({ }: { prop: string }) {
 	return (
 		<Spotlight>
 			<div className="flex items-center justify-center min-h-screen bg-background">

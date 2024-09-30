@@ -1,3 +1,11 @@
 {
-	"extends": "next/core-web-vitals"
+	"extends": "next/core-web-vitals",
+	"rules": {
+		"react/jsx-no-undef": [
+			"error",
+			{
+				"ignore": ["spa", "title", "ptitle", "subtitle", "psub"]
+			}
+		]
+	}
 }

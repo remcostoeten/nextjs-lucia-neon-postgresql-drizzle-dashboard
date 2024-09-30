@@ -23,7 +23,8 @@ type SpacerProps = {
  * @param {keyof JSX.IntrinsicElements} [as='div'] - The HTML element to render as.
  * @returns {JSX.Element} The rendered Spacer component.
  */
-const Spacer: React.FC<SpacerProps> = ({
+
+export function Spacer({
 	children,
 	spaceX = '0',
 	spaceY = '0',
@@ -32,7 +33,7 @@ const Spacer: React.FC<SpacerProps> = ({
 	className = '',
 	as: Component = 'div',
 	...props
-}) => {
+}: SpacerProps) {
 	const classes = clsx(
 		{
 			[`space-x-${spaceX}`]: spaceX !== '0',
@@ -49,5 +50,3 @@ const Spacer: React.FC<SpacerProps> = ({
 		</Component>
 	)
 }
-
-export default Spacer

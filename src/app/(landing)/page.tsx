@@ -1,4 +1,5 @@
-import BentoGridIntro from '@/components/landing/bent-grid'
+import GithubOpenSource from '@/components/effects/gitihu-oss/github-open-source'
+import BentoGrid from '@/components/landing/bent-grid'
 import { Footer } from '@/components/landing/footer'
 import Hero from '@/components/landing/Hero/Hero'
 
@@ -7,8 +8,9 @@ export default function Home() {
 		<>
 			<Hero />
 			<Wrapper>
-				<BentoGridIntro />
+				<BentoGrid children={undefined} />
 			</Wrapper>
+			<GithubOpenSource />
 			<Footer />
 		</>
 	)

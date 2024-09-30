@@ -8,7 +8,7 @@ export default function DashboardLayout({
 	return (
 		<section>
 			<DropdownNavigation />
-			<main className="min-h-screen pointer-events-none">{children}</main>
+			{children}
 		</section>
 	)
 }

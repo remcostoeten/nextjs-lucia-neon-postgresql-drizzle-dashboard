@@ -146,7 +146,7 @@ export default function MainSidebar({
 						width: isCollapsed ? 0 : 'var(--sidebar-width)',
 						transition: { duration: 0.3, ease: 'easeInOut' }
 					}}
-					className="fixed left-0 top-[var(--header-height)] w-sidebar bottom-0 flex items-center transition-all duration-300 ease-in-out z-10 overflow-hidden"
+					className="fixed border-right left-0 top-[var(--header-height)] w-sidebar bottom-0 flex items-center transition-all duration-300 ease-in-out z-10 overflow-hidden"
 				>
 					<AnimatePresence>
 						{isContentVisible && (

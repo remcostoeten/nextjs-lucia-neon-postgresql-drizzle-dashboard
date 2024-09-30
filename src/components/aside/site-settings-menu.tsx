@@ -23,13 +23,7 @@ import { useSiteSettingsStore } from '@/core/stores'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-interface SiteSettingsMenuProps {
-	isOpen: boolean
-	onClose: () => void
-	onSettingChange: (setting: string, value: any) => void
-}
-
-function ThemePreview({ theme }: { theme: 'system' | 'light' | 'dark' }) {
+function ThemePreview({ theme, accentColor }) {
 	const isDark =
 		theme === 'dark' ||
 		(theme === 'system' &&
@@ -47,13 +41,16 @@ function ThemePreview({ theme }: { theme: 'system' | 'light' | 'dark' }) {
 					className={`w-1/4 h-full ${isDark ? 'bg-gray-800' : 'bg-white'} p-1`}
 				>
 					<div
-						className={`w-full h-1 ${isDark ? 'bg-border-outline' : 'bg-gray-300'} rounded mb-1 animate-pulse`}
+						className={`w-full h-1 rounded mb-1 animate-pulse`}
+						style={{ backgroundColor: accentColor }}
 					></div>
 					<div
-						className={`w-full h-1 ${isDark ? 'bg-border-outline' : 'bg-gray-300'} rounded mb-1 animate-pulse`}
+						className={`w-full h-1 rounded mb-1 animate-pulse`}
+						style={{ backgroundColor: accentColor }}
 					></div>
 					<div
-						className={`w-full h-1 ${isDark ? 'bg-border-outline' : 'bg-gray-300'} rounded animate-pulse`}
+						className={`w-full h-1 rounded animate-pulse`}
+						style={{ backgroundColor: accentColor }}
 					></div>
 				</div>
 				<div className="w-3/4 h-full p-1">
@@ -61,7 +58,8 @@ function ThemePreview({ theme }: { theme: 'system' | 'light' | 'dark' }) {
 						className={`w-full h-2 ${isDark ? 'bg-gray-800' : 'bg-white'} rounded mb-1 animate-pulse`}
 					></div>
 					<div
-						className={`w-full h-8 ${isDark ? 'bg-gray-800' : 'bg-white'} rounded animate-pulse`}
+						className={`w-full h-8 rounded animate-pulse`}
+						style={{ backgroundColor: accentColor, opacity: 0.5 }}
 					></div>
 				</div>
 			</div>
@@ -69,11 +67,7 @@ function ThemePreview({ theme }: { theme: 'system' | 'light' | 'dark' }) {
 	)
 }
 
-export default function Component({
-	isOpen,
-	onClose,
-	onSettingChange
-}: SiteSettingsMenuProps) {
+export default function Component({ isOpen, onClose, onSettingChange }) {
 	const {
 		disableAllAnimations,
 		disableSidebarAnimations,
@@ -184,6 +178,7 @@ export default function Component({
 												| 'light'
 												| 'dark'
 										}
+										accentColor={accentColor}
 									/>
 									<div className="flex items-center space-x-2">
 										<RadioGroupItem

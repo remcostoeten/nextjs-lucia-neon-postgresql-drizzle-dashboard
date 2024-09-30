@@ -1,5 +1,5 @@
+import { BackgroundConfig } from './bg-creator.types'
 import { generateBackgroundStyle } from './generate-background-style'
-import { BackgroundConfig } from './types'
 
 export function generateReactComponent(config: BackgroundConfig): string {
 	const backgroundStyle = generateBackgroundStyle(config)

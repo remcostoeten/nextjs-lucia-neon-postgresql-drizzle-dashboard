@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { RadioGroup, RadioGroupItem } from 'ui'
+import { BackgroundConfig } from '../_utils/bg-creator.types'
 import { generateCSSBackground } from '../_utils/generate-css-background'
-import { generateReactComponent } from '../_utils/generate-react-component'
-import { BackgroundConfig } from '../_utils/types'
 import { generateCSSPseudo } from '../_utils/generate-pss-psuedo'
+import { generateReactComponent } from '../_utils/generate-react-component'
 
 type OutputFormat = 'react' | 'css-background' | 'css-pseudo'
 

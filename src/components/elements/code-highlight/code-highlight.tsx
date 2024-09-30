@@ -56,6 +56,7 @@ export default function CodeHighlight({
 				isCollapsed={isCollapsed}
 				onToggleCollapse={() => setIsCollapsed(!isCollapsed)}
 				showModal={showModal}
+				modalTrigger={undefined}
 			/>
 			{!isCollapsed && (
 				<div className="w-full overflow-x-auto">

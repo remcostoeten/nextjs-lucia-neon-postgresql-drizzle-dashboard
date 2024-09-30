@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useState } from 'react'
-import { BackgroundConfig } from './types'
+import { BackgroundConfig } from './bg-creator.types'
 
 const defaultConfig: BackgroundConfig = {
 	pattern: 'dot',

@@ -1,8 +1,9 @@
 'use client'
 
 import Logo from '@/components/base/logo'
+import { createShortcutMap, useKeyboardShortcuts } from '@/core/hooks/use-keyboard-shortcuts'
 import { motion } from 'framer-motion'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { Tabs } from './Tabs'
 
 const fadeInVariants = {
@@ -12,6 +13,15 @@ const fadeInVariants = {
 
 export const DropdownNavigation = () => {
 	const pathname = usePathname()
+	const router = useRouter()
+
+	const shortcuts = createShortcutMap([
+		['shift+l', () => router.push('/sign-in')],
+		['shift+d', () => router.push('/dashboard')]
+	])
+
+	useKeyboardShortcuts(shortcuts)
+
 	if (pathname.includes('/dashboard')) return null
 
 	return (

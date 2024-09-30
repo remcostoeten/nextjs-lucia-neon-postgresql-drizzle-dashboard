@@ -1,69 +1,90 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Switch } from 'ui'
-import { BackgroundConfig, GradientDirection } from '../_utils/types'
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+	Switch
+} from 'ui'
+import { GradientDirection, Layer } from '../_utils/bg-creator.types'
 import { ColorPicker } from './color-picker'
-import { LabeledSlider } from './labeled-slider'
+import LabeledSlider from './labeled-sider'
 
 interface GradientControlsProps {
-	config: BackgroundConfig
-	updateConfig: (updates: Partial<BackgroundConfig>) => void
+	layer: Layer
+	updateLayer: (updates: Partial<Layer>) => void
 }
 
-export function GradientControls({ config, updateConfig }: GradientControlsProps) {
-	const gradientDirections: GradientDirection[] = [
-		'radial',
-		'top',
-		'bottom',
-		'left',
-		'right',
-		'top-left',
-		'top-right',
-		'bottom-left',
-		'bottom-right',
-	]
-
+export function GradientControls({
+	layer,
+	updateLayer
+}: GradientControlsProps) {
 	return (
 		<div className="space-y-4">
-			<div className="flex items-center space-x-2">
+			<div className="flex items-center justify-between">
+				<label
+					htmlFor="gradient-enabled"
+					className="text-sm font-medium"
+				>
+					Enable Gradient
+				</label>
 				<Switch
 					id="gradient-enabled"
-					checked={config.gradientEnabled}
-					onCheckedChange={(checked) => updateConfig({ gradientEnabled: checked })}
+					checked={layer.gradientEnabled}
+					onCheckedChange={checked =>
+						updateLayer({ gradientEnabled: checked })
+					}
 				/>
-				<label htmlFor="gradient-enabled" className="text-sm font-medium">
-					Enable Gradient Overlay
-				</label>
 			</div>
-			{config.gradientEnabled && (
+			{layer.gradientEnabled && (
 				<>
 					<Select
-						value={config.gradientDirection}
-						onValueChange={(value) => updateConfig({ gradientDirection: value as GradientDirection })}
+						value={layer.gradientDirection}
+						onValueChange={value =>
+							updateLayer({
+								gradientDirection: value as GradientDirection
+							})
+						}
 					>
-						<SelectTrigger className="w-full">
+						<SelectTrigger>
 							<SelectValue placeholder="Select gradient direction" />
 						</SelectTrigger>
 						<SelectContent>
-							{gradientDirections.map((direction) => (
-								<SelectItem key={direction} value={direction}>
-									{direction.charAt(0).toUpperCase() + direction.slice(1)}
-								</SelectItem>
-							))}
+							<SelectItem value="radial">Radial</SelectItem>
+							<SelectItem value="top">Top</SelectItem>
+							<SelectItem value="bottom">Bottom</SelectItem>
+							<SelectItem value="left">Left</SelectItem>
+							<SelectItem value="right">Right</SelectItem>
+							<SelectItem value="top-left">Top Left</SelectItem>
+							<SelectItem value="top-right">Top Right</SelectItem>
+							<SelectItem value="bottom-left">
+								Bottom Left
+							</SelectItem>
+							<SelectItem value="bottom-right">
+								Bottom Right
+							</SelectItem>
 						</SelectContent>
 					</Select>
 					<ColorPicker
-						label="Gradient Start Color"
-						color={config.gradientStartColor}
-						onChange={(color) => updateConfig({ gradientStartColor: color })}
+						label="Start Color"
+						color={layer.gradientStartColor}
+						onChange={color =>
+							updateLayer({ gradientStartColor: color })
+						}
 					/>
 					<ColorPicker
-						label="Gradient End Color"
-						color={config.gradientEndColor}
-						onChange={(color) => updateConfig({ gradientEndColor: color })}
+						label="End Color"
+						color={layer.gradientEndColor}
+						onChange={color =>
+							updateLayer({ gradientEndColor: color })
+						}
 					/>
 					<LabeledSlider
 						label="Gradient Extent"
-						value={[config.gradientExtent]}
-						onValueChange={(value) => updateConfig({ gradientExtent: value[0] })}
+						value={[layer.gradientExtent]}
+						onValueChange={value =>
+							updateLayer({ gradientExtent: value[0] })
+						}
 						min={0}
 						max={100}
 					/>

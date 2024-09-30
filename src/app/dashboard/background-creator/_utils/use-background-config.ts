@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { BackgroundConfig, DeviceSize, Layer } from './types'
+import { BackgroundConfig, DeviceSize, Layer } from './bg-creator.types'
 
 const defaultLayer: Layer = {
 	id: uuidv4(),
@@ -18,11 +18,11 @@ const defaultLayer: Layer = {
 	animationDuration: 5,
 	animationDirection: 'normal',
 	opacity: 1,
-	blendMode: 'normal',
+	blendMode: 'normal'
 }
 
 const defaultConfig: BackgroundConfig = {
-	layers: [defaultLayer],
+	layers: [defaultLayer]
 }
 
 export function useBackgroundConfig() {
@@ -35,52 +35,67 @@ export function useBackgroundConfig() {
 
 	const updateConfig = useCallback((newConfig: BackgroundConfig) => {
 		setConfig(newConfig)
-		historyRef.current = historyRef.current.slice(0, currentIndexRef.current + 1)
+		historyRef.current = historyRef.current.slice(
+			0,
+			currentIndexRef.current + 1
+		)
 		historyRef.current.push(newConfig)
 		currentIndexRef.current++
 	}, [])
 
-	const updateLayer = useCallback((layerId: string, updates: Partial<Layer>) => {
-		const newConfig = {
-			...config,
-			layers: config.layers.map((layer) =>
-				layer.id === layerId ? { ...layer, ...updates } : layer
-			),
-		}
-		updateConfig(newConfig)
-	}, [config, updateConfig])
+	const updateLayer = useCallback(
+		(layerId: string, updates: Partial<Layer>) => {
+			const newConfig = {
+				...config,
+				layers: config.layers.map(layer =>
+					layer.id === layerId ? { ...layer, ...updates } : layer
+				)
+			}
+			updateConfig(newConfig)
+		},
+		[config, updateConfig]
+	)
 
 	const addLayer = useCallback(() => {
 		const newConfig = {
 			...config,
-			layers: [...config.layers, { ...defaultLayer, id: uuidv4() }],
+			layers: [...config.layers, { ...defaultLayer, id: uuidv4() }]
 		}
 		updateConfig(newConfig)
 	}, [config, updateConfig])
 
-	const removeLayer = useCallback((layerId: string) => {
-		const newConfig = {
-			...config,
-			layers: config.layers.filter((layer) => layer.id !== layerId),
-		}
-		updateConfig(newConfig)
-	}, [config, updateConfig])
+	const removeLayer = useCallback(
+		(layerId: string) => {
+			const newConfig = {
+				...config,
+				layers: config.layers.filter(layer => layer.id !== layerId)
+			}
+			updateConfig(newConfig)
+		},
+		[config, updateConfig]
+	)
 
-	const reorderLayers = useCallback((startIndex: number, endIndex: number) => {
-		const newLayers = Array.from(config.layers)
-		const [reorderedItem] = newLayers.splice(startIndex, 1)
-		newLayers.splice(endIndex, 0, reorderedItem)
-		const newConfig = { ...config, layers: newLayers }
-		updateConfig(newConfig)
-	}, [config, updateConfig])
+	const reorderLayers = useCallback(
+		(startIndex: number, endIndex: number) => {
+			const newLayers = Array.from(config.layers)
+			const [reorderedItem] = newLayers.splice(startIndex, 1)
+			newLayers.splice(endIndex, 0, reorderedItem)
+			const newConfig = { ...config, layers: newLayers }
+			updateConfig(newConfig)
+		},
+		[config, updateConfig]
+	)
 
 	const saveConfig = useCallback(() => {
-		setSavedConfigs((prevConfigs) => [...prevConfigs, config])
+		setSavedConfigs(prevConfigs => [...prevConfigs, config])
 	}, [config])
 
-	const loadConfig = useCallback((loadedConfig: BackgroundConfig) => {
-		updateConfig(loadedConfig)
-	}, [updateConfig])
+	const loadConfig = useCallback(
+		(loadedConfig: BackgroundConfig) => {
+			updateConfig(loadedConfig)
+		},
+		[updateConfig]
+	)
 
 	const undo = useCallback(() => {
 		if (currentIndexRef.current > 0) {
@@ -110,6 +125,6 @@ export function useBackgroundConfig() {
 		undo,
 		redo,
 		canUndo: currentIndexRef.current > 0,
-		canRedo: currentIndexRef.current < historyRef.current.length - 1,
+		canRedo: currentIndexRef.current < historyRef.current.length - 1
 	}
 }

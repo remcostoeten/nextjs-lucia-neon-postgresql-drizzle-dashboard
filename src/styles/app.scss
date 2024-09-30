@@ -2,21 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './themes/_regular.scss';
-@import './theme/_scrollar.scss';
+@import './components/_scrollar.scss';
+@import './components/_mouse-grid.scss';
+
+@import './core/_typography.scss';
+
+@import './themes/_theme-selector.scss'; // contains multiple tailwind themes
+
 @import './utillities/_border.scss';
 @import './utillities/_animations.scss';
+
 .trans-all {
 	transition: 500ms ease-in-out all;
-}
-
-h1 h2,
-h3,
-h4,
-h5,
-h6,
-pre {
-	@apply text-title;
 }
 
 label {

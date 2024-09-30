@@ -13,7 +13,8 @@ This won't be a SaaS for others or an attempt to monotize anything. Although, if
 -   Database(s)
     -   Postgresql - Through cloud provider: [Neon](https://neon.tech/)
     -   SQLite - Not implemented yet. Will be a cloud provider: [Turso](https://turso.tech).  
-         <sub>In the future I might implement a second database for the Whatsapp-chat function due to the 1 billion free reads.</sub>
+         <sub>In the future I might implement a second database 
+         for the Whatsapp-chat function due to the 1 billion free reads.</sub>
 
 ### UI
 

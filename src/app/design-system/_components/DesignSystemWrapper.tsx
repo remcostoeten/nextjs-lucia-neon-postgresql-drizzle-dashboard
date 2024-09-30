@@ -17,13 +17,12 @@ export default function DesignSystemWrapper({
 			</div>
 			{actionButtons.length > 0 && (
 				<Card className="bg-dark-section mb-8">
-					<div className="flex flex-wrap gap-4">
+					<div className="flex flex-wrap p-4 gap-4">
 						{actionButtons.map((button, index) => (
 							<Button
 								key={index}
 								onClick={button.onClick}
 								variant="outline"
-								className="bg-dark-section--lighter hover:bg-theme-primary hover:text-black transition-colors"
 							>
 								{button.label}
 							</Button>
@@ -31,6 +30,7 @@ export default function DesignSystemWrapper({
 					</div>
 				</Card>
 			)}
+			eb
 			<div className="bg-dark-section space-y-4 rounded-lg space-x-4 flex flex-col gap-4">
 				{children}
 			</div>

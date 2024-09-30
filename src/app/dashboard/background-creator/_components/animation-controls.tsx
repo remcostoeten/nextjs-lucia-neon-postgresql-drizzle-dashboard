@@ -4,44 +4,44 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-	Slider,
 	Switch
 } from 'ui'
-import { BackgroundConfig } from '../_utils/types'
+import { AnimationType, Layer } from '../_utils/bg-creator.types'
+import LabeledSlider from './labeled-sider'
 
 interface AnimationControlsProps {
-	config: BackgroundConfig
-	updateConfig: (updates: Partial<BackgroundConfig>) => void
+	layer: Layer
+	updateLayer: (updates: Partial<Layer>) => void
 }
 
 export function AnimationControls({
-	config,
-	updateConfig
+	layer,
+	updateLayer
 }: AnimationControlsProps) {
 	return (
 		<div className="space-y-4">
-			<div className="flex items-center space-x-2">
-				<Switch
-					id="animation-enabled"
-					checked={config.animationEnabled}
-					onCheckedChange={checked =>
-						updateConfig({ animationEnabled: checked })
-					}
-				/>
+			<div className="flex items-center justify-between">
 				<label
 					htmlFor="animation-enabled"
 					className="text-sm font-medium"
 				>
 					Enable Animation
 				</label>
+				<Switch
+					id="animation-enabled"
+					checked={layer.animationEnabled}
+					onCheckedChange={checked =>
+						updateLayer({ animationEnabled: checked })
+					}
+				/>
 			</div>
-			{config.animationEnabled && (
+			{layer.animationEnabled && (
 				<>
 					<Select
-						value={config.animationType}
+						value={layer.animationType}
 						onValueChange={value =>
-							updateConfig({
-								animationType: value as 'shift' | 'color'
+							updateLayer({
+								animationType: value as AnimationType
 							})
 						}
 					>
@@ -50,19 +50,45 @@ export function AnimationControls({
 						</SelectTrigger>
 						<SelectContent>
 							<SelectItem value="shift">Shift</SelectItem>
+							<SelectItem value="rotate">Rotate</SelectItem>
+							<SelectItem value="scale">Scale</SelectItem>
 							<SelectItem value="color">Color Change</SelectItem>
 						</SelectContent>
 					</Select>
-					<Slider
+					<LabeledSlider
 						label="Animation Duration (seconds)"
-						value={config.animationDuration}
-						onChange={value =>
-							updateConfig({ animationDuration: value })
+						value={[layer.animationDuration]}
+						onValueChange={value =>
+							updateLayer({ animationDuration: value[0] })
 						}
-						min={1}
+						min={0.1}
 						max={10}
 						step={0.1}
 					/>
+					<Select
+						value={layer.animationDirection}
+						onValueChange={value =>
+							updateLayer({
+								animationDirection: value as
+									| 'normal'
+									| 'reverse'
+									| 'alternate'
+									| 'alternate-reverse'
+							})
+						}
+					>
+						<SelectTrigger className="w-full">
+							<SelectValue placeholder="Select animation direction" />
+						</SelectTrigger>
+						<SelectContent>
+							<SelectItem value="normal">Normal</SelectItem>
+							<SelectItem value="reverse">Reverse</SelectItem>
+							<SelectItem value="alternate">Alternate</SelectItem>
+							<SelectItem value="alternate-reverse">
+								Alternate Reverse
+							</SelectItem>
+						</SelectContent>
+					</Select>
 				</>
 			)}
 		</div>

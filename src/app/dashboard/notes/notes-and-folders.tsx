@@ -62,7 +62,7 @@ export function CreateNoteButton({
 						placeholder="Note title"
 						required
 						value={title}
-						onChange={(e) => onTitleChange(e.target.value)}
+						onChange={e => onTitleChange(e.target.value)}
 					/>
 					<RichTextEditor
 						content={content}

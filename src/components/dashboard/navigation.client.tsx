@@ -10,7 +10,6 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-	Switch,
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger
@@ -19,11 +18,14 @@ import {
 	IconTooltips,
 	links
 } from '@/core/config/menu-items/dashboard-navigation-menu-items'
+import { createShortcutMap, useKeyboardShortcuts } from '@/core/hooks/use-keyboard-shortcuts'
 import { signOutAction } from '@/lib/actions/users'
-import { ChevronDown, LogOut, Moon, Settings, Sun } from 'lucide-react'
+import { ChevronDown, LogOut, Settings } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import LogoIcon from '../base/logo'
+import ThemeSwitcherButton from '../elements/dark-light-toggle'
 
 type NavigationProps = {
 	userName: string
@@ -33,6 +35,7 @@ type NavigationProps = {
 export default function Navigation({ userName, userEmail }: NavigationProps) {
 	const [theme, setTheme] = useState<'light' | 'dark'>('dark')
 	const [isMenuOpen, setMenuOpen] = useState(false)
+	const router = useRouter()
 
 	const toggleTheme = () => {
 		setTheme(theme === 'light' ? 'dark' : 'light')
@@ -42,8 +45,19 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 		setMenuOpen(!isMenuOpen)
 	}
 
+	const handleLogout = async () => {
+		await signOutAction()
+		router.push('/sign-in')
+	}
+
+	const shortcuts = createShortcutMap([
+		['shift+o', handleLogout]
+	])
+
+	useKeyboardShortcuts(shortcuts)
+
 	return (
-		<nav className="text-subtitle flex h-[77px] w-full items-center justify-between border-b  fixed-top">
+		<nav className="text-subtitle fixed top-0 left-0 flex h-[77px] w-full items-center justify-between border-b">
 			<div className="flex items-center space-x-4">
 				<Link href="/" className="text-title font-semibold">
 					<LogoIcon />
@@ -98,9 +112,7 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 								<Avatar className="h-8 w-8 bg-avatar text-title">
 									<AvatarFallback>
 										{userName
-											? userName
-													.substring(0, 2)
-													.toUpperCase()
+											? userName.split(' ').map(name => name[0]).join('').toUpperCase().slice(0, 2)
 											: 'U'}
 									</AvatarFallback>
 								</Avatar>
@@ -131,21 +143,18 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 						</DropdownMenuItem>
 						<DropdownMenuItem>
 							<div className="flex items-center justify-between w-full">
-								<div className="flex items-center">
+								{/* <div className="flex items-center">
 									{theme === 'light' ? (
 										<Sun className="mr-2 h-4 w-4" />
 									) : (
 										<Moon className="mr-2 h-4 w-4" />
 									)}
 									<span>Theme</span>
-								</div>
-								<Switch
-									checked={theme === 'dark'}
-									onCheckedChange={toggleTheme}
-								/>
+								</div> */}
+								<ThemeSwitcherButton />
 							</div>
 						</DropdownMenuItem>
-						<DropdownMenuItem onSelect={() => signOutAction()}>
+						<DropdownMenuItem onSelect={handleLogout}>
 							<LogOut className="mr-2 h-4 w-4" />
 							<span>Log out</span>
 						</DropdownMenuItem>
