@@ -1,11 +1,11 @@
 'use client'
 
-import { Button } from 'ui'
-import { Smartphone, Tablet, Monitor } from 'lucide-react'
-import { motion } from 'framer-motion'
-import { useSiteSettingsStore } from '@/core/stores/store.site-settings'
-import { useBackgroundConfig } from '@/app/dashboard/background-creator/_utils/use-background-config'
 import { DeviceSize } from '@/app/dashboard/background-creator/_utils/bg-creator.types'
+import { useBackgroundConfig } from '@/app/dashboard/background-creator/_utils/use-background-config'
+import { useSiteSettingsStore } from '@/core/stores/store.site-settings'
+import { motion } from 'framer-motion'
+import { Monitor, Smartphone, Tablet } from 'lucide-react'
+import { Button } from 'ui'
 
 export default function BackgroundGeneratorSidebar() {
 	const { deviceSize, setDeviceSize, config } = useBackgroundConfig()
@@ -19,10 +19,10 @@ export default function BackgroundGeneratorSidebar() {
 		disableSidebarAnimations
 			? {}
 			: {
-					initial: { opacity: 0, y: 20 },
-					animate: { opacity: 1, y: 0 },
-					transition: { delay, duration: 0.3 }
-				}
+				initial: { opacity: 0, y: 20 },
+				animate: { opacity: 1, y: 0 },
+				transition: { delay, duration: 0.3 }
+			}
 
 	const MotionDiv = disableSidebarAnimations ? 'div' : motion.div
 

@@ -8,7 +8,7 @@ export default function Home() {
 		<>
 			<Hero />
 			<Wrapper>
-				<BentoGrid children={undefined} />
+				<BentoGrid />
 			</Wrapper>
 			<GithubOpenSource />
 			<Footer />

@@ -1,5 +1,7 @@
 'use client'
 
+import { Kbd } from '@/components/atoms'
+import HackerText from '@/components/effects/gitihu-oss/hacker-text'
 import CodeHighlight from '@/components/elements/code-highlight/code-highlight'
 import {
 	createShortcutMap,
@@ -7,7 +9,6 @@ import {
 } from '@/core/hooks/use-keyboard-shortcuts'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef, useState } from 'react'
-import Kbd from 'src/components/atoms/Kbd'
 import {
 	Button,
 	Card,
@@ -81,7 +82,14 @@ const KeyboardShortcutsShowcase = () => {
 				{ label: 'Clear Message', onClick: () => setMessage('') }
 			]}
 		>
-			<motion.div
+			<HackerText
+				lowercase={true}
+				duration={3000}
+				speed={50}
+				onClick={() => console.log('clicked')}
+			>
+				hacker text
+			</HackerText>			<motion.div
 				ref={headerRef}
 				style={{
 					position: 'sticky',

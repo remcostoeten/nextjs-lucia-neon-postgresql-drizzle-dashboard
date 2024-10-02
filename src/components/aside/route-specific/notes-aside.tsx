@@ -1,7 +1,8 @@
 'use client'
 
-import { CustomDropdown, DropdownAction } from '@/components/elements'
+import { DropdownAction } from '@/components/elements'
 import ConfirmationModal from '@/components/elements/crud/confirmation-modal'
+import FolderCrudButton from '@/components/elements/crud/crud-button'
 import { useNotesStore, useSiteSettingsStore } from '@/core/stores'
 import {
 	createFolder,
@@ -129,9 +130,12 @@ export default function NotesSidebar() {
 		}
 	}
 
-	const handleDeleteFolder = (folder: FolderType) => {
-		setFolderToDelete(folder)
-		setIsDeleteConfirmationOpen(true)
+	const handleDeleteFolder = (folderId: string) => {
+		const folder = folders.find(folder => folder.id === folderId)
+		if (folder) {
+			setFolderToDelete(folder)
+			setIsDeleteConfirmationOpen(true)
+		}
 	}
 
 	const confirmDelete = async () => {
@@ -169,7 +173,7 @@ export default function NotesSidebar() {
 		{
 			label: 'Delete',
 			icon: <Trash2 size={16} />,
-			onClick: () => handleDeleteFolder(folder)
+			onClick: () => handleDeleteFolder(folder.id)
 		}
 	]
 
@@ -258,8 +262,9 @@ export default function NotesSidebar() {
 									</span>
 								</div>
 								<div className="flex-shrink-0 ml-2">
-									<CustomDropdown
-										actions={getFolderActions(folder)}
+									<FolderCrudButton
+										folder={folder}
+										onDelete={() => handleDeleteFolder(folder.id)} // Implement this function to handle folder deletion
 									/>
 								</div>
 							</motion.li>

@@ -135,7 +135,6 @@ const SuperIcon: React.FC<IconProps> = ({
 		color={color}
 		viewBox="0 0 24 24"
 		{...props}
-
 	>
 		<path d="M3 3v18h18V3H3zm16 16H5V5h14v14zM7.5 12.5h3V15H12v-2.5h3V11H12V8.5h-1.5V11h-3v1.5z" />
 	</svg>
@@ -186,16 +185,16 @@ const EscapeIcon: React.FC<IconProps> = ({
 type KbdProps = {
 	children: React.ReactNode
 	variant?:
-	| 'default'
-	| 'cmd'
-	| 'ctrl'
-	| 'shift'
-	| 'alt'
-	| 'option'
-	| 'win'
-	| 'super'
-	| 'esc'
-	| 'slash'
+		| 'default'
+		| 'cmd'
+		| 'ctrl'
+		| 'shift'
+		| 'alt'
+		| 'option'
+		| 'win'
+		| 'super'
+		| 'esc'
+		| 'slash'
 	size?: 'sm' | 'md' | 'lg'
 	hasTooltip?: boolean
 	tooltipContent?: string

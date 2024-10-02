@@ -7,7 +7,7 @@ export const activityLogs = pgTable('activity_logs', {
 	id: text('id').primaryKey(),
 	userId: text('user_id')
 		.notNull()
-		.references(() => users.id, { table: users }),
+		.references(() => users.id),
 	action: text('action').notNull(),
 	details: text('details'),
 	timestamp: timestamp('timestamp').defaultNow().notNull()

@@ -52,7 +52,7 @@ const features = [
 	{
 		Icon: FileTextIcon,
 		name: 'Manage your notes',
-		description: 'Securely manage your notes with our note-taking app.',
+		description: 'Securely manage your thoughts and masterplans.',
 		href: '#',
 		cta: 'Learn more',
 		className: 'col-span-3 lg:col-span-1',
@@ -79,7 +79,7 @@ const features = [
 								</figcaption>
 							</div>
 						</div>
-						<blockquote className="mt-2 text-xs">
+						<blockquote className="mt-2 text-sm text-subtitle">
 							{f.body}
 						</blockquote>
 					</figure>
@@ -133,7 +133,7 @@ const features = [
 
 export default function BentoGridIntro() {
 	return (
-		<BentoGrid>
+		<BentoGrid className="my-14">
 			{features.map((feature, idx) => (
 				<BentoCard key={idx} {...feature} />
 			))}

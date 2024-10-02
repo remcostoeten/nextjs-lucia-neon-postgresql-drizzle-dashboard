@@ -15,7 +15,7 @@ import {
 	CardTitle
 } from 'ui'
 
-export default function NotFound({ }: { prop: string }) {
+export default function NotFound({}: { prop: string }) {
 	return (
 		<Spotlight>
 			<div className="flex items-center justify-center min-h-screen bg-background">

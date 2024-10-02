@@ -11,7 +11,7 @@
 		"noEmit": true,
 		"esModuleInterop": true,
 		"module": "esnext",
-		"moduleResolution": "bundler",
+		"moduleResolution": "node", // Changed from "bundler" to "node"
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"jsx": "preserve",
@@ -48,7 +48,7 @@
 			],
 			"atoms": [
 				"./src/components/atoms/index.ts"
-			],
+			]
 		},
 		"target": "esnext",
 		"baseUrl": "./"
