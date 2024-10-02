@@ -1,55 +1,52 @@
 'use client'
 
+import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import {
-	ScrollArea,
-	Input,
-	Button,
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle
-} from 'ui'
-import { Trash2, MapPin } from 'lucide-react'
+import { Button, Card, CardContent, CardHeader, CardTitle, Input, ScrollArea } from 'ui'
+
+import { deleteLocation, saveLocation } from 'actions'
+import { MapPin, Trash2 } from 'lucide-react'
 
 type SavedLocation = {
 	id: string
 	title: string
-	coordinates: [number, number]
+	latitude: number
+	longitude: number
 }
 
 export function SavedLocations() {
 	const [title, setTitle] = useState('')
 	const [savedLocations, setSavedLocations] = useState<SavedLocation[]>([])
-	const [currentCoordinates, setCurrentCoordinates] = useState<
-		[number, number] | null
-	>(null)
+	const [currentLocation, setCurrentLocation] = useState<{ latitude: number; longitude: number } | null>(null)
 
 	async function handleSave() {
-		if (!currentCoordinates) {
+		if (!currentLocation) {
 			alert('Please search for a location first')
 			return
 		}
-		const result = await saveLocation(title, currentCoordinates)
-		if (result) {
+		try {
+			const result = await saveLocation(title, currentLocation.latitude, currentLocation.longitude)
 			setSavedLocations([...savedLocations, result])
 			setTitle('')
+		} catch (error) {
+			console.error('Error saving location:', error)
+			alert('Failed to save location. Please try again.')
 		}
 	}
 
 	async function handleDelete(id: string) {
-		const success = await deleteLocation(id)
-		if (success) {
-			setSavedLocations(
-				savedLocations.filter((location) => location.id !== id)
-			)
+		try {
+			await deleteLocation(id)
+			setSavedLocations(savedLocations.filter(location => location.id !== id))
+		} catch (error) {
+			console.error('Error deleting location:', error)
+			alert('Failed to delete location. Please try again.')
 		}
 	}
 
-	function handleLocationClick(coordinates: [number, number]) {
+	function handleLocationClick(latitude: number, longitude: number) {
 		// Implement logic to update map view with these coordinates
-		console.log('Updating map view to:', coordinates)
+		console.log('Updating map view to:', latitude, longitude)
 	}
 
 	return (
@@ -66,9 +63,7 @@ export function SavedLocations() {
 						onChange={(e) => setTitle(e.target.value)}
 						className="flex-grow"
 					/>
-					<Button onClick={handleSave} disabled={!currentCoordinates}>
-						Save
-					</Button>
+					<Button onClick={handleSave} disabled={!currentLocation}>Save</Button>
 				</div>
 				<ScrollArea className="h-[200px]">
 					<AnimatePresence>
@@ -82,11 +77,7 @@ export function SavedLocations() {
 								className="flex items-center justify-between p-2 mb-2 bg-gray-800 rounded"
 							>
 								<button
-									onClick={() =>
-										handleLocationClick(
-											location.coordinates
-										)
-									}
+									onClick={() => handleLocationClick(location.latitude, location.longitude)}
 									className="flex items-center text-left"
 								>
 									<MapPin className="w-4 h-4 mr-2" />

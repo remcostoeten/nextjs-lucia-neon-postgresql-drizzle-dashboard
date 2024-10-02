@@ -1,27 +1,29 @@
 'use client'
 
-import { useState } from 'react'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { Map as LeafletMap } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import { useEffect, useState } from 'react'
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 
 type MapComponentProps = {
   location: [number, number]
 }
 
 export function MapComponent({ location }: MapComponentProps) {
-  const [mapKey, setMapKey] = useState(0)
+  const [map, setMap] = useState<LeafletMap | null>(null)
 
-  // Force re-render of map when location changes
-  if (location !== prevLocation) {
-    setMapKey(mapKey + 1)
-  }
+  useEffect(() => {
+    if (map) {
+      map.setView(location, 13)
+    }
+  }, [map, location])
 
   return (
     <MapContainer
-      key={mapKey}
       center={location}
       zoom={13}
       style={{ height: '400px', width: '100%' }}
+      whenCreated={setMap}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

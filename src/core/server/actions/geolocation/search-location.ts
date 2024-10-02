@@ -1,70 +1,38 @@
 'use server'
 
-import { db } from '@/lib/db'
-import { locations } from '@/lib/db/schema'
-import { eq, ilike } from 'drizzle-orm'
-import { distance } from 'fastest-levenshtein'
-import { fetchWeatherData } from '../weather'
-import { fetchPointsOfInterest } from './fetch-poi'
+import { cache } from 'react'
+
+const API_KEY = process.env.OPENROUTE_SERVICE_API_KEY
+
+if (!API_KEY) {
+	throw new Error('OPENROUTE_SERVICE_API_KEY is not set in environment variables')
+}
 
 type Location = {
-	id: number
+	id: string
 	name: string
 	address: string
-	latitude: number
-	longitude: number
 }
 
-type WeatherData = Awaited<ReturnType<typeof fetchWeatherData>>
-type PointOfInterest = Awaited<ReturnType<typeof fetchPointsOfInterest>>[number]
+export const searchLocations = cache(async (query: string): Promise<Location[]> => {
+	try {
+		const response = await fetch(
+			`https://api.openrouteservice.org/geocode/search?api_key=${API_KEY}&text=${encodeURIComponent(query)}&size=5`
+		)
 
-export async function searchLocation(searchTerm: string) {
-	const correctedSearchTerm = correctTypos(searchTerm)
+		if (!response.ok) {
+			throw new Error('Failed to fetch location suggestions')
+		}
 
-	const results = await db
-		.select()
-		.from(locations)
-		.where(ilike(locations.name, `%${correctedSearchTerm}%`))
-		.limit(5)
+		const data = await response.json()
 
-	if (results.length === 0) {
-		return null
+		return data.features.map((feature: any) => ({
+			id: feature.properties.id,
+			name: feature.properties.name,
+			address: feature.properties.label,
+		}))
+	} catch (error) {
+		console.error('Error searching locations:', error)
+		throw new Error('Failed to search locations')
 	}
-
-	// Find the best match using Levenshtein distance
-	const bestMatch = results.reduce((best, current) =>
-		distance(current.name, correctedSearchTerm) <
-		distance(best.name, correctedSearchTerm)
-			? current
-			: best
-	)
-
-	const weather = await fetchWeatherData(
-		bestMatch.latitude,
-		bestMatch.longitude
-	)
-	const pointsOfInterest = await fetchPointsOfInterest(
-		bestMatch.latitude,
-		bestMatch.longitude
-	)
-
-	return {
-		id: bestMatch.id,
-		name: bestMatch.name,
-		address: bestMatch.address,
-		coordinates: [bestMatch.latitude, bestMatch.longitude] as [
-			number,
-			number
-		],
-		weather,
-		pointsOfInterest
-	}
-}
-
-function correctTypos(searchTerm: string): string {
-	// Simple typo correction: remove extra spaces and convert to lowercase
-	return searchTerm.trim().toLowerCase().replace(/\s+/g, ' ')
-}
-
-// Note: fetchWeatherData and fetchPointsOfInterest are imported from separate files
-// to keep this file focused on the search functionality
+})

@@ -1,21 +1,19 @@
 'use client'
 
-import { useState, useTransition, useOptimistic } from 'react'
+import { searchLocations } from 'actions'
 import { motion } from 'framer-motion'
-import { Input } from 'ui/input'
-import { Button } from 'ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from 'ui/card'
-import { searchLocation } from 'actions/geolocation'
+import { useOptimistic, useState, useTransition } from 'react'
+import { Button, Card, CardContent, CardHeader, CardTitle, Input } from 'ui'
 import { MapComponent } from './map-component'
-import { WeatherForecast } from './weather-forecast'
 import { PointsOfInterest } from './points-of-interest'
 import { SavedLocations } from './saved-locations'
+import { WeatherForecast } from './weather-forecast'
 
 type Location = {
   address: string
   coordinates: [number, number]
-  weather: any // Replace with actual weather type
-  pointsOfInterest: any[] // Replace with actual POI type
+  weather: any
+  pointsOfInterest: any[]
 }
 
 export function GeolocationFinder() {
@@ -29,10 +27,18 @@ export function GeolocationFinder() {
 
   function handleSearch() {
     startTransition(async () => {
-      const result = await searchLocation(searchTerm)
-      if (result) {
-        addOptimisticLocation(result)
-        setLocation(result)
+      const results = await searchLocations(searchTerm)
+      if (results && results.length > 0) {
+        const result = results[0] // Take the first result
+        const newLocation: Location = {
+          address: result.address,
+          coordinates: [parseFloat(result.latitude), parseFloat(result.longitude)],
+          weather: null, // You'll need to fetch this separately
+          pointsOfInterest: [] // You'll need to fetch this separately
+        }
+        addOptimisticLocation(newLocation)
+        setLocation(newLocation)
+        // Here you would typically fetch weather and points of interest
       }
     })
   }
@@ -55,7 +61,7 @@ export function GeolocationFinder() {
             {isPending ? 'Searching...' : 'Search'}
           </Button>
         </div>
-        
+
         {optimisticLocation && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -63,11 +69,15 @@ export function GeolocationFinder() {
             transition={{ duration: 0.3 }}
           >
             <MapComponent location={optimisticLocation.coordinates} />
-            <WeatherForecast weather={optimisticLocation.weather} />
-            <PointsOfInterest points={optimisticLocation.pointsOfInterest} />
+            {optimisticLocation.weather && (
+              <WeatherForecast weather={optimisticLocation.weather} />
+            )}
+            {optimisticLocation.pointsOfInterest && (
+              <PointsOfInterest points={optimisticLocation.pointsOfInterest} />
+            )}
           </motion.div>
         )}
-        
+
         <SavedLocations />
       </CardContent>
     </Card>
