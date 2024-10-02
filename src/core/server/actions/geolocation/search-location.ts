@@ -12,6 +12,7 @@ type Location = {
 	id: string
 	name: string
 	address: string
+	coordinates: [number, number]
 }
 
 export const searchLocations = cache(async (query: string): Promise<Location[]> => {
@@ -27,12 +28,15 @@ export const searchLocations = cache(async (query: string): Promise<Location[]> 
 		const data = await response.json()
 
 		return data.features.map((feature: any) => ({
-			id: feature.properties.id,
-			name: feature.properties.name,
-			address: feature.properties.label,
-		}))
+			id: feature.properties.id || '',
+			name: feature.properties.name || 'Unknown',
+			address: feature.properties.label || 'Unknown',
+			coordinates: [feature.geometry.coordinates[1], feature.geometry.coordinates[0]] // Swap lat and lon
+		})).filter((location: Location) =>
+			location.coordinates[0] !== 0 && location.coordinates[1] !== 0
+		)
 	} catch (error) {
 		console.error('Error searching locations:', error)
-		throw new Error('Failed to search locations')
+		return []
 	}
 })

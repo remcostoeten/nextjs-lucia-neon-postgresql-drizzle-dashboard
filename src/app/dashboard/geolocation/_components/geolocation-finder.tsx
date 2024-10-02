@@ -1,46 +1,36 @@
 'use client'
 
-import { searchLocations } from 'actions'
-import { motion } from 'framer-motion'
-import { useOptimistic, useState, useTransition } from 'react'
-import { Button, Card, CardContent, CardHeader, CardTitle, Input } from 'ui'
-import { MapComponent } from './map-component'
-import { PointsOfInterest } from './points-of-interest'
-import { SavedLocations } from './saved-locations'
-import { WeatherForecast } from './weather-forecast'
-
-type Location = {
-  address: string
-  coordinates: [number, number]
-  weather: any
-  pointsOfInterest: any[]
-}
+import { Card, CardContent, CardHeader, CardTitle, Input } from "@/components/ui"
+import { searchLocations } from "@/core/server/actions"
+import { useState, useTransition } from "react"
+import { Button } from "react-day-picker"
+import { MapComponent } from "./map-component"
+import { SavedLocations } from "./saved-locations"
 
 export function GeolocationFinder() {
   const [searchTerm, setSearchTerm] = useState('')
   const [location, setLocation] = useState<Location | null>(null)
   const [isPending, startTransition] = useTransition()
-  const [optimisticLocation, addOptimisticLocation] = useOptimistic(
-    location,
-    (state, newLocation: Location) => newLocation
-  )
 
-  function handleSearch() {
+  async function handleSearch() {
     startTransition(async () => {
       const results = await searchLocations(searchTerm)
       if (results && results.length > 0) {
-        const result = results[0] // Take the first result
-        const newLocation: Location = {
-          address: result.address,
-          coordinates: [parseFloat(result.latitude), parseFloat(result.longitude)],
-          weather: null, // You'll need to fetch this separately
-          pointsOfInterest: [] // You'll need to fetch this separately
+        const result: Location = {
+          address: results[0].address,
+          coordinates: results[0].coordinates,
+          weather: null,
+          pointsOfInterest: []
         }
-        addOptimisticLocation(newLocation)
-        setLocation(newLocation)
-        // Here you would typically fetch weather and points of interest
+        setLocation(result)
       }
     })
+  }
+
+  function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') {
+      handleSearch()
+    }
   }
 
   return (
@@ -55,6 +45,7 @@ export function GeolocationFinder() {
             placeholder="Enter city, street, address, or postal code"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={handleKeyPress}
             className="flex-grow"
           />
           <Button onClick={handleSearch} disabled={isPending}>
@@ -62,20 +53,11 @@ export function GeolocationFinder() {
           </Button>
         </div>
 
-        {optimisticLocation && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <MapComponent location={optimisticLocation.coordinates} />
-            {optimisticLocation.weather && (
-              <WeatherForecast weather={optimisticLocation.weather} />
-            )}
-            {optimisticLocation.pointsOfInterest && (
-              <PointsOfInterest points={optimisticLocation.pointsOfInterest} />
-            )}
-          </motion.div>
+        {location && (
+          <div>
+            <MapComponent location={location.coordinates} />
+            <p>Address: {location.address}</p>
+          </div>
         )}
 
         <SavedLocations />
