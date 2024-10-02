@@ -1,10 +1,9 @@
 'use client'
 
+import { Button } from 'ui'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-
-import { Button } from '@/components/ui/button'
 
 import { defaultLinks } from '@/config/nav'
 import { AlignRight } from 'lucide-react'
@@ -23,7 +22,7 @@ export default function Navbar() {
 			{open ? (
 				<div className="my-4 p-4 bg-muted h">
 					<ul className="space-y-2 ">
-						{defaultLinks.map(link => (
+						{defaultLinks.map((link) => (
 							<li
 								key={link.title}
 								onClick={() => setOpen(false)}

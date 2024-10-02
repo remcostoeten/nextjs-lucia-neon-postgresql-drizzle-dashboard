@@ -19,7 +19,9 @@
 		"pull": "drizzle-kit introspect:pg",
 		"studio": "drizzle-kit studio",
 		"check": "drizzle-kit check:pg",
-		"shad": "npx shadcn@latest add"
+		"shad": "npx shadcn@latest add",
+		"fix:ui": "python3 src/core/scripts/optimize-ui-imports.py --all",
+		"fix:ui-file": "python3 src/core/scripts/optimize-ui-imports.py --file"
 	},
 	"dependencies": {
 		"@lucia-auth/adapter-drizzle": "^1.0.2",

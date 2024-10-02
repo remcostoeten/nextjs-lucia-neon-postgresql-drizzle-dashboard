@@ -1,5 +1,4 @@
-import { Card } from '@/components/ui/card'
-
+import { Card } from 'ui'
 interface AccountCardProps {
 	params: {
 		header: string

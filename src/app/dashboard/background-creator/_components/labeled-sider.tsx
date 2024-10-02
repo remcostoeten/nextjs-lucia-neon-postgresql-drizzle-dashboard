@@ -1,4 +1,4 @@
-import { Label } from '@/components/ui/label'
+import { Label } from 'ui'
 import { Slider } from 'ui'
 
 type LabeledSliderProps = {

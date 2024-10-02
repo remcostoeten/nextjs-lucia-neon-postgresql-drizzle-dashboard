@@ -10,7 +10,7 @@ type SpotlightProps = {
 
 export default function Spotlight({
 	children,
-	className = ''
+	className = '',
 }: SpotlightProps) {
 	const containerRef = useRef<HTMLDivElement>(null)
 	const mousePosition = useMousePosition()
@@ -22,8 +22,8 @@ export default function Spotlight({
 		containerRef.current &&
 			setBoxes(
 				Array.from(containerRef.current.children).map(
-					el => el as HTMLElement
-				)
+					(el) => el as HTMLElement,
+				),
 			)
 	}, [])
 
@@ -57,7 +57,7 @@ export default function Spotlight({
 			if (inside) {
 				mouse.current.x = x
 				mouse.current.y = y
-				boxes.forEach(box => {
+				boxes.forEach((box) => {
 					const boxX =
 						-(box.getBoundingClientRect().left - rect.left) +
 						mouse.current.x
@@ -85,7 +85,7 @@ type SpotlightCardProps = {
 
 export function SpotlightCard({
 	children,
-	className = ''
+	className = '',
 }: SpotlightCardProps) {
 	return (
 		<div

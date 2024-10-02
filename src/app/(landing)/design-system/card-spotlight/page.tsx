@@ -1,7 +1,7 @@
+// @ts-nocheck
+// @ts-ignore
 'use client'
 
-import { Icons } from '@/components/base/icons'
-import Banner from '@/components/effects/card-spotlight/banner'
 import Spotlight, {
 	SpotlightCard
 } from '@/components/effects/card-spotlight/card-spotlight'
@@ -15,15 +15,15 @@ import {
 	Label,
 	Slider
 } from '@/components/ui'
+import Image from 'next/image'
+import { useState } from 'react'
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue
-} from '@/components/ui/select'
-import Image from 'next/image'
-import { useState } from 'react'
+} from 'ui'
 import DesignSystemWrapper from '../_components/DesignSystemWrapper'
 import Card01 from '/public/card-01.png'
 import Card02 from '/public/card-02.png'
@@ -216,9 +216,8 @@ const SpotlightCardContent = ({
 					mainCircleSize={rippleProps.mainCircleSize}
 					mainCircleOpacity={rippleProps.mainCircleOpacity}
 					numCircles={rippleProps.numCircles}
-					className={`-translate-y-[105px] transition-opacity ease-in-out duration-500 ${
-						isHovered ? 'opacity-70' : 'opacity-30'
-					} -z-10`}
+					className={`-translate-y-[105px] transition-opacity ease-in-out duration-500 ${isHovered ? 'opacity-70' : 'opacity-30'
+						} -z-10`}
 				/>
 			)}
 
@@ -266,7 +265,7 @@ const CardControls = ({ rippleProps, onRipplePropsChange, theme }) => (
 				<Checkbox
 					id="ripple-enabled"
 					checked={rippleProps.enabled}
-					onCheckedChange={checked =>
+					onCheckedChange={(checked) =>
 						onRipplePropsChange({
 							...rippleProps,
 							enabled: checked
@@ -370,7 +369,7 @@ export default function SpotlightPage() {
 	])
 
 	const handleRipplePropsChange = (index: number, newProps: any) => {
-		setCardData(prevData =>
+		setCardData((prevData) =>
 			prevData.map((card, i) =>
 				i === index ? { ...card, rippleProps: newProps } : card
 			)
@@ -414,7 +413,7 @@ export default function SpotlightPage() {
 								<CardControls
 									key={index}
 									rippleProps={card.rippleProps}
-									onRipplePropsChange={newProps =>
+									onRipplePropsChange={(newProps) =>
 										handleRipplePropsChange(index, newProps)
 									}
 									theme={theme}

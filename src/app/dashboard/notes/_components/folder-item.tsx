@@ -1,11 +1,11 @@
-import { EditFolderDialog } from '@/components/elements/crud/edit-folder-modal'
-import { Button } from '@/components/ui/button'
 import {
+	Button,
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+} from 'ui'
+import { EditFolderDialog } from '@/components/elements/crud/edit-folder-modal'
 import { FolderOpen, MoreVertical, Pencil, Trash } from 'lucide-react'
 import React, { useState } from 'react'
 

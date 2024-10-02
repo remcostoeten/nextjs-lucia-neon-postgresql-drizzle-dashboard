@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from 'ui'
 import { getActivityLogs } from '@/core/server/actions/activity'
 import { useEffect, useState } from 'react'
 type ActivityLogItem = {
@@ -27,7 +27,7 @@ export default function ActivityLog() {
 				<CardTitle>Activity Log</CardTitle>
 			</CardHeader>
 			<CardContent>
-				{logs.map(log => (
+				{logs.map((log) => (
 					<div key={log.id} className="mb-2">
 						<p className="text-sm font-semibold">{log.action}</p>
 						<p className="text-xs text-gray-500">

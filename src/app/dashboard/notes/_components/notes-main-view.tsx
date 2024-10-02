@@ -1,9 +1,8 @@
 'use client'
 
+import { Button, Card, CardContent, CardHeader, CardTitle } from 'ui'
 import NewNoteModal from '@/components/elements/crud/add-note-modal'
 import NoticeBox from '@/components/elements/notice-box'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { createNote, deleteNote, getNotes, updateNote } from '@/lib/api/notes'
 import { useCallback, useEffect, useState } from 'react'
 import { useNotesStore } from 'stores'
@@ -46,7 +45,7 @@ export default function NotesMainView() {
 		fetchNotes()
 	}
 
-	const handleDeleteNote = async noteId => {
+	const handleDeleteNote = async (noteId) => {
 		const formData = new FormData()
 		formData.append('id', noteId)
 		await deleteNote(formData)
@@ -66,7 +65,7 @@ export default function NotesMainView() {
 				</CardHeader>
 				<CardContent>
 					{notes.length > 0 ? (
-						notes.map(note => (
+						notes.map((note) => (
 							<NoteItem
 								key={note.id}
 								note={note}
