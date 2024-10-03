@@ -24,7 +24,7 @@ export function BackgroundGenerator() {
 		saveConfig,
 		loadConfig,
 		deviceSize,
-		setDeviceSize,
+		setDeviceSize
 	} = useBackgroundConfig()
 
 	const loadPreset = (preset: BackgroundConfig) => {
@@ -42,10 +42,14 @@ export function BackgroundGenerator() {
 	return (
 		<div className="relative min-h-screen">
 			<BackgroundPreview config={config} deviceSize={deviceSize} />
-			<ResponsivePreview deviceSize={deviceSize} setDeviceSize={setDeviceSize} />
+			<ResponsivePreview
+				deviceSize={deviceSize}
+				setDeviceSize={setDeviceSize}
+			/>
 			<div
-				className={`fixed inset-y-0 right-0 w-96 bg-gray-900 p-6 transition-transform duration-300 ease-in-out ${isMinimized ? 'translate-x-full' : 'translate-x-0'
-					}`}
+				className={`fixed inset-y-0 right-0 w-96 bg-gray-900 p-6 transition-transform duration-300 ease-in-out ${
+					isMinimized ? 'translate-x-full' : 'translate-x-0'
+				}`}
 			>
 				<button
 					onClick={() => setIsMinimized(!isMinimized)}
@@ -64,8 +68,11 @@ export function BackgroundGenerator() {
 								layer={layer}
 								updateLayer={updateLayer}
 								removeLayer={removeLayer}
-								moveLayer={(direction) => {
-									const newIndex = direction === 'up' ? index - 1 : index + 1
+								moveLayer={direction => {
+									const newIndex =
+										direction === 'up'
+											? index - 1
+											: index + 1
 									reorderLayers(index, newIndex)
 								}}
 								isFirst={index === 0}

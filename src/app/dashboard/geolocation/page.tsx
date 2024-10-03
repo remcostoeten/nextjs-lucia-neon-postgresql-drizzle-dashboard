@@ -9,29 +9,29 @@ import { ReverseSearch } from './_components/reverse-search'
 import { UserInformation } from './_components/user-information'
 
 export default function GeolocationPage() {
-  return (
-    <Flex dir="col" gap="4" className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Geolocation Dashboard</h1>
+	return (
+		<Flex dir="col" gap="4" className="p-6">
+			<h1 className="text-3xl font-bold mb-6">Geolocation Dashboard</h1>
 
-      <Suspense fallback={<GeolocationLoader />}>
-        <InteractiveMapWrapper />
-      </Suspense>
+			<Suspense fallback={<GeolocationLoader />}>
+				<InteractiveMapWrapper />
+			</Suspense>
 
-      <Suspense fallback={<GeolocationLoader />}>
-        <GeolocationFinder />
-      </Suspense>
+			<Suspense fallback={<GeolocationLoader />}>
+				<GeolocationFinder />
+			</Suspense>
 
-      <Suspense fallback={<AnimatedSpinner />}>
-        <DistanceCalculator />
-      </Suspense>
+			<Suspense fallback={<AnimatedSpinner />}>
+				<DistanceCalculator />
+			</Suspense>
 
-      <Suspense fallback={<AnimatedSpinner />}>
-        <ReverseSearch />
-      </Suspense>
+			<Suspense fallback={<AnimatedSpinner />}>
+				<ReverseSearch />
+			</Suspense>
 
-      <Suspense fallback={<AnimatedSpinner />}>
-        <UserInformation />
-      </Suspense>
-    </Flex>
-  )
+			<Suspense fallback={<AnimatedSpinner />}>
+				<UserInformation />
+			</Suspense>
+		</Flex>
+	)
 }

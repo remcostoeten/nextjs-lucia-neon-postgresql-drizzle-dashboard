@@ -216,8 +216,9 @@ const SpotlightCardContent = ({
 					mainCircleSize={rippleProps.mainCircleSize}
 					mainCircleOpacity={rippleProps.mainCircleOpacity}
 					numCircles={rippleProps.numCircles}
-					className={`-translate-y-[105px] transition-opacity ease-in-out duration-500 ${isHovered ? 'opacity-70' : 'opacity-30'
-						} -z-10`}
+					className={`-translate-y-[105px] transition-opacity ease-in-out duration-500 ${
+						isHovered ? 'opacity-70' : 'opacity-30'
+					} -z-10`}
 				/>
 			)}
 
@@ -265,7 +266,7 @@ const CardControls = ({ rippleProps, onRipplePropsChange, theme }) => (
 				<Checkbox
 					id="ripple-enabled"
 					checked={rippleProps.enabled}
-					onCheckedChange={(checked) =>
+					onCheckedChange={checked =>
 						onRipplePropsChange({
 							...rippleProps,
 							enabled: checked
@@ -369,7 +370,7 @@ export default function SpotlightPage() {
 	])
 
 	const handleRipplePropsChange = (index: number, newProps: any) => {
-		setCardData((prevData) =>
+		setCardData(prevData =>
 			prevData.map((card, i) =>
 				i === index ? { ...card, rippleProps: newProps } : card
 			)
@@ -413,7 +414,7 @@ export default function SpotlightPage() {
 								<CardControls
 									key={index}
 									rippleProps={card.rippleProps}
-									onRipplePropsChange={(newProps) =>
+									onRipplePropsChange={newProps =>
 										handleRipplePropsChange(index, newProps)
 									}
 									theme={theme}

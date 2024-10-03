@@ -31,6 +31,12 @@
 		"target": "esnext",
 		"baseUrl": "./"
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/core/server/actions/geolocation/delete-location.ts"],
+	"include": [
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		".next/types/**/*.ts",
+		"src/core/server/actions/geolocation/delete-location.ts"
+	],
 	"exclude": ["node_modules"]
 }

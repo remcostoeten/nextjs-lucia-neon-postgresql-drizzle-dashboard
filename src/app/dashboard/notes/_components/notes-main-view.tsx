@@ -45,7 +45,7 @@ export default function NotesMainView() {
 		fetchNotes()
 	}
 
-	const handleDeleteNote = async (noteId) => {
+	const handleDeleteNote = async noteId => {
 		const formData = new FormData()
 		formData.append('id', noteId)
 		await deleteNote(formData)
@@ -65,7 +65,7 @@ export default function NotesMainView() {
 				</CardHeader>
 				<CardContent>
 					{notes.length > 0 ? (
-						notes.map((note) => (
+						notes.map(note => (
 							<NoteItem
 								key={note.id}
 								note={note}

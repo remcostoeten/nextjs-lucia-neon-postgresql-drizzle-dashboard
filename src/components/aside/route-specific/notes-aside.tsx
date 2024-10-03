@@ -11,14 +11,7 @@ import {
 	updateFolder
 } from '@/lib/api/folders'
 import { motion } from 'framer-motion'
-import {
-	Edit,
-	FolderOpen,
-	PlusCircle,
-	Star,
-	Tag,
-	Trash2
-} from 'lucide-react'
+import { Edit, FolderOpen, PlusCircle, Star, Tag, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import {
@@ -44,8 +37,11 @@ export default function NotesSidebar() {
 	const [newFolderColor, setNewFolderColor] = useState('#000000')
 	const { selectedFolderId, setSelectedFolderId } = useNotesStore()
 	const { disableSidebarAnimations } = useSiteSettingsStore()
-	const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false)
-	const [folderToDelete, setFolderToDelete] = useState<FolderType | null>(null)
+	const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
+		useState(false)
+	const [folderToDelete, setFolderToDelete] = useState<FolderType | null>(
+		null
+	)
 
 	useEffect(() => {
 		fetchFolders()
@@ -230,7 +226,9 @@ export default function NotesSidebar() {
 			<motion.div {...getAnimationProps(0.5)}>
 				<h3 className="text-lg font-semibold my-4">Folders</h3>
 				{filteredFolders.length === 0 ? (
-					<p className="text-sm text-muted-foreground">No folders found</p>
+					<p className="text-sm text-muted-foreground">
+						No folders found
+					</p>
 				) : (
 					<ul className="space-y-2">
 						{filteredFolders.map((folder, index) => (
@@ -241,16 +239,21 @@ export default function NotesSidebar() {
 							>
 								<div
 									className="flex items-center min-w-0 flex-grow cursor-pointer"
-									onClick={() => handleFolderSelect(folder.id)}
+									onClick={() =>
+										handleFolderSelect(folder.id)
+									}
 								>
 									<FolderOpen
 										size={16}
 										className="mr-2 flex-shrink-0"
 										style={{
-											color: folder.color || 'currentColor'
+											color:
+												folder.color || 'currentColor'
 										}}
 									/>
-									<span className={`text-subtitle truncate flex-grow ${selectedFolderId === folder.id ? 'font-bold' : ''}`}>
+									<span
+										className={`text-subtitle truncate flex-grow ${selectedFolderId === folder.id ? 'font-bold' : ''}`}
+									>
 										{folder.name}
 									</span>
 								</div>
@@ -275,12 +278,12 @@ export default function NotesSidebar() {
 					</DialogHeader>
 					<Input
 						value={newFolderName}
-						onChange={(e) => setNewFolderName(e.target.value)}
+						onChange={e => setNewFolderName(e.target.value)}
 						placeholder="Folder Name"
 					/>
 					<Input
 						value={newFolderDescription}
-						onChange={(e) => setNewFolderDescription(e.target.value)}
+						onChange={e => setNewFolderDescription(e.target.value)}
 						placeholder="Folder Description (optional)"
 					/>
 					<Flex dir="col" gap="2">
@@ -306,8 +309,8 @@ export default function NotesSidebar() {
 					</DialogHeader>
 					<Input
 						value={editingFolder?.name || ''}
-						onChange={(e) =>
-							setEditingFolder((prev) =>
+						onChange={e =>
+							setEditingFolder(prev =>
 								prev ? { ...prev, name: e.target.value } : null
 							)
 						}
@@ -315,8 +318,8 @@ export default function NotesSidebar() {
 					/>
 					<Input
 						value={editingFolder?.description || ''}
-						onChange={(e) =>
-							setEditingFolder((prev) =>
+						onChange={e =>
+							setEditingFolder(prev =>
 								prev
 									? { ...prev, description: e.target.value }
 									: null
@@ -330,8 +333,8 @@ export default function NotesSidebar() {
 						</label>
 						<ColorPicker
 							value={editingFolder?.color || '#000000'}
-							onChange={(color) =>
-								setEditingFolder((prev) =>
+							onChange={color =>
+								setEditingFolder(prev =>
 									prev ? { ...prev, color } : null
 								)
 							}

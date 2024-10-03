@@ -38,7 +38,7 @@ function ThemePreview({ theme }: { theme: 'system' | 'light' | 'dark' }) {
 
 	return (
 		<div
-			className={`w-24 h-16 rounded-md overflow-hidden ${isDark ? 'bg-gray-800' : 'bg-white'} p-1`}
+			className={`w-24 h-16 rounded-md overflow-hidden ${isDark ? 'bg-red-800' : 'bg-white'} p-1`}
 		>
 			<div
 				className={`w-full h-full flex ${isDark ? 'bg-modal' : 'bg-gray-100'} rounded`}
@@ -61,7 +61,7 @@ function ThemePreview({ theme }: { theme: 'system' | 'light' | 'dark' }) {
 						className={`w-full h-2 ${isDark ? 'bg-gray-800' : 'bg-white'} rounded mb-1 animate-pulse`}
 					></div>
 					<div
-						className={`w-full h-8 ${isDark ? 'bg-gray-800' : 'bg-white'} rounded animate-pulse`}
+						className={`w-full h-8 ${isDark ? 'bg-red-400' : 'bg-white'} rounded animate-pulse`}
 					></div>
 				</div>
 			</div>

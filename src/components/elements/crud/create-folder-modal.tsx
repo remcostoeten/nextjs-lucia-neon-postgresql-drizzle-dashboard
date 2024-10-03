@@ -61,13 +61,13 @@ export function CreateFolderModal({
 				<form onSubmit={handleSubmit} className="space-y-4">
 					<Input
 						value={folderName}
-						onChange={(e) => setFolderName(e.target.value)}
+						onChange={e => setFolderName(e.target.value)}
 						placeholder="Folder name"
 						required
 					/>
 					<Input
 						value={folderDescription}
-						onChange={(e) => setFolderDescription(e.target.value)}
+						onChange={e => setFolderDescription(e.target.value)}
 						placeholder="Folder description (optional)"
 					/>
 					<Flex dir="col" gap="2">

@@ -5,7 +5,7 @@ const nextConfig = {
 		return config
 	},
 	env: {
-		OPENROUTE_SERVICE_API_KEY: process.env.OPENROUTE_SERVICE_API_KEY,
+		OPENROUTE_SERVICE_API_KEY: process.env.OPENROUTE_SERVICE_API_KEY
 	},
 	eslint: {
 		ignoreDuringBuilds: true

@@ -1,5 +1,14 @@
 export type Pattern = 'dot' | 'grid'
-export type GradientDirection = 'radial' | 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+export type GradientDirection =
+	| 'radial'
+	| 'top'
+	| 'bottom'
+	| 'left'
+	| 'right'
+	| 'top-left'
+	| 'top-right'
+	| 'bottom-left'
+	| 'bottom-right'
 export type AnimationType = 'none' | 'shift' | 'rotate' | 'scale' | 'color'
 
 export type Layer = {

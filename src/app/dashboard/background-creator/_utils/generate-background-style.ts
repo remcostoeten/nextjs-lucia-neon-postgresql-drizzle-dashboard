@@ -2,7 +2,7 @@ import { Layer } from './types'
 
 export function generateBackgroundStyle(layer: Layer): React.CSSProperties {
 	const style: React.CSSProperties = {
-		backgroundColor: layer.backgroundColor,
+		backgroundColor: layer.backgroundColor
 	}
 
 	if (layer.pattern === 'dot') {
@@ -30,7 +30,12 @@ export function generateBackgroundStyle(layer: Layer): React.CSSProperties {
 }
 
 function generateGradientStyle(layer: Layer): string {
-	const { gradientDirection, gradientStartColor, gradientEndColor, gradientExtent } = layer
+	const {
+		gradientDirection,
+		gradientStartColor,
+		gradientEndColor,
+		gradientExtent
+	} = layer
 
 	if (gradientDirection === 'radial') {
 		return `radial-gradient(circle, ${gradientStartColor} 0%, ${gradientEndColor} ${gradientExtent}%)`

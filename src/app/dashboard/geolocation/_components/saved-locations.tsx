@@ -2,7 +2,15 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
-import { Button, Card, CardContent, CardHeader, CardTitle, Input, ScrollArea } from 'ui'
+import {
+	Button,
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+	Input,
+	ScrollArea
+} from 'ui'
 
 import { deleteLocation, saveLocation } from 'actions'
 import { MapPin, Trash2 } from 'lucide-react'
@@ -17,7 +25,10 @@ type SavedLocation = {
 export function SavedLocations() {
 	const [title, setTitle] = useState('')
 	const [savedLocations, setSavedLocations] = useState<SavedLocation[]>([])
-	const [currentLocation, setCurrentLocation] = useState<{ latitude: number; longitude: number } | null>(null)
+	const [currentLocation, setCurrentLocation] = useState<{
+		latitude: number
+		longitude: number
+	} | null>(null)
 
 	async function handleSave() {
 		if (!currentLocation) {
@@ -25,7 +36,11 @@ export function SavedLocations() {
 			return
 		}
 		try {
-			const result = await saveLocation(title, currentLocation.latitude, currentLocation.longitude)
+			const result = await saveLocation(
+				title,
+				currentLocation.latitude,
+				currentLocation.longitude
+			)
 			setSavedLocations([...savedLocations, result])
 			setTitle('')
 		} catch (error) {
@@ -37,7 +52,9 @@ export function SavedLocations() {
 	async function handleDelete(id: string) {
 		try {
 			await deleteLocation(id)
-			setSavedLocations(savedLocations.filter(location => location.id !== id))
+			setSavedLocations(
+				savedLocations.filter(location => location.id !== id)
+			)
 		} catch (error) {
 			console.error('Error deleting location:', error)
 			alert('Failed to delete location. Please try again.')
@@ -60,24 +77,31 @@ export function SavedLocations() {
 						type="text"
 						placeholder="Enter title for location"
 						value={title}
-						onChange={(e) => setTitle(e.target.value)}
+						onChange={e => setTitle(e.target.value)}
 						className="flex-grow"
 					/>
-					<Button onClick={handleSave} disabled={!currentLocation}>Save</Button>
+					<Button onClick={handleSave} disabled={!currentLocation}>
+						Save
+					</Button>
 				</div>
 				<ScrollArea className="h-[200px]">
 					<AnimatePresence>
-						{savedLocations.map((location) => (
+						{savedLocations.map(location => (
 							<motion.div
 								key={location.id}
 								initial={{ opacity: 0, height: 0 }}
 								animate={{ opacity: 1, height: 'auto' }}
 								exit={{ opacity: 0, height: 0 }}
 								transition={{ duration: 0.3 }}
-								className="flex items-center justify-between p-2 mb-2 bg-gray-800 rounded"
+								className="flex items-center justify-between p-2 mb-2 bg-red-800 rounded"
 							>
 								<button
-									onClick={() => handleLocationClick(location.latitude, location.longitude)}
+									onClick={() =>
+										handleLocationClick(
+											location.latitude,
+											location.longitude
+										)
+									}
 									className="flex items-center text-left"
 								>
 									<MapPin className="w-4 h-4 mr-2" />

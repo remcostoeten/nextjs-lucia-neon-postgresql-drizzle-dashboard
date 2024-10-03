@@ -27,7 +27,7 @@ export default function ActivityLog() {
 				<CardTitle>Activity Log</CardTitle>
 			</CardHeader>
 			<CardContent>
-				{logs.map((log) => (
+				{logs.map(log => (
 					<div key={log.id} className="mb-2">
 						<p className="text-sm font-semibold">{log.action}</p>
 						<p className="text-xs text-gray-500">

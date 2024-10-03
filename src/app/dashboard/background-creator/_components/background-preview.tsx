@@ -7,7 +7,10 @@ interface BackgroundPreviewProps {
 	deviceSize: DeviceSize
 }
 
-export function BackgroundPreview({ config, deviceSize }: BackgroundPreviewProps) {
+export function BackgroundPreview({
+	config,
+	deviceSize
+}: BackgroundPreviewProps) {
 	const canvasRef = useRef<HTMLCanvasElement>(null)
 
 	useEffect(() => {
@@ -33,7 +36,13 @@ export function BackgroundPreview({ config, deviceSize }: BackgroundPreviewProps
 				img.onload = () => {
 					layerCtx.globalAlpha = layer.opacity
 					layerCtx.globalCompositeOperation = layer.blendMode
-					layerCtx.drawImage(img, 0, 0, layerCanvas.width, layerCanvas.height)
+					layerCtx.drawImage(
+						img,
+						0,
+						0,
+						layerCanvas.width,
+						layerCanvas.height
+					)
 					ctx.drawImage(layerCanvas, 0, 0)
 				}
 				img.src = `data:image/svg+xml,${encodeURIComponent(

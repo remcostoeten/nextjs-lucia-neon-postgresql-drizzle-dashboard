@@ -22,7 +22,7 @@ export default function Navbar() {
 			{open ? (
 				<div className="my-4 p-4 bg-muted h">
 					<ul className="space-y-2 ">
-						{defaultLinks.map((link) => (
+						{defaultLinks.map(link => (
 							<li
 								key={link.title}
 								onClick={() => setOpen(false)}
