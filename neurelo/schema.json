@@ -146,8 +146,7 @@
         },
         "id": {
           "type": "string",
-          "identifier": true,
-          "unique": true
+          "identifier": true
         },
         "key": {
           "type": "array",
@@ -194,63 +193,6 @@
           ],
           "default": {
             "function": "now"
-          }
-        },
-        "public.profile_ref": {
-          "$ref": "#/objects/profile",
-          "relation": {
-            "attrKey": [
-              "id"
-            ],
-            "foreignAttrKey": [
-              "id"
-            ],
-            "name": "public.user__id"
-          }
-        }
-      }
-    },
-    "profile": {
-      "properties": {
-        "id": {
-          "type": "string",
-          "identifier": true,
-          "unique": true
-        },
-        "user_id": {
-          "type": "string",
-          "unique": true
-        },
-        "bio": {
-          "type": "string",
-          "nullable": true
-        },
-        "occupation": {
-          "type": "string",
-          "nullable": true
-        },
-        "date_of_birth": {
-          "type": "string",
-          "format": "date-time",
-          "nullable": true
-        },
-        "github_link": {
-          "type": "string",
-          "nullable": true
-        },
-        "instagram": {
-          "type": "string",
-          "nullable": true
-        },
-        "twitter": {
-          "type": "string",
-          "nullable": true
-        },
-        "public.user_ref": {
-          "$ref": "#/objects/user",
-          "nullable": true,
-          "relation": {
-            "name": "public.user__id"
           }
         }
       }
