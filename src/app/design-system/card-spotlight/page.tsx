@@ -1,7 +1,7 @@
-// @ts-nocheck
-// @ts-ignore
 'use client'
 
+import { Icons } from '@/components/base/icons'
+import Banner from '@/components/effects/card-spotlight/banner'
 import Spotlight, {
 	SpotlightCard
 } from '@/components/effects/card-spotlight/card-spotlight'
@@ -15,15 +15,15 @@ import {
 	Label,
 	Slider
 } from '@/components/ui'
-import Image from 'next/image'
-import { useState } from 'react'
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue
-} from 'ui'
+} from '@/components/ui/select'
+import Image from 'next/image'
+import { useState } from 'react'
 import DesignSystemWrapper from '../_components/DesignSystemWrapper'
 import Card01 from '/public/card-01.png'
 import Card02 from '/public/card-02.png'

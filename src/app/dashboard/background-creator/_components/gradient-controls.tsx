@@ -6,7 +6,7 @@ import {
 	SelectValue,
 	Switch
 } from 'ui'
-import { BackgroundConfig, GradientDirection } from '../_utils/types'
+import { GradientDirection, Layer } from '../_utils/bg-creator.types'
 import { ColorPicker } from './color-picker'
 import LabeledSlider from './labeled-sider'
 
@@ -16,21 +16,9 @@ interface GradientControlsProps {
 }
 
 export function GradientControls({
-	config,
-	updateConfig
+	layer,
+	updateLayer
 }: GradientControlsProps) {
-	const gradientDirections: GradientDirection[] = [
-		'radial',
-		'top',
-		'bottom',
-		'left',
-		'right',
-		'top-left',
-		'top-right',
-		'bottom-left',
-		'bottom-right'
-	]
-
 	return (
 		<div className="space-y-4">
 			<div className="flex items-center justify-between">
@@ -42,24 +30,18 @@ export function GradientControls({
 				</label>
 				<Switch
 					id="gradient-enabled"
-					checked={config.gradientEnabled}
+					checked={layer.gradientEnabled}
 					onCheckedChange={checked =>
-						updateConfig({ gradientEnabled: checked })
+						updateLayer({ gradientEnabled: checked })
 					}
 				/>
-				<label
-					htmlFor="gradient-enabled"
-					className="text-sm font-medium"
-				>
-					Enable Gradient Overlay
-				</label>
 			</div>
 			{layer.gradientEnabled && (
 				<>
 					<Select
-						value={config.gradientDirection}
+						value={layer.gradientDirection}
 						onValueChange={value =>
-							updateConfig({
+							updateLayer({
 								gradientDirection: value as GradientDirection
 							})
 						}
@@ -68,33 +50,40 @@ export function GradientControls({
 							<SelectValue placeholder="Select gradient direction" />
 						</SelectTrigger>
 						<SelectContent>
-							{gradientDirections.map(direction => (
-								<SelectItem key={direction} value={direction}>
-									{direction.charAt(0).toUpperCase() +
-										direction.slice(1)}
-								</SelectItem>
-							))}
+							<SelectItem value="radial">Radial</SelectItem>
+							<SelectItem value="top">Top</SelectItem>
+							<SelectItem value="bottom">Bottom</SelectItem>
+							<SelectItem value="left">Left</SelectItem>
+							<SelectItem value="right">Right</SelectItem>
+							<SelectItem value="top-left">Top Left</SelectItem>
+							<SelectItem value="top-right">Top Right</SelectItem>
+							<SelectItem value="bottom-left">
+								Bottom Left
+							</SelectItem>
+							<SelectItem value="bottom-right">
+								Bottom Right
+							</SelectItem>
 						</SelectContent>
 					</Select>
 					<ColorPicker
-						label="Gradient Start Color"
-						color={config.gradientStartColor}
+						label="Start Color"
+						color={layer.gradientStartColor}
 						onChange={color =>
-							updateConfig({ gradientStartColor: color })
+							updateLayer({ gradientStartColor: color })
 						}
 					/>
 					<ColorPicker
-						label="Gradient End Color"
-						color={config.gradientEndColor}
+						label="End Color"
+						color={layer.gradientEndColor}
 						onChange={color =>
-							updateConfig({ gradientEndColor: color })
+							updateLayer({ gradientEndColor: color })
 						}
 					/>
 					<LabeledSlider
 						label="Gradient Extent"
-						value={[config.gradientExtent]}
+						value={[layer.gradientExtent]}
 						onValueChange={value =>
-							updateConfig({ gradientExtent: value[0] })
+							updateLayer({ gradientExtent: value[0] })
 						}
 						min={0}
 						max={100}

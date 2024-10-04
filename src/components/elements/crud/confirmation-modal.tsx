@@ -1,5 +1,11 @@
+import { Button } from '@/components/ui/button'
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle
+} from '@/components/ui/dialog'
 import React from 'react'
-import { Button, Dialog, DialogContent, DialogHeader, DialogTitle } from 'ui'
 
 type ConfirmationModalProps = {
 	isOpen: boolean

@@ -1,4 +1,4 @@
-import { Button } from 'ui'
+import { Button } from '@/components/ui/button'
 import { ArrowRightIcon } from '@radix-ui/react-icons'
 import { cn } from 'cn'
 import { motion } from 'framer-motion'

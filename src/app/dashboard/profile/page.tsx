@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from 'ui'
+import { Button } from '@/components/ui/button'
 import { useTheme } from 'next-themes'
 
 type ThemeButtonProps = {

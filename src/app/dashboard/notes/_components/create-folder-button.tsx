@@ -1,6 +1,6 @@
 'use client'
 
-import { ColorPicker } from 'ui'
+import { ColorPicker } from '@/components/ui/color-picker'
 import { createFolder } from '@/lib/api/folders'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'

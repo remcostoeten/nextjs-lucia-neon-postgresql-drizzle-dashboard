@@ -1,8 +1,9 @@
 'use client'
 
-import { Button, Card, CardContent, CardHeader, CardTitle } from 'ui'
 import NewNoteModal from '@/components/elements/crud/add-note-modal'
 import NoticeBox from '@/components/elements/notice-box'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { createNote, deleteNote, getNotes, updateNote } from '@/lib/api/notes'
 import { useCallback, useEffect, useState } from 'react'
 import { useNotesStore } from 'stores'

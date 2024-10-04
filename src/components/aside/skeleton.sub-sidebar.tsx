@@ -1,4 +1,5 @@
-import { Skeleton } from 'ui'
+import { Skeleton } from '@/components/ui/skeleton'
+
 export default function SubSidebarSkeletonLoader() {
 	return (
 		<div className="fixed z-[1] left-[var(--sidebar-width)] top-[var(--header-height)] bottom-0 bg-body border-outline-right overflow-hidden border-outline-right w-sub-sidebar p-4">
