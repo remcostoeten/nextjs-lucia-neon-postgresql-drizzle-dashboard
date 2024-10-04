@@ -1,8 +1,10 @@
+'use client'
+
+import { Button } from '@/components/ui'
 import { useLocalStorage } from 'hooks'
 import { HooksShowcaseWrapper } from '../_components/hooks-showcase-wrapper'
 
-const codeString = `
-import { useLocalStorage } from '#/src/ui/cuicui/hooks/use-local-storage/use-local-storage'
+const codeString = `import { useLocalStorage } from '@/core/hooks/use-local-storage'
 
 function ExampleComponent() {
   const [value, setValue, removeValue] = useLocalStorage('example-key', 'initial value')
@@ -39,7 +41,7 @@ export default function UseLocalStorageShowcase() {
 				{ label: 'Remove Value', onClick: removeValue }
 			]}
 		>
-			<div className="bg-[#252526] p-4 rounded-lg">
+			<div className="bg-section-lighter border p-4 rounded-lg">
 				<p className="mb-2">Current stored value: {value}</p>
 				<div className="space-x-2">
 					<Button

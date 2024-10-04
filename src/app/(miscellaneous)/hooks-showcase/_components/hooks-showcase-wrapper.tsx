@@ -37,7 +37,7 @@ export function HooksShowcaseWrapper({
 }: HooksShowcaseWrapperProps) {
 	return (
 		<div className="max-w-4xl mx-auto p-6 space-y-8">
-			<Card className="bg-[#1E1E1E] text-title border-zinc-800">
+			<Card className="bg-card text-title border-zinc-800">
 				<CardHeader>
 					<CardTitle className="text-2xl font-bold">
 						{title}

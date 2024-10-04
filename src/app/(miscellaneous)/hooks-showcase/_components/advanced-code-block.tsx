@@ -28,8 +28,8 @@ export function EnhancedCodeBlock({
 	}
 
 	return (
-		<div className="rounded-lg overflow-hidden bg-[#1E1E1E] border border-zinc-800">
-			<div className="flex justify-between items-center px-4 py-2 bg-[#252526]">
+		<div className="rounded-lg overflow-hidden bg-card border border-zinc-800">
+			<div className="flex justify-between items-center border  px-4 py-2 bg-section-lighter">
 				<div className="flex items-center space-x-2">
 					{badges.map((badge, index) => (
 						<Badge
