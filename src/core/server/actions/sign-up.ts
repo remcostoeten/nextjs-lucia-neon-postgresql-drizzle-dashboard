@@ -7,7 +7,7 @@ import { Argon2id } from 'oslo/password'
 interface ActionResult {
 	error: string
 	success: boolean
-	user: { id: string } | null
+	user: { id: string } | nullf
 }
 
 export async function signUpAction(

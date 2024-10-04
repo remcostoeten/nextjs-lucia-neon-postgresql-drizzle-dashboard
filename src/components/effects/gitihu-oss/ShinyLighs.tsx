@@ -1,6 +1,6 @@
+import { cn } from 'cn'
 import React from 'react'
-import { cn } from '@/lib/utils'
-
+;('')
 export const TopLeftShiningLight: React.FC = () => (
 	<svg
 		className="absolute top-0 left-0 hidden pointer-events-none md:flex"

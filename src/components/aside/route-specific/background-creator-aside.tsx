@@ -19,10 +19,10 @@ export default function BackgroundGeneratorSidebar() {
 		disableSidebarAnimations
 			? {}
 			: {
-				initial: { opacity: 0, y: 20 },
-				animate: { opacity: 1, y: 0 },
-				transition: { delay, duration: 0.3 }
-			}
+					initial: { opacity: 0, y: 20 },
+					animate: { opacity: 1, y: 0 },
+					transition: { delay, duration: 0.3 }
+				}
 
 	const MotionDiv = disableSidebarAnimations ? 'div' : motion.div
 

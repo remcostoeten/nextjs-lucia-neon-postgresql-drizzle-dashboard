@@ -10,6 +10,5 @@ export default function DashboardLayout({
 			<DropdownNavigation />
 			{children}
 		</>
-
 	)
 }
