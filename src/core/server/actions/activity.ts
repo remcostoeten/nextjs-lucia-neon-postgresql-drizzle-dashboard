@@ -3,6 +3,7 @@
 import { getUserAuth } from '@/lib/auth/utils'
 import { db } from '@/lib/db/index'
 import { activityLogs, activityLogSchema } from '@/lib/db/schema/activity'
+import { eq, desc } from 'drizzle-orm'
 import { generateId } from 'lucia'
 export async function logActivity(action: string, details?: string) {
 	const { session } = await getUserAuth()

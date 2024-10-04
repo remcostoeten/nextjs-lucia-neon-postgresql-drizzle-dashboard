@@ -1,6 +1,7 @@
 'use client'
 
-import { ColorPicker } from '@/components/ui/color-picker'
+import { ColorPicker } from 'ui'
+import Flex from '@/components/atoms/Flex'
 import { createFolder } from '@/lib/api/folders'
 import { FolderType } from '@/types/types.folder'
 import { Flex } from 'atoms'

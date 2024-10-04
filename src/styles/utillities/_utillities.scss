@@ -1,0 +1,60 @@
+@mixin gradient($direction) {
+	background-image: linear-gradient($direction, #0a0a0a, #171717);
+}
+
+@mixin radial-gradient($shape, $size, $position) {
+	background-image: radial-gradient(
+		$shape $size at $position,
+		#0a0a0a,
+		#171717
+	);
+}
+
+$directions: (
+	'to-l': to left,
+	'to-r': to right,
+	'to-t': to top,
+	'to-b': to bottom,
+	'to-tl': to top left,
+	'to-tr': to top right,
+	'to-bl': to bottom left,
+	'to-br': to bottom right
+);
+
+$radial-directions: (
+	'circle': circle,
+	'ellipse': ellipse
+);
+
+$positions: (
+	'center': center,
+	'top-left': top left,
+	'top-right': top right,
+	'bottom-left': bottom left,
+	'bottom-right': bottom right
+);
+
+@each $name, $direction in $directions {
+	.bg-gradient-#{$name} {
+		@include gradient($direction);
+	}
+}
+
+@each $shape-name, $shape in $radial-directions {
+	@each $position-name, $position in $positions {
+		.bg-radial-#{$shape-name}-#{$position-name} {
+			@include radial-gradient($shape, closest-side, $position);
+		}
+
+		.bg-radial-#{$shape-name}-#{$position-name}-farthest {
+			@include radial-gradient($shape, farthest-side, $position);
+		}
+	}
+}
+
+// g-radial-circle-center-farthest
+// bg-gradient-to-bl
+
+/* Usage Example:
+<div class="bg-gradient-to-r bg-gradient-to-t bg-gradient-to-bl bg-radial-circle-center bg-radial-ellipse-top-left bg-radial-circle-center-farthest">Content with gradients</div>
+*/

@@ -1,10 +1,9 @@
 'use client'
 
+import { Button } from 'ui'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-
-import { Button } from '@/components/ui/button'
 
 import { defaultLinks } from '@/config/nav'
 import { AlignRight } from 'lucide-react'

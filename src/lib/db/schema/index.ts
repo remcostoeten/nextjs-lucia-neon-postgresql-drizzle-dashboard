@@ -2,6 +2,7 @@ import { relations } from 'drizzle-orm'
 import { keys, sessions, users } from './auth'
 import { folders, notes } from './notes'
 export { folders, keys, notes, sessions, users }
+export { locations, savedLocations, weatherData } from './geolocation'
 
 export const usersRelations = relations(users, ({ one, many }) => ({
 	folders: many(folders),

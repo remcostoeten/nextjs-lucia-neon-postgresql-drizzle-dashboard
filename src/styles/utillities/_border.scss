@@ -131,6 +131,10 @@ All borders are 1px solid. Base color: --border-outline
 	border: 1px solid var(--border-outline);
 }
 
+.border-alt {
+	border: 1px solid var(--border-separator);
+}
+
 * {
 	border-color: var(--border-outline);
 }

@@ -3,7 +3,7 @@ import DashboardSidebar from '@/components/aside/route-specific/dashboard-home-a
 import NotesSidebar from '@/components/aside/route-specific/notes-aside'
 import SettingsSidebar from '@/components/aside/route-specific/settings-aside'
 import { DashboardIcon } from '@radix-ui/react-icons'
-import { Edit, LucideIcon, Mail, Paintbrush, User } from 'lucide-react'
+import { Edit, LucideIcon, Mail, MapIcon, Paintbrush, User } from 'lucide-react'
 
 export type SidebarItem = {
 	name: string
@@ -31,6 +31,11 @@ export const sidebarItems: SidebarItem[] = [
 		name: 'Generate background',
 		path: '/dashboard/background-creator',
 		icon: Paintbrush
+	},
+	{
+		name: 'Geolocation',
+		path: '/dashboard/geolocation',
+		icon: MapIcon
 	}
 ]
 

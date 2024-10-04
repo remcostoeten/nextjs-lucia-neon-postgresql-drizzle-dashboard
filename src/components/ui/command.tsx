@@ -5,7 +5,7 @@ import { Command as CommandPrimitive } from 'cmdk'
 import * as React from 'react'
 
 import { cn } from 'cn'
-import { LuSearch } from 'react-icons/lu'
+import { Search } from 'lucide-react'
 import { Dialog, DialogContent } from './dialog'
 
 const Command = React.forwardRef<
@@ -45,7 +45,7 @@ const CommandInput = React.forwardRef<
 		className="flex items-center border-b px-3"
 		cmdk-neutral-300-wrapper=""
 	>
-		<LuSearch className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+		<Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
 		<CommandPrimitive.Input
 			ref={ref}
 			className={cn(

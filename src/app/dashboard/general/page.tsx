@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from 'ui'
 import { getActivityLogs } from '@/core/server/actions/activity'
 import { useEffect, useState } from 'react'
 type ActivityLogItem = {
