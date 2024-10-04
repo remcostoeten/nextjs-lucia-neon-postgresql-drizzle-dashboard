@@ -13,7 +13,6 @@ import { PresetTemplates } from './preset-templates'
 import { ResponsivePreview } from './responsive-preview'
 
 export function BackgroundGenerator() {
-	const [isMinimized, setIsMinimized] = useState(false)
 	const {
 		config,
 		updateLayer,
@@ -26,6 +25,8 @@ export function BackgroundGenerator() {
 		deviceSize,
 		setDeviceSize
 	} = useBackgroundConfig()
+
+	const [isMinimized, setIsMinimized] = useState(false)
 
 	const loadPreset = (preset: BackgroundConfig) => {
 		loadConfig(preset)

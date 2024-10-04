@@ -1,5 +1,4 @@
 import { sidebarItems } from '@/core/config/menu-items/sidebar-menu-items'
-import { useSiteSettingsStore } from '@/core/stores'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
 	ChevronLeft,
@@ -13,6 +12,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { useSiteSettingsStore } from 'stores'
 import SiteSettingsMenu from './site-settings-menu'
 import { SidebarIconProps } from './types.sidear'
 

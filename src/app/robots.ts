@@ -1,13 +1,12 @@
-import { getBaseUrl } from '@/core/constants/get-base-url'
-import type { MetadataRoute } from 'next/dist/lib/metadata/types/metadata-interface'
+import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-    },
-    sitemap: `${getBaseUrl()}/sitemap.xml`,
-  }
+	return {
+		rules: {
+			userAgent: '*',
+			allow: '/',
+			disallow: '/api/'
+		},
+		sitemap: 'https://topbar.remcostoeten.com/sitemap.xml'
+	}
 }
-

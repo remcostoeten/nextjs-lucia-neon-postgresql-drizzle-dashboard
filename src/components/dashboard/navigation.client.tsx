@@ -18,7 +18,10 @@ import {
 	IconTooltips,
 	links
 } from '@/core/config/menu-items/dashboard-navigation-menu-items'
-import { createShortcutMap, useKeyboardShortcuts } from '@/core/hooks/use-keyboard-shortcuts'
+import {
+	createShortcutMap,
+	useKeyboardShortcuts
+} from '@/core/hooks/use-keyboard-shortcuts'
 import { signOutAction } from '@/lib/actions/users'
 import { ChevronDown, LogOut, Settings } from 'lucide-react'
 import Link from 'next/link'
@@ -50,9 +53,7 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 		router.push('/sign-in')
 	}
 
-	const shortcuts = createShortcutMap([
-		['shift+o', handleLogout]
-	])
+	const shortcuts = createShortcutMap([['shift+o', handleLogout]])
 
 	useKeyboardShortcuts(shortcuts)
 
@@ -112,7 +113,12 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 								<Avatar className="h-8 w-8 bg-avatar text-title">
 									<AvatarFallback>
 										{userName
-											? userName.split(' ').map(name => name[0]).join('').toUpperCase().slice(0, 2)
+											? userName
+													.split(' ')
+													.map(name => name[0])
+													.join('')
+													.toUpperCase()
+													.slice(0, 2)
 											: 'U'}
 									</AvatarFallback>
 								</Avatar>

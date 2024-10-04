@@ -1,5 +1,3 @@
-'use client'
-
 import {
 	Button,
 	Dialog,
@@ -9,8 +7,6 @@ import {
 	DialogTitle,
 	Input,
 	Label,
-	RadioGroup,
-	RadioGroupItem,
 	Select,
 	SelectContent,
 	SelectItem,
@@ -20,54 +16,92 @@ import {
 	Switch
 } from '@/components/ui'
 import { useSiteSettingsStore } from '@/core/stores'
+import { Check } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-function ThemePreview({ theme, accentColor }) {
-	const isDark =
-		theme === 'dark' ||
-		(theme === 'system' &&
-			typeof window !== 'undefined' &&
-			window.matchMedia('(prefers-color-scheme: dark)').matches)
+type ThemePreviewProps = {
+	name: string
+	accentColor: string
+	bgColor: string
+	isSelected: boolean
+	onClick: () => void
+}
 
+const ThemePreview: React.FC<ThemePreviewProps> = ({
+	name,
+	accentColor,
+	bgColor,
+	isSelected,
+	onClick
+}) => {
 	return (
-		<div
-			className={`w-24 h-16 rounded-md overflow-hidden ${isDark ? 'bg-gray-800' : 'bg-white'} p-1`}
-		>
+		<div className="w-full">
 			<div
-				className={`w-full h-full flex ${isDark ? 'bg-modal' : 'bg-gray-100'} rounded`}
+				className={`h-[160px] rounded-lg overflow-hidden shadow-lg cursor-pointer transition-all duration-200 ${isSelected ? `ring-2 ring-[${accentColor}]` : 'ring-1 ring-gray-700'}`}
+				onClick={onClick}
+				style={{ backgroundColor: '#252525' }}
 			>
-				<div
-					className={`w-1/4 h-full ${isDark ? 'bg-gray-800' : 'bg-white'} p-1`}
-				>
-					<div
-						className={`w-full h-1 rounded mb-1 animate-pulse`}
-						style={{ backgroundColor: accentColor }}
-					></div>
-					<div
-						className={`w-full h-1 rounded mb-1 animate-pulse`}
-						style={{ backgroundColor: accentColor }}
-					></div>
-					<div
-						className={`w-full h-1 rounded animate-pulse`}
-						style={{ backgroundColor: accentColor }}
-					></div>
+				<div className="h-6 bg-[#2c2c2e] flex items-center px-2">
+					<div className="flex space-x-1.5">
+						<div className="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
+						<div className="w-3 h-3 rounded-full bg-[#febc2e]"></div>
+						<div className="w-3 h-3 rounded-full bg-[#28c840]"></div>
+					</div>
 				</div>
-				<div className="w-3/4 h-full p-1">
-					<div
-						className={`w-full h-2 ${isDark ? 'bg-gray-800' : 'bg-white'} rounded mb-1 animate-pulse`}
-					></div>
-					<div
-						className={`w-full h-8 rounded animate-pulse`}
-						style={{ backgroundColor: accentColor, opacity: 0.5 }}
-					></div>
+				<div
+					className="flex h-[calc(100%-24px)]"
+					style={{ backgroundColor: bgColor }}
+				>
+					<div className="w-1/3 bg-opacity-20 bg-black p-3 space-y-2">
+						<div
+							className="h-3 w-full rounded"
+							style={{ backgroundColor: accentColor }}
+						></div>
+						<div className="h-3 w-full bg-white bg-opacity-20 rounded"></div>
+						<div className="h-3 w-full bg-white bg-opacity-10 rounded"></div>
+						<div className="h-3 w-full bg-white bg-opacity-5 rounded"></div>
+					</div>
+					<div className="w-2/3 p-3 space-y-3">
+						<div className="flex items-center space-x-2">
+							<div
+								className="h-5 w-5 rounded-full"
+								style={{ backgroundColor: accentColor }}
+							></div>
+							<div
+								className="h-3 w-3/4 rounded"
+								style={{ backgroundColor: accentColor }}
+							></div>
+						</div>
+						<div className="h-3 w-full bg-white bg-opacity-20 rounded"></div>
+						<div
+							className="h-3 w-4/5 rounded"
+							style={{ backgroundColor: accentColor }}
+						></div>
+					</div>
+				</div>
+			</div>
+			<div className="flex items-center border mt-0 border-[2c2c2e] !border-t-0 justify-between rounded-bl-lg rounded-br-lg px-3 py-2">
+				<span className="text-subtitle text-xs">{name}</span>
+				<div
+					className={`size-4 rounded-full border ${isSelected ? `bg-[${accentColor}] border-[${accentColor}]` : 'border-gray-500'} flex items-center justify-center`}
+				>
+					{isSelected && <Check size={12} className="text-black" />}
 				</div>
 			</div>
 		</div>
 	)
 }
 
-export default function Component({ isOpen, onClose, onSettingChange }) {
+export default function SiteSettingsMenu({
+	isOpen,
+	onClose,
+	onSettingChange
+}: {
+	isOpen: boolean
+	onClose: () => void
+	onSettingChange: (key: string, value: any) => void
+}) {
 	const {
 		disableAllAnimations,
 		disableSidebarAnimations,
@@ -75,10 +109,16 @@ export default function Component({ isOpen, onClose, onSettingChange }) {
 		toggleSidebarAnimations
 	} = useSiteSettingsStore()
 	const [accentColor, setAccentColor] = useState('#4361ee')
-	const [theme, setTheme] = useState('dark')
+	const [selectedTheme, setSelectedTheme] = useState('Avacado Alien')
 	const [grouping, setGrouping] = useState(true)
 	const [ordering, setOrdering] = useState('last-created')
 	const [showSubIssues, setShowSubIssues] = useState(true)
+
+	const themes = [
+		{ name: 'Avacado Alien', accentColor: '#a4e666', bgColor: '#2a2f23' },
+		{ name: 'Rainbow Candy', accentColor: '#9d5cff', bgColor: '#2b2640' },
+		{ name: 'Honeydew Punch', accentColor: '#5cffe7', bgColor: '#233536' }
+	]
 
 	useEffect(() => {
 		// Initialize state from store or localStorage if needed
@@ -86,7 +126,7 @@ export default function Component({ isOpen, onClose, onSettingChange }) {
 
 	const handleSave = () => {
 		onSettingChange('accentColor', accentColor)
-		onSettingChange('theme', theme)
+		onSettingChange('theme', selectedTheme)
 		onSettingChange('grouping', grouping)
 		onSettingChange('ordering', ordering)
 		onSettingChange('showSubIssues', showSubIssues)
@@ -96,7 +136,7 @@ export default function Component({ isOpen, onClose, onSettingChange }) {
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onClose}>
-			<DialogContent className="max-w-lg bg-modal text-title">
+			<DialogContent className="max-w-4xl bg-modal text-title">
 				<DialogHeader>
 					<DialogTitle className="text-xl font-semibold text-white">
 						Appearance
@@ -126,7 +166,7 @@ export default function Component({ isOpen, onClose, onSettingChange }) {
 							].map(color => (
 								<button
 									key={color}
-									className={`w-6 h-6 rounded-full ${accentColor === color ? 'ring-2 ring-offset-2 ring-blue-500' : ''}`}
+									className={`w-6 h-6 rounded-full ${accentColor === color ? `ring-2 ring-offset-2 ring-[${color}]` : ''}`}
 									style={{ backgroundColor: color }}
 									onClick={() => {
 										setAccentColor(color)
@@ -158,43 +198,28 @@ export default function Component({ isOpen, onClose, onSettingChange }) {
 						<p className="text-xs text-gray-400">
 							Select or customize your UI theme.
 						</p>
-						<RadioGroup
-							value={theme}
-							onValueChange={value => {
-								setTheme(value)
-								toast.success(`Theme set to ${value}`)
-							}}
-							className="grid grid-cols-3 gap-4"
-						>
-							{['dark', 'light', 'system'].map(themeOption => (
-								<div
-									key={themeOption}
-									className="flex flex-col space-y-2"
-								>
+						<div className=" ">
+							<div className="flex space-x-4">
+								{themes.map(theme => (
 									<ThemePreview
-										theme={
-											themeOption as
-												| 'system'
-												| 'light'
-												| 'dark'
+										key={theme.name}
+										name={theme.name}
+										accentColor={theme.accentColor}
+										bgColor={theme.bgColor}
+										isSelected={
+											selectedTheme === theme.name
 										}
-										accentColor={accentColor}
+										onClick={() => {
+											setSelectedTheme(theme.name)
+											setAccentColor(theme.accentColor)
+											toast.success(
+												`Theme set to ${theme.name}`
+											)
+										}}
 									/>
-									<div className="flex items-center space-x-2">
-										<RadioGroupItem
-											value={themeOption}
-											id={themeOption}
-										/>
-										<Label
-											htmlFor={themeOption}
-											className="text-gray-300 capitalize"
-										>
-											{themeOption}
-										</Label>
-									</div>
-								</div>
-							))}
-						</RadioGroup>
+								))}
+							</div>
+						</div>
 					</div>
 					<Separator className="bg-border-outline" />
 					<div className="grid gap-2">
@@ -226,6 +251,11 @@ export default function Component({ isOpen, onClose, onSettingChange }) {
 										`All animations ${checked ? 'disabled' : 'enabled'}`
 									)
 								}}
+								style={{
+									backgroundColor: disableAllAnimations
+										? accentColor
+										: undefined
+								}}
 							/>
 						</div>
 						<div className="flex items-center justify-between">
@@ -253,6 +283,11 @@ export default function Component({ isOpen, onClose, onSettingChange }) {
 										`Sidebar animations ${checked ? 'disabled' : 'enabled'}`
 									)
 								}}
+								style={{
+									backgroundColor: disableSidebarAnimations
+										? accentColor
+										: undefined
+								}}
 							/>
 						</div>
 					</div>
@@ -279,6 +314,11 @@ export default function Component({ isOpen, onClose, onSettingChange }) {
 									`Grouping ${checked ? 'enabled' : 'disabled'}`
 								)
 							}}
+							style={{
+								backgroundColor: grouping
+									? accentColor
+									: undefined
+							}}
 						/>
 					</div>
 					<div className="flex items-center justify-between">
@@ -301,7 +341,10 @@ export default function Component({ isOpen, onClose, onSettingChange }) {
 								toast.success(`Ordering set to ${value}`)
 							}}
 						>
-							<SelectTrigger className="bg-card w-48 text-subtitle">
+							<SelectTrigger
+								className="bg-card w-48 text-subtitle"
+								style={{ borderColor: accentColor }}
+							>
 								<SelectValue placeholder="Select ordering" />
 							</SelectTrigger>
 							<SelectContent>
@@ -339,6 +382,11 @@ export default function Component({ isOpen, onClose, onSettingChange }) {
 									`Sub-issues display ${checked ? 'enabled' : 'disabled'}`
 								)
 							}}
+							style={{
+								backgroundColor: showSubIssues
+									? accentColor
+									: undefined
+							}}
 						/>
 					</div>
 				</div>
@@ -355,7 +403,12 @@ export default function Component({ isOpen, onClose, onSettingChange }) {
 						<Button variant="outline" onClick={onClose}>
 							Cancel
 						</Button>
-						<Button onClick={handleSave}>Save changes</Button>
+						<Button
+							onClick={handleSave}
+							style={{ backgroundColor: accentColor }}
+						>
+							Save changes
+						</Button>
 					</div>
 				</DialogFooter>
 			</DialogContent>

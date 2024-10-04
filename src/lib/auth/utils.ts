@@ -1,8 +1,8 @@
 import { type Cookie } from 'lucia'
 import { redirect } from 'next/navigation'
 
-import { validateRequest } from './lucia'
 import { cookies } from 'next/headers'
+import { validateRequest } from './lucia'
 
 export type AuthSession = {
 	session: {

@@ -1,7 +1,10 @@
 'use client'
 
 import Logo from '@/components/base/logo'
-import { createShortcutMap, useKeyboardShortcuts } from '@/core/hooks/use-keyboard-shortcuts'
+import {
+	createShortcutMap,
+	useKeyboardShortcuts
+} from '@/core/hooks/use-keyboard-shortcuts'
 import { motion } from 'framer-motion'
 import { usePathname, useRouter } from 'next/navigation'
 import { Tabs } from './Tabs'

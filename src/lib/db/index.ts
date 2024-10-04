@@ -8,26 +8,33 @@ import {
 import { drizzle } from 'drizzle-orm/neon-http'
 
 // Import all schemas and relations
+import * as activity from './schema/activity'
 import * as auth from './schema/auth'
 import * as folders from './schema/folders'
 import * as notes from './schema/notes'
 
 neonConfig.fetchConnectionCache = true
 
-export const sql: NeonQueryFunction<boolean, boolean> = neon(env.DATABASE_URL)
-
-// Combine all schemas and relations
 const schema = {
 	...auth,
 	...folders,
-	...notes
+	...notes,
+	...activity
 }
 
-// Create and export the database instance
-export const db = drizzle(sql, { schema })
+let sql: NeonQueryFunction<boolean, boolean>
+let db: ReturnType<typeof drizzle>
+let pool: Pool
 
-export const pool = new Pool({ connectionString: env.DATABASE_URL })
+if (typeof window === 'undefined') {
+	sql = neon(env.DATABASE_URL)
+	db = drizzle(sql, { schema })
+	pool = new Pool({ connectionString: env.DATABASE_URL })
+}
 
-// Re-export all schemas and types for convenience
+export { db, pool, sql }
+
+export * from './schema/activity'
 export * from './schema/auth'
 export * from './schema/folders'
+// export * from './schema/notes'

@@ -5,82 +5,91 @@ type ShortcutAction = () => void
 type ShortcutMap = Record<KeyCombo, ShortcutAction>
 
 type ShortcutOptions = {
-    preventDefault?: boolean
-    stopPropagation?: boolean
-    capture?: boolean
-    disableOnInput?: boolean
+	preventDefault?: boolean
+	stopPropagation?: boolean
+	capture?: boolean
+	disableOnInput?: boolean
 }
 
 const defaultOptions: ShortcutOptions = {
-    preventDefault: true,
-    stopPropagation: true,
-    capture: false,
-    disableOnInput: true,
+	preventDefault: true,
+	stopPropagation: true,
+	capture: false,
+	disableOnInput: true
 }
 
 export function useKeyboardShortcuts(
-    shortcuts: ShortcutMap,
-    options: ShortcutOptions = {}
+	shortcuts: ShortcutMap,
+	options: ShortcutOptions = {}
 ) {
-    const mergedOptions = { ...defaultOptions, ...options }
-    const shortcutsRef = useRef<ShortcutMap>(shortcuts)
+	const mergedOptions = { ...defaultOptions, ...options }
+	const shortcutsRef = useRef<ShortcutMap>(shortcuts)
 
-    useEffect(() => {
-        shortcutsRef.current = shortcuts
-    }, [shortcuts])
+	useEffect(() => {
+		shortcutsRef.current = shortcuts
+	}, [shortcuts])
 
-    const handleKeyDown = useCallback(
-        (event: KeyboardEvent) => {
-            if (
-                mergedOptions.disableOnInput &&
-                (event.target instanceof HTMLInputElement ||
-                    event.target instanceof HTMLTextAreaElement ||
-                    (event.target instanceof HTMLElement && event.target.isContentEditable))
-            ) {
-                return
-            }
+	const handleKeyDown = useCallback(
+		(event: KeyboardEvent) => {
+			if (
+				mergedOptions.disableOnInput &&
+				(event.target instanceof HTMLInputElement ||
+					event.target instanceof HTMLTextAreaElement ||
+					(event.target instanceof HTMLElement &&
+						event.target.isContentEditable))
+			) {
+				return
+			}
 
-            const keyCombo = getKeyCombo(event)
-            const action = shortcutsRef.current[keyCombo]
+			const keyCombo = getKeyCombo(event)
+			const action = shortcutsRef.current[keyCombo]
 
-            if (action) {
-                if (mergedOptions.preventDefault) {
-                    event.preventDefault()
-                }
-                if (mergedOptions.stopPropagation) {
-                    event.stopPropagation()
-                }
-                action()
-            }
-        },
-        [mergedOptions]
-    )
+			if (action) {
+				if (mergedOptions.preventDefault) {
+					event.preventDefault()
+				}
+				if (mergedOptions.stopPropagation) {
+					event.stopPropagation()
+				}
+				action()
+			}
+		},
+		[mergedOptions]
+	)
 
-    useEffect(() => {
-        document.addEventListener('keydown', handleKeyDown, mergedOptions.capture)
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown, mergedOptions.capture)
-        }
-    }, [handleKeyDown, mergedOptions.capture])
+	useEffect(() => {
+		document.addEventListener(
+			'keydown',
+			handleKeyDown,
+			mergedOptions.capture
+		)
+		return () => {
+			document.removeEventListener(
+				'keydown',
+				handleKeyDown,
+				mergedOptions.capture
+			)
+		}
+	}, [handleKeyDown, mergedOptions.capture])
 }
 
 function getKeyCombo(event: KeyboardEvent): KeyCombo {
-    const modifiers: string[] = []
+	const modifiers: string[] = []
 
-    if (event.ctrlKey) modifiers.push('ctrl')
-    if (event.altKey) modifiers.push('alt')
-    if (event.shiftKey) modifiers.push('shift')
-    if (event.metaKey) modifiers.push('meta')
+	if (event.ctrlKey) modifiers.push('ctrl')
+	if (event.altKey) modifiers.push('alt')
+	if (event.shiftKey) modifiers.push('shift')
+	if (event.metaKey) modifiers.push('meta')
 
-    const key = event.key.toLowerCase()
+	const key = event.key.toLowerCase()
 
-    return [...modifiers, key].join('+')
+	return [...modifiers, key].join('+')
 }
 
 export function createShortcutMap(
-    shortcuts: [KeyCombo, ShortcutAction][]
+	shortcuts: [KeyCombo, ShortcutAction][]
 ): ShortcutMap {
-    return Object.fromEntries(shortcuts)
+	return Object.fromEntries(shortcuts)
 }
 
 /* Example usage

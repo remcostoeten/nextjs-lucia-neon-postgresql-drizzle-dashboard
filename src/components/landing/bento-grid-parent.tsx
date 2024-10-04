@@ -16,7 +16,7 @@ const BentoGrid = ({ children, className }: BentoGridProps) => {
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 1, delay: 1 }}
 			className={cn(
-				'grid w-full auto-rows-[22rem] grid-cols-3 gap-4 transition-opacity duration-1500 ease-in-out',
+				'grid w-full auto-rows-[16rem] grid-cols-3 gap-4 transition-opacity duration-1500 ease-in-out',
 				'transform-gpu',
 				'translate-y-10 group-hover:translate-y-0',
 				className
@@ -50,7 +50,7 @@ const BentoCard = ({
 		animate={{ opacity: 1, y: 0 }}
 		transition={{ duration: 1.5 }}
 		className={cn(
-			'group relative col-span-3 flex flex-col justify-between overflow-hidden rounded-xl',
+			'x group relative col-span-3 flex flex-col justify-between overflow-hidden rounded-xl',
 			'bg-white [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]',
 			'transform-gpu dark:bg-body dark:[border:1px_solid_rgba(39,38,39,.)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] border-outline-soft',
 			className

@@ -1,19 +1,13 @@
 import IntroShortcutGuide from '@/components/dashboard/intro-guide'
-import { getUserAuth } from 'session'
+import { getUserAuth } from '@/lib/auth/utils'
+import { redirect } from 'next/navigation'
 
-export default async function Home() {
-	try {
-		const { session } = await getUserAuth()
-		console.log('Session:', session)
+export default async function DashboardPage() {
+	const { session } = await getUserAuth()
 
-		if (!session) {
-			console.log('Session is null or undefined')
-			return <div>No active session</div>
-		}
-
-		return <IntroShortcutGuide user={session.user} />
-	} catch (error) {
-		console.error('Error in Home component:', error)
-		return <div>Error loading profile</div>
+	if (!session) {
+		redirect('/sign-in')
 	}
+
+	return <IntroShortcutGuide user={session.user} />
 }

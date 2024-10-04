@@ -4,8 +4,6 @@ import { CalendarIcon, FileTextIcon } from '@radix-ui/react-icons'
 import { BellIcon, Share2Icon } from 'lucide-react'
 
 import { cn } from 'cn'
-import CalendarHeatmap from '../ui/calendar-heatmap'
-import { Rainbow, RainbowDates } from '../ui/cals'
 import AnimatedBeamMultipleOutputDemo from './animated-beam-multiple-outputs'
 import AnimatedListDemo from './animated-list-demo'
 import { BentoCard, BentoGrid } from './bento-grid-parent'
@@ -52,7 +50,7 @@ const features = [
 	{
 		Icon: FileTextIcon,
 		name: 'Manage your notes',
-		description: 'Securely manage your notes with our note-taking app.',
+		description: 'Securely manage your thoughts and masterplans.',
 		href: '#',
 		cta: 'Learn more',
 		className: 'col-span-3 lg:col-span-1',
@@ -79,7 +77,7 @@ const features = [
 								</figcaption>
 							</div>
 						</div>
-						<blockquote className="mt-2 text-xs">
+						<blockquote className="mt-2 text-sm text-subtitle">
 							{f.body}
 						</blockquote>
 					</figure>
@@ -112,28 +110,22 @@ const features = [
 	},
 	{
 		Icon: CalendarIcon,
-		name: 'Calendar',
-		description: 'No more forgetting your appointments.',
+		name: 'Placeholder',
+		description: 'Coming soon...',
 		className: 'col-span-3 lg:col-span-1',
 		href: '#',
 		cta: 'Learn more',
 		background: (
-			<CalendarHeatmap
-				className={cn(
-					FADE_UP_CLASSNAME,
-					'lg:motion-safe:[animation-delay:4000ms]'
-				)}
-				numberOfMonths={2}
-				variantClassnames={Rainbow}
-				datesPerVariant={RainbowDates}
-			/>
+			<div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 text-center text-white dark:text-gray-300">
+				<p>Placeholder content</p>
+			</div>
 		)
 	}
 ]
 
 export default function BentoGridIntro() {
 	return (
-		<BentoGrid>
+		<BentoGrid className="my-14">
 			{features.map((feature, idx) => (
 				<BentoCard key={idx} {...feature} />
 			))}

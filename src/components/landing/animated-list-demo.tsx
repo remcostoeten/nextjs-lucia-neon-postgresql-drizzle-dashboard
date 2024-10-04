@@ -86,7 +86,7 @@ export default function AniamtedList({ className }: { className?: string }) {
 	return (
 		<div
 			className={cn(
-				'relative flex h-[400px] w-full flex-col p-6 overflow-hidden rounded-lg border bg-background md:shadow-xl',
+				'relative flex w-full flex-col p-6 overflow-hidden rounded-lg border bg-background md:shadow-xl',
 				className
 			)}
 		>
