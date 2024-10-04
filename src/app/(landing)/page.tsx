@@ -1,5 +1,5 @@
 import GithubOpenSource from '@/components/effects/gitihu-oss/github-open-source'
-import BentoGrid from '@/components/landing/bent-grid'
+import BentoGrid from '@/components/landing/bento-grid/bento-grid'
 import { Footer } from '@/components/landing/footer'
 import Hero from '@/components/landing/Hero/Hero'
 
@@ -14,10 +14,6 @@ export default function Home() {
 			<Footer />
 		</>
 	)
-}
-
-interface PageProps {
-	children: React.ReactNode
 }
 
 function Wrapper({ children }: PageProps) {

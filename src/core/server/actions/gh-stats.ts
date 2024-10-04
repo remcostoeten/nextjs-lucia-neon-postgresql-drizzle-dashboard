@@ -8,12 +8,10 @@ const octokit = new Octokit({
 
 export async function fetchGitHubStats() {
 	try {
-		// Fetch user data
 		const { data: userData } = await octokit.users.getByUsername({
 			username: 'remcostoeten'
 		})
 
-		// Fetch repository data
 		const { data: repoData } = await octokit.repos.get({
 			owner: 'remcostoeten',
 			repo: 'nextjs-lucia-neon-postgresql-drizzle-dashboard'

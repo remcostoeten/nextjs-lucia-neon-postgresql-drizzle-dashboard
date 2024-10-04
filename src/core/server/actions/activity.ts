@@ -4,7 +4,11 @@ import { getUserAuth } from '@/lib/auth/utils'
 import { db } from '@/lib/db/index'
 import { activityLogs, activityLogSchema } from '@/lib/db/schema/activity'
 import { generateId } from 'lucia'
-export async function logActivity(action: string, details?: string) {
+export async function logActivity(
+	action: string,
+	details?: string,
+	userId?: string
+) {
 	const { session } = await getUserAuth()
 	if (!session) throw new Error('Unauthorized')
 
@@ -15,7 +19,7 @@ export async function logActivity(action: string, details?: string) {
 
 	await db.insert(activityLogs).values({
 		id: generateId(15),
-		userId: session.user.id,
+		userId: userId ?? session.user.id,
 		action: result.data.action,
 		details: result.data.details
 	})

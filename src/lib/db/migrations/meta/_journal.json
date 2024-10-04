@@ -15,6 +15,13 @@
 			"when": 1727489833169,
 			"tag": "0001_rare_lucky_pierre",
 			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "5",
+			"when": 1728073048049,
+			"tag": "0002_absurd_gamora",
+			"breakpoints": true
 		}
 	]
 }

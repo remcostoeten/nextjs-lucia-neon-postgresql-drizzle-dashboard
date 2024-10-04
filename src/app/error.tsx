@@ -4,10 +4,8 @@ import NoticeBox from '@/components/elements/notice-box'
 
 export default function ErrorPage() {
 	return (
-		<NoticeBox
-			title="Oops! Something went wrong"
-			homeLink="/"
-			dashboardLink="/dashboard"
-		/>
+		<div className="flex min-h-screen w-full items-center justify-center">
+			<NoticeBox title="Oops! Something went wrong" homeLink="/" />
+		</div>
 	)
 }

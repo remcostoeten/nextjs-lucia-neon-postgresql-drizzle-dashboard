@@ -17,10 +17,12 @@ const productCategories: ProductCategory[] = [
 		links: [{ name: 'Notice box', href: '/design-system/notice' }]
 	},
 	{
-		name: 'Fancy stuff',
+		name: 'Hooks showcase',
 		links: [
-			{ name: 'Spotlight cards', href: '/design-system/card-spotlight' },
-			{ name: 'Card mouse', href: '/design-system/mouse-demo' }
+			{
+				name: 'use local storage',
+				href: '/hooks-showcase/use-local-storage'
+			}
 		]
 	},
 	{

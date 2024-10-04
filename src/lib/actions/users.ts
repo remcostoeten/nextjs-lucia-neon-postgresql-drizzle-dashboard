@@ -1,3 +1,5 @@
+// File: lib/actions/users.ts
+
 'use server'
 
 import { revalidatePath } from 'next/cache'
@@ -9,7 +11,7 @@ import { generateId } from 'lucia'
 import { Argon2id } from 'oslo/password'
 import { lucia, validateRequest } from '../auth/lucia'
 
-import { logActivity } from '@/core/server/actions/activity'
+import { logActivity } from '@/core/server/actions/users/log-activity'
 import {
 	genericError,
 	getUserAuth,
@@ -18,8 +20,9 @@ import {
 } from '../auth/utils'
 import { updateUserSchema, users } from '../db/schema/auth'
 
-interface ActionResult {
+type ActionResult = {
 	error: string
+	success?: string
 }
 
 export async function signInAction(
@@ -54,9 +57,18 @@ export async function signInAction(
 		const sessionCookie = lucia.createSessionCookie(session.id)
 		setAuthCookie(sessionCookie)
 
-		await logActivity('Sign In', 'User signed in successfully')
+		await logActivity(
+			existingUser.id,
+			'Sign In',
+			'User signed in successfully',
+			{
+				email: existingUser.email,
+				timestamp: new Date().toISOString(),
+				userAgent: formData.get('userAgent') as string
+			}
+		)
 
-		return redirect('/dashboard')
+		return { error: '', success: 'Signed in successfully' }
 	} catch (e) {
 		return genericError
 	}
@@ -79,14 +91,20 @@ export async function signUpAction(
 			email: data.email,
 			hashedPassword
 		})
+
+		await logActivity(userId, 'Sign Up', 'User created an account', {
+			email: data.email,
+			timestamp: new Date().toISOString(),
+			userAgent: formData.get('userAgent') as string
+		})
+
+		const session = await lucia.createSession(userId, {})
+		const sessionCookie = lucia.createSessionCookie(session.id)
+		setAuthCookie(sessionCookie)
+		return { error: '', success: 'Account created successfully' }
 	} catch (e) {
 		return genericError
 	}
-
-	const session = await lucia.createSession(userId, {})
-	const sessionCookie = lucia.createSessionCookie(session.id)
-	setAuthCookie(sessionCookie)
-	return redirect('/dashboard')
 }
 
 export async function signOutAction(): Promise<ActionResult> {
@@ -99,17 +117,21 @@ export async function signOutAction(): Promise<ActionResult> {
 
 	await lucia.invalidateSession(session.id)
 
+	await logActivity(session.userId, 'Sign Out', 'User signed out', {
+		timestamp: new Date().toISOString()
+	})
+
 	const sessionCookie = lucia.createBlankSessionCookie()
 	setAuthCookie(sessionCookie)
-	redirect('/sign-in')
+	return redirect('/sign-in')
 }
 
 export async function updateUser(
 	_: any,
 	formData: FormData
-): Promise<ActionResult & { success?: boolean }> {
+): Promise<ActionResult & { success: boolean }> {
 	const { session } = await getUserAuth()
-	if (!session) return { error: 'Unauthorised' }
+	if (!session) return { error: 'Unauthorised', success: false }
 
 	const name = formData.get('name') ?? undefined
 	const email = formData.get('email') ?? undefined
@@ -118,9 +140,14 @@ export async function updateUser(
 
 	if (!result.success) {
 		const error = result.error.flatten().fieldErrors
-		if (error.name) return { error: 'Invalid name - ' + error.name[0] }
-		if (error.email) return { error: 'Invalid email - ' + error.email[0] }
-		return genericError
+		if (error.name)
+			return { error: 'Invalid name - ' + error.name[0], success: false }
+		if (error.email)
+			return {
+				error: 'Invalid email - ' + error.email[0],
+				success: false
+			}
+		return { ...genericError, success: false }
 	}
 
 	try {
@@ -128,9 +155,20 @@ export async function updateUser(
 			.update(users)
 			.set({ ...result.data })
 			.where(eq(users.id, session.user.id))
+
+		await logActivity(
+			session.user.id,
+			'Profile Update',
+			'User updated their profile',
+			{
+				updatedFields: Object.keys(result.data).join(', '),
+				timestamp: new Date().toISOString()
+			}
+		)
+
 		revalidatePath('/account')
 		return { success: true, error: '' }
 	} catch (e) {
-		return genericError
+		return { ...genericError, success: false }
 	}
 }
