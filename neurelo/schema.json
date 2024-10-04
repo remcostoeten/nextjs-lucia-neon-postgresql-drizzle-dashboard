@@ -1,0 +1,259 @@
+{
+  "objects": {
+    "key": {
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "sourceType": [
+            "Timestamp",
+            6
+          ],
+          "default": {
+            "function": "now"
+          }
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "sourceType": [
+            "Timestamp",
+            6
+          ],
+          "nullable": true
+        },
+        "hashed_password": {
+          "type": "string",
+          "nullable": true
+        },
+        "id": {
+          "type": "string",
+          "identifier": true
+        },
+        "is_revoked": {
+          "type": "boolean",
+          "default": {
+            "value": false
+          },
+          "nullable": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "user": {
+          "$ref": "#/objects/user",
+          "relation": {
+            "attrKey": [
+              "user_id"
+            ],
+            "foreignAttrKey": [
+              "id"
+            ],
+            "sourceName": "key_user_id_user_id_fk",
+            "onUpdate": "NoAction",
+            "onDelete": "NoAction"
+          }
+        },
+        "user_id": {
+          "type": "string"
+        }
+      }
+    },
+    "session": {
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "sourceType": [
+            "Timestamptz",
+            6
+          ],
+          "default": {
+            "function": "now"
+          }
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "sourceType": [
+            "Timestamptz",
+            6
+          ]
+        },
+        "id": {
+          "type": "string",
+          "identifier": true
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "sourceType": [
+            "Timestamptz",
+            6
+          ],
+          "default": {
+            "function": "now"
+          }
+        },
+        "user": {
+          "$ref": "#/objects/user",
+          "relation": {
+            "attrKey": [
+              "user_id"
+            ],
+            "foreignAttrKey": [
+              "id"
+            ],
+            "sourceName": "session_user_id_user_id_fk",
+            "onUpdate": "NoAction",
+            "onDelete": "NoAction"
+          }
+        },
+        "user_id": {
+          "type": "string"
+        }
+      }
+    },
+    "user": {
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "sourceType": [
+            "Timestamp",
+            6
+          ],
+          "default": {
+            "function": "now"
+          }
+        },
+        "email": {
+          "type": "string",
+          "unique": true
+        },
+        "email_verified": {
+          "type": "boolean",
+          "default": {
+            "value": false
+          },
+          "nullable": true
+        },
+        "hashed_password": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "identifier": true,
+          "unique": true
+        },
+        "key": {
+          "type": "array",
+          "items": {
+            "$ref": "#/objects/key"
+          }
+        },
+        "last_login": {
+          "type": "string",
+          "format": "date-time",
+          "sourceType": [
+            "Timestamptz",
+            6
+          ],
+          "nullable": true
+        },
+        "name": {
+          "type": "string",
+          "nullable": true
+        },
+        "profile_image_url": {
+          "type": "string",
+          "nullable": true
+        },
+        "role": {
+          "type": "string",
+          "default": {
+            "value": "user"
+          },
+          "nullable": true
+        },
+        "session": {
+          "type": "array",
+          "items": {
+            "$ref": "#/objects/session"
+          }
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "sourceType": [
+            "Timestamp",
+            6
+          ],
+          "default": {
+            "function": "now"
+          }
+        },
+        "public.profile_ref": {
+          "$ref": "#/objects/profile",
+          "relation": {
+            "attrKey": [
+              "id"
+            ],
+            "foreignAttrKey": [
+              "id"
+            ],
+            "name": "public.user__id"
+          }
+        }
+      }
+    },
+    "profile": {
+      "properties": {
+        "id": {
+          "type": "string",
+          "identifier": true,
+          "unique": true
+        },
+        "user_id": {
+          "type": "string",
+          "unique": true
+        },
+        "bio": {
+          "type": "string",
+          "nullable": true
+        },
+        "occupation": {
+          "type": "string",
+          "nullable": true
+        },
+        "date_of_birth": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true
+        },
+        "github_link": {
+          "type": "string",
+          "nullable": true
+        },
+        "instagram": {
+          "type": "string",
+          "nullable": true
+        },
+        "twitter": {
+          "type": "string",
+          "nullable": true
+        },
+        "public.user_ref": {
+          "$ref": "#/objects/user",
+          "nullable": true,
+          "relation": {
+            "name": "public.user__id"
+          }
+        }
+      }
+    }
+  }
+}
