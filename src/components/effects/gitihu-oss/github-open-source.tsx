@@ -16,7 +16,8 @@ export default function GithubOpenSource() {
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true, amount: 0.5 }}
 					transition={{ duration: 1, ease: 'easeInOut' }}
-					className="mt-8 max-w-2xl mx-auto  font-geist text-center text-5xl font-normal tracking-tight text-gray-800 dark:text-gray-200">
+					className="mt-8 max-w-2xl mx-auto  font-geist text-center text-5xl font-normal tracking-tight text-gray-800 dark:text-gray-200"
+				>
 					Proudly OpenSource.
 				</motion.p>
 				<HeroMainboardStuff className="absolute top-[-100px] invert brightness-50 block dark:hidden" />
@@ -25,7 +26,8 @@ export default function GithubOpenSource() {
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true, amount: 0.5 }}
 					transition={{ duration: 1, ease: 'easeInOut', delay: 0.5 }}
-					className="mt-4 max-w-xl mx-auto  text-lg text-center tracking-tight text-subtitle">
+					className="mt-4 max-w-xl mx-auto  text-lg text-center tracking-tight text-subtitle"
+				>
 					Design assets, icon teardowns, and a community of fellow
 					icon designers where you can ask questions.
 				</motion.p>
@@ -39,7 +41,11 @@ export default function GithubOpenSource() {
 						initial={{ opacity: 0 }}
 						whileInView={{ opacity: 1 }}
 						viewport={{ once: true, amount: 0.5 }}
-						transition={{ duration: 1, ease: 'easeInOut', delay: 1 }}
+						transition={{
+							duration: 1,
+							ease: 'easeInOut',
+							delay: 1
+						}}
 					>
 						<button className="mt-4 container inline-flex -translate-y-1/4 gap-2 justify-center items-center py-2 px-10 mt-5 text-lg tracking-tighter text-center bg-gradient-to-br rounded-md ring-2 ring-offset-2 transition-all hover:ring-transparent group/button  from-zinc-100 to-zinc-300 font-geist text-md text-zinc-900 dark:ring-zinc-500/80 dark:ring-offset-zinc-950 hover:scale-[1.02] active:scale-[0.98] active:dark:ring-zinc-500/70 ring-black/20 z-50">
 							<Github className="w-4 h-4" /> Get Started

@@ -89,7 +89,8 @@ const KeyboardShortcutsShowcase = () => {
 				onClick={() => console.log('clicked')}
 			>
 				hacker text
-			</HackerText>			<motion.div
+			</HackerText>{' '}
+			<motion.div
 				ref={headerRef}
 				style={{
 					position: 'sticky',
@@ -111,7 +112,6 @@ const KeyboardShortcutsShowcase = () => {
 					</p>
 				</Card>
 			</motion.div>
-
 			<Card className="p-4 mt-4">
 				<h3 className="text-lg font-semibold mb-2">
 					Example 1: Basic Usage with Variants
@@ -135,7 +135,6 @@ const KeyboardShortcutsShowcase = () => {
 useKeyboardShortcuts(basicShortcuts)`}
 				</CodeHighlight>
 			</Card>
-
 			<Card className="p-4 mt-4">
 				<h3 className="text-lg font-semibold mb-2">
 					Example 2: Custom Options and Sizes
@@ -159,7 +158,6 @@ useKeyboardShortcuts(basicShortcuts)`}
 useKeyboardShortcuts(customOptionsShortcuts, { disableOnInput: false })`}
 				</CodeHighlight>
 			</Card>
-
 			<Card className="p-4 mt-4">
 				<h3 className="text-lg font-semibold mb-2">
 					Example 3: Multiple Key Combinations
@@ -191,7 +189,6 @@ useKeyboardShortcuts(customOptionsShortcuts, { disableOnInput: false })`}
 useKeyboardShortcuts(multipleKeysShortcuts)`}
 				</CodeHighlight>
 			</Card>
-
 			<Card className="p-4 mt-4">
 				<h3 className="text-lg font-semibold mb-2">
 					Example 4: Conditional Shortcuts
@@ -220,7 +217,6 @@ const conditionalShortcuts = createShortcutMap([
 useKeyboardShortcuts(conditionalShortcuts)`}
 				</CodeHighlight>
 			</Card>
-
 			<Card className="p-4 mt-4">
 				<h3 className="text-lg font-semibold mb-2">
 					Example 5: Triggering Dialog
@@ -255,7 +251,6 @@ useKeyboardShortcuts(dialogShortcuts)
 </Dialog>`}
 				</CodeHighlight>
 			</Card>
-
 			<Card className="p-4 mt-4">
 				<h3 className="text-lg font-semibold mb-2">
 					Example 6: Different Sizes and Variants
@@ -281,7 +276,6 @@ useKeyboardShortcuts(dialogShortcuts)
 					Hover over the keys to see tooltips
 				</p>
 			</Card>
-
 			<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 				<DialogContent>
 					<DialogHeader>

@@ -264,7 +264,9 @@ export default function NotesSidebar() {
 								<div className="flex-shrink-0 ml-2">
 									<FolderCrudButton
 										folder={folder}
-										onDelete={() => handleDeleteFolder(folder.id)} // Implement this function to handle folder deletion
+										onDelete={() =>
+											handleDeleteFolder(folder.id)
+										} // Implement this function to handle folder deletion
 									/>
 								</div>
 							</motion.li>

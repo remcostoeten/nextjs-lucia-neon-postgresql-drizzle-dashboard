@@ -20,10 +20,11 @@ export async function fetchGitHubStats() {
 		})
 
 		// Fetch commit activity
-		const { data: commitActivity } = await octokit.repos.getCommitActivityStats({
-			owner: 'remcostoeten',
-			repo: 'nextjs-lucia-neon-postgresql-drizzle-dashboard'
-		})
+		const { data: commitActivity } =
+			await octokit.repos.getCommitActivityStats({
+				owner: 'remcostoeten',
+				repo: 'nextjs-lucia-neon-postgresql-drizzle-dashboard'
+			})
 
 		// Calculate coding streak
 		const codingStreak = commitActivity.reduce((streak, week) => {
@@ -31,17 +32,26 @@ export async function fetchGitHubStats() {
 		}, 0)
 
 		// Get total commits
-		const totalCommits = commitActivity.reduce((sum, week) => sum + week.total, 0)
+		const totalCommits = commitActivity.reduce(
+			(sum, week) => sum + week.total,
+			0
+		)
 
 		// Get last commit date to the minute
-		const { data: [latestCommit] } = await octokit.repos.listCommits({
+		const {
+			data: [latestCommit]
+		} = await octokit.repos.listCommits({
 			owner: 'remcostoeten',
 			repo: 'nextjs-lucia-neon-postgresql-drizzle-dashboard',
 			per_page: 1
 		})
 
-		const lastCommitDate = latestCommit.commit.committer?.date ?? new Date().toISOString();
-		const lastCommitTimestamp = new Date(lastCommitDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+		const lastCommitDate =
+			latestCommit.commit.committer?.date ?? new Date().toISOString()
+		const lastCommitTimestamp = new Date(lastCommitDate).toLocaleTimeString(
+			[],
+			{ hour: '2-digit', minute: '2-digit' }
+		)
 
 		return {
 			codingStreak,
@@ -60,5 +70,3 @@ export async function fetchGitHubStats() {
 		}
 	}
 }
-
-
