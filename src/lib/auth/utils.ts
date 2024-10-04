@@ -1,6 +1,9 @@
-import { type Cookie } from 'lucia'
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
+import { type Cookie } from 'lucia'
+
+import { UsernameAndPassword, authenticationSchema } from '../db/schema/auth'
 import { cookies } from 'next/headers'
 import { validateRequest } from './lucia'
 
@@ -16,8 +19,7 @@ export type AuthSession = {
 }
 
 export const getUserAuth = async (): Promise<AuthSession> => {
-	const cookieStore = cookies()
-	const { session, user } = await validateRequest(cookieStore)
+	const { session, user } = await validateRequest()
 	if (!session) return { session: null }
 	if (!user.id || typeof user.id !== 'string') {
 		console.error('Invalid user ID:', user.id)
@@ -34,15 +36,15 @@ export const getUserAuth = async (): Promise<AuthSession> => {
 	}
 }
 
-export const checkAuth = async (cookieStore: any) => {
-	const { session } = await validateRequest(cookieStore)
+export const checkAuth = async () => {
+	const { session } = await validateRequest()
 	if (!session) redirect('/sign-in')
 }
 
 export const genericError = { error: 'Error, please try again.' }
 
-export const setAuthCookie = (cookie: Cookie, cookieStore: any) => {
-	cookieStore.set(cookie.name, cookie.value, {
+export const setAuthCookie = (cookie: Cookie) => {
+	cookies().set(cookie.name, cookie.value, {
 		...cookie.attributes,
 		httpOnly: true,
 		secure: process.env.NODE_ENV === 'production',
@@ -54,4 +56,23 @@ const getErrorMessage = (errors: any): string => {
 	if (errors.email) return 'Invalid Email'
 	if (errors.password) return 'Invalid Password - ' + errors.password[0]
 	return 'An unexpected error occurred'
+}
+
+export const validateAuthFormData = (
+	formData: FormData
+):
+	| { data: UsernameAndPassword; error: null }
+	| { data: null; error: string } => {
+	const email = formData.get('email')
+	const password = formData.get('password')
+	const result = authenticationSchema.safeParse({ email, password })
+
+	if (!result.success) {
+		return {
+			data: null,
+			error: getErrorMessage(result.error.flatten().fieldErrors)
+		}
+	}
+
+	return { data: result.data, error: null }
 }
