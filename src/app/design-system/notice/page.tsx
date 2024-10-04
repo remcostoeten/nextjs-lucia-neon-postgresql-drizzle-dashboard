@@ -1,11 +1,10 @@
 'use client'
 
+import { HoverCard } from '@/components/effects/hover-card'
 import CodeHighlight from '@/components/elements/code-highlight/code-highlight'
 import NoticeBox from '@/components/elements/notice-box'
 import { AlertCircle, AlertOctagon } from 'lucide-react'
 import DesignSystemWrapper from '../_components/DesignSystemWrapper'
-import { HoverCard } from '@/components/effects/hover-card'
-
 const NoticeBoxsPage = () => {
 	const handleTryAgain = () => {
 		console.log('Trying again...')
@@ -13,7 +12,6 @@ const NoticeBoxsPage = () => {
 
 	return (
 		<DesignSystemWrapper
-			language="tsx"
 			title="Error Alerts"
 			description="Customizable error alert components for various scenarios."
 		>
@@ -22,7 +20,11 @@ const NoticeBoxsPage = () => {
 					<h3 className="text-lg font-semibold mb-4">
 						Default Error Alert
 					</h3>
-					<NoticeBox onAction={handleTryAgain} />
+					<NoticeBox
+						description="An unexpected error occurred."
+						homeLink="/"
+						onAction={handleTryAgain}
+					/>
 					<CodeHighlight
 						language="tsx"
 						title="Default Error Alert Usage"

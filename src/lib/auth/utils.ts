@@ -4,7 +4,6 @@ import { redirect } from 'next/navigation'
 import { type Cookie } from 'lucia'
 
 import { UsernameAndPassword, authenticationSchema } from '../db/schema/auth'
-import { cookies } from 'next/headers'
 import { validateRequest } from './lucia'
 
 export type AuthSession = {

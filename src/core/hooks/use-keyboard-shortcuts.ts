@@ -1,3 +1,5 @@
+'use client'
+
 import { useCallback, useEffect, useRef } from 'react'
 
 type KeyCombo = string
@@ -94,14 +96,14 @@ export function createShortcutMap(
 
 /* Example usage
  export default function Example() {
-     const shortcuts = createShortcutMap([
-         ['ctrl+s', () => console.log('Saving...')],
-         ['alt+f', () => console.log('Opening file menu...')],
-     ])
-     useKeyboardShortcuts(shortcuts)
-     return (
-         <div>
-             <p>Press Ctrl+S to save or Alt+F to open the file menu.</p>
-         </div>
-     )
+	 const shortcuts = createShortcutMap([
+		 ['ctrl+s', () => console.log('Saving...')],
+		 ['alt+f', () => console.log('Opening file menu...')],
+	 ])
+	 useKeyboardShortcuts(shortcuts)
+	 return (
+		 <div>
+			 <p>Press Ctrl+S to save or Alt+F to open the file menu.</p>
+		 </div>
+	 )
 */

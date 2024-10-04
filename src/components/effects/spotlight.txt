@@ -1,9 +1,50 @@
+'use client'
+
 import { cn } from 'cn'
 
 type SpotlightProps = {
 	className?: string
 	fill?: string
 }
+// const [cardData, setCardData] = useState([
+// 	{
+// 		image: Card01,
+// 		title: 'Amazing Integration',
+// 		description:
+// 			'Quickly apply filters to refine your issues lists and create custom views.',
+// 		rippleProps: {
+// 			enabled: true,
+// 			mainCircleSize: 152,
+// 			mainCircleOpacity: 0.24,
+// 			numCircles: 8
+// 		}
+// 	},
+// 	{
+// 		image: Card02,
+// 		title: 'Powerful Automation',
+// 		description:
+// 			'Automate your workflow and increase productivity with our advanced features.',
+// 		rippleProps: {
+// 			enabled: false,
+// 			mainCircleSize: 152,
+// 			mainCircleOpacity: 0.24,
+// 			numCircles: 8
+// 		}
+// 	},
+// 	{
+// 		image: Card03,
+// 		title: 'Seamless Collaboration',
+// 		description:
+// 			'Work together effortlessly with your team using our collaboration tools.',
+// 		rippleProps: {
+// 			enabled: true,
+// 			mainCircleSize: 152,
+// 			mainCircleOpacity: 0.24,
+// 			numCircles: 8
+// 		}
+// 	}
+// ])
+
 
 export const Spotlight = ({ className, fill }: SpotlightProps) => {
 	return (

@@ -22,6 +22,7 @@
 			"models": ["./src/core/models/index.ts"],
 			"cn": ["./src/core/helpers/cn-tw.ts"],
 			"db": ["./src/core/server/database/index.ts"],
+			"hooks": ["./src/core/hooks/index.ts"],
 			"schema": ["./src/core/server/schema/index.ts"],
 			"ui": ["./src/components/ui/index.ts"],
 			"session": ["./src/lib/auth/utils.ts"],

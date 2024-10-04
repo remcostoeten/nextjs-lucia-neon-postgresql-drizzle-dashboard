@@ -10,7 +10,7 @@ export default function DesignSystemWrapper({
 	children
 }: DesignSystemWrapperProps) {
 	return (
-		<div className="mx-auto">
+		<div className="mx-auto container">
 			<div className="mb-8">
 				<h2 className="text-xl font-bold">{title}</h2>
 				<p className="text-muted-foreground mt-2">{description}</p>
@@ -30,7 +30,6 @@ export default function DesignSystemWrapper({
 					</div>
 				</Card>
 			)}
-			eb
 			<div className="bg-dark-section space-y-4 rounded-lg space-x-4 flex flex-col gap-4">
 				{children}
 			</div>

@@ -3,7 +3,7 @@
 import FadeIn from '@/components/effects/fade-in'
 import NumberTicker from '@/components/effects/number-ticker'
 import ShinyButton from '@/components/effects/shiny-button'
-import { Spotlight } from '@/components/effects/spotlight'
+// import { Spotlight } from '@/components/effects/spotlight'
 import { fetchGitHubStats } from '@/core/server/actions/gh-stats'
 import { useInView } from 'framer-motion'
 import Link from 'next/link'
@@ -100,14 +100,10 @@ export default function Hero() {
 
 	return (
 		<div
-			className="relative transition-opacity duration-500 ease-in-out opacity-0"
+			className="relative transition-opacity duration-500 ease-in-out  -z-10"
 			style={{ opacity: isInView ? 1 : 0 }}
 		>
 			<TopLeftShiningLight />
-			<Spotlight
-				className="-top-40 left-0 md:left-60 md:-top-20"
-				fill="white"
-			/>
 			<div className="absolute -z-1 inset-0 pointer-events-none h-[600px] w-full bg-transparent opacity-5 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
 			<div className="justify-between md:flex">
 				<Container className="relative mt-36 pb-8 mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">

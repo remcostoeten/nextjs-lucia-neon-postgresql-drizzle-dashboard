@@ -19,6 +19,7 @@ import { useSiteSettingsStore } from '@/core/stores'
 import { Check } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { useThemeStore } from 'stores'
 
 type ThemePreviewProps = {
 	name: string
@@ -38,7 +39,11 @@ const ThemePreview: React.FC<ThemePreviewProps> = ({
 	return (
 		<div className="w-full">
 			<div
-				className={`h-[160px] rounded-lg overflow-hidden shadow-lg cursor-pointer transition-all duration-200 ${isSelected ? `ring-2 ring-[${accentColor}]` : 'ring-1 ring-gray-700'}`}
+				className={`h-[160px] rounded-lg overflow-hidden shadow-lg cursor-pointer transition-all duration-200 ${
+					isSelected
+						? `ring-2 ring-[${accentColor}]`
+						: 'ring-1 ring-gray-700'
+				}`}
 				onClick={onClick}
 				style={{ backgroundColor: '#252525' }}
 			>
@@ -81,10 +86,14 @@ const ThemePreview: React.FC<ThemePreviewProps> = ({
 					</div>
 				</div>
 			</div>
-			<div className="flex items-center border mt-0 border-[2c2c2e] !border-t-0 justify-between rounded-bl-lg rounded-br-lg px-3 py-2">
+			<div className="flex items-center border mt-0 border-[#2c2c2e] !border-t-0 justify-between rounded-bl-lg rounded-br-lg px-3 py-2">
 				<span className="text-subtitle text-xs">{name}</span>
 				<div
-					className={`size-4 rounded-full border ${isSelected ? `bg-[${accentColor}] border-[${accentColor}]` : 'border-gray-500'} flex items-center justify-center`}
+					className={`size-4 rounded-full border ${
+						isSelected
+							? `bg-[${accentColor}] border-[${accentColor}]`
+							: 'border-gray-500'
+					} flex items-center justify-center`}
 				>
 					{isSelected && <Check size={12} className="text-black" />}
 				</div>
@@ -108,25 +117,47 @@ export default function SiteSettingsMenu({
 		toggleAllAnimations,
 		toggleSidebarAnimations
 	} = useSiteSettingsStore()
+	const { currentTheme, setTheme } = useThemeStore()
 	const [accentColor, setAccentColor] = useState('#4361ee')
-	const [selectedTheme, setSelectedTheme] = useState('Avacado Alien')
 	const [grouping, setGrouping] = useState(true)
 	const [ordering, setOrdering] = useState('last-created')
 	const [showSubIssues, setShowSubIssues] = useState(true)
 
 	const themes = [
-		{ name: 'Avacado Alien', accentColor: '#a4e666', bgColor: '#2a2f23' },
-		{ name: 'Rainbow Candy', accentColor: '#9d5cff', bgColor: '#2b2640' },
-		{ name: 'Honeydew Punch', accentColor: '#5cffe7', bgColor: '#233536' }
+		{
+			name: 'Default',
+			key: 'default',
+			accentColor: '#4361ee',
+			bgColor: '#131111'
+		},
+		{
+			name: 'Avocado Alien',
+			key: 'avocadoAlien',
+			accentColor: '#a4e666',
+			bgColor: '#2a2f23'
+		},
+		{
+			name: 'Rainbow Candy',
+			key: 'rainbowCandy',
+			accentColor: '#9d5cff',
+			bgColor: '#2b2640'
+		},
+		{
+			name: 'Honeydew Punch',
+			key: 'honeydewPunch',
+			accentColor: '#5cffe7',
+			bgColor: '#233536'
+		}
 	]
 
 	useEffect(() => {
-		// Initialize state from store or localStorage if needed
-	}, [])
+		const theme = themes.find(t => t.key === currentTheme) || themes[0]
+		setAccentColor(theme.accentColor)
+	}, [currentTheme])
 
 	const handleSave = () => {
 		onSettingChange('accentColor', accentColor)
-		onSettingChange('theme', selectedTheme)
+		onSettingChange('theme', currentTheme)
 		onSettingChange('grouping', grouping)
 		onSettingChange('ordering', ordering)
 		onSettingChange('showSubIssues', showSubIssues)
@@ -166,7 +197,11 @@ export default function SiteSettingsMenu({
 							].map(color => (
 								<button
 									key={color}
-									className={`w-6 h-6 rounded-full ${accentColor === color ? `ring-2 ring-offset-2 ring-[${color}]` : ''}`}
+									className={`w-6 h-6 rounded-full ${
+										accentColor === color
+											? `ring-2 ring-offset-2 ring-[${color}]`
+											: ''
+									}`}
 									style={{ backgroundColor: color }}
 									onClick={() => {
 										setAccentColor(color)
@@ -181,7 +216,7 @@ export default function SiteSettingsMenu({
 							</span>
 							<Input
 								type="text"
-								value="#F5F5F5"
+								value={accentColor}
 								className="w-20 h-8 text-xs bg-gray-800 border-gray-700 text-gray-300"
 								onChange={e => {
 									setAccentColor(e.target.value)
@@ -198,27 +233,23 @@ export default function SiteSettingsMenu({
 						<p className="text-xs text-gray-400">
 							Select or customize your UI theme.
 						</p>
-						<div className=" ">
-							<div className="flex space-x-4">
-								{themes.map(theme => (
-									<ThemePreview
-										key={theme.name}
-										name={theme.name}
-										accentColor={theme.accentColor}
-										bgColor={theme.bgColor}
-										isSelected={
-											selectedTheme === theme.name
-										}
-										onClick={() => {
-											setSelectedTheme(theme.name)
-											setAccentColor(theme.accentColor)
-											toast.success(
-												`Theme set to ${theme.name}`
-											)
-										}}
-									/>
-								))}
-							</div>
+						<div className="flex space-x-4">
+							{themes.map(theme => (
+								<ThemePreview
+									key={theme.key}
+									name={theme.name}
+									accentColor={theme.accentColor}
+									bgColor={theme.bgColor}
+									isSelected={currentTheme === theme.key}
+									onClick={() => {
+										setTheme(theme.key)
+										setAccentColor(theme.accentColor)
+										toast.success(
+											`Theme set to ${theme.name}`
+										)
+									}}
+								/>
+							))}
 						</div>
 					</div>
 					<Separator className="bg-border-outline" />
