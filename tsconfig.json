@@ -31,6 +31,9 @@
 			"toast": [
 				"./src/core/stores/store.toasts.ts"
 			],
+			"cn": [
+				"./src/core/helpers/cn-tw.ts"
+			],
 			"db": [
 				"./src/core/server/database/index.ts"
 			],
