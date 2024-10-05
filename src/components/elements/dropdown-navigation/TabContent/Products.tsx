@@ -21,11 +21,15 @@ const productCategories: ProductCategory[] = [
 		links: [
 			{
 				name: 'use-localstorage',
-				href: '/hooks-showcase/use-geolocal-storage'
+				href: '/hooks-showcase/localstorage'
 			},
 			{
 				name: 'use-geolocation',
 				href: '/hooks-showcase/geolocation'
+			},
+			{
+				name: 'use-battery',
+				href: '/hooks-showcase/battery'
 			}
 		]
 	},
@@ -58,8 +62,9 @@ const ProductCategory: React.FC<ProductCategory> = ({ name, links }) => (
 			<a
 				key={index}
 				href={link.href}
-				className={`block text-sm text-subtitle ${index !== links.length - 1 ? 'mb-1' : ''
-					}`}
+				className={`block text-sm text-subtitle ${
+					index !== links.length - 1 ? 'mb-1' : ''
+				}`}
 			>
 				{link.name}
 			</a>

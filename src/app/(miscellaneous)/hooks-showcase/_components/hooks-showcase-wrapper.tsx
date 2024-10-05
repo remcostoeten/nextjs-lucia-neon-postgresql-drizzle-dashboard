@@ -10,12 +10,12 @@ import React from 'react'
 import { EnhancedCodeBlock } from './advanced-code-block'
 
 type HooksShowcaseWrapperProps = {
-	title: string
-	description: string
-	children: React.ReactNode
+	title?: string
+	description?: string
+	children?: React.ReactNode
 	codeString?: string
-	fileName: string
-	language: string
+	fileName?: string
+	language?: string
 	explanation?: string
 	demoComponent?: React.ReactNode
 	actionButtons?: Array<{
@@ -46,6 +46,23 @@ export function HooksShowcaseWrapper({
 						{description}
 					</CardDescription>
 				</CardHeader>
+				<div className="text-sm text-title">{explanation}</div>
+				<CardContent>
+					{demoComponent && <>{demoComponent}</>}
+				</CardContent>
+				{actionButtons && actionButtons.length > 0 && (
+					<div className="flex space-x-2 mt-4">
+						{actionButtons.map((button, index) => (
+							<Button
+								key={index}
+								onClick={button.onClick}
+								variant="outline"
+							>
+								{button.label}
+							</Button>
+						))}
+					</div>
+				)}
 				<CardContent className="space-y-6">
 					<EnhancedCodeBlock
 						code={codeString}
@@ -55,23 +72,6 @@ export function HooksShowcaseWrapper({
 							language.charAt(0).toUpperCase() + language.slice(1)
 						]}
 					/>
-					<div className="text-sm text-title">{explanation}</div>
-					{demoComponent && (
-						<>{demoComponent}</>
-					)}
-					{actionButtons && actionButtons.length > 0 && (
-						<div className="flex space-x-2 mt-4">
-							{actionButtons.map((button, index) => (
-								<Button
-									key={index}
-									onClick={button.onClick}
-									variant="outline"
-								>
-									{button.label}
-								</Button>
-							))}
-						</div>
-					)}
 				</CardContent>
 			</Card>
 		</div>
