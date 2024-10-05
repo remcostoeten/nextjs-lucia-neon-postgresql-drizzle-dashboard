@@ -9,7 +9,7 @@ import LogoIcon from '@/components/base/logo'
 import { Button, Input } from '@/components/ui'
 import SimpleCheckbox from '@/components/ui/simple-checkbox'
 import { signInAction } from '@/lib/actions/users'
-import { useToastStore } from 'stores'
+import { toast } from 'toast'
 
 const fadeInUp = (delay: number) => ({
 	initial: { opacity: 0, y: 20 },
@@ -25,7 +25,7 @@ const fadeInUp = (delay: number) => ({
 })
 
 export default function SignInPage() {
-	const showToast = useToastStore(state => state.showToast)
+	const showToast = toast(state => state.showToast)
 	const [state, formAction] = useFormState(signInAction, {
 		error: ''
 	})

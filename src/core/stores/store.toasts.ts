@@ -10,7 +10,7 @@ interface ToastState {
 	hideToast: () => void
 }
 
-export const useToastStore = create<ToastState>(set => ({
+export const toast = create<ToastState>(set => ({
 	message: '',
 	type: 'info',
 	isVisible: false,
