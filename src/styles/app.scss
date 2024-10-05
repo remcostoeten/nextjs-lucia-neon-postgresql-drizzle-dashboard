@@ -7,8 +7,9 @@
 
 @import './core/_typography.scss';
 
-@import './themes/_theme-selector.scss'; // contains multiple tailwind themes
+@import './themes/_theme-selector.scss';
 
+@import './utillities/_utillities.scss';
 @import './utillities/_border.scss';
 @import './utillities/_animations.scss';
 
@@ -22,4 +23,8 @@ label {
 	&.dark {
 		color: var(--text-subtitle);
 	}
+}
+
+dd {
+	color: var(--text-subtitle);
 }

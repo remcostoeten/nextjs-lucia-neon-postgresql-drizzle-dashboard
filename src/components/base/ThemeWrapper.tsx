@@ -20,10 +20,10 @@ export default function ThemeWrapper({
 				className={`${geistSans.variable} ${geistMono.variable} antialiased dark:bg-body relative pb-[330px]`}
 			>
 				<TooltipProvider>
-					<main>
+					<>
 						<Toaster richColors />
 						{children}
-					</main>
+					</>
 				</TooltipProvider>
 				<SpeedInsights />
 			</body>

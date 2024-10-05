@@ -4,6 +4,8 @@ export const siteConfig = {
 	description: 'Frontend Developer specializing in Next.js and React',
 	url: 'https://notevault.remcostoeten.com', // Replace with your actual website URL
 	ogImage: 'x', // Replace with your actual OG image URL
+	username: process.env.NEXT_PUBLIC_GITHUB_USERNAME,
+	repository: process.env.NEXT_PUBLIC_GITHUB_REPOSITORY,
 	links: {
 		github: 'https://github.com/remcostoeten',
 		gitlab: 'https://gitlab.com/remcostoeten',
@@ -12,8 +14,8 @@ export const siteConfig = {
 	},
 	contact: {
 		email: {
-			primary: 'remcostoeten@hotmail.com',
-			secondary: 'stoetenremco.rs@gmail.com'
+			primary: process.env.ADMIN_EMAIL,
+			secondary: process.env.ADMIN_EMAIL_TWO
 		}
 	},
 	location: {

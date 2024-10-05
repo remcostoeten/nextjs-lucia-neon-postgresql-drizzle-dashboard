@@ -1,5 +1,3 @@
-'use client'
-
 import { ChevronDown, ChevronUp, Copy } from 'lucide-react'
 import { useState } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -7,11 +5,50 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { toast } from 'sonner'
 import { Badge, Button } from 'ui'
 
+// Import language icons
+import {
+	DiCss3,
+	DiHtml5,
+	DiJava,
+	DiJavascript1,
+	DiPython,
+	DiReact
+} from 'react-icons/di'
+import { SiTypescript } from 'react-icons/si'
+
 type CodeBlockProps = {
 	code: string | undefined | any
 	fileName: string
 	language: string
 	badges?: string[]
+}
+
+const getLanguageIcon = (language: string) => {
+	switch (language.toLowerCase()) {
+		case 'javascript':
+			return <DiJavascript1 size={24} />
+		case 'typescript':
+			return <SiTypescript size={24} />
+		case 'tsx':
+			return (
+				<div className="flex items-center">
+					<SiTypescript size={24} />
+					{/* <DiReact size={24} className="ml-1" /> */}
+				</div>
+			)
+		case 'jsx':
+			return <DiReact size={24} />
+		case 'python':
+			return <DiPython size={24} />
+		case 'java':
+			return <DiJava size={24} />
+		case 'html':
+			return <DiHtml5 size={24} />
+		case 'css':
+			return <DiCss3 size={24} />
+		default:
+			return null
+	}
 }
 
 export function EnhancedCodeBlock({
@@ -27,10 +64,15 @@ export function EnhancedCodeBlock({
 		toast.success('Code copied to clipboard!')
 	}
 
+	const languageIcon = getLanguageIcon(language)
+
 	return (
-		<div className="rounded-lg overflow-hidden bg-card border border-zinc-800">
-			<div className="flex justify-between items-center border  px-4 py-2 bg-section-lighter">
+		<div className="rounded-lg overflow-hidden bg-card border w-fit">
+			<div className="flex justify-between items-center border px-4 py-2 bg-section-lighter">
 				<div className="flex items-center space-x-2">
+					{languageIcon && (
+						<div className="mr-2 text-subtitle">{languageIcon}</div>
+					)}
 					{badges.map((badge, index) => (
 						<Badge
 							key={index}

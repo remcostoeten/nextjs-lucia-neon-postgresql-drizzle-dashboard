@@ -49,12 +49,12 @@ const productCategories: ProductCategory[] = [
 
 const ProductCategory: React.FC<ProductCategory> = ({ name, links }) => (
 	<div>
-		<h3 className="mb-2 text-sm text-white font-medium">{name}</h3>
+		<h3 className="mb-2 text-sm text-title font-medium">{name}</h3>
 		{links.map((link, index) => (
 			<a
 				key={index}
 				href={link.href}
-				className={`block text-sm text-neutral-400 ${
+				className={`block text-sm text-subtitle ${
 					index !== links.length - 1 ? 'mb-1' : ''
 				}`}
 			>
@@ -72,7 +72,7 @@ const Products: React.FC = () => {
 					<ProductCategory key={index} {...category} />
 				))}
 			</div>
-			<button className=" mt-4 flex items-center gap-1 text-sm text-indigo-300">
+			<button className=" mt-4 flex items-center gap-1 text-sm text-brand">
 				<span>View more</span>
 				<ArrowRightIcon />
 			</button>

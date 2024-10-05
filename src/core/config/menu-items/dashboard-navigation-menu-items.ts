@@ -3,7 +3,7 @@ import { Github, HelpCircle } from 'lucide-react'
 export const links = [
 	{ href: '/features', label: 'Features' },
 	{ href: '/dashboard', label: 'Dashboard' },
-	{ href: '/blog', label: 'Blog' }
+	{ href: '/dashboard/folders', label: 'Folders feature' }
 ]
 
 export const IconTooltips = [

@@ -1,7 +1,6 @@
 'use client'
 
 import { Kbd } from '@/components/atoms'
-import HackerText from '@/components/effects/gitihu-oss/hacker-text'
 import CodeHighlight from '@/components/elements/code-highlight/code-highlight'
 import {
 	createShortcutMap,
@@ -82,14 +81,6 @@ const KeyboardShortcutsShowcase = () => {
 				{ label: 'Clear Message', onClick: () => setMessage('') }
 			]}
 		>
-			<HackerText
-				lowercase={true}
-				duration={3000}
-				speed={50}
-				onClick={() => console.log('clicked')}
-			>
-				hacker text
-			</HackerText>{' '}
 			<motion.div
 				ref={headerRef}
 				style={{
@@ -100,6 +91,7 @@ const KeyboardShortcutsShowcase = () => {
 					opacity: headerOpacity
 				}}
 			>
+				<p className="mb-2 text-xl">ToDo:Fix shortcut icon</p>
 				<Card className="p-4">
 					<h3 className="text-lg font-semibold mb-2">
 						Current Message:

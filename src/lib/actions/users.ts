@@ -1,5 +1,3 @@
-// File: lib/actions/users.ts
-
 'use server'
 
 import { revalidatePath } from 'next/cache'
@@ -12,13 +10,14 @@ import { Argon2id } from 'oslo/password'
 import { lucia, validateRequest } from '../auth/lucia'
 
 import { logActivity } from '@/core/server/actions/users/log-activity'
-import {
-	genericError,
-	getUserAuth,
-	setAuthCookie,
-	validateAuthFormData
-} from '../auth/utils'
+
 import { updateUserSchema, users } from '../db/schema/auth'
+import {
+	validateAuthFormData,
+	setAuthCookie,
+	genericError,
+	getUserAuth
+} from '../auth/utils'
 
 type ActionResult = {
 	error: string
@@ -37,9 +36,10 @@ export async function signInAction(
 			.select()
 			.from(users)
 			.where(eq(users.email, data.email.toLowerCase()))
+
 		if (!existingUser) {
 			return {
-				error: 'Incorrect username or password'
+				error: 'No account found with this email address'
 			}
 		}
 
@@ -47,11 +47,24 @@ export async function signInAction(
 			existingUser.hashedPassword,
 			data.password
 		)
+
 		if (!validPassword) {
 			return {
-				error: 'Incorrect username or password'
+				error: 'Incorrect password'
 			}
 		}
+
+		// Remove these checks as they don't exist in the user schema
+		// if (existingUser.isLocked) {
+		//     return {
+		//         error: 'Account is locked. Please contact support.'
+		//     }
+		// }
+		// if (!existingUser.isEmailVerified) {
+		//     return {
+		//         error: 'Please verify your email address before signing in'
+		//     }
+		// }
 
 		const session = await lucia.createSession(existingUser.id, {})
 		const sessionCookie = lucia.createSessionCookie(session.id)
@@ -70,7 +83,10 @@ export async function signInAction(
 
 		return { error: '', success: 'Signed in successfully' }
 	} catch (e) {
-		return genericError
+		console.error('Sign-in error:', e)
+		return {
+			error: 'An unexpected error occurred. Please try again later.'
+		}
 	}
 }
 

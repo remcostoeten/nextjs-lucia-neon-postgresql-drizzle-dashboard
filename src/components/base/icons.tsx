@@ -114,3 +114,14 @@ export const Icons = {
 		</svg>
 	)
 }
+export default function TransparentIcon({ ...props }: IconProps) {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 256 256"
+			{...props}
+		>
+			<rect width="4" height="4" fill="none" />
+		</svg>
+	)
+}

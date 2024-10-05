@@ -1,10 +1,18 @@
 'use client'
 
 import { HoverCard } from '@/components/effects/hover-card'
-import CodeHighlight from '@/components/elements/code-highlight/code-highlight'
 import NoticeBox from '@/components/elements/notice-box'
 import { AlertCircle, AlertOctagon } from 'lucide-react'
+import { EnhancedCodeBlock } from '../../hooks-showcase/_components/advanced-code-block'
 import DesignSystemWrapper from '../_components/DesignSystemWrapper'
+
+const Section = ({ title, children }) => (
+	<div className="space-y-4">
+		<h3 className="text-lg font-semibold">{title}</h3>
+		{children}
+	</div>
+)
+
 const NoticeBoxsPage = () => {
 	const handleTryAgain = () => {
 		console.log('Trying again...')
@@ -16,86 +24,73 @@ const NoticeBoxsPage = () => {
 			description="Customizable error alert components for various scenarios."
 		>
 			<div className="space-y-8">
-				<div>
-					<h3 className="text-lg font-semibold mb-4">
-						Default Error Alert
-					</h3>
+				<Section title="Default Error Alert">
 					<NoticeBox
 						description="An unexpected error occurred."
 						homeLink="/"
 						onAction={handleTryAgain}
 					/>
-					<CodeHighlight
+					<EnhancedCodeBlock
 						language="tsx"
-						title="Default Error Alert Usage"
-					>
-						{`<NoticeBox onAction={handleTryAgain} />`}
-					</CodeHighlight>
-				</div>
+						fileName="Default Error Alert Usage"
+						code={`<NoticeBox onAction={handleTryAgain} />`}
+					/>
+				</Section>
 
-				<div>
-					<h3 className="text-lg font-semibold mb-4">
-						Custom Message Error Alert
-					</h3>
+				<Section title="Custom Message Error Alert">
 					<NoticeBox
 						title="Unable to save changes"
 						actionText="Retry Save"
 						onAction={handleTryAgain}
 					/>
-					<CodeHighlight
+					<EnhancedCodeBlock
 						language="tsx"
-						title="Custom Message Error Alert Usage"
-					>
-						{`<NoticeBox 
+						fileName="Custom Message Error Alert Usage"
+						code={`<NoticeBox 
   title="Unable to save changes" 
   actionText="Retry Save"
   onAction={handleTryAgain}
 />`}
-					</CodeHighlight>
-				</div>
+					/>
+				</Section>
 
-				<div>
-					<h3 className="text-lg font-semibold mb-4">
-						Custom Icon Error Alert
-					</h3>
+				<Section title="Custom Icon Error Alert">
 					<NoticeBox
 						icon={<AlertCircle />}
 						title="Critical system error"
 						actionText="Contact Support"
 						onAction={() => console.log('Contacting support...')}
 					/>
-					<CodeHighlight
+					<EnhancedCodeBlock
 						language="tsx"
-						title="Custom Icon Error Alert Usage"
-					>
-						{`<NoticeBox 
+						fileName="Custom Icon Error Alert Usage"
+						code={`<NoticeBox 
   icon={<AlertCircle />}
   title="Critical system error" 
   actionText="Contact Support"
   onAction={() => console.log('Contacting support...')}
 />`}
-					</CodeHighlight>
-				</div>
+					/>
+				</Section>
 
-				<div>
-					<h3 className="text-lg font-semibold mb-4">
-						Warning Alert
-					</h3>
+				<Section title="Warning Alert">
 					<NoticeBox
 						icon={<AlertOctagon />}
 						title="Your session is about to expire"
 						actionText="Extend Session"
 						onAction={() => console.log('Extending session...')}
 					/>
-					<CodeHighlight language="tsx" title="Warning Alert Usage">
-						{`<NoticeBox 
+					<EnhancedCodeBlock
+						language="tsx"
+						fileName="Warning Alert Usage"
+						code={`<NoticeBox 
   icon={<AlertOctagon />}
   title="Your session is about to expire" 
   actionText="Extend Session"
   onAction={() => console.log('Extending session...')}
 />`}
-					</CodeHighlight>
-				</div>
+					/>
+				</Section>
 			</div>
 			<HoverCard>
 				<NoticeBox

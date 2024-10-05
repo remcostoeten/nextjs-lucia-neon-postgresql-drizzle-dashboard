@@ -64,9 +64,20 @@ export async function updateFolder(data: FormData) {
 	}
 
 	try {
+		const updateData: {
+			name?: string
+			color?: string
+			description?: string | null
+		} = {}
+
+		if (result.data.name) updateData.name = result.data.name
+		if (result.data.color) updateData.color = result.data.color
+		if (result.data.description !== undefined)
+			updateData.description = result.data.description
+
 		const [updatedFolder] = await db
 			.update(folders)
-			.set({ name: result.data.name, color: result.data.color })
+			.set(updateData)
 			.where(eq(folders.id, result.data.id))
 			.returning()
 

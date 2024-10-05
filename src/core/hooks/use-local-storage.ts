@@ -1,8 +1,8 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
+import { useEventListener } from './_hook_helpers/use-event-listener'
 import { useEventCallback } from './use-event-callback'
-import { useEventListener } from './use-event-listener'
 
 import type { Dispatch, SetStateAction } from 'react'
 

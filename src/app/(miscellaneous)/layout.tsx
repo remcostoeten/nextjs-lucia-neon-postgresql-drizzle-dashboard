@@ -1,6 +1,6 @@
 import { DropdownNavigation } from '@/components/elements'
 
-export default function DashboardLayout({
+export default function ShowcaseLayout({
 	children
 }: {
 	children: React.ReactNode

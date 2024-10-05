@@ -9,6 +9,10 @@ export const folderSchema = z.object({
 
 export const updateFolderSchema = z.object({
 	id: z.string(),
-	name: z.string().min(1).max(255),
-	color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Must be a valid hex color')
+	name: z.string().min(1).max(255).optional(),
+	color: z
+		.string()
+		.regex(/^#[0-9A-Fa-f]{6}$/, 'Must be a valid hex color')
+		.optional(),
+	description: z.string().nullable().optional()
 })

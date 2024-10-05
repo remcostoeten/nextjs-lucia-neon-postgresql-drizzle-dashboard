@@ -1,15 +1,13 @@
 'use client'
 
-import { CalendarIcon, FileTextIcon } from '@radix-ui/react-icons'
-import { BellIcon, Share2Icon } from 'lucide-react'
-
+import TransparentIcon from '@/components/base/icons'
+import Globe from '@/components/effects/globe/world-globe'
 import { cn } from 'cn'
-import AnimatedBeamMultipleOutputDemo from './animated-beam-multiple-outputs'
-import AnimatedListDemo from './animated-list-demo'
-import { BentoCard, BentoGrid } from './bento-grid-parent'
 import Marquee from '../Hero/Maq'
+import AnimatedBeams from './animated-beam-multiple-outputs'
+import AniamtedList from './animated-list-demo'
+import { BentoCard, BentoGrid } from './bento-grid-parent'
 
-// Constants for styles
 const CARD_STYLES = {
 	base: 'relative w-32 cursor-pointer overflow-hidden rounded-xl border p-4',
 	border: 'border-gray-950/[.1] dark:border-gray-50/[.1]',
@@ -48,7 +46,7 @@ const files = [
 
 const features = [
 	{
-		Icon: FileTextIcon,
+		Icon: TransparentIcon,
 		name: 'Manage your notes',
 		description: 'Securely manage your thoughts and masterplans.',
 		href: '#',
@@ -86,7 +84,7 @@ const features = [
 		)
 	},
 	{
-		Icon: BellIcon,
+		Icon: TransparentIcon,
 		name: 'Messaging',
 		description:
 			'Send and receive messages and get notified when something happens.',
@@ -94,32 +92,26 @@ const features = [
 		cta: 'Learn more',
 		className: 'col-span-3 lg:col-span-2',
 		background: (
-			<AnimatedListDemo className="absolute inset-0 [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
+			<AniamtedList className="absolute inset-0 [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
 		)
 	},
 	{
-		Icon: Share2Icon,
+		Icon: TransparentIcon,
 		name: 'Integrations',
 		description: 'This is a work in progress.',
 		href: '#',
 		cta: 'Learn more',
 		className: 'col-span-3 lg:col-span-2',
 		background: (
-			<AnimatedBeamMultipleOutputDemo className="absolute inset-0 [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
+			<AnimatedBeams className="absolute inset-0 [mask-image:linear-gradient(to_top,transparent_10%,#000_100%)] group-hover:scale-105" />
 		)
 	},
 	{
-		Icon: CalendarIcon,
-		name: 'Placeholder',
-		description: 'Coming soon...',
+		Icon: TransparentIcon,
+		name: 'Created in the Netherlands',
+		description: 'Used by entities around the globe.',
 		className: 'col-span-3 lg:col-span-1',
-		href: '#',
-		cta: 'Learn more',
-		background: (
-			<div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 text-center text-white dark:text-gray-300">
-				<p>Placeholder content</p>
-			</div>
-		)
+		background: <Globe />
 	}
 ]
 
@@ -127,7 +119,12 @@ export default function BentoGridIntro() {
 	return (
 		<BentoGrid className="my-14">
 			{features.map((feature, idx) => (
-				<BentoCard key={idx} {...feature} />
+				<BentoCard
+					key={idx}
+					{...feature}
+					href={feature.href || ''}
+					cta={feature.cta || ''}
+				/>
 			))}
 		</BentoGrid>
 	)
