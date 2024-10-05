@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui'
 import { useLocalStorage } from 'hooks'
-import HooksShowcaseWrapper from '../_components/hooks-showcase-wrapper'
+import { HooksShowcaseWrapper } from '../_components/hooks-showcase-wrapper'
 
 const codeString = `import { useLocalStorage } from '@/core/hooks/use-local-storage'
 

@@ -91,6 +91,7 @@ const KeyboardShortcutsShowcase = () => {
 					opacity: headerOpacity
 				}}
 			>
+				<p className='mb-2 text-xl'>ToDo:Fix shortcut icon</p>
 				<Card className="p-4">
 					<h3 className="text-lg font-semibold mb-2">
 						Current Message:
