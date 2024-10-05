@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 import { toast } from 'sonner'
 
-import AuthFormError from '@/components/auth/AuthFormError'
+import AuthFormError from '@/components/auth/auth-form-error'
 import LogoIcon from '@/components/base/logo'
 import { Button, Input } from '@/components/ui'
 import { signUpAction } from '@/lib/actions/users'
@@ -58,158 +58,164 @@ export default function SignUpPage() {
 		setConfirmPassword(e.target.value)
 	}
 
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+		if (password !== confirmPassword) {
+			state.error = 'Passwords do not match'
+			return
+		}
+		formAction(new FormData(e.currentTarget))
+	}
+
 	return (
-		<section className="">
-			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+		<section className="min-h-screen bg-[#000000] flex items-center justify-center">
+			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto w-full max-w-md">
 				<motion.a
 					href="#"
-					className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+					className="flex items-center mb-6 text-2xl font-semibold text-gray-200"
 					initial="initial"
 					animate="animate"
 					variants={fadeInUp(0)}
 				>
-					<LogoIcon />
+					<LogoIcon className="w-8 h-8 mr-2" />
 					remcostoeten
 				</motion.a>
 				<motion.div
-					className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-card"
+					className="w-full bg-[#0c0c0c] rounded-lg shadow-md border border-[#1a1a1a] p-6 space-y-4 md:space-y-6"
 					initial="initial"
 					animate="animate"
 					variants={fadeInUp(0.1)}
 				>
-					<div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-						<motion.h1
-							className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+					<motion.h1
+						className="text-xl font-bold leading-tight tracking-tight text-gray-200 md:text-2xl"
+						initial="initial"
+						animate="animate"
+						variants={fadeInUp(0.2)}
+					>
+						Create an account
+					</motion.h1>
+					<form className="space-y-4" onSubmit={handleSubmit}>
+						<motion.div
 							initial="initial"
 							animate="animate"
-							variants={fadeInUp(0.2)}
+							variants={fadeInUp(0.3)}
 						>
-							Create an account
-						</motion.h1>
-						<AuthFormError state={state} />
-						<form className="space-y-2" action={formAction}>
-							<motion.div
-								initial="initial"
-								animate="animate"
-								variants={fadeInUp(0.4)}
+							<label
+								htmlFor="email"
+								className="block mb-2 text-sm font-medium text-gray-300"
 							>
-								<label
-									htmlFor="email"
-									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-								>
-									Your email
-								</label>
+								Your email
+							</label>
+							<Input
+								type="email"
+								name="email"
+								id="email"
+								value={email}
+								onChange={handleEmailChange}
+								placeholder="name@company.com"
+								required
+								className="bg-[#1c1c1c] border-[#2c2c2c] text-gray-200 placeholder-gray-400"
+							/>
+						</motion.div>
+						<motion.div
+							initial="initial"
+							animate="animate"
+							variants={fadeInUp(0.4)}
+						>
+							<label
+								htmlFor="password"
+								className="block mb-2 text-sm font-medium text-gray-300"
+							>
+								Password
+							</label>
+							<div className="relative">
 								<Input
-									type="email"
-									name="email"
-									id="email"
-									value={email}
-									onChange={handleEmailChange}
-									placeholder="name@company.com"
+									type={showPassword ? 'text' : 'password'}
+									name="password"
+									id="password"
+									value={password}
+									onChange={handlePasswordChange}
+									placeholder="••••••••"
 									required
+									className="bg-[#1c1c1c] border-[#2c2c2c] text-gray-200 placeholder-gray-400"
 								/>
-							</motion.div>
-							<motion.div
-								initial="initial"
-								animate="animate"
-								variants={fadeInUp(0.5)}
-							>
-								<label
-									htmlFor="password"
-									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+								<button
+									type="button"
+									className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200"
+									onClick={() =>
+										setShowPassword(!showPassword)
+									}
 								>
-									Password
-								</label>
-								<div className="relative">
-									<Input
-										type={
-											showPassword ? 'text' : 'password'
-										}
-										name="password"
-										id="password"
-										value={password}
-										onChange={handlePasswordChange}
-										placeholder="••••••••"
-										required
-									/>
-									<button
-										type="button"
-										className="absolute right-3 top-3"
-										onClick={() =>
-											setShowPassword(!showPassword)
-										}
-									>
-										{showPassword ? (
-											<EyeClosedIcon className="text-sutitle" />
-										) : (
-											<EyeIcon className="text-subtitle" />
-										)}
-									</button>
-								</div>
-							</motion.div>
-							<motion.div
-								initial="initial"
-								animate="animate"
-								variants={fadeInUp(0.6)}
+									{showPassword ? (
+										<EyeClosedIcon className="w-4 h-4" />
+									) : (
+										<EyeIcon className="w-4 h-4" />
+									)}
+								</button>
+							</div>
+						</motion.div>
+						<motion.div
+							initial="initial"
+							animate="animate"
+							variants={fadeInUp(0.5)}
+						>
+							<label
+								htmlFor="confirmPassword"
+								className="block mb-2 text-sm font-medium text-gray-300"
 							>
-								<label
-									htmlFor="confirmPassword"
-									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+								Confirm Password
+							</label>
+							<div className="relative">
+								<Input
+									type={showPassword ? 'text' : 'password'}
+									name="confirmPassword"
+									id="confirmPassword"
+									value={confirmPassword}
+									onChange={handleConfirmPasswordChange}
+									placeholder="••••••••"
+									required
+									className="bg-[#1c1c1c] border-[#2c2c2c] text-gray-200 placeholder-gray-400"
+								/>
+								<button
+									type="button"
+									className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200"
+									onClick={() =>
+										setShowPassword(!showPassword)
+									}
 								>
-									Confirm Password
-								</label>
-								<div className="relative">
-									<Input
-										type={
-											showPassword ? 'text' : 'password'
-										}
-										name="confirmPassword"
-										id="confirmPassword"
-										value={confirmPassword}
-										onChange={handleConfirmPasswordChange}
-										placeholder="••••••••"
-										required
-									/>
-									<button
-										type="button"
-										className="absolute right-3 top-3"
-										onClick={() =>
-											setShowPassword(!showPassword)
-										}
-									>
-										{showPassword ? (
-											<EyeClosedIcon className="text-sutitle" />
-										) : (
-											<EyeIcon className="text-subtitle" />
-										)}
-									</button>
-								</div>
-							</motion.div>
-							<motion.div
-								initial="initial"
-								animate="animate"
-								variants={fadeInUp(0.7)}
-							>
-								<SubmitButton />
-							</motion.div>
-							<motion.p
-								className="text-sm font-light text-gray-500 dark:text-gray-400"
-								initial="initial"
-								animate="animate"
-								variants={fadeInUp(0.8)}
-							>
-								Already have an account?{' '}
-								<Link
-									href="/sign-in"
-									className="font-medium underline text-primary-600 hover:underline dark:text-primary-500"
-								>
-									Sign in
-								</Link>
-							</motion.p>
-						</form>
-					</div>
+									{showPassword ? (
+										<EyeClosedIcon className="w-4 h-4" />
+									) : (
+										<EyeIcon className="w-4 h-4" />
+									)}
+								</button>
+							</div>
+						</motion.div>
+						<motion.div
+							initial="initial"
+							animate="animate"
+							variants={fadeInUp(0.6)}
+						>
+							<SubmitButton />
+						</motion.div>
+					</form>
+					<motion.p
+						className="text-sm font-light text-gray-400"
+						initial="initial"
+						animate="animate"
+						variants={fadeInUp(0.7)}
+					>
+						Already have an account?{' '}
+						<Link
+							href="/sign-in"
+							className="font-medium text-primary-500 hover:underline"
+						>
+							Sign in
+						</Link>
+					</motion.p>
 				</motion.div>
 			</div>
+			<AuthFormError state={state} />
 		</section>
 	)
 }
@@ -217,9 +223,13 @@ export default function SignUpPage() {
 const SubmitButton = () => {
 	const { pending } = useFormStatus()
 	return (
-		<Button variant="outline" type="submit" disabled={pending}>
-			{' '}
-			Sign{pending ? 'ing' : ''} up
+		<Button
+			variant="outline"
+			type="submit"
+			disabled={pending}
+			className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+		>
+			{pending ? 'Signing up...' : 'Sign up'}
 		</Button>
 	)
 }

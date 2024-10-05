@@ -1,88 +1,106 @@
-import { Button } from '@/components/ui/button'
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle
-} from '@/components/ui/card'
-import React from 'react'
-import { EnhancedCodeBlock } from './advanced-code-block'
+'use client'
 
-type HooksShowcaseWrapperProps = {
-	title: string
-	description: string
-	children: React.ReactNode
-	codeString?: string
-	fileName: string
-	language: string
-	explanation?: string
-	demoComponent?: React.ReactNode
-	actionButtons?: Array<{
-		label: string
-		onClick: () => void
-	}>
-}
+import { HoverCard } from '@/components/effects/hover-card'
+import NoticeBox from '@/components/elements/notice-box'
+import { AlertCircle, AlertOctagon } from 'lucide-react'
+import DesignSystemWrapper from '../../design-system/_components/DesignSystemWrapper'
+import { EnhancedCodeBlock } from '../../hooks-showcase/_components/advanced-code-block'
 
-export function HooksShowcaseWrapper({
-	title,
-	description,
-	children,
-	codeString,
-	fileName,
-	language,
-	explanation,
-	demoComponent,
-	actionButtons
-}: HooksShowcaseWrapperProps) {
+const NoticeBoxsPage = () => {
+	const handleTryAgain = () => {
+		console.log('Trying again...')
+	}
+
+	const notices = [
+		{
+			title: 'Default Error Alert',
+			component: (
+				<NoticeBox
+					description="An unexpected error occurred."
+					homeLink="/"
+					onAction={handleTryAgain}
+				/>
+			),
+			code: `<NoticeBox onAction={handleTryAgain} />`
+		},
+		{
+			title: 'Custom Message Error Alert',
+			component: (
+				<NoticeBox
+					title="Unable to save changes"
+					actionText="Retry Save"
+					onAction={handleTryAgain}
+				/>
+			),
+			code: `<NoticeBox 
+  title="Unable to save changes" 
+  actionText="Retry Save"
+  onAction={handleTryAgain}
+/>`
+		},
+		{
+			title: 'Custom Icon Error Alert',
+			component: (
+				<NoticeBox
+					icon={<AlertCircle />}
+					title="Critical system error"
+					actionText="Contact Support"
+					onAction={() => console.log('Contacting support...')}
+				/>
+			),
+			code: `<NoticeBox 
+  icon={<AlertCircle />}
+  title="Critical system error" 
+  actionText="Contact Support"
+  onAction={() => console.log('Contacting support...')}
+/>`
+		},
+		{
+			title: 'Warning Alert',
+			component: (
+				<NoticeBox
+					icon={<AlertOctagon />}
+					title="Your session is about to expire"
+					actionText="Extend Session"
+					onAction={() => console.log('Extending session...')}
+				/>
+			),
+			code: `<NoticeBox 
+  icon={<AlertOctagon />}
+  title="Your session is about to expire" 
+  actionText="Extend Session"
+  onAction={() => console.log('Extending session...')}
+/>`
+		}
+	]
+
 	return (
-		<div className="max-w-4xl mx-auto p-6 space-y-8">
-			<Card className="bg-card text-title border-zinc-800">
-				<CardHeader>
-					<CardTitle className="text-2xl font-bold">
-						{title}
-					</CardTitle>
-					<CardDescription className="text-text-subtitle">
-						{description}
-					</CardDescription>
-				</CardHeader>
-				<CardContent className="space-y-6">
+		<DesignSystemWrapper
+			title="Error Alerts"
+			description="Customizable error alert components for various scenarios."
+			actionButtons={[{ label: 'Try Again', onClick: handleTryAgain }]}
+		>
+			{notices.map(({ title, component, code }) => (
+				<div className="p-4 mt-4" key={title}>
+					<h3 className="text-lg font-semibold mb-2">{title}</h3>
+					{component}
 					<EnhancedCodeBlock
-						code={codeString}
-						fileName={fileName}
-						language={language}
-						badges={[
-							language.charAt(0).toUpperCase() + language.slice(1)
-						]}
+						language="tsx"
+						fileName={`${title} Usage`}
+						code={code}
 					/>
-					<div className="text-sm text-title">{explanation}</div>
-					{demoComponent && (
-						<div className="mt-6 p-4 bg-[#252526] rounded-lg">
-							<h3 className="text-lg font-semibold mb-2">Demo</h3>
-							{demoComponent}
-						</div>
-					)}
-					{actionButtons && actionButtons.length > 0 && (
-						<div className="flex space-x-2 mt-4">
-							{actionButtons.map((button, index) => (
-								<Button
-									key={index}
-									onClick={button.onClick}
-									variant="outline"
-								>
-									{button.label}
-								</Button>
-							))}
-						</div>
-					)}
-					<div className="mt-6">
-						<h3 className="text-lg font-semibold mb-2">
-							Usage Example
-						</h3>
-						{children}
-					</div>
-				</CardContent>
-			</Card>
-		</div>
+				</div>
+			))}
+			<HoverCard>
+				<NoticeBox
+					icon={<AlertOctagon />}
+					title="Your session is about to expire"
+					actionText="Extend Session"
+					onAction={() => console.log('Extending session...')}
+				/>
+			</HoverCard>
+		</DesignSystemWrapper>
 	)
 }
+
+export default NoticeBoxsPage

@@ -15,7 +15,7 @@ const AuthLink: React.FC<AuthLinkProps> = ({ href, Icon, text }) => {
 			href={href}
 			className="flex w-full flex-col items-center justify-center py-2 text-text-regular-nav transition-colors hover:text-neutral-50"
 		>
-			<Icon className="mb-2 text-xl text-indigo-300" />
+			<Icon className="mb-2 text-xl text-brand" />
 			<span className="text-xs">{text}</span>
 		</Link>
 	)
@@ -23,7 +23,7 @@ const AuthLink: React.FC<AuthLinkProps> = ({ href, Icon, text }) => {
 
 const Authentication: React.FC = () => {
 	return (
-		<div className="grid grid-cols-3 gap-4 divide-x divide-neutral-700">
+		<div className="grid grid-cols-3 gap-4 divide-x divide-outline">
 			{links.map(link => (
 				<AuthLink key={link.href} {...link} />
 			))}

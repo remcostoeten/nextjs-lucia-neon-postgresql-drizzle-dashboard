@@ -2,6 +2,7 @@ import { geistMono, geistSans } from '@/core/config/fonts/fonts'
 import { metadata } from '@/core/config/metadata/metadata.root-layout'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Toaster, TooltipProvider } from 'ui'
+import { Toast } from '../Toast'
 export { metadata }
 export default function ThemeWrapper({
 	children
@@ -21,6 +22,7 @@ export default function ThemeWrapper({
 			>
 				<TooltipProvider>
 					<main>
+						<Toast />
 						<Toaster richColors />
 						{children}
 					</main>

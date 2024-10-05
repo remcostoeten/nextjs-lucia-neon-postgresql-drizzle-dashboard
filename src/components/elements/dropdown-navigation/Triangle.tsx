@@ -35,7 +35,7 @@ export function Triangle({ selected }: TriangleProps) {
 			style={{ clipPath: 'polygon(0 0, 100% 0, 50% 50%, 0% 100%)' }}
 			animate={{ left }}
 			transition={{ duration: 0.25, ease: 'easeInOut' }}
-			className="absolute left-1/2 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-tl border-seperator  bg-gradient-to-b from-card via-card to-body"
+			className="border absolute left-1/2 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-tl border-seperator  bg-gradient-to-b from-card via-card to-body"
 		/>
 	)
 }
