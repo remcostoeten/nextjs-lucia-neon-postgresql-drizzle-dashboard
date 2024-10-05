@@ -7,7 +7,7 @@ import { folders } from '@/lib/db/schema'
 import { and, eq, isNull, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
-a
+
 export type Folder = typeof folders.$inferSelect
 export type NewFolder = typeof folders.$inferInsert
 
@@ -18,13 +18,11 @@ export async function getFolders() {
 	}
 
 	const userFolders = await db.query.folders.findMany({
-		where: eq(folders.userId, user.id),
-		orderBy: [folders.sortOrder, folders.name]
+		where: eq(folders.userId, user.id)
 	})
 
 	return userFolders
 }
-
 export async function createFolder(
 	name: string,
 	description: string | null = null,

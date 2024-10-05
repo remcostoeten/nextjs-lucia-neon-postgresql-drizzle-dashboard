@@ -178,17 +178,20 @@ export default function FileTree() {
 						{isLoading ? (
 							<Spinner />
 						) : (
-							data.map(item => (
+							data.map((item: TreeItemType) => (
 								<TreeItem
 									key={item.id}
 									item={item}
 									onSelect={handleSelect}
 									isSelected={selectedItem === item.id}
 									path={[item.name]}
-									createItem={handleCreateItem}
-									updateItem={handleUpdateItem}
-									deleteItem={handleDeleteItem}
-									moveItem={handleMoveItem}
+									refreshFolders={async () => {
+										const updatedFolders =
+											await getFolders()
+										const nestedFolders =
+											buildNestedStructure(updatedFolders)
+										setData(nestedFolders)
+									}}
 								/>
 							))
 						)}
