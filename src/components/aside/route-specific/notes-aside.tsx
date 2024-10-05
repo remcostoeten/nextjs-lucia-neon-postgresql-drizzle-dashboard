@@ -359,7 +359,7 @@ export default function NotesSidebar() {
 				message={`Are you sure you want to delete the folder "${folderToDelete?.name}"? This action cannot be undone.`}
 				confirmText="Delete"
 				cancelText="Cancel"
-				icon={<Trash2 className="h-12 w-12 text-red-500" />}
+				icon={<Trash2 className="h-12 w-12 text-subtitle" />}
 			/>
 		</aside>
 	)

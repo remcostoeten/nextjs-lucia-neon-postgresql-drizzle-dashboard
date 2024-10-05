@@ -6,6 +6,31 @@ const octokit = new Octokit({
 	auth: process.env.GITHUB_ACCESS_TOKEN
 })
 
+type CommitDate = Date
+
+function getRelativeDay(commitDate: CommitDate): string {
+	const today = new Date()
+	const yesterday = new Date(today)
+	yesterday.setDate(yesterday.getDate() - 1)
+
+	if (commitDate.toDateString() === today.toDateString()) {
+		return 'Today' + ','
+	} else if (commitDate.toDateString() === yesterday.toDateString()) {
+		return 'Yesterday' + ','
+	} else {
+		const daysOfWeek = [
+			'Sunday',
+			'Monday',
+			'Tuesday',
+			'Wednesday',
+			'Thursday',
+			'Friday',
+			'Saturday'
+		]
+		return `Last ${daysOfWeek[commitDate.getDay()]}`
+	}
+}
+
 export async function fetchGitHubStats() {
 	try {
 		const { data: userData } = await octokit.users.getByUsername({
@@ -35,7 +60,7 @@ export async function fetchGitHubStats() {
 			0
 		)
 
-		// Get last commit date to the minute
+		// Get last commit date with relative day and time
 		const {
 			data: [latestCommit]
 		} = await octokit.repos.listCommits({
@@ -44,18 +69,40 @@ export async function fetchGitHubStats() {
 			per_page: 1
 		})
 
-		const lastCommitDate =
-			latestCommit.commit.committer?.date ?? new Date().toISOString()
-		const lastCommitTimestamp = new Date(lastCommitDate).toLocaleTimeString(
-			[],
-			{ hour: '2-digit', minute: '2-digit' }
-		)
+		if (
+			!latestCommit ||
+			!latestCommit.commit ||
+			!latestCommit.commit.committer
+		) {
+			throw new Error('Failed to retrieve latest commit data')
+		}
+
+		const lastCommitDate = latestCommit.commit.committer.date
+		if (!lastCommitDate) {
+			throw new Error('Last commit date is undefined')
+		}
+
+		const commitDate = new Date(lastCommitDate)
+		const relativeDay = getRelativeDay(commitDate)
+		const hours = commitDate.getHours().toString().padStart(2, '0')
+		const minutes = commitDate.getMinutes().toString().padStart(2, '0')
+
+		console.log('Fetched GitHub stats:', {
+			codingStreak,
+			totalCommits,
+			lastCommitDate,
+			relativeDay,
+			hours,
+			minutes
+		})
 
 		return {
 			codingStreak,
 			totalCommits,
 			lastCommitDate,
-			lastCommitTimestamp,
+			lastCommitDay: relativeDay,
+			lastCommitHours: hours,
+			lastCommitMinutes: minutes,
 			madeBy: userData.login
 		}
 	} catch (error) {
@@ -64,6 +111,9 @@ export async function fetchGitHubStats() {
 			codingStreak: 0,
 			totalCommits: 0,
 			lastCommitDate: null,
+			lastCommitDay: 'N/A',
+			lastCommitHours: '00',
+			lastCommitMinutes: '00',
 			madeBy: '@remcostoeten'
 		}
 	}
