@@ -57,10 +57,7 @@ export function HooksShowcaseWrapper({
 					/>
 					<div className="text-sm text-title">{explanation}</div>
 					{demoComponent && (
-						<div className="mt-6 p-4 bg-[#252526] rounded-lg">
-							<h3 className="text-lg font-semibold mb-2">Demo</h3>
-							{demoComponent}
-						</div>
+						<>{demoComponent}</>
 					)}
 					{actionButtons && actionButtons.length > 0 && (
 						<div className="flex space-x-2 mt-4">
@@ -75,12 +72,6 @@ export function HooksShowcaseWrapper({
 							))}
 						</div>
 					)}
-					<div className="mt-6">
-						<h3 className="text-lg font-semibold mb-2">
-							Usage Example
-						</h3>
-						{children}
-					</div>
 				</CardContent>
 			</Card>
 		</div>

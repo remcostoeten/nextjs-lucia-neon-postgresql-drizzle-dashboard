@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useRef } from 'react'
-import { useIsomorphicLayoutEffect } from './_hook_helpers/use-isomorphic-layout-effect'
+import { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect'
 
 export function useEventCallback<Args extends unknown[], R>(
 	fn: (...args: Args) => R
