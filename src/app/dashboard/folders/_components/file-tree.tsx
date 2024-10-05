@@ -1,9 +1,9 @@
 'use client'
 
-import { Breadcrumb } from '@/components/ui'
+import { Breadcrumb } from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Skeleton } from '@/components/ui/skeleton'
+import Spinner from '@/components/ui/spinner'
 import {
 	createFolder,
 	deleteFolder,
@@ -15,6 +15,7 @@ import { FolderPlus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import { toast } from 'sonner'
 import { TreeItem } from './tree-item'
 
 type TreeItemType = {
@@ -25,6 +26,7 @@ type TreeItemType = {
 	userId: string
 	createdAt: Date
 	updatedAt: Date
+	parentId: string | null
 	type: 'folder'
 	children?: TreeItemType[]
 }
@@ -34,7 +36,6 @@ export default function FileTree() {
 	const [selectedItem, setSelectedItem] = useState<string | null>(null)
 	const [breadcrumb, setBreadcrumb] = useState<string[]>([])
 	const [newItemName, setNewItemName] = useState('')
-	const [isEditing, setIsEditing] = useState(false)
 	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
@@ -42,7 +43,8 @@ export default function FileTree() {
 			try {
 				setIsLoading(true)
 				const folders = await getFolders()
-				setData(folders)
+				const nestedFolders = buildNestedStructure(folders)
+				setData(nestedFolders)
 			} catch (error) {
 				console.error('Error fetching folders:', error)
 			} finally {
@@ -52,29 +54,65 @@ export default function FileTree() {
 		fetchFolders()
 	}, [])
 
+	const buildNestedStructure = (folders: TreeItemType[]): TreeItemType[] => {
+		const folderMap = new Map<string, TreeItemType>()
+		const rootFolders: TreeItemType[] = []
+
+		folders.forEach(folder => {
+			folderMap.set(folder.id, { ...folder, children: [] })
+		})
+
+		folders.forEach(folder => {
+			if (folder.parentId) {
+				const parent = folderMap.get(folder.parentId)
+				if (parent) {
+					parent.children?.push(folderMap.get(folder.id)!)
+				}
+			} else {
+				rootFolders.push(folderMap.get(folder.id)!)
+			}
+		})
+
+		return rootFolders
+	}
+
 	const handleSelect = (id: string, path: string[]) => {
 		setSelectedItem(id)
 		setBreadcrumb(path)
 	}
 
-	const handleCreateItem = async () => {
-		if (!newItemName) return
+	const handleCreateItem = async (
+		parentId: string | null,
+		name: string,
+		color: string
+	) => {
 		try {
-			await createFolder(newItemName)
+			if (name.trim() === '') {
+				toast('Folder name cannot be empty')
+				return
+			}
+			await createFolder(name, null, parentId)
 			const updatedFolders = await getFolders()
-			setData(updatedFolders)
+			const nestedFolders = buildNestedStructure(updatedFolders)
+			setData(nestedFolders)
 			setNewItemName('')
+			toast('Folder created')
 		} catch (error) {
+			toast('Error creating folder')
 			console.error('Error creating folder:', error)
 		}
 	}
 
-	const handleUpdateItem = async (id: string, newName: string) => {
+	const handleUpdateItem = async (
+		id: string,
+		newName: string,
+		newColor: string
+	) => {
 		try {
-			await updateFolder(id, newName)
+			await updateFolder(id, newName, newColor)
 			const updatedFolders = await getFolders()
-			setData(updatedFolders)
-			setIsEditing(false)
+			const nestedFolders = buildNestedStructure(updatedFolders)
+			setData(nestedFolders)
 		} catch (error) {
 			console.error('Error updating folder:', error)
 		}
@@ -84,7 +122,8 @@ export default function FileTree() {
 		try {
 			await deleteFolder(id)
 			const updatedFolders = await getFolders()
-			setData(updatedFolders)
+			const nestedFolders = buildNestedStructure(updatedFolders)
+			setData(nestedFolders)
 			if (selectedItem === id) {
 				setSelectedItem(null)
 				setBreadcrumb([])
@@ -96,32 +135,18 @@ export default function FileTree() {
 
 	const handleMoveItem = async (draggedId: string, targetId: string) => {
 		try {
-			const draggedIndex = data.findIndex(item => item.id === draggedId)
-			const targetIndex = data.findIndex(item => item.id === targetId)
-			if (draggedIndex !== -1 && targetIndex !== -1) {
-				await moveFolder(draggedId, targetIndex)
-				const updatedFolders = await getFolders()
-				setData(updatedFolders)
-			}
+			await moveFolder(draggedId, targetId)
+			const updatedFolders = await getFolders()
+			const nestedFolders = buildNestedStructure(updatedFolders)
+			setData(nestedFolders)
 		} catch (error) {
 			console.error('Error moving folder:', error)
 		}
 	}
 
-	const renderSkeletons = () => {
-		return Array(5)
-			.fill(null)
-			.map((_, index) => (
-				<div key={index} className="flex items-center space-x-2 mb-2">
-					<Skeleton className="h-4 w-4" />
-					<Skeleton className="h-4 w-40" />
-				</div>
-			))
-	}
-
 	return (
 		<DndProvider backend={HTML5Backend}>
-			<div className="">
+			<div className="p-4">
 				<Breadcrumb path={breadcrumb} />
 				<div className="flex items-center gap-2 mt-4 mb-2">
 					<Input
@@ -130,7 +155,12 @@ export default function FileTree() {
 						value={newItemName}
 						onChange={e => setNewItemName(e.target.value)}
 					/>
-					<Button onClick={handleCreateItem}>
+					<Button
+						variant="outline"
+						onClick={() =>
+							handleCreateItem(null, newItemName, '#000000')
+						}
+					>
 						<FolderPlus className="mr-2 h-4 w-4" />
 						New Folder
 					</Button>
@@ -145,23 +175,23 @@ export default function FileTree() {
 						role="group"
 						data-accordion-always-open
 					>
-						{isLoading
-							? renderSkeletons()
-							: data.map(item => (
-									<TreeItem
-										key={item.id}
-										item={item}
-										onSelect={handleSelect}
-										isSelected={selectedItem === item.id}
-										path={[item.name]}
-										createItem={handleCreateItem}
-										updateItem={handleUpdateItem}
-										deleteItem={handleDeleteItem}
-										moveItem={handleMoveItem}
-										isEditing={isEditing}
-										setIsEditing={setIsEditing}
-									/>
-								))}
+						{isLoading ? (
+							<Spinner />
+						) : (
+							data.map(item => (
+								<TreeItem
+									key={item.id}
+									item={item}
+									onSelect={handleSelect}
+									isSelected={selectedItem === item.id}
+									path={[item.name]}
+									createItem={handleCreateItem}
+									updateItem={handleUpdateItem}
+									deleteItem={handleDeleteItem}
+									moveItem={handleMoveItem}
+								/>
+							))
+						)}
 					</div>
 				</div>
 			</div>

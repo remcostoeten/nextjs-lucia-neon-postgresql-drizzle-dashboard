@@ -1,4 +1,3 @@
-
 'use client'
 
 import NoticeBox from '@/components/elements/notice-box'

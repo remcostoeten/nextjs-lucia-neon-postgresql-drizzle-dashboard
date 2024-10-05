@@ -8,7 +8,7 @@ interface ColorPickerProps {
 
 export function ColorPicker({ label, color, onChange }: ColorPickerProps) {
 	return (
-		<div className="space-y-2">
+		<div className="color-picker">
 			<Label htmlFor={`color-${label}`}>{label}</Label>
 			<div className="flex items-center space-x-2">
 				<input

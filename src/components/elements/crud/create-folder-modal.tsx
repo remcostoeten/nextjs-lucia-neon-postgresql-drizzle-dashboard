@@ -4,8 +4,9 @@ import { ColorPicker } from '@/components/ui/color-picker'
 import { createFolder } from '@/lib/api/folders'
 import { FolderType } from '@/types/types.folder'
 import { Flex } from 'atoms'
-import { useState } from 'react'
 import { toast } from 'sonner'
+
+import { useState } from 'react'
 import {
 	Button,
 	Dialog,
@@ -13,7 +14,8 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-	Input
+	Input,
+	Textarea
 } from 'ui'
 
 type CreateFolderModalProps = {
@@ -21,14 +23,14 @@ type CreateFolderModalProps = {
 	trigger?: React.ReactNode
 }
 
-export function CreateFolderModal({
+export default function CreateFolderModal({
 	onSuccess,
 	trigger
 }: CreateFolderModalProps) {
 	const [open, setOpen] = useState(false)
 	const [folderName, setFolderName] = useState('')
-	const [folderDescription, setFolderDescription] = useState('')
 	const [folderColor, setFolderColor] = useState('#000000')
+	const [folderDescription, setFolderDescription] = useState('')
 
 	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault()
@@ -37,15 +39,19 @@ export function CreateFolderModal({
 		formData.append('description', folderDescription)
 		formData.append('color', folderColor)
 		try {
-			const newFolder = await createFolder(formData)
-			setOpen(false)
-			toast.success('Folder created successfully')
-			onSuccess?.(newFolder)
-			setFolderName('')
-			setFolderDescription('')
-			setFolderColor('#000000')
+			const { success, folder, error } = await createFolder(formData)
+			if (success && folder) {
+				setOpen(false)
+				onSuccess?.(folder)
+				toast('Folder created sucesfuly')
+				setFolderName('')
+				setFolderDescription('')
+				setFolderColor('#000000')
+			} else if (error) {
+				throw new Error(error)
+			}
 		} catch (error) {
-			toast.error('Failed to create folder')
+			toast('Error creating folder')
 		}
 	}
 
@@ -65,7 +71,7 @@ export function CreateFolderModal({
 						placeholder="Folder name"
 						required
 					/>
-					<Input
+					<Textarea
 						value={folderDescription}
 						onChange={e => setFolderDescription(e.target.value)}
 						placeholder="Folder description (optional)"
@@ -75,7 +81,7 @@ export function CreateFolderModal({
 							Folder Color:
 						</label>
 						<ColorPicker
-							value={folderColor}
+							color={folderColor}
 							onChange={setFolderColor}
 						/>
 					</Flex>

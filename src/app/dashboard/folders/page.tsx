@@ -1,11 +1,9 @@
 import { validateRequest } from '@/lib/auth/lucia'
-import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import FileTree from './_components/file-tree'
 
 export default async function FoldersPage() {
-	const cookieStore = cookies()
-	const { user } = await validateRequest(cookieStore)
+	const { user } = await validateRequest()
 
 	if (!user) {
 		redirect('/sign-in')

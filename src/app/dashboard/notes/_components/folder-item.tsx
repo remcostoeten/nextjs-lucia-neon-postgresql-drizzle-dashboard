@@ -1,70 +1,70 @@
-import { EditFolderDialog } from '@/components/elements/crud/edit-folder-modal'
-import { Button } from '@/components/ui/button'
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import { FolderOpen, MoreVertical, Pencil, Trash } from 'lucide-react'
 import React, { useState } from 'react'
+import {
+	Button,
+	ColorPicker,
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	Input,
+	Textarea
+} from 'ui'
 
-interface FolderItemProps {
+type EditFolderDialogProps = {
 	folder: {
 		id: string
 		name: string
 		color: string
+		description?: string | null
 	}
-	onDelete: () => void
-	onEdit: (id: string, name: string, color: string) => void
+	isOpen: boolean
+	onClose: () => void
+	onSave: (
+		id: string,
+		name: string,
+		color: string,
+		description: string | null
+	) => void
 }
 
-const FolderItem: React.FC<FolderItemProps> = ({
+export function EditFolderDialog({
 	folder,
-	onDelete,
-	onEdit
-}) => {
-	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+	isOpen,
+	onClose,
+	onSave
+}: EditFolderDialogProps) {
+	const [name, setName] = useState(folder.name)
+	const [color, setColor] = useState(folder.color)
+	const [description, setDescription] = useState(folder.description || '')
+
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault()
+		onSave(folder.id, name, color, description || null)
+		onClose()
+	}
 
 	return (
-		<>
-			<div className="flex items-center justify-between mb-2">
-				<Button variant="ghost" className="w-full justify-start">
-					<FolderOpen
-						size={16}
-						className="mr-2"
-						style={{ color: folder.color }}
+		<Dialog open={isOpen} onOpenChange={onClose}>
+			<DialogContent>
+				<DialogHeader>
+					<DialogTitle>Edit Folder</DialogTitle>
+				</DialogHeader>
+				<form onSubmit={handleSubmit} className="space-y-4">
+					<Input
+						value={name}
+						onChange={e => setName(e.target.value)}
+						placeholder="Folder Name"
+						required
 					/>
-					<span>{folder.name}</span>
-				</Button>
-				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
-						<Button variant="ghost" className="h-8 w-8 p-0">
-							<MoreVertical className="h-4 w-4" />
-						</Button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
-						<DropdownMenuItem
-							onClick={() => setIsEditDialogOpen(true)}
-						>
-							<Pencil className="mr-2 h-4 w-4" />
-							<span>Edit</span>
-						</DropdownMenuItem>
-						<DropdownMenuItem onClick={onDelete}>
-							<Trash className="mr-2 h-4 w-4" />
-							<span>Delete</span>
-						</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
-			</div>
-			<EditFolderDialog
-				folder={folder}
-				isOpen={isEditDialogOpen}
-				onClose={() => setIsEditDialogOpen(false)}
-				onSave={onEdit}
-			/>
-		</>
+					<Textarea
+						value={description}
+						onChange={e => setDescription(e.target.value)}
+						placeholder="Folder Description (optional)"
+					/>
+					<ColorPicker color={color} onChange={setColor} />
+					<Button type="submit">Save Changes</Button>
+				</form>
+			</DialogContent>
+		</Dialog>
 	)
 }
-
-export default FolderItem

@@ -36,7 +36,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.cursorignore
+
+
+# package managers
+bun.lockb
+
+# misc
 .cursorrules
-
-
+.cursorignore
