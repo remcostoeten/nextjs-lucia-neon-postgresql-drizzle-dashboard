@@ -1,6 +1,7 @@
 import React from 'react'
 import {
 	Button,
+	Button,
 	Card,
 	CardContent,
 	CardDescription,
@@ -13,7 +14,12 @@ type HooksShowcaseWrapperProps = {
 	title?: string
 	description?: string
 	children?: React.ReactNode
+	title?: string
+	description?: string
+	children?: React.ReactNode
 	codeString?: string
+	fileName?: string
+	language?: string
 	fileName?: string
 	language?: string
 	explanation?: string

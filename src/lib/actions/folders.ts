@@ -2,6 +2,7 @@
 
 import { generateUUID } from '@/core/helpers/generate-uuid'
 import { logActivity } from '@/core/server/actions/users/log-activity'
+import { logActivity } from '@/core/server/actions/users/log-activity'
 import { validateRequest } from '@/lib/auth/lucia'
 import { db } from '@/lib/db'
 import { folders } from '@/lib/db/schema'

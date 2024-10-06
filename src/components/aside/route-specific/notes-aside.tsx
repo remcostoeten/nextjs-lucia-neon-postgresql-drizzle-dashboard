@@ -18,11 +18,8 @@ export default function NotesSidebar() {
 	const [newFolderColor, setNewFolderColor] = useState('#000000')
 	const { selectedFolderId, setSelectedFolderId } = useNotesStore()
 	const { disableSidebarAnimations } = useSiteSettingsStore()
-	const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
-		useState(false)
-	const [folderToDelete, setFolderToDelete] = useState<FolderType | null>(
-		null
-	)
+	const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false)
+	const [folderToDelete, setFolderToDelete] = useState<FolderType | null>(null)
 
 	useEffect(() => {
 		fetchFolders()
