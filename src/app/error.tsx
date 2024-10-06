@@ -8,15 +8,20 @@ import { logActivity } from '@/core/server/actions/users/log-activity'
 import { motion } from 'framer-motion'
 import { AlertTriangle, ArrowLeft, RefreshCcw } from 'lucide-react'
 import { usePathname } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { EnhancedCodeBlock } from '@/components/elements/display-code/advanced-code-block'
 
 type ErrorPageProps = {
 	error: Error & { digest?: string }
 	reset: () => void
 }
 
+const ERROR_LENGTH_THRESHOLD = 45
+const MAX_ERROR_LENGTH = 500
+
 export default function ErrorPage({ error, reset }: ErrorPageProps) {
 	const pathname = usePathname()
+	const [isExpanded, setIsExpanded] = useState(false)
 
 	useEffect(() => {
 		console.error('Unhandled error:', error)
@@ -66,20 +71,61 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 		}
 	}
 
+	const truncateError = (errorMessage: string) => {
+		if (errorMessage.length <= MAX_ERROR_LENGTH) return errorMessage
+		return errorMessage.slice(0, MAX_ERROR_LENGTH) + '...'
+	}
+
+	const ErrorDisplay = () => {
+		const displayError = isExpanded
+			? error.message
+			: truncateError(error.message)
+
+		if (error.message.length > ERROR_LENGTH_THRESHOLD) {
+			return (
+				<div className="max-w-full overflow-x-auto">
+					<EnhancedCodeBlock
+						code={displayError}
+						fileName="error.log"
+						language="plaintext"
+						badges={['Error']}
+					/>
+				</div>
+			)
+		} else {
+			return (
+				<div className="max-w-full overflow-x-auto">
+					<CommandCode copyMode="essential">
+						{displayError}
+					</CommandCode>
+				</div>
+			)
+		}
+	}
+
+	const isLongError = error.message.length > ERROR_LENGTH_THRESHOLD
+
 	return (
-		<div className="min-h-screen w-screen grid place-items-center">
+		<div className="min-h-screen w-screen grid place-items-center p-4">
 			<NoticeBox
 				useMotion={true}
-				width="md"
+				width={isLongError ? '2xl' : 'md'}
 				icon={<AlertTriangle className="h-6 w-6 text-brand" />}
 				title="Oops! Something went wrong"
 				description="An unexpected error occurred."
 			>
-				<motion.div variants={itemVariants} className="mb-6">
-					<div className="rounded flex-col p-3 flex items-start justify-between">
-						<CommandCode copyMode="essential">
-							{error.message}
-						</CommandCode>
+				<motion.div variants={itemVariants} className="mb-6 w-full">
+					<div className="rounded flex-col p-3 flex items-start justify-between w-full">
+						<ErrorDisplay />
+						{error.message.length > MAX_ERROR_LENGTH && (
+							<Button
+								variant="link"
+								onClick={() => setIsExpanded(!isExpanded)}
+								className="mt-2 text-sm text-zinc-400 hover:text-zinc-300"
+							>
+								{isExpanded ? 'Show Less' : 'Show More'}
+							</Button>
+						)}
 					</div>
 				</motion.div>
 				<motion.div

@@ -1,8 +1,8 @@
 'use client'
 
 import { useBattery } from '@/core/hooks/use-battery'
-import { BatteryCharging, BatteryWarning } from 'lucide-react'
 import { HooksShowcaseWrapper } from '../_components/hooks-showcase-wrapper'
+import BatteryStatusPreview from './_components/battery-indicator-preview'
 
 const BatteryDemo = () => {
 	const batteryState = useBattery()
@@ -24,65 +24,7 @@ const BatteryDemo = () => {
 		return `${hours}h ${minutes}m`
 	}
 
-	const demoComponent = (
-		<div className="space-y-6">
-			<div className="flex flex-col items-center justify-center space-y-4">
-				<div className="relative w-48 h-24 border-2 border-gray-300 rounded-lg overflow-hidden">
-					<div
-						className={`absolute bottom-0 left-0 right-0 ${getBatteryColor()} transition-all duration-300 ease-in-out`}
-						style={{
-							height: `${Math.round((batteryState.level || 0) * 100)}%`
-						}}
-					></div>
-					<div className="absolute inset-0 flex items-center justify-center">
-						<span className="text-2xl font-bold text-white mix-blend-difference">
-							{batteryState.isSupported
-								? batteryState.isLoading
-									? 'Loading...'
-									: `${Math.round((batteryState.level || 0) * 100)}%`
-								: 'Not Supported'}
-						</span>
-					</div>
-					<div className="absolute -right-2 top-1/2 w-3 h-8 bg-gray-300 rounded-r-md transform -translate-y-1/2"></div>
-					{batteryState.isCharging && (
-						<BatteryCharging className="absolute top-2 right-2 w-6 h-6 text-white mix-blend-difference" />
-					)}
-					{batteryState.level === null && (
-						<BatteryWarning className="absolute top-2 right-2 w-6 h-6 text-white mix-blend-difference" />
-					)}
-				</div>
-			</div>
-			{batteryState.isSupported && !batteryState.isLoading && (
-				<div className="grid grid-cols-2 gap-4 text-sm">
-					<div className="space-y-1">
-						<div className="font-semibold">Charging Status</div>
-						<div>
-							{batteryState.isCharging
-								? 'Charging'
-								: 'Not Charging'}
-						</div>
-					</div>
-					<div className="space-y-1">
-						<div className="font-semibold">Battery Level</div>
-						<div>
-							{Math.round((batteryState.level || 0) * 100)}%
-						</div>
-					</div>
-					<div className="space-y-1">
-						<div className="font-semibold">Time to Full Charge</div>
-						<div>{formatTime(batteryState.chargingTime)}</div>
-					</div>
-					<div className="space-y-1">
-						<div className="font-semibold">Time to Discharge</div>
-						<div>{formatTime(batteryState.dischargingTime)}</div>
-					</div>
-				</div>
-			)}
-		</div>
-	)
-
-	const codeString = `
-import React from "react";
+	const codeString = `import React from "react";
 
 export interface BatteryState {
     isSupported: boolean;
@@ -176,7 +118,7 @@ export function useBattery() {
 	return (
 		<HooksShowcaseWrapper
 			title="useBattery Hook"
-			demoComponent={demoComponent}
+			demoComponent={<BatteryStatusPreview />}
 			codeString={codeString}
 			fileName="useBattery.ts"
 			language="typescript"

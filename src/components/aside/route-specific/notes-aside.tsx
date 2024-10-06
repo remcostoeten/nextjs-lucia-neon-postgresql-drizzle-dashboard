@@ -1,10 +1,7 @@
 'use client'
 
 import { useNotesStore, useSiteSettingsStore } from '@/core/stores'
-import {
-	createFolder,
-	getFolders
-} from '@/lib/api/@@folders'
+import { createFolder, getFolders } from '@/lib/api/@@folders'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { FolderType } from '../types.sidear'
