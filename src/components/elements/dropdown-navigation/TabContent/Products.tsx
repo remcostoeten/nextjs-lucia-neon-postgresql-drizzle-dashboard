@@ -20,8 +20,16 @@ const productCategories: ProductCategory[] = [
 		name: 'Hooks showcase',
 		links: [
 			{
-				name: 'use local storage',
-				href: '/hooks-showcase/use-local-storage'
+				name: 'use-localstorage',
+				href: '/hooks-showcase/localstorage'
+			},
+			{
+				name: 'use-geolocation',
+				href: '/hooks-showcase/geolocation'
+			},
+			{
+				name: 'use-battery',
+				href: '/hooks-showcase/battery'
 			}
 		]
 	},

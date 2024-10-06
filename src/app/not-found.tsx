@@ -1,10 +1,13 @@
 'use client'
 
 import Spotlight from '@/components/effects/card-spotlight/card-spotlight'
+import { logActivity } from '@/core/server/actions/users/log-activity'
 import { Flex } from 'atoms'
 import { motion } from 'framer-motion'
 import { FileQuestion, Home, Search } from 'lucide-react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useEffect } from 'react'
 import {
 	Button,
 	Card,
@@ -15,7 +18,31 @@ import {
 	CardTitle
 } from 'ui'
 
-export default function NotFound({}: { prop: string }) {
+export default function NotFound() {
+	const pathname = usePathname()
+
+	useEffect(() => {
+		logNotFoundToActivity(pathname)
+	}, [pathname])
+
+	const logNotFoundToActivity = async (attemptedUrl: string) => {
+		try {
+			await logActivity(
+				JSON.stringify({
+					type: 'NOT_FOUND',
+					message: 'Page not found',
+					attemptedUrl,
+					timestamp: new Date().toISOString()
+				})
+			)
+		} catch (logError) {
+			console.error(
+				'Failed to log not found error to activity log:',
+				logError
+			)
+		}
+	}
+
 	return (
 		<Spotlight>
 			<div className="flex items-center justify-center min-h-screen bg-background">
@@ -66,6 +93,12 @@ export default function NotFound({}: { prop: string }) {
 								The page you are trying to access might have
 								been moved, deleted, or never existed.
 							</p>
+							<p className="text-sm text-center text-muted-foreground">
+								Attempted URL:{' '}
+								<code className="bg-muted p-1 rounded">
+									{pathname}
+								</code>
+							</p>
 						</CardContent>
 						<CardFooter className="flex justify-center">
 							<Flex dir="row" gap="2" wrap="wrap">
@@ -81,7 +114,7 @@ export default function NotFound({}: { prop: string }) {
 								<Button asChild variant="outline">
 									<Link href="/dashboard">
 										<Home className="mr-2 h-4 w-4" />
-										Go to dashboard
+										Go to Dashboard
 									</Link>
 								</Button>
 							</Flex>

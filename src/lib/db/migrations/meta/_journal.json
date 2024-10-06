@@ -36,6 +36,20 @@
 			"when": 1728121622240,
 			"tag": "0004_salty_jean_grey",
 			"breakpoints": true
+		},
+		{
+			"idx": 5,
+			"version": "5",
+			"when": 1728178455441,
+			"tag": "0005_aberrant_dagger",
+			"breakpoints": true
+		},
+		{
+			"idx": 6,
+			"version": "5",
+			"when": 1728180351744,
+			"tag": "0006_military_paladin",
+			"breakpoints": true
 		}
 	]
 }

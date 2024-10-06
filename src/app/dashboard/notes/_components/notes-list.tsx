@@ -1,4 +1,4 @@
-import { getNotes } from '@/lib/api/notes'
+import { getNotes } from '@/lib/api/@@notes'
 import NoteItem from './note-item'
 
 export async function NotesList() {

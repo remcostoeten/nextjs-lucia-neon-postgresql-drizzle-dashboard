@@ -1,5 +1,6 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import { AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '../ui'
@@ -12,55 +13,128 @@ type NoticeBoxProps = {
 	onAction?: () => void
 	homeLink?: string
 	dashboardLink?: string
+	children?: React.ReactNode
+	useMotion?: boolean
+	width?: 'sm' | 'md' | 'lg'
 }
+
+const MotionWrapper = motion.div
 
 export default function NoticeBox({
 	icon = <AlertTriangle className="h-4 w-4 shrink-0" />,
 	title = 'Unexpected error occurred.',
 	description,
 	actionText = 'Try again',
-	onAction = () => {},
+	onAction,
 	homeLink,
-	dashboardLink
+	dashboardLink,
+	children,
+	useMotion = false,
+	width = 'sm'
 }: NoticeBoxProps) {
-	return (
-		<div className="w-full max-w-sm">
+	const widthClasses = {
+		sm: 'max-w-sm',
+		md: 'max-w-md',
+		lg: 'max-w-lg'
+	}
+
+	const contentVariants = {
+		hidden: { opacity: 0, y: 20 },
+		visible: {
+			opacity: 1,
+			y: 0,
+			transition: {
+				duration: 0.5,
+				ease: [0.25, 0.1, 0.25, 1]
+			}
+		}
+	}
+
+	const content = (
+		<div className={`w-full ${widthClasses[width]}`}>
 			<div className="rounded-lg border bg-section text-card-foreground flex flex-col items-center justify-center gap-4 border-dashed px-12 py-6 shadow-none">
-				<div className="flex items-center justify-center rounded-md border bg-background p-2 shadow-sm">
-					{icon}
-				</div>
-				<p className="text-sm text-title">{title}</p>
-				{description && (
-					<p className="text-sm text-subtitle">{description}</p>
+				{useMotion ? (
+					<MotionWrapper variants={contentVariants}>
+						<div className="flex items-center justify-center rounded-md border bg-background p-2 shadow-sm">
+							{icon}
+						</div>
+					</MotionWrapper>
+				) : (
+					<div className="flex items-center justify-center rounded-md border bg-background p-2 shadow-sm">
+						{icon}
+					</div>
 				)}
-				<div className="flex gap-4">
+
+				{useMotion ? (
+					<MotionWrapper variants={contentVariants}>
+						<h2 className="text-sm font-semibold text-title">
+							{title}
+						</h2>
+					</MotionWrapper>
+				) : (
+					<h2 className="text-sm font-semibold text-title">
+						{title}
+					</h2>
+				)}
+
+				{description &&
+					(useMotion ? (
+						<MotionWrapper variants={contentVariants}>
+							<p className="text-sm text-subtitle">
+								{description}
+							</p>
+						</MotionWrapper>
+					) : (
+						<p className="text-sm text-subtitle">{description}</p>
+					))}
+				{children}
+				<div className="flex flex-wrap gap-4 justify-center">
 					{onAction && (
 						<Button
-							className="px-4 py-2 h-[54px] "
 							onClick={onAction}
-							// className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+							className="px-4 py-2 h-[54px]"
 						>
 							{actionText}
 						</Button>
 					)}
 					{homeLink && (
-						<Link
-							href={homeLink}
-							className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 px-4 h-[50px]"
-						>
-							Go to Home
-						</Link>
+						<Button asChild variant="secondary">
+							<Link href={homeLink}>Go to Home</Link>
+						</Button>
 					)}
 					{dashboardLink && (
-						<Link
-							href={dashboardLink}
-							className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2"
-						>
-							Go to Dashboard
-						</Link>
+						<Button asChild variant="outline">
+							<Link href={dashboardLink}>Go to Dashboard</Link>
+						</Button>
 					)}
 				</div>
 			</div>
 		</div>
+	)
+
+	if (!useMotion) {
+		return content
+	}
+	return (
+		<MotionWrapper
+			initial="hidden"
+			animate="visible"
+			variants={{
+				hidden: { opacity: 0, scale: 0.9, rotate: '3deg' },
+				visible: {
+					opacity: 1,
+					scale: 1,
+					rotate: 0,
+					transition: {
+						duration: 0.7,
+						ease: [0.25, 0.8, 0.25, 1.4],
+						staggerChildren: 0.12,
+						delayChildren: 0.1
+					}
+				}
+			}}
+		>
+			{content}
+		</MotionWrapper>
 	)
 }

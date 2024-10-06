@@ -1,59 +1,62 @@
 'use server'
 
 import { generateUUID } from '@/core/helpers/generate-uuid'
+import { logActivity } from '@/core/server/actions/users/log-activity'
 import { validateRequest } from '@/lib/auth/lucia'
 import { db } from '@/lib/db'
 import { folders } from '@/lib/db/schema'
-import { and, eq, isNull, sql } from 'drizzle-orm'
+import { FolderType } from '@/types/types.folder'
+import { and, eq, like, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
-import { cookies } from 'next/headers'
-a
-export type Folder = typeof folders.$inferSelect
-export type NewFolder = typeof folders.$inferInsert
-
-export async function getFolders() {
-	const { user } = await validateRequest(cookies)
-	if (!user) {
-		throw new Error('Not authenticated')
-	}
-
-	const userFolders = await db.query.folders.findMany({
-		where: eq(folders.userId, user.id),
-		orderBy: [folders.sortOrder, folders.name]
-	})
-
-	return userFolders
-}
 
 export async function createFolder(
 	name: string,
 	description: string | null = null,
 	parentId: string | null = null,
-	color: string = '#000000',
-	icon: string = 'folder'
+	color: string = '#000000'
 ) {
-	const { user } = await validateRequest(cookies)
+	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
 	}
 
 	const newFolderId = generateUUID()
 
-	await db.insert(folders).values({
+	let path = `/${name}`
+	if (parentId) {
+		const parentFolder = await db.query.folders.findFirst({
+			where: eq(folders.id, parentId)
+		})
+		if (parentFolder) {
+			path = `${parentFolder.path}/${name}`
+		}
+	}
+
+	const newFolder = {
 		id: newFolderId,
 		name,
 		description,
 		userId: user.id,
 		parentId,
 		color,
-		icon,
+		path,
 		createdAt: new Date(),
-		updatedAt: new Date(),
-		lastAccessedAt: new Date()
-	})
+		updatedAt: new Date()
+	}
+
+	await db.insert(folders).values(newFolder)
+
+	try {
+		await logActivity(user.id, 'CREATE_FOLDER', `Created folder: ${name}`, {
+			folderId: newFolderId,
+			folderName: name
+		})
+	} catch (error) {
+		console.error('Failed to log folder creation activity:', error)
+	}
 
 	revalidatePath('/dashboard/folders')
-	return newFolderId
+	return { success: true, folder: newFolder }
 }
 
 export async function updateFolder(
@@ -62,279 +65,193 @@ export async function updateFolder(
 		name?: string
 		description?: string | null
 		color?: string
-		icon?: string
-		isFavorite?: boolean
-		isLocked?: boolean
-		passcode?: string
-		sortOrder?: number
-		tags?: string[]
-		metadata?: Record<string, unknown>
 	}
 ) {
-	const { user } = await validateRequest(cookies)
+	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
 	}
+
+	const currentFolder = await db.query.folders.findFirst({
+		where: and(eq(folders.id, id), eq(folders.userId, user.id))
+	})
+
+	if (!currentFolder) {
+		throw new Error('Folder not found')
+	}
+
+	const newPath = updates.name
+		? currentFolder.path.replace(
+			new RegExp(`${currentFolder.name}$`),
+			updates.name
+		)
+		: currentFolder.path
 
 	await db
 		.update(folders)
 		.set({
 			...updates,
+			path: newPath,
 			updatedAt: new Date()
 		})
 		.where(and(eq(folders.id, id), eq(folders.userId, user.id)))
+
+	// Update paths of all descendant folders
+	if (updates.name) {
+		const descendantFolders = await db.query.folders.findMany({
+			where: like(folders.path, `${currentFolder.path}/%`)
+		})
+
+		for (const descendant of descendantFolders) {
+			const newDescendantPath = descendant.path.replace(
+				currentFolder.path,
+				newPath
+			)
+			await db
+				.update(folders)
+				.set({ path: newDescendantPath })
+				.where(eq(folders.id, descendant.id))
+		}
+	}
+
+	try {
+		await logActivity(
+			user.id,
+			'UPDATE_FOLDER',
+			`Updated folder: ${updates.name || id}`,
+			{ folderId: id, updates }
+		)
+	} catch (error) {
+		console.error('Failed to log folder update activity:', error)
+	}
 
 	revalidatePath('/dashboard/folders')
 }
 
 export async function deleteFolder(id: string) {
-	const { user } = await validateRequest(cookies)
+	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
 	}
 
-	// First, recursively delete all subfolders
-	await deleteSubfolders(id, user.id)
-
-	// Then delete the folder itself
-	await db
-		.delete(folders)
-		.where(and(eq(folders.id, id), eq(folders.userId, user.id)))
-
-	revalidatePath('/dashboard/folders')
-}
-
-async function deleteSubfolders(parentId: string, userId: string) {
-	const subfolders = await db.query.folders.findMany({
-		where: and(eq(folders.parentId, parentId), eq(folders.userId, userId))
+	const folderToDelete = await db.query.folders.findFirst({
+		where: and(eq(folders.id, id), eq(folders.userId, user.id))
 	})
 
-	for (const subfolder of subfolders) {
-		await deleteSubfolders(subfolder.id, userId)
+	if (folderToDelete) {
+		// Delete all descendant folders
 		await db
 			.delete(folders)
-			.where(
-				and(eq(folders.id, subfolder.id), eq(folders.userId, userId))
+			.where(like(folders.path, `${folderToDelete.path}/%`))
+
+		// Delete the folder itself
+		await db
+			.delete(folders)
+			.where(and(eq(folders.id, id), eq(folders.userId, user.id)))
+
+		try {
+			await logActivity(
+				user.id,
+				'DELETE_FOLDER',
+				`Deleted folder: ${folderToDelete.name}`,
+				{ folderId: id, folderName: folderToDelete.name }
 			)
+		} catch (error) {
+			console.error('Failed to log folder deletion activity:', error)
+		}
 	}
-}
-
-export async function moveFolder(folderId: string, newParentId: string | null) {
-	const { user } = await validateRequest(cookies)
-	if (!user) {
-		throw new Error('Not authenticated')
-	}
-
-	await db
-		.update(folders)
-		.set({
-			parentId: newParentId,
-			updatedAt: new Date()
-		})
-		.where(and(eq(folders.id, folderId), eq(folders.userId, user.id)))
 
 	revalidatePath('/dashboard/folders')
 }
 
-export async function getFolderContents(folderId: string | null) {
-	const { user } = await validateRequest(cookies)
+export async function getFolders(): Promise<{ folders: FolderType[] }> {
+	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
 	}
 
-	const folderContents = await db.query.folders.findMany({
-		where: and(
-			eq(folders.userId, user.id),
-			folderId ? eq(folders.parentId, folderId) : isNull(folders.parentId)
-		),
-		orderBy: [folders.sortOrder, folders.name]
-	})
+	const userFolders = await db
+		.select()
+		.from(folders)
+		.where(eq(folders.userId, user.id))
+		.orderBy(folders.path)
 
-	return folderContents
+	return { folders: userFolders }
 }
 
-export async function searchFolders(query: string) {
-	const { user } = await validateRequest(cookies)
+export async function moveFolder(id: string, newParentId: string | null) {
+	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
 	}
 
-	const searchResults = await db.query.folders.findMany({
-		where: and(
-			eq(folders.userId, user.id),
-			sql`${folders.name} ILIKE ${`%${query}%`}`
-		),
-		orderBy: [folders.name]
+	const folderToMove = await db.query.folders.findFirst({
+		where: and(eq(folders.id, id), eq(folders.userId, user.id))
 	})
 
-	return searchResults
-}
-
-export async function getFavorites() {
-	const { user } = await validateRequest(cookies)
-	if (!user) {
-		throw new Error('Not authenticated')
-	}
-
-	const favorites = await db.query.folders.findMany({
-		where: and(eq(folders.userId, user.id), eq(folders.isFavorite, true)),
-		orderBy: [folders.name]
-	})
-
-	return favorites
-}
-
-export async function toggleFavorite(folderId: string) {
-	const { user } = await validateRequest(cookies)
-	if (!user) {
-		throw new Error('Not authenticated')
-	}
-
-	const folder = await db.query.folders.findFirst({
-		where: and(eq(folders.id, folderId), eq(folders.userId, user.id))
-	})
-
-	if (!folder) {
+	if (!folderToMove) {
 		throw new Error('Folder not found')
 	}
 
-	await db
-		.update(folders)
-		.set({
-			isFavorite: !folder.isFavorite,
-			updatedAt: new Date()
+	let newPath: string
+	if (newParentId) {
+		const newParentFolder = await db.query.folders.findFirst({
+			where: and(eq(folders.id, newParentId), eq(folders.userId, user.id))
 		})
-		.where(eq(folders.id, folderId))
-
-	revalidatePath('/dashboard/folders')
-}
-
-export async function setFolderLock(
-	folderId: string,
-	isLocked: boolean,
-	passcode?: string
-) {
-	const { user } = await validateRequest(cookies)
-	if (!user) {
-		throw new Error('Not authenticated')
+		if (!newParentFolder) {
+			throw new Error('New parent folder not found')
+		}
+		newPath = `${newParentFolder.path}/${folderToMove.name}`
+	} else {
+		newPath = `/${folderToMove.name}`
 	}
 
+	// Update the moved folder
 	await db
 		.update(folders)
-		.set({
-			isLocked,
-			passcode: isLocked ? passcode : null,
-			updatedAt: new Date()
-		})
-		.where(and(eq(folders.id, folderId), eq(folders.userId, user.id)))
+		.set({ parentId: newParentId, path: newPath, updatedAt: new Date() })
+		.where(and(eq(folders.id, id), eq(folders.userId, user.id)))
 
-	revalidatePath('/dashboard/folders')
-}
-
-export async function updateLastAccessed(folderId: string) {
-	const { user } = await validateRequest(cookies)
-	if (!user) {
-		throw new Error('Not authenticated')
-	}
-
-	await db
-		.update(folders)
-		.set({
-			lastAccessedAt: new Date()
-		})
-		.where(and(eq(folders.id, folderId), eq(folders.userId, user.id)))
-}
-
-export async function updateFolderTags(folderId: string, tags: string[]) {
-	const { user } = await validateRequest(cookies)
-	if (!user) {
-		throw new Error('Not authenticated')
-	}
-
-	await db
-		.update(folders)
-		.set({
-			tags,
-			updatedAt: new Date()
-		})
-		.where(and(eq(folders.id, folderId), eq(folders.userId, user.id)))
-
-	revalidatePath('/dashboard/folders')
-}
-
-export async function updateFolderMetadata(
-	folderId: string,
-	metadata: Record<string, unknown>
-) {
-	const { user } = await validateRequest(cookies)
-	if (!user) {
-		throw new Error('Not authenticated')
-	}
-
-	await db
-		.update(folders)
-		.set({
-			updatedAt: new Date()
-		})
-		.where(and(eq(folders.id, folderId), eq(folders.userId, user.id)))
-
-	revalidatePath('/dashboard/folders')
-}
-
-export async function duplicateFolder(folderId: string) {
-	const { user } = await validateRequest(cookies)
-	if (!user) {
-		throw new Error('Not authenticated')
-	}
-
-	const sourceFolder = await db.query.folders.findFirst({
-		where: and(eq(folders.id, folderId), eq(folders.userId, user.id))
+	// Update paths of all descendant folders
+	const descendantFolders = await db.query.folders.findMany({
+		where: like(folders.path, `${folderToMove.path}/%`)
 	})
 
-	if (!sourceFolder) {
-		throw new Error('Folder not found')
-	}
-
-	const newFolderId = generateUUID()
-	await db.insert(folders).values({
-		...sourceFolder,
-		id: newFolderId,
-		name: `${sourceFolder.name} (Copy)`,
-		createdAt: new Date(),
-		updatedAt: new Date(),
-		lastAccessedAt: new Date()
-	})
-
-	// Recursively duplicate subfolders
-	await duplicateSubfolders(folderId, newFolderId, user.id)
-
-	revalidatePath('/dashboard/folders')
-	return newFolderId
-}
-
-async function duplicateSubfolders(
-	sourceFolderId: string,
-	newParentId: string,
-	userId: string
-) {
-	const subfolders = await db.query.folders.findMany({
-		where: and(
-			eq(folders.parentId, sourceFolderId),
-			eq(folders.userId, userId)
+	for (const descendant of descendantFolders) {
+		const newDescendantPath = descendant.path.replace(
+			folderToMove.path,
+			newPath
 		)
-	})
-
-	for (const subfolder of subfolders) {
-		const newSubfolderId = generateUUID()
-		await db.insert(folders).values({
-			...subfolder,
-			id: newSubfolderId,
-			parentId: newParentId,
-			createdAt: new Date(),
-			updatedAt: new Date(),
-			lastAccessedAt: new Date()
-		})
-
-		await duplicateSubfolders(subfolder.id, newSubfolderId, userId)
+		await db
+			.update(folders)
+			.set({ path: newDescendantPath })
+			.where(eq(folders.id, descendant.id))
 	}
+
+	try {
+		await logActivity(
+			user.id,
+			'MOVE_FOLDER',
+			`Moved folder: ${folderToMove.name}`,
+			{ folderId: id, newParentId }
+		)
+	} catch (error) {
+		console.error('Failed to log folder move activity:', error)
+	}
+
+	revalidatePath('/dashboard/folders')
+}
+
+export async function getFolderCount(): Promise<number> {
+	const { user } = await validateRequest()
+	if (!user) {
+		throw new Error('Not authenticated')
+	}
+
+	const result = await db
+		.select({ count: sql<number>`count(*)` })
+		.from(folders)
+		.where(eq(folders.userId, user.id))
+
+	return result[0].count
 }

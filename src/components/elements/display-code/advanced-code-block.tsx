@@ -1,3 +1,5 @@
+'use client'
+
 import { ChevronDown, ChevronUp, Copy } from 'lucide-react'
 import { useState } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'

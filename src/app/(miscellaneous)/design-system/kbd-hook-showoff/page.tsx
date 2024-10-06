@@ -1,7 +1,7 @@
 'use client'
 
 import { Kbd } from '@/components/atoms'
-import CodeHighlight from '@/components/elements/code-highlight/code-highlight'
+import CodeHighlight from '@/components/elements/display-code/code-highlight/code-highlight'
 import {
 	createShortcutMap,
 	useKeyboardShortcuts

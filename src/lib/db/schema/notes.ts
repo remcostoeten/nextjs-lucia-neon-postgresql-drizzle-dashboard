@@ -1,30 +1,36 @@
+import { generateUUID } from '@/core/helpers/generate-uuid'
 import { relations } from 'drizzle-orm'
 import {
 	boolean,
+	index,
 	jsonb,
 	pgTable,
 	text,
 	timestamp,
-	uuid,
 	varchar
 } from 'drizzle-orm/pg-core'
 import { users } from './auth'
-import { generateUUID } from '@/core/helpers/generate-uuid'
 
-export const folders = pgTable('folders', {
-	id: varchar('id')
-		.primaryKey()
-		.$defaultFn(() => generateUUID()),
-	name: text('name').notNull(),
-	description: text('description'),
-	color: text('color').default('#000000').notNull(),
-	userId: text('user_id')
-		.notNull()
-		.references(() => users.id),
-	parentId: varchar('parent_id').references(() => folders.id),
-	createdAt: timestamp('created_at').defaultNow().notNull(),
-	updatedAt: timestamp('updated_at').defaultNow().notNull()
-})
+export const folders: any = pgTable(
+	'folders',
+	{
+		id: varchar('id')
+			.primaryKey()
+			.$defaultFn(() => generateUUID()),
+		name: text('name').notNull(),
+		description: text('description'),
+		color: text('color').default('#000000').notNull(),
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id),
+		parentId: varchar('parent_id').references(() => folders.id),
+		path: text('path').notNull()
+	},
+	table => ({
+		parentIdIdx: index('parent_id_idx').on(table.parentId),
+		pathIdx: index('path_idx').on(table.path)
+	})
+)
 
 export const notes = pgTable('notes', {
 	id: varchar('id')
