@@ -9,7 +9,7 @@ import { cookies } from 'next/headers'
 
 export async function getFolders() {
 	const cookieStore = cookies()
-	const { user } = await validateRequest(cookieStore)
+	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
 	}
@@ -26,7 +26,7 @@ export async function createFolder(
 	description: string | null = null
 ) {
 	const cookieStore = cookies()
-	const { user } = await validateRequest(cookieStore)
+	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
 	}
@@ -35,7 +35,7 @@ export async function createFolder(
 		name,
 		description,
 		userId: user.id,
-		color: '#000000', // Default color, adjust as needed
+		color: '#FFF',
 		createdAt: new Date(),
 		updatedAt: new Date()
 	})
@@ -49,7 +49,7 @@ export async function updateFolder(
 	description: string | null = null
 ) {
 	const cookieStore = cookies()
-	const { user } = await validateRequest(cookieStore)
+	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
 	}
@@ -64,7 +64,7 @@ export async function updateFolder(
 
 export async function deleteFolder(id: string) {
 	const cookieStore = cookies()
-	const { user } = await validateRequest(cookieStore)
+	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
 	}
@@ -76,7 +76,7 @@ export async function deleteFolder(id: string) {
 
 export async function moveFolder(id: string, newPosition: number) {
 	const cookieStore = cookies()
-	const { user } = await validateRequest(cookieStore)
+	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
 	}
@@ -112,7 +112,7 @@ export async function moveFolder(id: string, newPosition: number) {
 
 export async function changeFolderColor(id: string, color: string) {
 	const cookieStore = cookies()
-	const { user } = await validateRequest(cookieStore)
+	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
 	}

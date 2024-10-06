@@ -118,18 +118,32 @@ export default function FileTree() {
 		}
 	}
 
+	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+	const [folderToDelete, setFolderToDelete] = useState<string | null>(null)
+
 	const handleDeleteItem = async (id: string) => {
-		try {
-			await deleteFolder(id)
-			const updatedFolders = await getFolders()
-			const nestedFolders = buildNestedStructure(updatedFolders)
-			setData(nestedFolders)
-			if (selectedItem === id) {
-				setSelectedItem(null)
-				setBreadcrumb([])
+		setFolderToDelete(id)
+		setIsDeleteDialogOpen(true)
+	}
+
+	const confirmDelete = async () => {
+		if (folderToDelete) {
+			try {
+				await deleteFolder(folderToDelete)
+				const updatedFolders = await getFolders()
+				const nestedFolders = buildNestedStructure(updatedFolders)
+				setData(nestedFolders)
+				if (selectedItem === folderToDelete) {
+					setSelectedItem(null)
+					setBreadcrumb([])
+				}
+				toast.success('Folder deleted successfully')
+			} catch (error) {
+				console.error('Error deleting folder:', error)
+				toast.error('Failed to delete folder')
 			}
-		} catch (error) {
-			console.error('Error deleting folder:', error)
+			setIsDeleteDialogOpen(false)
+			setFolderToDelete(null)
 		}
 	}
 

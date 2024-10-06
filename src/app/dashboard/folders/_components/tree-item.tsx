@@ -1,6 +1,11 @@
 import { Flex } from '@/components/atoms'
-import ConfirmationModal from '@/components/elements/crud/confirmation-modal'
-import { ColorPicker, Textarea } from '@/components/ui'
+import {
+	ColorPicker,
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+	Textarea
+} from '@/components/ui'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -9,6 +14,7 @@ import {
 	deleteFolder,
 	updateFolder
 } from '@/core/server/actions/folders'
+import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronRight, Folder, FolderPlus, Pencil, Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
 import { useDrag, useDrop } from 'react-dnd'
@@ -45,7 +51,8 @@ export function TreeItem({
 	const [folderDescription, setFolderDescription] = useState(
 		item.description || ''
 	)
-	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+	const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false)
+	const [isDeleting, setIsDeleting] = useState(false)
 
 	const [{ isDragging }, drag] = useDrag({
 		type: 'TREE_ITEM',
@@ -98,25 +105,24 @@ export function TreeItem({
 			await changeFolderColor(item.id, editColor)
 			setIsEditing(false)
 			await refreshFolders()
-			toast(`Updated ${editName}`)
+			toast.success(`Updated ${editName}`)
 		} catch (error) {
 			console.error('Error updating folder:', error)
-			toast('Error updating folder')
+			toast.error('Error updating folder')
 		}
 	}
 
 	const handleDelete = async () => {
+		setIsDeleting(true)
 		try {
 			await deleteFolder(item.id)
 			toast.success(`Deleted ${item.name}`)
-			if (typeof refreshFolders === 'function') {
-				await refreshFolders()
-			} else {
-				console.error('refreshFolders is not a function')
-			}
+			// The actual removal from the tree will be handled by the parent component
+			// through the refreshFolders function after the animation completes
 		} catch (error) {
 			console.error('Error deleting folder:', error)
 			toast.error('Error deleting folder')
+			setIsDeleting(false)
 		}
 	}
 
@@ -126,166 +132,228 @@ export function TreeItem({
 		try {
 			await createFolder(`New Folder`, '', item.id)
 			await refreshFolders()
-			toast(`Created new folder under ${item.name}`)
+			toast.success(`Created new folder under ${item.name}`)
 		} catch (error) {
 			console.error('Error creating folder:', error)
-			toast('Error creating folder')
+			toast.error('Error creating folder')
 		}
 	}
 
 	return (
-		<>
-			<div
-				ref={node => drag(drop(node))}
-				className={`
-          rounded-md transition-all duration-300 border px-4 hover:bg-section-lighter
-          ${isSelected ? 'bg-section' : ''}
-          ${isDragging ? 'opacity-50' : ''}
-          ${isOver ? 'bg-secondary' : ''}
-        `}
-				style={{ borderLeft: `4px solid ${item.color}` }}
-				role="treeitem"
-				aria-expanded={isOpen}
-				id={`item-${item.id}`}
-			>
-				<div
-					className="flex w-full items-center rounded-md cursor-pointer justify-between py-2"
-					onClick={handleSelect}
+		<AnimatePresence>
+			{!isDeleting && (
+				<motion.div
+					initial={{ opacity: 1, scale: 1 }}
+					exit={{
+						opacity: 0,
+						scale: 0.8,
+						transition: { duration: 0.2 }
+					}}
+					onAnimationComplete={() => {
+						if (isDeleting) {
+							refreshFolders()
+						}
+					}}
 				>
-					{isEditing ? (
-						<form
-							onSubmit={handleUpdate}
-							className="flex-grow flex items-center space-x-2"
-						>
-							<Input
-								type="text"
-								value={editName}
-								onChange={e => setEditName(e.target.value)}
-								autoFocus
-							/>
-							<Textarea
-								value={folderDescription}
-								onChange={e =>
-									setFolderDescription(e.target.value)
-								}
-								placeholder="Folder description (optional)"
-							/>
-							<ColorPicker
-								color={editColor}
-								onChange={setEditColor}
-							/>
-							<Button type="submit" size="sm" variant="secondary">
-								Save
-							</Button>
-						</form>
-					) : (
-						<>
-							<Flex align="center" gap="2">
-								<button
-									className="flex items-center justify-center"
-									aria-label="Expand Button"
-									aria-expanded={isOpen}
-									aria-controls={`folder-content-${item.id}`}
-									onClick={handleToggle}
+					<div
+						ref={node => drag(drop(node))}
+						className={`tree-item ${isSelected ? 'selected' : ''} ${
+							isOver ? 'drag-over' : ''
+						}`}
+						onClick={handleSelect}
+					>
+						<div className="flex items-center justify-between p-2">
+							{isEditing ? (
+								<form
+									onSubmit={handleUpdate}
+									className="w-full"
 								>
-									<ChevronRight
-										className={`text-muted-foreground size-4 transition-transform duration-200 ${
-											isOpen ? 'rotate-90' : ''
-										}`}
+									<Input
+										value={editName}
+										onChange={e =>
+											setEditName(e.target.value)
+										}
+										placeholder="Folder name"
+										required
 									/>
-								</button>
-								<div className="relative">
-									<Folder
-										className="size-5 flex-shrink-0"
-										style={{ color: item.color }}
+									<Textarea
+										value={folderDescription}
+										onChange={e =>
+											setFolderDescription(e.target.value)
+										}
+										placeholder="Folder description (optional)"
 									/>
-									<div
-										className="absolute bottom-0 right-0 w-2 h-2 rounded-full"
-										style={{ backgroundColor: item.color }}
+									<ColorPicker
+										color={editColor}
+										onChange={setEditColor}
 									/>
-								</div>
-								<span className="text-title">{item.name}</span>
-							</Flex>
-							<div className="flex items-center space-x-1">
-								<Button
-									size="icon"
-									variant="ghost"
-									onClick={handleEdit}
-								>
-									<Pencil className="text-title h-4 w-4" />
-								</Button>
-								<Button
-									size="icon"
-									variant="ghost"
-									onClick={() => setIsDeleteModalOpen(true)}
-								>
-									<Trash2 className="text-title h-4 w-4" />
-								</Button>
-								<Button
-									size="icon"
-									variant="ghost"
-									onClick={handleCreate}
-								>
-									<FolderPlus className="text-title h-4 w-4" />
-								</Button>
-								<div
-									className="w-6 h-6 rounded-full flex items-center justify-center"
-									style={{ backgroundColor: item.color }}
-								>
-									<span
-										style={{
-											color: getTextColor(item.color),
-											fontSize: '0.7rem'
-										}}
+									<Button
+										type="submit"
+										size="sm"
+										variant="secondary"
 									>
-										{item.name.charAt(0).toUpperCase()}
-									</span>
+										Save
+									</Button>
+								</form>
+							) : (
+								<>
+									<Flex align="center" gap="2">
+										<button
+											className="flex items-center justify-center"
+											aria-label="Expand Button"
+											aria-expanded={isOpen}
+											aria-controls={`folder-content-${item.id}`}
+											onClick={handleToggle}
+										>
+											<ChevronRight
+												className={`text-muted-foreground size-4 transition-transform duration-200 ${
+													isOpen ? 'rotate-90' : ''
+												}`}
+											/>
+										</button>
+										<div className="relative">
+											<Folder
+												className="size-5 flex-shrink-0"
+												style={{ color: item.color }}
+											/>
+											<div
+												className="absolute bottom-0 right-0 w-2 h-2 rounded-full"
+												style={{
+													backgroundColor: item.color
+												}}
+											/>
+										</div>
+										<span className="text-title">
+											{item.name}
+										</span>
+									</Flex>
+									<div className="flex items-center space-x-1">
+										<Button
+											size="icon"
+											variant="ghost"
+											onClick={handleEdit}
+										>
+											<Pencil className="text-title h-4 w-4" />
+										</Button>
+										<Popover
+											open={isDeleteConfirmOpen}
+											onOpenChange={
+												setIsDeleteConfirmOpen
+											}
+										>
+											<PopoverTrigger asChild>
+												<Button
+													size="icon"
+													variant="ghost"
+													onClick={e => {
+														e.stopPropagation()
+														setIsDeleteConfirmOpen(
+															true
+														)
+													}}
+												>
+													<Trash2 className="text-title h-4 w-4" />
+												</Button>
+											</PopoverTrigger>
+											<PopoverContent
+												className="w-auto p-0"
+												align="center"
+											>
+												<div className="grid gap-1 p-4">
+													<h4 className="font-medium leading-none">
+														Are you sure?
+													</h4>
+													<p className="text-sm text-subtitle mb-2">
+														This action cannot be
+														undone.
+													</p>
+													<div className="flex gap-2">
+														<Button
+															className="h-8"
+															onClick={() =>
+																setIsDeleteConfirmOpen(
+																	false
+																)
+															}
+														>
+															No
+														</Button>
+														<Button
+															className="h-8"
+															variant="destructive"
+															onClick={
+																handleDelete
+															}
+														>
+															Yes
+														</Button>
+													</div>
+												</div>
+											</PopoverContent>
+										</Popover>
+										<Button
+											size="icon"
+											variant="ghost"
+											onClick={handleCreate}
+										>
+											<FolderPlus className="text-title h-4 w-4" />
+										</Button>
+										<div
+											className="w-6 h-6 rounded-full flex items-center justify-center"
+											style={{
+												backgroundColor: item.color
+											}}
+										>
+											<span
+												style={{
+													color: getTextColor(
+														item.color
+													),
+													fontSize: '0.7rem'
+												}}
+											>
+												{item.name
+													.charAt(0)
+													.toUpperCase()}
+											</span>
+										</div>
+									</div>
+								</>
+							)}
+						</div>
+						{isOpen && item.description && (
+							<div className="mt-2 mb-4 text-sm text-muted-foreground">
+								{item.description}
+							</div>
+						)}
+						{item.children && (
+							<div
+								id={`folder-content-${item.id}`}
+								className={`overflow-hidden transition-all duration-300 ${
+									isOpen
+										? 'max-h-[1000px] opacity-100'
+										: 'max-h-0 opacity-0'
+								}`}
+								aria-labelledby={`item-${item.id}`}
+								role="group"
+							>
+								<div className="pl-6" role="group">
+									{item.children.map(child => (
+										<TreeItem
+											key={child.id}
+											item={child}
+											onSelect={onSelect}
+											isSelected={isSelected}
+											path={[...path, child.name]}
+											refreshFolders={refreshFolders}
+										/>
+									))}
 								</div>
 							</div>
-						</>
-					)}
-				</div>
-				{isOpen && item.description && (
-					<div className="mt-2 mb-4 text-sm text-muted-foreground">
-						{item.description}
+						)}
 					</div>
-				)}
-				{item.children && (
-					<div
-						id={`folder-content-${item.id}`}
-						className={`overflow-hidden transition-all duration-300 ${
-							isOpen
-								? 'max-h-[1000px] opacity-100'
-								: 'max-h-0 opacity-0'
-						}`}
-						aria-labelledby={`item-${item.id}`}
-						role="group"
-					>
-						<div className="pl-6" role="group">
-							{item.children.map(child => (
-								<TreeItem
-									key={child.id}
-									item={child}
-									onSelect={onSelect}
-									isSelected={isSelected}
-									path={[...path, child.name]}
-									refreshFolders={refreshFolders}
-								/>
-							))}
-						</div>
-					</div>
-				)}
-			</div>
-			<ConfirmationModal
-				isOpen={isDeleteModalOpen}
-				onClose={() => setIsDeleteModalOpen(false)}
-				onConfirm={handleDelete}
-				title="Confirm Deletion"
-				message={`Are you sure you want to delete the folder "${item.name}"?`}
-				confirmText="Delete"
-				cancelText="Cancel"
-				icon={<Trash2 className="h-12 w-12 text-destructive" />}
-			/>
-		</>
+				</motion.div>
+			)}
+		</AnimatePresence>
 	)
 }
