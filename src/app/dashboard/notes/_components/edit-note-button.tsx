@@ -1,7 +1,7 @@
 'use client'
 
 import TipTapEditor from '@/components/tiptap-editor'
-import { updateNote } from '@/lib/api/notes'
+import { updateNote } from '@/lib/api/@@notes'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'

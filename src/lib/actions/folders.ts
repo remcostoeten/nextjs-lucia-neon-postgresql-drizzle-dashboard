@@ -8,7 +8,6 @@ import { folders } from '@/lib/db/schema'
 import { FolderType } from '@/types/types.folder'
 import { and, eq, like, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
-import { cookies } from 'next/headers'
 
 export async function createFolder(
 	name: string,
@@ -16,7 +15,7 @@ export async function createFolder(
 	parentId: string | null = null,
 	color: string = '#000000'
 ) {
-	const { user } = await validateRequest(cookies)
+	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
 	}
@@ -33,7 +32,7 @@ export async function createFolder(
 		}
 	}
 
-	await db.insert(folders).values({
+	const newFolder = {
 		id: newFolderId,
 		name,
 		description,
@@ -43,7 +42,9 @@ export async function createFolder(
 		path,
 		createdAt: new Date(),
 		updatedAt: new Date()
-	})
+	}
+
+	await db.insert(folders).values(newFolder)
 
 	try {
 		await logActivity(user.id, 'CREATE_FOLDER', `Created folder: ${name}`, {
@@ -55,7 +56,7 @@ export async function createFolder(
 	}
 
 	revalidatePath('/dashboard/folders')
-	return newFolderId
+	return { success: true, folder: newFolder }
 }
 
 export async function updateFolder(
@@ -66,7 +67,7 @@ export async function updateFolder(
 		color?: string
 	}
 ) {
-	const { user } = await validateRequest(cookies)
+	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
 	}
@@ -81,9 +82,9 @@ export async function updateFolder(
 
 	const newPath = updates.name
 		? currentFolder.path.replace(
-				new RegExp(`${currentFolder.name}$`),
-				updates.name
-			)
+			new RegExp(`${currentFolder.name}$`),
+			updates.name
+		)
 		: currentFolder.path
 
 	await db
@@ -128,7 +129,7 @@ export async function updateFolder(
 }
 
 export async function deleteFolder(id: string) {
-	const { user } = await validateRequest(cookies)
+	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
 	}
@@ -164,7 +165,7 @@ export async function deleteFolder(id: string) {
 }
 
 export async function getFolders(): Promise<{ folders: FolderType[] }> {
-	const { user } = await validateRequest(cookies)
+	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
 	}
@@ -179,7 +180,7 @@ export async function getFolders(): Promise<{ folders: FolderType[] }> {
 }
 
 export async function moveFolder(id: string, newParentId: string | null) {
-	const { user } = await validateRequest(cookies)
+	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
 	}
@@ -242,7 +243,7 @@ export async function moveFolder(id: string, newParentId: string | null) {
 }
 
 export async function getFolderCount(): Promise<number> {
-	const { user } = await validateRequest(cookies)
+	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
 	}

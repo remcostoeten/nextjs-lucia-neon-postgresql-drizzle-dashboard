@@ -1,7 +1,7 @@
 'use client'
 
 import RichTextEditor from '@/components/rich-text-editor'
-import { createNote } from '@/lib/api/notes'
+import { createNote } from '@/lib/api/@@notes'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
