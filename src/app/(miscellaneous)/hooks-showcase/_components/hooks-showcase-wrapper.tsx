@@ -7,7 +7,7 @@ import {
 	CardTitle
 } from '@/components/ui/card'
 import React from 'react'
-import { EnhancedCodeBlock } from './advanced-code-block'
+import { EnhancedCodeBlock } from '../../../../components/elements/display-code/advanced-code-block'
 
 type HooksShowcaseWrapperProps = {
 	title?: string

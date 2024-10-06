@@ -16,7 +16,7 @@ const config: Config = {
 	prefix: '',
 	theme: {
 		container: {
-			center: true,
+			center: 'true',
 			padding: '2rem',
 			screens: {
 				'2xl': '1400px'
@@ -35,26 +35,26 @@ const config: Config = {
 				sidebar: 'var(--sidebar-width)'
 			},
 			colors: {
-				// custom colors
-				/* Background Colors */
-				destructive: 'var(--destructive)',
+				destructive: {
+					DEFAULT: 'hsl(var(--destructive))',
+					foreground: 'hsl(var(--destructive-foreground))'
+				},
 				body: 'var(--bg-body)',
-				card: 'var(--bg-card)',
+				card: {
+					DEFAULT: 'var(--bg-card)',
+					foreground: 'hsl(var(--card-foreground))'
+				},
 				brand: 'var(--brand)',
 				avatar: 'var(--avatar)',
 				section: 'var(--bg-section)',
 				'section-lighter': 'var(--bg-section-lighter)',
-				input: 'var(--bg-input)',
+				input: 'hsl(var(--input))',
 				dropdown: 'var(--bg-dropdown)',
 				modal: 'var(--bg-modal)',
 				'modal-hover': 'var(--bg-modal-hover)',
-
-				/* Border & Outline Colors */
 				'border-default': 'var(--border-default)',
 				'border-outline': 'var(--border-outline)',
 				'border-separator': 'var(--border-separator)',
-
-				/* Text Colors */
 				title: 'var(--text-title)',
 				subtitle: 'var(--text-subtitle)',
 				'text-muted': 'var(--text-muted)',
@@ -62,25 +62,16 @@ const config: Config = {
 				'text-button': 'var(--text-button)',
 				'text-button-alt': 'var(--text-button-alt)',
 				'text-dropdown-item': 'var(--text-dropdown-item)',
-
-				/* Button Colors */
 				'button-default': 'var(--button-default)',
 				'button-hover': 'var(--button-hover)',
-
-				/* Miscellaneous Colors */
 				success: 'var(--color-success)',
 				error: 'var(--color-error)',
 				'menu-icon': 'var(--color-menu-icon)',
 				placeholder: 'var(--color-placeholder)',
 				'input-focus': 'var(--color-input-focus)',
-
-				/* Badge Colors */
 				'badge-default': 'var(--badge-default)',
 				'badge-hover': 'var(--badge-hover)',
-
-				// shadcn colors
 				border: 'var(--border-default)',
-				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
 				background: 'var(--bg-section)',
 				foreground: 'hsl(var(--foreground))',
@@ -91,10 +82,6 @@ const config: Config = {
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
 					foreground: 'hsl(var(--secondary-foreground))'
-				},
-				destructive: {
-					DEFAULT: 'hsl(var(--destructive))',
-					foreground: 'hsl(var(--destructive-foreground))'
 				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
@@ -107,10 +94,6 @@ const config: Config = {
 				popover: {
 					DEFAULT: 'var(--bg-dropdown)',
 					foreground: 'hsl(var(--popover-foreground))'
-				},
-				card: {
-					DEFAULT: 'var(--bg-card)',
-					foreground: 'hsl(var(--card-foreground))'
 				}
 			},
 			borderRadius: {
@@ -120,12 +103,20 @@ const config: Config = {
 			},
 			keyframes: {
 				'accordion-down': {
-					from: { height: '0' },
-					to: { height: 'var(--radix-accordion-content-height)' }
+					from: {
+						height: '0'
+					},
+					to: {
+						height: 'var(--radix-accordion-content-height)'
+					}
 				},
 				'accordion-up': {
-					from: { height: 'var(--radix-accordion-content-height)' },
-					to: { height: '0' }
+					from: {
+						height: 'var(--radix-accordion-content-height)'
+					},
+					to: {
+						height: '0'
+					}
 				},
 				ripple: {
 					'0%, 100%': {
@@ -136,12 +127,20 @@ const config: Config = {
 					}
 				},
 				marquee: {
-					from: { transform: 'translateX(0)' },
-					to: { transform: 'translateX(calc(-100% - var(--gap)))' }
+					from: {
+						transform: 'translateX(0)'
+					},
+					to: {
+						transform: 'translateX(calc(-100% - var(--gap)))'
+					}
 				},
 				'marquee-vertical': {
-					from: { transform: 'translateY(0)' },
-					to: { transform: 'translateY(calc(-100% - var(--gap)))' }
+					from: {
+						transform: 'translateY(0)'
+					},
+					to: {
+						transform: 'translateY(calc(-100% - var(--gap)))'
+					}
 				},
 				spotlight: {
 					'0%': {

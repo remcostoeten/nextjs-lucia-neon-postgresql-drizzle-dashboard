@@ -3,11 +3,14 @@
 import { getUserAuth } from '@/lib/auth/utils'
 import { db } from '@/lib/db/index'
 import { activityLogs, activityLogSchema } from '@/lib/db/schema/activity'
+import { desc, eq } from 'drizzle-orm'
 import { generateId } from 'lucia'
+
 export async function logActivity(
 	action: string,
 	details?: string,
-	userId?: string
+	userId?: string,
+	p0?: { attemptedUrl: string; timestamp: string }
 ) {
 	const { session } = await getUserAuth()
 	if (!session) throw new Error('Unauthorized')
@@ -38,4 +41,3 @@ export async function getActivityLogs() {
 
 	return logs
 }
-1

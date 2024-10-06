@@ -3,7 +3,7 @@
 import { HoverCard } from '@/components/effects/hover-card'
 import NoticeBox from '@/components/elements/notice-box'
 import { AlertCircle, AlertOctagon } from 'lucide-react'
-import { EnhancedCodeBlock } from '../../hooks-showcase/_components/advanced-code-block'
+import { EnhancedCodeBlock } from '../../../../components/elements/display-code/advanced-code-block'
 import DesignSystemWrapper from '../_components/DesignSystemWrapper'
 
 const Section = ({ title, children }) => (

@@ -1,23 +1,38 @@
-// File: lib/actions/activity.ts
-
 'use server'
 
+import { getUserAuth } from '@/lib/auth/utils'
 import { db } from '@/lib/db/index'
 import { activityLogs } from '@/lib/db/schema/activity'
 import { generateId } from 'lucia'
 
 export async function logActivity(
-	userId: string,
 	action: string,
-	details: string,
+	details?: string,
 	metadata?: Record<string, any>
 ) {
-	await db.insert(activityLogs).values({
-		id: generateId(15),
-		userId,
-		action,
-		details,
-		metadata: metadata ? JSON.stringify(metadata) : null,
-		timestamp: new Date()
-	})
+	try {
+		const { session } = await getUserAuth()
+		if (!session) {
+			throw new Error('User not authenticated')
+		}
+
+		const userId = session.user.id
+
+		const [newLog] = await db
+			.insert(activityLogs)
+			.values({
+				id: generateId(15),
+				userId,
+				action,
+				details: details || '',
+				metadata: metadata ? JSON.stringify(metadata) : null,
+				timestamp: new Date()
+			})
+			.returning()
+
+		return { success: true, log: newLog }
+	} catch (error) {
+		console.error('Failed to log activity:', error)
+		return { success: false, error: 'Failed to log activity' }
+	}
 }

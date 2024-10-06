@@ -5,18 +5,19 @@ import NotesSidebar from '@/components/aside/route-specific/notes-aside'
 import SettingsSidebar from '@/components/aside/route-specific/settings-aside'
 import { DashboardIcon } from '@radix-ui/react-icons'
 import {
-	Edit,
+	Activity,
 	FolderIcon,
 	LucideIcon,
 	Mail,
 	Paintbrush,
 	User
 } from 'lucide-react'
+import { ReactNode } from 'react'
 
 export type SidebarItem = {
 	name: string
 	path: string
-	icon: LucideIcon
+	icon: LucideIcon | ReactNode | any
 	hasAlert?: boolean
 	className?: string
 	alertCount?: number
@@ -25,9 +26,13 @@ export type SidebarItem = {
 
 export const sidebarItems: SidebarItem[] = [
 	{ name: 'Dashboard', path: '/dashboard', icon: DashboardIcon },
-
+	{
+		name: 'Folders',
+		path: '/dashboard/folders',
+		icon: FolderIcon
+	},
 	{ name: 'Profile', path: '/dashboard/profile', icon: User },
-	{ name: 'Notes', path: '/dashboard/notes', icon: Edit },
+	{ name: 'Posts', path: '/dashboard/activity', icon: Activity },
 	{
 		name: 'Inbox',
 		path: '/dashboard/inbox',
@@ -39,11 +44,6 @@ export const sidebarItems: SidebarItem[] = [
 		name: 'Generate background',
 		path: '/dashboard/background-creator',
 		icon: Paintbrush
-	},
-	{
-		name: 'Folders',
-		path: '/dashboard/folders',
-		icon: FolderIcon
 	}
 ]
 

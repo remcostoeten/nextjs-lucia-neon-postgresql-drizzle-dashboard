@@ -6,7 +6,7 @@ import { validateRequest } from '@/lib/auth/lucia'
 import { db } from '@/lib/db'
 import { folders } from '@/lib/db/schema'
 import { FolderType } from '@/types/types.folder'
-import { and, eq, like } from 'drizzle-orm'
+import { and, eq, like, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 
@@ -239,4 +239,18 @@ export async function moveFolder(id: string, newParentId: string | null) {
 	}
 
 	revalidatePath('/dashboard/folders')
+}
+
+export async function getFolderCount(): Promise<number> {
+	const { user } = await validateRequest(cookies)
+	if (!user) {
+		throw new Error('Not authenticated')
+	}
+
+	const result = await db
+		.select({ count: sql<number>`count(*)` })
+		.from(folders)
+		.where(eq(folders.userId, user.id))
+
+	return result[0].count
 }
