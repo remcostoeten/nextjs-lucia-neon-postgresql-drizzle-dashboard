@@ -1,4 +1,3 @@
-// File: app/actions/folders.ts
 'use server'
 
 import { generateUUID } from '@/core/helpers/generate-uuid'

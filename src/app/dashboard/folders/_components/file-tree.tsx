@@ -1,6 +1,11 @@
-// File: app/components/FileTree.tsx
 'use client'
 
+import {
+	File,
+	Folder,
+	Tree,
+	TreeViewElement
+} from '@/components/elements/file-tree'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -12,254 +17,20 @@ import {
 	moveFolder,
 	updateFolder
 } from '@/lib/actions/folders'
-import { AnimatePresence, motion } from 'framer-motion'
-import {
-	ChevronDown,
-	ChevronRight,
-	Edit2,
-	Folder,
-	FolderPlus,
-	Trash2
-} from 'lucide-react'
+import { FolderPlus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-type TreeItemType = {
+type FolderType = {
 	id: string
 	name: string
 	color: string
-	path: string
-	children?: TreeItemType[]
+	parentId: string | null
 }
 
-type TreeItemProps = {
-	item: TreeItemType
-	onSelect: (id: string, path: string[]) => void
-	isSelected: boolean
-	path: string[]
-	onCreateFolder: (
-		parentId: string | null,
-		name: string,
-		color: string
-	) => void
-	onUpdateFolder: (id: string, name: string, color: string) => void
-	onDeleteFolder: (id: string) => void
-	onMoveFolder: (draggedId: string, targetId: string) => void
-	level: number
-}
-
-const TreeItem: React.FC<TreeItemProps> = ({
-	item,
-	onSelect,
-	isSelected,
-	path,
-	onCreateFolder,
-	onUpdateFolder,
-	onDeleteFolder,
-	onMoveFolder,
-	level
-}) => {
-	const [isOpen, setIsOpen] = useState(false)
-	const [isEditing, setIsEditing] = useState(false)
-	const [newName, setNewName] = useState(item.name)
-	const [newColor, setNewColor] = useState(item.color)
-	const [isAddingSubfolder, setIsAddingSubfolder] = useState(false)
-	const [newSubfolderName, setNewSubfolderName] = useState('')
-	const [newSubfolderColor, setNewSubfolderColor] = useState('#000000')
-
-	const handleToggle = (e: React.MouseEvent) => {
-		e.stopPropagation()
-		setIsOpen(!isOpen)
-	}
-
-	const handleSelect = () => onSelect(item.id, [...path, item.name])
-
-	const handleEdit = (e: React.MouseEvent) => {
-		e.stopPropagation()
-		setIsEditing(true)
-	}
-
-	const handleSave = () => {
-		onUpdateFolder(item.id, newName, newColor)
-		setIsEditing(false)
-	}
-
-	const handleDelete = () => {
-		onDeleteFolder(item.id)
-	}
-
-	const handleAddSubfolder = (e: React.MouseEvent) => {
-		e.stopPropagation()
-		setIsAddingSubfolder(true)
-	}
-
-	const handleCreateSubfolder = () => {
-		onCreateFolder(item.id, newSubfolderName, newSubfolderColor)
-		setIsAddingSubfolder(false)
-		setNewSubfolderName('')
-		setNewSubfolderColor('#000000')
-		setIsOpen(true)
-	}
-
-	const handleDragStart = (e: React.DragEvent) => {
-		e.dataTransfer.setData('text/plain', item.id)
-	}
-
-	const handleDragOver = (e: React.DragEvent) => {
-		e.preventDefault()
-	}
-
-	const handleDrop = (e: React.DragEvent) => {
-		e.preventDefault()
-		const draggedId = e.dataTransfer.getData('text')
-		onMoveFolder(draggedId, item.id)
-	}
-
-	return (
-		<div className="relative">
-			<div
-				className={`tree-item ${
-					isSelected ? 'bg-section-lighter border' : ''
-				} p-2 rounded-md hover:bg-accent/50 transition-colors flex items-center space-x-2`}
-				style={{ paddingLeft: `${level * 20 + 8}px` }}
-				onClick={handleSelect}
-				draggable
-				onDragStart={handleDragStart}
-				onDragOver={handleDragOver}
-				onDrop={handleDrop}
-			>
-				{level > 0 && (
-					<div
-						className="absolute left-0 top-0 bottom-0 w-px bg-border"
-						style={{ left: `${(level - 1) * 20 + 12}px` }}
-					/>
-				)}
-				<button
-					onClick={handleToggle}
-					className="text-muted-foreground"
-				>
-					{item.children && item.children.length > 0 ? (
-						isOpen ? (
-							<ChevronDown size={16} />
-						) : (
-							<ChevronRight size={16} />
-						)
-					) : (
-						<span className="w-4" />
-					)}
-				</button>
-				<Folder size={16} color={item.color} />
-				{isEditing ? (
-					<div
-						className="flex items-center space-x-2"
-						onClick={e => e.stopPropagation()}
-					>
-						<Input
-							value={newName}
-							onChange={e => setNewName(e.target.value)}
-							className="h-6 py-1 px-2 text-sm"
-						/>
-						<Input
-							type="color"
-							value={newColor}
-							onChange={e => setNewColor(e.target.value)}
-							className="w-6 h-6 p-0 border-none"
-						/>
-						<Button
-							onClick={handleSave}
-							size="sm"
-							variant="outline"
-						>
-							Save
-						</Button>
-					</div>
-				) : (
-					<>
-						<span className="flex-grow">{item.name}</span>
-						<div className="flex items-center space-x-1">
-							<Button
-								onClick={handleAddSubfolder}
-								size="icon"
-								variant="ghost"
-							>
-								<FolderPlus size={14} />
-							</Button>
-							<Button
-								onClick={handleEdit}
-								size="icon"
-								variant="ghost"
-							>
-								<Edit2 size={14} />
-							</Button>
-							<Button
-								onClick={handleDelete}
-								size="icon"
-								variant="ghost"
-							>
-								<Trash2 size={14} />
-							</Button>
-						</div>
-					</>
-				)}
-			</div>
-			{isAddingSubfolder && (
-				<div
-					className="ml-6 mt-2 flex items-center space-x-2"
-					style={{ paddingLeft: `${(level + 1) * 20 + 8}px` }}
-				>
-					<Input
-						value={newSubfolderName}
-						onChange={e => setNewSubfolderName(e.target.value)}
-						placeholder="Subfolder name"
-						className="h-6 py-1 px-2 text-sm"
-					/>
-					<Input
-						type="color"
-						value={newSubfolderColor}
-						onChange={e => setNewSubfolderColor(e.target.value)}
-						className="w-6 h-6 p-0 border-none"
-					/>
-					<Button
-						onClick={handleCreateSubfolder}
-						size="sm"
-						variant="outline"
-					>
-						Create
-					</Button>
-				</div>
-			)}
-			<AnimatePresence>
-				{isOpen && item.children && (
-					<motion.div
-						initial={{ opacity: 0, height: 0 }}
-						animate={{ opacity: 1, height: 'auto' }}
-						exit={{ opacity: 0, height: 0 }}
-						transition={{ duration: 0.3 }}
-					>
-						{item.children.map(child => (
-							<TreeItem
-								key={child.id}
-								item={child}
-								onSelect={onSelect}
-								isSelected={isSelected}
-								path={[...path, item.name]}
-								onCreateFolder={onCreateFolder}
-								onUpdateFolder={onUpdateFolder}
-								on
-								DeleteFolder={onDeleteFolder}
-								onMoveFolder={onMoveFolder}
-								level={level + 1}
-							/>
-						))}
-					</motion.div>
-				)}
-			</AnimatePresence>
-		</div>
-	)
-}
-
-export default function FileTree() {
-	const [data, setData] = useState<TreeItemType[]>([])
+const FileTree = () => {
+	const [folders, setFolders] = useState<FolderType[]>([])
+	const [treeElements, setTreeElements] = useState<TreeViewElement[]>([])
 	const [selectedItem, setSelectedItem] = useState<string | null>(null)
 	const [breadcrumb, setBreadcrumb] = useState<string[]>([])
 	const [newFolderName, setNewFolderName] = useState('')
@@ -270,12 +41,15 @@ export default function FileTree() {
 		fetchFolders()
 	}, [])
 
+	useEffect(() => {
+		setTreeElements(buildTreeElements(folders))
+	}, [folders])
+
 	const fetchFolders = async () => {
 		try {
 			setIsLoading(true)
 			const { folders } = await getFolders()
-			const treeData = buildTree(folders)
-			setData(treeData)
+			setFolders(folders)
 		} catch (error) {
 			console.error('Error fetching folders:', error)
 			toast.error('Failed to fetch folders')
@@ -284,13 +58,19 @@ export default function FileTree() {
 		}
 	}
 
-	const buildTree = (folders: any[]): TreeItemType[] => {
-		const tree: TreeItemType[] = []
-		const map: { [key: string]: TreeItemType } = {}
+	const buildTreeElements = (folders: FolderType[]): TreeViewElement[] => {
+		const map: { [key: string]: TreeViewElement } = {}
 
 		folders.forEach(folder => {
-			map[folder.id] = { ...folder, children: [] }
+			map[folder.id] = {
+				id: folder.id,
+				name: folder.name,
+				isSelectable: true,
+				children: []
+			}
 		})
+
+		const tree: TreeViewElement[] = []
 
 		folders.forEach(folder => {
 			if (folder.parentId) {
@@ -307,9 +87,30 @@ export default function FileTree() {
 		return tree
 	}
 
-	const handleSelect = (id: string, path: string[]) => {
+	const handleSelect = (id: string) => {
 		setSelectedItem(id)
+		const path = getPath(id, treeElements)
 		setBreadcrumb(path)
+	}
+
+	const getPath = (
+		id: string,
+		elements: TreeViewElement[],
+		currentPath: string[] = []
+	): string[] => {
+		for (const element of elements) {
+			if (element.id === id) {
+				return [...currentPath, element.name]
+			}
+			if (element.children) {
+				const path = getPath(id, element.children, [
+					...currentPath,
+					element.name
+				])
+				if (path.length) return path
+			}
+		}
+		return []
 	}
 
 	const handleCreateFolder = async (
@@ -370,6 +171,28 @@ export default function FileTree() {
 		}
 	}
 
+	const renderTreeItems = (elements: TreeViewElement[]): React.ReactNode => {
+		return elements.map(element => {
+			if (element.children && element.children.length > 0) {
+				return (
+					<Folder
+						key={element.id}
+						element={element.name}
+						value={element.id}
+					>
+						{renderTreeItems(element.children)}
+					</Folder>
+				)
+			} else {
+				return (
+					<File key={element.id} value={element.id}>
+						{element.name}
+					</File>
+				)
+			}
+		})
+	}
+
 	return (
 		<Card className="w-full max-w-md mx-auto">
 			<CardHeader>
@@ -414,24 +237,16 @@ export default function FileTree() {
 						<Spinner />
 					</div>
 				) : (
-					<div className="tree-view space-y-2 max-h-[60vh] overflow-y-auto">
-						{data.map(item => (
-							<TreeItem
-								key={item.id}
-								item={item}
-								onSelect={handleSelect}
-								isSelected={selectedItem === item.id}
-								path={[]}
-								onCreateFolder={handleCreateFolder}
-								onUpdateFolder={handleUpdateFolder}
-								onDeleteFolder={handleDeleteFolder}
-								onMoveFolder={handleMoveFolder}
-								level={0}
-							/>
-						))}
-					</div>
+					<Tree
+						className="h-[60vh] overflow-y-auto"
+						initialSelectedId={selectedItem || undefined}
+					>
+						{renderTreeItems(treeElements)}
+					</Tree>
 				)}
 			</CardContent>
 		</Card>
 	)
 }
+
+export default FileTree

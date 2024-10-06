@@ -11,7 +11,7 @@ import {
 } from 'drizzle-orm/pg-core'
 import { users } from './auth'
 
-export const folders = pgTable(
+export const folders: any = pgTable(
 	'folders',
 	{
 		id: varchar('id')
@@ -24,16 +24,12 @@ export const folders = pgTable(
 			.notNull()
 			.references(() => users.id),
 		parentId: varchar('parent_id').references(() => folders.id),
-		path: text('path').notNull(),
-		createdAt: timestamp('created_at').defaultNow().notNull(),
-		updatedAt: timestamp('updated_at').defaultNow().notNull()
+		path: text('path').notNull()
 	},
-	table => {
-		return {
-			parentIdIdx: index('parent_id_idx').on(table.parentId),
-			pathIdx: index('path_idx').on(table.path)
-		}
-	}
+	table => ({
+		parentIdIdx: index('parent_id_idx').on(table.parentId),
+		pathIdx: index('path_idx').on(table.path)
+	})
 )
 
 export const notes = pgTable('notes', {

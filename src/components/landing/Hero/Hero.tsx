@@ -125,7 +125,7 @@ export default function Hero() {
 						<GradualSpacing
 							textClassName="justify-start"
 							visiblity={isInView}
-							className="max-w-2xl text-5xl font-normal tracking-tighter x text-title sm:text-xl font-geist"
+							className="max-w-2xl text-5xl font-normal tracking-tighter text-title sm:text-6xl font-geist"
 							text={'related to being effective'}
 						/>
 
