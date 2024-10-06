@@ -1,6 +1,6 @@
 'use client'
 
-import { Toggle } from '@/components/ui/toggle'
+import { Toggle } from 'ui'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { Bold, Italic, List, ListOrdered } from 'lucide-react'

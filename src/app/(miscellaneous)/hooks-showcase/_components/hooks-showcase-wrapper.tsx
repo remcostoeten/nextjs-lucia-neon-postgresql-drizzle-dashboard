@@ -1,11 +1,11 @@
-import { Button } from '@/components/ui/button'
 import {
+	Button,
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle
-} from '@/components/ui/card'
+} from 'ui'
 import React from 'react'
 import { EnhancedCodeBlock } from '../../../../components/elements/display-code/advanced-code-block'
 

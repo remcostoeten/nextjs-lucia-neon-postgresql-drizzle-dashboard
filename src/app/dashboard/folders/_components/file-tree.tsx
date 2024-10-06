@@ -1,5 +1,6 @@
 'use client'
 
+import { Button, Card, CardContent, CardHeader, CardTitle, Input } from 'ui'
 import SkeletonLoader from '@/components/effects/loaders/skeleton-loader'
 import { ConfirmationDialog } from '@/components/elements/crud/confirm-dialog'
 import {
@@ -11,9 +12,6 @@ import {
 	TreeRenderer,
 	TreeViewElement
 } from '@/components/elements/tree-renderer'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
 import { useSkeletonLoader } from '@/core/hooks'
 import {
 	deleteFolder,

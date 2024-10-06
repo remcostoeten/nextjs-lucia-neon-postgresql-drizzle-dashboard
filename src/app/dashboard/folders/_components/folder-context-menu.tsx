@@ -2,9 +2,9 @@ import {
 	ContextMenu,
 	ContextMenuContent,
 	ContextMenuItem,
-	ContextMenuTrigger
-} from '@/components/ui/context-menu'
-import { Input } from '@/components/ui/input'
+	ContextMenuTrigger,
+	Input
+} from 'ui'
 import { Edit2, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 

@@ -1,6 +1,5 @@
 import { SVGSkeleton } from '@/components/effects/loaders/skeleton'
 import { Skeleton } from '@/components/ui/skeleton'
-
 export default function GeolocationLoader() {
 	return (
 		<>

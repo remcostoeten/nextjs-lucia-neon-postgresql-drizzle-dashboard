@@ -1,7 +1,6 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Button, Input } from 'ui'
 import { createFolder } from '@/lib/actions/folders'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'

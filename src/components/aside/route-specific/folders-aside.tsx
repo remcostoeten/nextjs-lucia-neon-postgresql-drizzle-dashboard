@@ -1,7 +1,6 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Button, Input } from 'ui'
 import { getFolders } from '@/lib/actions/folders'
 import { FolderType } from '@/types/types.folder'
 import { Flex } from 'atoms'

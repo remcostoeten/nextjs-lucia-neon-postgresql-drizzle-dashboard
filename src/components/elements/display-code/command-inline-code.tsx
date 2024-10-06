@@ -5,7 +5,7 @@ import {
 	ContextMenuContent,
 	ContextMenuItem,
 	ContextMenuTrigger
-} from '@/components/ui/context-menu'
+} from 'ui'
 import { useCopyToClipboard } from 'hooks'
 import { ClipboardIcon } from 'lucide-react'
 import { toast } from 'sonner'

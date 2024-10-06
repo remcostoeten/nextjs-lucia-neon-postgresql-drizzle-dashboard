@@ -1,7 +1,7 @@
 'use client'
 
+import { Card, CardContent, CardHeader, CardTitle } from 'ui'
 import { Folder, Tree, TreeViewElement } from '@/components/elements/tree'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Spinner from '@/components/ui/spinner'
 import {
 	createFolder,

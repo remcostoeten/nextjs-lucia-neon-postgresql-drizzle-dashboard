@@ -1,8 +1,4 @@
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger
-} from '@/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from 'ui'
 import { cn } from 'cn'
 import React from 'react'
 

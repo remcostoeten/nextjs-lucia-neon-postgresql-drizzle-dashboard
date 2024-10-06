@@ -1,23 +1,23 @@
 'use client'
 
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
 import {
+	Alert,
+	AlertDescription,
+	AlertTitle,
+	Button,
 	Pagination,
 	PaginationContent,
 	PaginationItem,
 	PaginationLink,
 	PaginationNext,
-	PaginationPrevious
-} from '@/components/ui/pagination'
-import {
+	PaginationPrevious,
 	Table,
 	TableBody,
 	TableCell,
 	TableHead,
 	TableHeader,
 	TableRow
-} from '@/components/ui/table'
+} from 'ui'
 import { getActivityLogs } from '@/core/server/actions/users/fetch-activity'
 import { ActivityLog } from '@/lib/db/schema/activity'
 import { AlertCircle } from 'lucide-react'

@@ -1,9 +1,9 @@
 'use client'
 
+import { Button } from 'ui'
 import { Flex } from '@/components/atoms'
 import { CommandCode } from '@/components/elements/display-code/command-inline-code'
 import NoticeBox from '@/components/elements/notice-box'
-import { Button } from '@/components/ui/button'
 import { logActivity } from '@/core/server/actions/users/log-activity'
 import { motion } from 'framer-motion'
 import { AlertTriangle, ArrowLeft, RefreshCcw } from 'lucide-react'
