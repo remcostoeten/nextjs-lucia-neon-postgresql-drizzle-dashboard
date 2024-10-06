@@ -82,9 +82,9 @@ export async function updateFolder(
 
 	const newPath = updates.name
 		? currentFolder.path.replace(
-			new RegExp(`${currentFolder.name}$`),
-			updates.name
-		)
+				new RegExp(`${currentFolder.name}$`),
+				updates.name
+			)
 		: currentFolder.path
 
 	await db

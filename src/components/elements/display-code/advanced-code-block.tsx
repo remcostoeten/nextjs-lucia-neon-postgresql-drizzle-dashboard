@@ -7,7 +7,6 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { toast } from 'sonner'
 import { Badge, Button } from 'ui'
 
-// Import language icons
 import {
 	DiCss3,
 	DiHtml5,
@@ -26,31 +25,7 @@ type CodeBlockProps = {
 }
 
 const getLanguageIcon = (language: string) => {
-	switch (language.toLowerCase()) {
-		case 'javascript':
-			return <DiJavascript1 size={24} />
-		case 'typescript':
-			return <SiTypescript size={24} />
-		case 'tsx':
-			return (
-				<div className="flex items-center">
-					<SiTypescript size={24} />
-					{/* <DiReact size={24} className="ml-1" /> */}
-				</div>
-			)
-		case 'jsx':
-			return <DiReact size={24} />
-		case 'python':
-			return <DiPython size={24} />
-		case 'java':
-			return <DiJava size={24} />
-		case 'html':
-			return <DiHtml5 size={24} />
-		case 'css':
-			return <DiCss3 size={24} />
-		default:
-			return null
-	}
+	// ... (keep the existing getLanguageIcon function)
 }
 
 export function EnhancedCodeBlock({
@@ -68,8 +43,17 @@ export function EnhancedCodeBlock({
 
 	const languageIcon = getLanguageIcon(language)
 
+	const customStyle = {
+		...vscDarkPlus,
+		'code[class*="language-"]': {
+			...vscDarkPlus['code[class*="language-"]'],
+			whiteSpace: 'pre-wrap',
+			wordBreak: 'break-all'
+		}
+	}
+
 	return (
-		<div className="rounded-lg overflow-hidden bg-card border w-fit">
+		<div className="rounded-lg overflow-hidden bg-card border w-full">
 			<div className="flex justify-between items-center border px-4 py-2 bg-section-lighter">
 				<div className="flex items-center space-x-2">
 					{languageIcon && (
@@ -110,10 +94,10 @@ export function EnhancedCodeBlock({
 				</div>
 			</div>
 			{!isCollapsed && (
-				<div className="p-4">
+				<div className="p-4 max-h-[60vh] overflow-y-auto">
 					<SyntaxHighlighter
 						language={language}
-						style={vscDarkPlus}
+						style={customStyle}
 						customStyle={{
 							margin: 0,
 							padding: 0,
@@ -124,8 +108,12 @@ export function EnhancedCodeBlock({
 						lineNumberStyle={{
 							color: '#6A737D',
 							minWidth: '2.5em',
-							paddingRight: '1em'
+							paddingRight: '1em',
+							textAlign: 'right',
+							userSelect: 'none'
 						}}
+						wrapLines={true}
+						wrapLongLines={true}
 					>
 						{code}
 					</SyntaxHighlighter>

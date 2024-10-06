@@ -1,3 +1,4 @@
+import React from 'react'
 import {
 	Button,
 	Card,
@@ -6,7 +7,6 @@ import {
 	CardHeader,
 	CardTitle
 } from 'ui'
-import React from 'react'
 import { EnhancedCodeBlock } from '../../../../components/elements/display-code/advanced-code-block'
 
 type HooksShowcaseWrapperProps = {
@@ -38,36 +38,39 @@ export function HooksShowcaseWrapper({
 	return (
 		<div className="max-w-4xl mx-auto p-6 space-y-8">
 			<Card className="bg-card text-title border-zinc-800">
-				<CardHeader>
+				<CardHeader className="pb-0">
 					<CardTitle className="text-2xl font-bold">
 						{title}
 					</CardTitle>
 					<CardDescription className="text-text-subtitle">
-						{description}
+						<p>
+							{description}
+							{explanation && <>{explanation}</>}
+						</p>
 					</CardDescription>
 				</CardHeader>
-				<div className="text-sm text-title">{explanation}</div>
 				<CardContent>
 					{demoComponent && <>{demoComponent}</>}
+					{actionButtons && actionButtons.length > 0 && (
+						<div className="flex space-x-2 mt-4">
+							{actionButtons.map((button, index) => (
+								<Button
+									key={index}
+									onClick={button.onClick}
+									variant="outline"
+								>
+									{button.label}
+								</Button>
+							))}
+						</div>
+					)}
 				</CardContent>
-				{actionButtons && actionButtons.length > 0 && (
-					<div className="flex space-x-2 mt-4">
-						{actionButtons.map((button, index) => (
-							<Button
-								key={index}
-								onClick={button.onClick}
-								variant="outline"
-							>
-								{button.label}
-							</Button>
-						))}
-					</div>
-				)}
+
 				<CardContent className="space-y-6">
 					<EnhancedCodeBlock
-						code={codeString}
-						fileName={fileName}
-						language={language}
+						code={codeString as string}
+						fileName={fileName as string}
+						language={language as string}
 						badges={[
 							language.charAt(0).toUpperCase() + language.slice(1)
 						]}

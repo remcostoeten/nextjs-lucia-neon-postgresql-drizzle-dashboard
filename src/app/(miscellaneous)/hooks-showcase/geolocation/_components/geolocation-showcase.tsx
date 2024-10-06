@@ -1,15 +1,15 @@
 'use client'
 
+import Spinner from '@/components/ui/spinner'
 import { useGeolocation } from '@/core/hooks'
 import { AlertTriangle, Clock, Compass, MapPin } from 'lucide-react'
 import { SiExpedia } from 'react-icons/si'
-import GeolocationLoader from './geolocation.loader'
 
 export default function GeolocationUI() {
 	const { data, error, isLoading } = useGeolocation()
 
 	if (isLoading) {
-		return <GeolocationLoader />
+		return <Spinner />
 	}
 
 	if (error) {
@@ -22,9 +22,9 @@ export default function GeolocationUI() {
 					<h2 className="text-2xl font-bold text-center mb-2">
 						Error
 					</h2>
-					<p className="text-center text-muted-foreground">
+					<span className="text-center text-muted-foreground">
 						{error.message}
-					</p>
+					</span>
 				</div>
 			</div>
 		)

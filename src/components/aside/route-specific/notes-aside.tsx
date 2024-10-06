@@ -1,10 +1,7 @@
 'use client'
 
 import { useNotesStore, useSiteSettingsStore } from '@/core/stores'
-import {
-	createFolder,
-	getFolders
-} from '@/lib/api/@@folders'
+import { createFolder, getFolders } from '@/lib/api/@@folders'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { FolderType } from '../types.sidear'
@@ -21,8 +18,11 @@ export default function NotesSidebar() {
 	const [newFolderColor, setNewFolderColor] = useState('#000000')
 	const { selectedFolderId, setSelectedFolderId } = useNotesStore()
 	const { disableSidebarAnimations } = useSiteSettingsStore()
-	const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false)
-	const [folderToDelete, setFolderToDelete] = useState<FolderType | null>(null)
+	const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
+		useState(false)
+	const [folderToDelete, setFolderToDelete] = useState<FolderType | null>(
+		null
+	)
 
 	useEffect(() => {
 		fetchFolders()

@@ -6,7 +6,11 @@ import { activityLogs } from '@/lib/db/schema/activity'
 import { generateId } from 'lucia'
 
 export async function logActivity(
-action: string, details?: string, p0?: string, metadata?: Record<string, any>) {
+	action: string,
+	details?: string,
+	p0?: string,
+	metadata?: Record<string, any>
+) {
 	try {
 		const { session } = await getUserAuth()
 		if (!session) {
