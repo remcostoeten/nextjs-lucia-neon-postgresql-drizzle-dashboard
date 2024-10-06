@@ -1,7 +1,6 @@
 'use server'
 
 import { getUserAuth } from '@/lib/auth/utils'
-import { getUserAuth } from '@/lib/auth/utils'
 import { db } from '@/lib/db/index'
 import { activityLogs } from '@/lib/db/schema/activity'
 import { generateId } from 'lucia'

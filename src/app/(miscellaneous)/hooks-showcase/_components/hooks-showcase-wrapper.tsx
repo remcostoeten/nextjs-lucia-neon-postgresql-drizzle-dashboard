@@ -1,7 +1,6 @@
 import React from 'react'
 import {
 	Button,
-	Button,
 	Card,
 	CardContent,
 	CardDescription,
@@ -14,12 +13,7 @@ type HooksShowcaseWrapperProps = {
 	title?: string
 	description?: string
 	children?: React.ReactNode
-	title?: string
-	description?: string
-	children?: React.ReactNode
 	codeString?: string
-	fileName?: string
-	language?: string
 	fileName?: string
 	language?: string
 	explanation?: string
@@ -78,7 +72,7 @@ export function HooksShowcaseWrapper({
 						fileName={fileName as string}
 						language={language as string}
 						badges={[
-							language.charAt(0).toUpperCase() + language.slice(1)
+							language?.charAt(0).toUpperCase() + language?.slice(1)
 						]}
 					/>
 				</CardContent>

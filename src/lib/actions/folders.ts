@@ -2,20 +2,18 @@
 
 import { generateUUID } from '@/core/helpers/generate-uuid'
 import { logActivity } from '@/core/server/actions/users/log-activity'
-import { logActivity } from '@/core/server/actions/users/log-activity'
 import { validateRequest } from '@/lib/auth/lucia'
 import { db } from '@/lib/db'
 import { folders } from '@/lib/db/schema'
 import { FolderType } from '@/types/types.folder'
 import { and, eq, like, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
-
 export async function createFolder(
 	name: string,
 	description: string | null = null,
 	parentId: string | null = null,
 	color: string = '#000000'
-) {
+): Promise<{ success: boolean, folder: any }> {
 	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
@@ -67,7 +65,7 @@ export async function updateFolder(
 		description?: string | null
 		color?: string
 	}
-) {
+): Promise<void> {
 	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
@@ -83,9 +81,9 @@ export async function updateFolder(
 
 	const newPath = updates.name
 		? currentFolder.path.replace(
-				new RegExp(`${currentFolder.name}$`),
-				updates.name
-			)
+			new RegExp(`${currentFolder.name}$`),
+			updates.name
+		)
 		: currentFolder.path
 
 	await db
@@ -129,7 +127,7 @@ export async function updateFolder(
 	revalidatePath('/dashboard/folders')
 }
 
-export async function deleteFolder(id: string) {
+export async function deleteFolder(id: string): Promise<void> {
 	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
@@ -180,7 +178,7 @@ export async function getFolders(): Promise<{ folders: FolderType[] }> {
 	return { folders: userFolders }
 }
 
-export async function moveFolder(id: string, newParentId: string | null) {
+export async function moveFolder(id: string, newParentId: string | null): Promise<void> {
 	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')

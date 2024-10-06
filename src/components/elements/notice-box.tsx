@@ -1,7 +1,6 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { motion } from 'framer-motion'
 import { AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '../ui'
@@ -21,20 +20,13 @@ type NoticeBoxProps = {
 
 const MotionWrapper = motion.div
 
-const MotionWrapper = motion.div
-
 export default function NoticeBox({
 	icon = <AlertTriangle className="h-4 w-4 shrink-0" />,
 	title = 'Unexpected error occurred.',
 	description,
 	actionText = 'Try again',
 	onAction,
-	onAction,
 	homeLink,
-	dashboardLink,
-	children,
-	useMotion = false,
-	width = 'sm'
 	dashboardLink,
 	children,
 	useMotion = false,
