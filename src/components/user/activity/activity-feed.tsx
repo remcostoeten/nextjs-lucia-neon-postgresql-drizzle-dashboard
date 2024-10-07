@@ -1,61 +1,78 @@
 'use client'
 
-import {
-	Alert,
-	AlertDescription,
-	AlertTitle,
-	Button,
-	Pagination,
-	PaginationContent,
-	PaginationItem,
-	PaginationLink,
-	PaginationNext,
-	PaginationPrevious,
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow
-} from 'ui'
 import { getActivityLogs } from '@/core/server/actions/users/fetch-activity'
-import { ActivityLog } from '@/lib/db/schema/activity'
-import { AlertCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { Alert, AlertCircle, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, CardTitle, Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from 'ui'
 
-const ActivityFeed = () => {
-	const [activities, setActivities] = useState<ActivityLog[]>([])
+function ErrorFallback({ error, resetErrorBoundary }) {
+	return (
+		<Alert variant="destructive">
+			<AlertCircle className="h-4 w-4" />
+			<AlertTitle>Error</AlertTitle>
+			<AlertDescription>
+				{error.message}
+				<Button onClick={resetErrorBoundary} variant="outline" size="sm" className="mt-2">
+					Try again
+				</Button>
+			</AlertDescription>
+		</Alert>
+	)
+}
+
+function ActivityFeed() {
+	const [activities, setActivities] = useState([])
 	const [isLoading, setIsLoading] = useState(true)
-	const [error, setError] = useState<string | null>(null)
-	const [currentPage, setCurrentPage] = useState(1)
+	const [error, setError] = useState(null)
 	const [searchTerm, setSearchTerm] = useState('')
+	const [currentPage, setCurrentPage] = useState(1)
 	const itemsPerPage = 10
 
-	useEffect(() => {
-		fetchActivities()
-	}, [])
+	async function fetchActivities(retryCount = 0) {
+		const abortController = new AbortController()
 
-	async function fetchActivities() {
 		try {
 			setIsLoading(true)
-			const logs = await getActivityLogs()
-			setActivities(logs)
-			setError(null)
+			const logs = await getActivityLogs(abortController.signal)
+			if (!abortController.signal.aborted) {
+				setActivities(logs)
+				setError(null)
+			}
 		} catch (error) {
-			console.error('Failed to fetch activity logs:', error)
-			setError('Failed to load activity logs. Please try again later.')
+			if (!abortController.signal.aborted) {
+				console.error('Failed to fetch activity logs:', error)
+
+				if (error instanceof Error) {
+					console.error('Error name:', error.name)
+					console.error('Error message:', error.message)
+					console.error('Error stack:', error.stack)
+				}
+
+				if (retryCount < 3) {
+					console.log(`Retrying... Attempt ${retryCount + 1}`)
+					setTimeout(() => fetchActivities(retryCount + 1), 1000 * (retryCount + 1))
+				} else {
+					setError('Failed to load activity logs. Please check your connection and try again.')
+				}
+			}
 		} finally {
-			setIsLoading(false)
+			if (!abortController.signal.aborted) {
+				setIsLoading(false)
+			}
+		}
+
+		return () => {
+			abortController.abort()
 		}
 	}
 
-	const filteredActivities = activities.filter(
-		activity =>
-			activity.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			(activity.details &&
-				activity.details
-					.toLowerCase()
-					.includes(searchTerm.toLowerCase()))
+	useEffect(() => {
+		const cleanup = fetchActivities()
+		return cleanup
+	}, [])
+
+	const filteredActivities = activities.filter(activity =>
+		activity.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
+		activity.details.toLowerCase().includes(searchTerm.toLowerCase())
 	)
 
 	const paginatedActivities = filteredActivities.slice(
@@ -92,7 +109,7 @@ const ActivityFeed = () => {
 						className="w-64"
 					/>
 					<Button
-						onClick={fetchActivities}
+						onClick={() => fetchActivities()}
 						variant="outline"
 						size="sm"
 					>
@@ -135,9 +152,7 @@ const ActivityFeed = () => {
 					<CardContent>
 						<div className="text-2xl font-bold">
 							{activities.length > 0
-								? new Date(
-										activities[0].timestamp
-									).toLocaleString()
+								? new Date(activities[0].timestamp).toLocaleString()
 								: 'N/A'}
 						</div>
 					</CardContent>
@@ -150,13 +165,11 @@ const ActivityFeed = () => {
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold">
-							{
-								activities.filter(
-									a =>
-										new Date(a.timestamp).toDateString() ===
-										new Date().toDateString()
-								).length
-							}
+							{activities.filter(
+								a =>
+									new Date(a.timestamp).toDateString() ===
+									new Date().toDateString()
+							).length}
 						</div>
 					</CardContent>
 				</Card>
@@ -183,9 +196,7 @@ const ActivityFeed = () => {
 										{activity.details || 'N/A'}
 									</TableCell>
 									<TableCell>
-										{new Date(
-											activity.timestamp
-										).toLocaleString()}
+										{new Date(activity.timestamp).toLocaleString()}
 									</TableCell>
 									<TableCell>
 										{activity.metadata ? (
@@ -193,13 +204,7 @@ const ActivityFeed = () => {
 												variant="link"
 												size="sm"
 												onClick={() =>
-													alert(
-														JSON.stringify(
-															activity.metadata,
-															null,
-															2
-														)
-													)
+													alert(JSON.stringify(activity.metadata, null, 2))
 												}
 											>
 												View Metadata
@@ -212,52 +217,34 @@ const ActivityFeed = () => {
 							))}
 						</TableBody>
 					</Table>
-					<Pagination>
-						<PaginationContent>
-							<PaginationItem>
-								<PaginationPrevious
-									onClick={() =>
-										setCurrentPage(prev =>
-											Math.max(prev - 1, 1)
-										)
-									}
-									className={
-										currentPage === 1
-											? 'pointer-events-none opacity-50'
-											: ''
-									}
-								/>
-							</PaginationItem>
-							{[...Array(totalPages)].map((_, i) => (
-								<PaginationItem key={i}>
-									<PaginationLink
-										onClick={() => setCurrentPage(i + 1)}
-										isActive={currentPage === i + 1}
-									>
-										{i + 1}
-									</PaginationLink>
-								</PaginationItem>
-							))}
-							<PaginationItem>
-								<PaginationNext
-									onClick={() =>
-										setCurrentPage(prev =>
-											Math.min(prev + 1, totalPages)
-										)
-									}
-									className={
-										currentPage === totalPages
-											? 'pointer-events-none opacity-50'
-											: ''
-									}
-								/>
-							</PaginationItem>
-						</PaginationContent>
-					</Pagination>
+					<div className="flex justify-between items-center mt-4">
+						<Button
+							onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+							disabled={currentPage === 1}
+						>
+							Previous
+						</Button>
+						<span>
+							Page {currentPage} of {totalPages}
+						</span>
+						<Button
+							onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+							disabled={currentPage === totalPages}
+						>
+							Next
+						</Button>
+					</div>
 				</>
 			)}
 		</div>
 	)
 }
 
-export default ActivityFeed
+export default function ActivityPage() {
+	return (
+		<div className="container mx-auto py-8">
+			<h1 className="text-3xl font-bold mb-8">Your Activity</h1>
+			<ActivityFeed />
+		</div>
+	)
+}

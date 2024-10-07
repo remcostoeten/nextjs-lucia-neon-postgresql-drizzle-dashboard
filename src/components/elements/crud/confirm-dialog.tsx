@@ -1,3 +1,4 @@
+import { Flex } from '@/components/atoms'
 import {
 	Button,
 	Dialog,
@@ -58,12 +59,14 @@ export function ConfirmationDialog({
 				</DialogHeader>
 				<DialogDescription>{children}</DialogDescription>
 				<DialogFooter>
-					<Button variant="outline" onClick={onClose}>
-						{cancelLabel}
-					</Button>
-					{!hideConfirmButton && onConfirm && (
-						<Button onClick={onConfirm}>{confirmLabel}</Button>
-					)}
+					<Flex>
+						<Button variant="outline" onClick={onClose}>
+							{cancelLabel}
+						</Button>
+						{!hideConfirmButton && onConfirm && (
+							<Button onClick={onConfirm}>{confirmLabel}</Button>
+						)}
+					</Flex>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

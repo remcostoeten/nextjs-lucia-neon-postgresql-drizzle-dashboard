@@ -4,7 +4,7 @@ import { createFolder } from '@/lib/api/@@folders'
 import { FolderType } from '@/types/types.folder'
 import { Flex } from 'atoms'
 import { toast } from 'sonner'
-import { ColorPicker } from 'ui'
+import { ColorPicker, DialogFooter } from 'ui'
 
 import { useState } from 'react'
 import {
@@ -85,7 +85,9 @@ export default function CreateFolderModal({
 							onChange={setFolderColor}
 						/>
 					</Flex>
-					<Button type="submit">Create Folder</Button>
+					<DialogFooter>
+						<Button type="submit">Create Folder</Button>
+					</DialogFooter>
 				</form>
 			</DialogContent>
 		</Dialog>

@@ -47,7 +47,7 @@ export default function GithubOpenSource() {
 							delay: 1
 						}}
 					>
-						<button className="mt-4 container inline-flex -translate-y-1/4 gap-2 justify-center items-center py-2 px-10 mt-5 text-lg tracking-tighter text-center bg-gradient-to-br rounded-md ring-2 ring-offset-2 transition-all hover:ring-transparent group/button  from-zinc-100 to-zinc-300 font-geist text-md text-zinc-900 dark:ring-zinc-500/80 dark:ring-offset-zinc-950 hover:scale-[1.02] active:scale-[0.98] active:dark:ring-zinc-500/70 ring-black/20 z-50">
+						<button className="mt-4 container inline-flex -translate-y-1/4 gap-2 justify-center items-center py-2 px-10  text-lg tracking-tighter text-center bg-gradient-to-br rounded-md ring-2 ring-offset-2 transition-all hover:ring-transparent group/button  from-zinc-100 to-zinc-300 font-geist text-md text-zinc-900 dark:ring-zinc-500/80 dark:ring-offset-zinc-950 hover:scale-[1.02] active:scale-[0.98] active:dark:ring-zinc-500/70 ring-black/20 z-50">
 							<Github className="w-4 h-4" /> Get Started
 							<div
 								aria-hidden
@@ -68,7 +68,7 @@ export default function GithubOpenSource() {
 							width={800}
 							height={800}
 							alt="Github logo"
-							src="https://www.farmui.com/_next/static/media/githubs.1df88d99.svg"
+							src="/github-oss-animation.svg"
 							className="-z-10 hidden dark:block"
 						/>
 
