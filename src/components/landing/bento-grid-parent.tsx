@@ -1,8 +1,8 @@
-import { Button } from 'ui'
 import { ArrowRightIcon } from '@radix-ui/react-icons'
 import { cn } from 'cn'
 import { motion } from 'framer-motion'
 import { ReactNode } from 'react'
+import { Button } from 'ui'
 
 type BentoGridProps = {
 	children: ReactNode

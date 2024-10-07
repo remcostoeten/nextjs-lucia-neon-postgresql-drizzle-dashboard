@@ -1,10 +1,11 @@
 'use client'
 
+import { Kbd } from '@/components/atoms/kbd'
 import {
 	createShortcutMap,
 	useKeyboardShortcuts
 } from '@/core/hooks/use-keyboard-shortcuts'
-import { Flex, Kbd } from 'atoms'
+import { Flex } from 'atoms'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useSiteSettingsStore } from 'stores'
@@ -44,11 +45,11 @@ export default function IntroShortcutGuide({ user }: DashboardIntroProps) {
 		['meta+h', () => router.push('/')],
 		['ctrl+h', () => router.push('/')],
 		['meta+shift+p', () => router.push('/dashboard/posts')],
-		['ctrl+shift+p', () => router.push('/dashboard/posts')],
+		['shift+f', () => router.push('/dashboard/folders')],
 		['/', () => setIsSettingsOpen(true)],
 		['shift+l', () => console.log('Logout')], // Implement actual logout functionality here
 		['meta+shift+plus', () => router.push('/dashboard/background-creator')],
-		['ctrl+shift+plus', () => router.push('/dashboard/background-creator')]
+		['shift+plus', () => router.push('/dashboard/background-creator')]
 	])
 
 	useKeyboardShortcuts(shortcuts)
@@ -67,33 +68,43 @@ export default function IntroShortcutGuide({ user }: DashboardIntroProps) {
 				<CardContent>
 					<Flex dir="col" gap="4">
 						<Flex align="center" gap="2">
-							<Kbd variant="cmd" size="md">
-								H
-							</Kbd>
+							<Kbd
+								k={['⌘', 'H']}
+								variant="outline"
+								size="md"
+								split="plus"
+							/>
 							<span>Go to Home</span>
 						</Flex>
 						<Flex align="center" gap="2">
-							<Kbd variant="cmd" size="md">
-								Shift
-							</Kbd>
-							<Kbd size="md">P</Kbd>
-							<span>Go to Posts</span>
+							<Kbd
+								k={['⇧', 'F']}
+								variant="outline"
+								size="md"
+								split="plus"
+							/>
+							<span>Go to folders</span>
 						</Flex>
 						<Flex align="center" gap="2">
-							<Kbd variant="slash" size="md" />
+							<Kbd k="/" variant="outline" size="md" />
 							<span>Open Settings</span>
 						</Flex>
 						<Flex align="center" gap="2">
-							<Kbd variant="cmd" size="md">
-								Shift
-							</Kbd>
-							<Kbd size="md">+</Kbd>
+							<Kbd
+								k={['⌘', '⇧', '+']}
+								variant="outline"
+								size="md"
+								split="plus"
+							/>
 							<span>Go to Background Creator</span>
 						</Flex>
 						<Flex align="center" gap="2">
-							<Kbd variant="shift" size="md">
-								L
-							</Kbd>
+							<Kbd
+								k={['⇧', 'L']}
+								variant="outline"
+								size="md"
+								split="plus"
+							/>
 							<span>Logout</span>
 						</Flex>
 					</Flex>

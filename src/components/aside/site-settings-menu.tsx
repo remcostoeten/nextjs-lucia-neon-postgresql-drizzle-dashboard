@@ -217,7 +217,7 @@ export default function SiteSettingsMenu({
 							<Input
 								type="text"
 								value={accentColor}
-								className="w-20 h-8 text-xs bg-gray-800 border-gray-700 text-gray-300"
+								className="w-20 h-8 text-xs bg-card AAA border hover:bg-body trans-100 border-gray-700 text-gray-300"
 								onChange={e => {
 									setAccentColor(e.target.value)
 									toast.success(

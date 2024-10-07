@@ -4,18 +4,7 @@ import { SearchIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-export default function GrowingSearchVariant1() {
-	return (
-		<div className="flex flex-col items-center">
-			<p className="mb-8 text-neutral-500/70 tracking-tighter">
-				Press enter to see all the effects
-			</p>
-			<SearchBar />
-		</div>
-	)
-}
-
-export const SearchBar = () => {
+export default function GrowingSearch() {
 	const [searchSubmittedOutline, setSearchSubmittedOutline] = useState(false)
 	const [searchSubmittedShadow, setSearchSubmittedShadow] = useState(false)
 	const [searchValue, setSearchValue] = useState('')

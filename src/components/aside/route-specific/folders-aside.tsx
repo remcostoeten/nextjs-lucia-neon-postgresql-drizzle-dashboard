@@ -1,12 +1,13 @@
 'use client'
 
-import { Button, Input } from 'ui'
+import NumberTicker from '@/components/effects/number-ticker'
 import { getFolders } from '@/lib/actions/folders'
 import { FolderType } from '@/types/types.folder'
 import { Flex } from 'atoms'
 import { motion } from 'framer-motion'
 import { ChevronDown, ChevronRight, Folder, Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { Button, Input } from 'ui'
 
 export default function FoldersAside() {
 	const [folders, setFolders] = useState<FolderType[]>([])
@@ -35,7 +36,7 @@ export default function FoldersAside() {
 				<Button
 					variant="ghost"
 					onClick={() => setIsExpanded(!isExpanded)}
-					className="text-lg font-semibold"
+					className="text-lg font-semibold p-0 text-subtitle hover:text-title trans !border-0"
 				>
 					<Folder className="mr-2" />
 					Folders
@@ -45,9 +46,11 @@ export default function FoldersAside() {
 						<ChevronRight className="ml-2" />
 					)}
 				</Button>
-				<span className="text-sm text-muted-foreground">
-					{folders.length}
-				</span>
+				{folders.length > 0 && (
+					<span className="text-sm text-muted-foreground flex items-center">
+						<NumberTicker value={folders.length} />
+					</span>
+				)}
 			</Flex>
 
 			{isExpanded && (

@@ -5,6 +5,7 @@ import NumberTicker from '@/components/effects/number-ticker'
 import ShinyButton from '@/components/effects/shiny-button'
 import { fetchGitHubStats } from '@/core/server/actions/gh-stats'
 import { useInView } from 'framer-motion'
+import { en } from 'locales'
 import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import GradualSpacing from './Gradual-spacing'
@@ -107,78 +108,84 @@ export default function Hero() {
 	}
 
 	return (
+		<section className="-z-10">
+			<TopLeftShiningLight />
+			<div className="absolute -z-1 inset-0 pointer-events-none h-[600px] w-full bg-transparent opacity-5 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
+			<div className="justify-between md:flex">
+				<Container className="relative mt-36 pb-8 mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-12">
+					<div ref={ref}>
+						<GradualSpacing
+							textClassName="justify-start"
+							visiblity={isInView}
+							className="max-w-4xl text-4xl font-normal tracking-tighter text-title sm:text-5xl lg:text-5xl font-geist"
+							text={en.default.hero.title}
+							breakAfter="everything"
+						/>
 
-		<section className='-z-10'><TopLeftShiningLight /><div className="absolute -z-1 inset-0 pointer-events-none h-[600px] w-full bg-transparent opacity-5 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div><div className="justify-between md:flex">
-			<Container className="relative mt-36 pb-8 mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
-				<div ref={ref}>
-					<GradualSpacing
-						textClassName="justify-start"
-						visiblity={isInView}
-						className="max-w-2xl text-5xl font-normal tracking-tighter text-title sm:text-6xl font-geist"
-						text={'Notevault, a place for everything'} />
-					<GradualSpacing
-						textClassName="justify-start"
-						visiblity={isInView}
-						className="max-w-2xl text-5xl font-normal tracking-tighter text-title sm:text-6xl font-geist"
-						text={'related to being effective'} />
-
-					<div className="mt-6 space-y-6 tracking-tight text-subtitle sm:text-xl font-geist text-md mb-6">
-						<FadeIn delay={0.2}>
-							Your dashboard: a central hub for digital life.
-							Manage notes, files, and tools in one place.
-							Boost productivity with a streamlined interface.
-						</FadeIn>
-						<FadeIn delay={0.4}>
-							Built by a developer, for myself. Without the
-							well-known annoyance of having to wait for
-							Cloudflare security checks, ads or reCAPTCHAs
-						</FadeIn>
-					</div>
-					<FadeIn delay={0.6}>
-						<Link className="mt-10 pt-10" href="/dashboard">
-							<ShinyButton>Get started</ShinyButton>
-						</Link>
-					</FadeIn>
-					<dl className="grid grid-cols-2 gap-y-6 gap-x-10 mt-10 sm:gap-y-10 sm:gap-x-16 sm:mt-16 sm:text-center lg:grid-cols-none lg:grid-flow-col lg:auto-cols-auto lg:justify-start lg:text-left">
-						{[
-							[
-								'Last commit',
-								renderLastCommitTimestamp(),
-								''
-							],
-							['Total commits', githubStats.totalCommits, ''],
-							[
-								'Coding streak',
-								githubStats.codingStreak,
-								'days'
-							],
-							['Made by', githubStats.madeBy, '']
-						].map(([name, value, unit], index) => (
-							<FadeIn key={name} delay={0.8 + index * 0.1}>
-								<div className="flex flex-col">
-									<dt
-										className={`font-mono text-sm text-title transition-opacity duration-500 ${titleFadeIn ? 'opacity-100' : 'opacity-0'}`}
-									>
-										{name}
-									</dt>
-									<dd className="mt-0.5 text-2xl font-normal  tracking-tight subtitle font-geist">
-										{renderValue(value)}
-										{unit && (
-											<span
-												className={`text-sm font-normal transition-opacity text-subtitle subtitle duration-500 ${dataFadeIn ? 'opacity-100' : 'opacity-0'}`}
-											>
-												{' '}
-												{unit}
-											</span>
-										)}
-									</dd>
-								</div>
+						<div className="mt-6  space-y-6 tracking-tight text-subtitle text-sm sm:text-base lg:text-lg font-geist mb-6 max-w-3xl">
+							<FadeIn delay={0.2}>
+								{en.default.hero.subtitle}
 							</FadeIn>
-						))}
-					</dl>
-				</div>
-			</Container>
-		</div></section>
+							<FadeIn delay={0.4}>
+								{en.default.hero.subtitle2}
+							</FadeIn>
+						</div>
+						<FadeIn delay={0.6}>
+							<Link className="mt-10 pt-10" href="/dashboard">
+								<ShinyButton>
+									{en.default.hero.button}
+								</ShinyButton>
+							</Link>
+						</FadeIn>
+						<dl className="grid grid-cols-2 gap-y-6 gap-x-6 mt-10 sm:gap-y-8 sm:gap-x-10 sm:mt-16 lg:grid-cols-4 lg:gap-x-12 text-left">
+							{[
+								[
+									en.default.hero.stats.lastCommit,
+									renderLastCommitTimestamp(),
+									''
+								],
+								[
+									en.default.hero.stats.totalCommits,
+									githubStats.totalCommits,
+									''
+								],
+								[
+									en.default.hero.stats.codingStreak,
+									githubStats.codingStreak,
+									en.default.hero.stats.daysUnit
+								],
+								[
+									en.default.githubStats.madeBy,
+									githubStats.madeBy,
+									''
+								]
+							].map(([name, value, unit], index) => (
+								<FadeIn key={name} delay={0.8 + index * 0.1}>
+									<div className="flex flex-col">
+										<dt
+											className={`font-mono text-sm text-title transition-opacity duration-500 ${titleFadeIn ? 'opacity-100' : 'opacity-0'}`}
+										>
+											{name}
+										</dt>
+										<dd className="mt-0.5 text-2xl font-normal tracking-tight subtitle font-geist">
+											{renderValue(value)}
+											{unit && (
+												<span
+													className={`text-sm font-normal transition-opacity text-subtitle subtitle duration-500 ${dataFadeIn ? 'opacity-100' : 'opacity-0'}`}
+												>
+													{' '}
+													{unit}
+												</span>
+											)}
+										</dd>
+									</div>
+								</FadeIn>
+							))}
+						</dl>
+					</div>
+				</Container>
+			</div>
+		</section>
 	)
 }
 

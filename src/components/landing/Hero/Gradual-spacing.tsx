@@ -1,6 +1,7 @@
 'use client'
 import { cn } from 'cn'
 import { AnimatePresence, Variants, motion } from 'framer-motion'
+import React from 'react'
 
 interface GradualSpacingProps {
 	text: string
@@ -10,6 +11,7 @@ interface GradualSpacingProps {
 	className?: string
 	textClassName?: string
 	visiblity?: boolean
+	breakAfter?: string
 }
 
 export default function GradualSpacing({
@@ -22,24 +24,42 @@ export default function GradualSpacing({
 		visible: { opacity: 1, x: 0 }
 	},
 	className,
-	visiblity
+	visiblity,
+	breakAfter
 }: GradualSpacingProps) {
+	const words = text.split(' ')
 	return (
-		<div className={cn('flex', textClassName)}>
+		<div className={cn('flex flex-wrap', textClassName)}>
 			<AnimatePresence>
-				{text.split('').map((char, i) => (
-					<motion.h1
-						key={i}
-						initial="hidden"
-						animate={visiblity ? 'visible' : 'hidden'}
-						exit="hidden"
-						variants={framerProps}
-						transition={{ duration, delay: i * delayMultiple }}
-						className={cn('title drop-shadow-sm', className)}
-					>
-						{char === ' ' ? <span>&nbsp;</span> : char}
-					</motion.h1>
-				))}
+				{words.map((word, i) => {
+					const shouldBreak =
+						breakAfter &&
+						words
+							.slice(0, i + 1)
+							.join(' ')
+							.endsWith(breakAfter)
+					return (
+						<React.Fragment key={i}>
+							<motion.h1
+								initial="hidden"
+								animate={visiblity ? 'visible' : 'hidden'}
+								exit="hidden"
+								variants={framerProps}
+								transition={{
+									duration,
+									delay: i * delayMultiple
+								}}
+								className={cn(
+									'title drop-shadow-sm',
+									className
+								)}
+							>
+								{word}&nbsp;
+							</motion.h1>
+							{shouldBreak && <br />}
+						</React.Fragment>
+					)
+				})}
 			</AnimatePresence>
 		</div>
 	)

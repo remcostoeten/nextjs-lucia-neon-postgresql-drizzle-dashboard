@@ -11,19 +11,7 @@ import { Button, Input } from '@/components/ui'
 import SimpleCheckbox from '@/components/ui/simple-checkbox'
 import { signInAction } from '@/lib/actions/users'
 import { toast } from 'toast'
-
-const fadeInUp = (delay: number) => ({
-	initial: { opacity: 0, y: 20 },
-	animate: {
-		opacity: 1,
-		y: 0,
-		transition: {
-			duration: 0.5,
-			delay: delay,
-			ease: 'easeOut'
-		}
-	}
-})
+import { fadeInUp } from '@/core/constants/animations'
 
 export default function SignInPage() {
 	const showToast = toast(state => state.showToast)
@@ -46,7 +34,35 @@ export default function SignInPage() {
 
 	useEffect(() => {
 		if (state.error) {
-			showToast(state.error, 'error')
+			let errorMessage = state.error
+			switch (state.error.toLowerCase()) {
+				case 'invalid_credentials':
+					errorMessage =
+						'Invalid email or password. Please try again.'
+					break
+				case 'user_not_found':
+					errorMessage = 'No account found with this email address.'
+					break
+				case 'invalid_email':
+					errorMessage = 'Please enter a valid email address.'
+					break
+				case 'password_too_short':
+					errorMessage =
+						'Password must be at least 8 characters long.'
+					break
+				case 'account_locked':
+					errorMessage =
+						'Your account has been locked. Please contact support.'
+					break
+				case 'too_many_attempts':
+					errorMessage =
+						'Too many failed attempts. Please try again later.'
+					break
+				// Add more cases as needed
+				default:
+					errorMessage = 'An error occurred. Please try again.'
+			}
+			showToast(errorMessage, 'error')
 		}
 	}, [state.error, showToast])
 
@@ -66,11 +82,11 @@ export default function SignInPage() {
 	}
 
 	return (
-		<Center method='grid'>
+		<Center method="grid">
 			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto w-full max-w-md">
 				<motion.a
 					href="#"
-					className="flex items-center mb-6 text-2xl font-semibold text-gray-200"
+					className="flex items-center mb-6 text-2xl font-semibold text-title"
 					initial="initial"
 					animate="animate"
 					variants={fadeInUp(0)}
@@ -85,7 +101,7 @@ export default function SignInPage() {
 					variants={fadeInUp(0.1)}
 				>
 					<motion.h1
-						className="text-xl font-bold leading-tight tracking-tight text-gray-200 md:text-2xl"
+						className="text-xl font-bold leading-tight tracking-tight text-title md:text-2xl"
 						initial="initial"
 						animate="animate"
 						variants={fadeInUp(0.2)}
@@ -101,7 +117,7 @@ export default function SignInPage() {
 						>
 							<label
 								htmlFor="email"
-								className="block mb-2 text-sm font-medium text-gray-300"
+								className="block mb-2 text-sm font-medium text-subtitle"
 							>
 								Your email
 							</label>
@@ -113,7 +129,6 @@ export default function SignInPage() {
 								onChange={handleEmailChange}
 								placeholder="name@company.com"
 								required
-								className="bg-[#1c1c1c] border-[#2c2c2c] text-gray-200 placeholder-gray-400"
 							/>
 						</motion.div>
 						<motion.div
@@ -134,7 +149,6 @@ export default function SignInPage() {
 								id="password"
 								placeholder="••••••••"
 								required
-								className="bg-[#1c1c1c] border-[#2c2c2c] text-gray-200 placeholder-gray-400"
 							/>
 						</motion.div>
 						<motion.div
@@ -160,7 +174,7 @@ export default function SignInPage() {
 							<SubmitButton />
 						</motion.div>
 						<motion.p
-							className="text-sm font-light text-gray-400"
+							className="text-sm font-light text-subtitle"
 							initial="initial"
 							animate="animate"
 							variants={fadeInUp(0.7)}
@@ -168,7 +182,7 @@ export default function SignInPage() {
 							Don't have an account yet?{' '}
 							<Link
 								href="/sign-up"
-								className="font-medium text-primary-500 hover:underline"
+								className="font-bold text-subtitle trans hover:text-title  underline "
 							>
 								Sign up
 							</Link>
@@ -187,7 +201,7 @@ const SubmitButton = () => {
 			variant="outline"
 			type="submit"
 			disabled={pending}
-			className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+			className="w-full"
 		>
 			{pending ? 'Signing in...' : 'Sign in'}
 		</Button>

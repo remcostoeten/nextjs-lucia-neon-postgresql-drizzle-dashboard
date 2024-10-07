@@ -14,7 +14,10 @@ interface ProductCategory {
 const productCategories: ProductCategory[] = [
 	{
 		name: 'Elements',
-		links: [{ name: 'Notice box', href: '/design-system/notice' }]
+		links: [
+			{ name: 'Notice box', href: '/design-system/notice' },
+			{ name: 'Card spotlight', href: '/design-system/card-spotlight' }
+		]
 	},
 	{
 		name: 'Hooks showcase',
@@ -26,7 +29,7 @@ const productCategories: ProductCategory[] = [
 			{
 				name: 'use-geolocation',
 				href: '/hooks-showcase/geolocation'
-			},
+			}
 		]
 	},
 	{
@@ -58,8 +61,9 @@ const ProductCategory: React.FC<ProductCategory> = ({ name, links }) => (
 			<a
 				key={index}
 				href={link.href}
-				className={`block text-sm text-subtitle ${index !== links.length - 1 ? 'mb-1' : ''
-					}`}
+				className={`block text-sm text-subtitle ${
+					index !== links.length - 1 ? 'mb-1' : ''
+				}`}
 			>
 				{link.name}
 			</a>

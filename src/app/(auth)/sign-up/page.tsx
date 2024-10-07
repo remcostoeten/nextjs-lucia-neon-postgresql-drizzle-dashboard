@@ -14,19 +14,7 @@ import { Button, Input } from '@/components/ui'
 import { signUpAction } from '@/lib/actions/users'
 import { EyeClosedIcon } from '@radix-ui/react-icons'
 import { EyeIcon } from 'lucide-react'
-
-const fadeInUp = (delay: number) => ({
-	initial: { opacity: 0, y: 20 },
-	animate: {
-		opacity: 1,
-		y: 0,
-		transition: {
-			duration: 0.5,
-			delay: delay,
-			ease: 'easeOut'
-		}
-	}
-})
+import { fadeInUp } from '@/core/constants/animations'
 
 export default function SignUpPage() {
 	const router = useRouter()
@@ -69,11 +57,11 @@ export default function SignUpPage() {
 	}
 
 	return (
-		<Center method='grid'>
+		<Center method="grid">
 			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto w-full max-w-md">
 				<motion.a
 					href="#"
-					className="flex items-center mb-6 text-2xl font-semibold text-gray-200"
+					className="flex items-center mb-6 text-2xl font-semibold text-title"
 					initial="initial"
 					animate="animate"
 					variants={fadeInUp(0)}
@@ -88,7 +76,7 @@ export default function SignUpPage() {
 					variants={fadeInUp(0.1)}
 				>
 					<motion.h1
-						className="text-xl font-bold leading-tight tracking-tight text-gray-200 md:text-2xl"
+						className="text-xl font-bold leading-tight tracking-tight text-title md:text-2xl"
 						initial="initial"
 						animate="animate"
 						variants={fadeInUp(0.2)}
@@ -103,7 +91,7 @@ export default function SignUpPage() {
 						>
 							<label
 								htmlFor="email"
-								className="block mb-2 text-sm font-medium text-gray-300"
+								className="block mb-2 text-sm font-medium text-subtitle"
 							>
 								Your email
 							</label>
@@ -115,7 +103,8 @@ export default function SignUpPage() {
 								onChange={handleEmailChange}
 								placeholder="name@company.com"
 								required
-								className="bg-[#1c1c1c] border-[#2c2c2c] text-gray-200 placeholder-gray-400" />
+								className="bg-[#1c1c1c] border-[#2c2c2c] text-title placeholder-subtitle"
+							/>
 						</motion.div>
 						<motion.div
 							initial="initial"
@@ -124,7 +113,7 @@ export default function SignUpPage() {
 						>
 							<label
 								htmlFor="password"
-								className="block mb-2 text-sm font-medium text-gray-300"
+								className="block mb-2 text-sm font-medium text-subtitle"
 							>
 								Password
 							</label>
@@ -137,11 +126,14 @@ export default function SignUpPage() {
 									onChange={handlePasswordChange}
 									placeholder="••••••••"
 									required
-									className="bg-[#1c1c1c] border-[#2c2c2c] text-gray-200 placeholder-gray-400" />
+									className="bg-[#1c1c1c] border-[#2c2c2c] text-title placeholder-subtitle"
+								/>
 								<button
 									type="button"
-									className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200"
-									onClick={() => setShowPassword(!showPassword)}
+									className="absolute right-3 top-1/2 transform -translate-y-1/2 text-subtitle hover:text-title"
+									onClick={() =>
+										setShowPassword(!showPassword)
+									}
 								>
 									{showPassword ? (
 										<EyeClosedIcon className="w-4 h-4" />
@@ -158,7 +150,7 @@ export default function SignUpPage() {
 						>
 							<label
 								htmlFor="confirmPassword"
-								className="block mb-2 text-sm font-medium text-gray-300"
+								className="block mb-2 text-sm font-medium text-subtitle"
 							>
 								Confirm Password
 							</label>
@@ -171,11 +163,14 @@ export default function SignUpPage() {
 									onChange={handleConfirmPasswordChange}
 									placeholder="••••••••"
 									required
-									className="bg-[#1c1c1c] border-[#2c2c2c] text-gray-200 placeholder-gray-400" />
+									className="bg-[#1c1c1c] border-[#2c2c2c] text-title placeholder-subtitle"
+								/>
 								<button
 									type="button"
-									className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200"
-									onClick={() => setShowPassword(!showPassword)}
+									className="absolute right-3 top-1/2 transform -translate-y-1/2 text-subtitle hover:text-title"
+									onClick={() =>
+										setShowPassword(!showPassword)
+									}
 								>
 									{showPassword ? (
 										<EyeClosedIcon className="w-4 h-4" />
@@ -194,7 +189,7 @@ export default function SignUpPage() {
 						</motion.div>
 					</form>
 					<motion.p
-						className="text-sm font-light text-gray-400"
+						className="text-sm font-light text-subtitle"
 						initial="initial"
 						animate="animate"
 						variants={fadeInUp(0.7)}
@@ -221,7 +216,7 @@ const SubmitButton = () => {
 			variant="outline"
 			type="submit"
 			disabled={pending}
-			className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+			className="w-full text-title bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
 		>
 			{pending ? 'Signing up...' : 'Sign up'}
 		</Button>

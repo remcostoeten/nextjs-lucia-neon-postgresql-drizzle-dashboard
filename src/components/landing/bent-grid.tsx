@@ -4,9 +4,9 @@ import { CalendarIcon, FileTextIcon } from '@radix-ui/react-icons'
 import { BellIcon, Share2Icon } from 'lucide-react'
 
 import { cn } from 'cn'
-import AnimatedBeamMultipleOutputDemo from './animated-beam-multiple-outputs'
-import AnimatedListDemo from './animated-list-demo'
 import { BentoCard, BentoGrid } from './bento-grid-parent'
+import AnimatedBeamMultipleOutputDemo from './bento-grid/animated-beam-multiple-outputs'
+import AnimatedListDemo from './bento-grid/animated-list-demo'
 import Marquee from './Hero/Maq'
 
 // Constants for styles

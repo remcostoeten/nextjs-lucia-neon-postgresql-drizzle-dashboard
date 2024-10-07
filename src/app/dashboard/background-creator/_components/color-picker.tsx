@@ -22,7 +22,7 @@ export function ColorPicker({ label, color, onChange }: ColorPickerProps) {
 					type="text"
 					value={color}
 					onChange={e => onChange(e.target.value)}
-					className="bg-gray-800 text-white px-2 py-1 rounded-md w-24"
+					className="bg-card AAA border hover:bg-body trans-100 text-white px-2 py-1 rounded-md w-24"
 				/>
 			</div>
 		</div>

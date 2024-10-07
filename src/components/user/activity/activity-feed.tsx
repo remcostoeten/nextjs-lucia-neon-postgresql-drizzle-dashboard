@@ -2,7 +2,24 @@
 
 import { getActivityLogs } from '@/core/server/actions/users/fetch-activity'
 import { useEffect, useState } from 'react'
-import { Alert, AlertCircle, AlertDescription, AlertTitle, Button, Card, CardContent, CardHeader, CardTitle, Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from 'ui'
+import {
+	Alert,
+	AlertCircle,
+	AlertDescription,
+	AlertTitle,
+	Button,
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+	Input,
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow
+} from 'ui'
 
 function ErrorFallback({ error, resetErrorBoundary }) {
 	return (
@@ -11,7 +28,12 @@ function ErrorFallback({ error, resetErrorBoundary }) {
 			<AlertTitle>Error</AlertTitle>
 			<AlertDescription>
 				{error.message}
-				<Button onClick={resetErrorBoundary} variant="outline" size="sm" className="mt-2">
+				<Button
+					onClick={resetErrorBoundary}
+					variant="outline"
+					size="sm"
+					className="mt-2"
+				>
 					Try again
 				</Button>
 			</AlertDescription>
@@ -49,9 +71,14 @@ function ActivityFeed() {
 
 				if (retryCount < 3) {
 					console.log(`Retrying... Attempt ${retryCount + 1}`)
-					setTimeout(() => fetchActivities(retryCount + 1), 1000 * (retryCount + 1))
+					setTimeout(
+						() => fetchActivities(retryCount + 1),
+						1000 * (retryCount + 1)
+					)
 				} else {
-					setError('Failed to load activity logs. Please check your connection and try again.')
+					setError(
+						'Failed to load activity logs. Please check your connection and try again.'
+					)
 				}
 			}
 		} finally {
@@ -70,9 +97,10 @@ function ActivityFeed() {
 		return cleanup
 	}, [])
 
-	const filteredActivities = activities.filter(activity =>
-		activity.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-		activity.details.toLowerCase().includes(searchTerm.toLowerCase())
+	const filteredActivities = activities.filter(
+		activity =>
+			activity.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			activity.details.toLowerCase().includes(searchTerm.toLowerCase())
 	)
 
 	const paginatedActivities = filteredActivities.slice(
@@ -152,7 +180,9 @@ function ActivityFeed() {
 					<CardContent>
 						<div className="text-2xl font-bold">
 							{activities.length > 0
-								? new Date(activities[0].timestamp).toLocaleString()
+								? new Date(
+										activities[0].timestamp
+									).toLocaleString()
 								: 'N/A'}
 						</div>
 					</CardContent>
@@ -165,11 +195,13 @@ function ActivityFeed() {
 					</CardHeader>
 					<CardContent>
 						<div className="text-2xl font-bold">
-							{activities.filter(
-								a =>
-									new Date(a.timestamp).toDateString() ===
-									new Date().toDateString()
-							).length}
+							{
+								activities.filter(
+									a =>
+										new Date(a.timestamp).toDateString() ===
+										new Date().toDateString()
+								).length
+							}
 						</div>
 					</CardContent>
 				</Card>
@@ -196,7 +228,9 @@ function ActivityFeed() {
 										{activity.details || 'N/A'}
 									</TableCell>
 									<TableCell>
-										{new Date(activity.timestamp).toLocaleString()}
+										{new Date(
+											activity.timestamp
+										).toLocaleString()}
 									</TableCell>
 									<TableCell>
 										{activity.metadata ? (
@@ -204,7 +238,13 @@ function ActivityFeed() {
 												variant="link"
 												size="sm"
 												onClick={() =>
-													alert(JSON.stringify(activity.metadata, null, 2))
+													alert(
+														JSON.stringify(
+															activity.metadata,
+															null,
+															2
+														)
+													)
 												}
 											>
 												View Metadata
@@ -219,7 +259,9 @@ function ActivityFeed() {
 					</Table>
 					<div className="flex justify-between items-center mt-4">
 						<Button
-							onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+							onClick={() =>
+								setCurrentPage(prev => Math.max(prev - 1, 1))
+							}
 							disabled={currentPage === 1}
 						>
 							Previous
@@ -228,7 +270,11 @@ function ActivityFeed() {
 							Page {currentPage} of {totalPages}
 						</span>
 						<Button
-							onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+							onClick={() =>
+								setCurrentPage(prev =>
+									Math.min(prev + 1, totalPages)
+								)
+							}
 							disabled={currentPage === totalPages}
 						>
 							Next

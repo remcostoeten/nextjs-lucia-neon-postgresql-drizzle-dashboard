@@ -1,4 +1,4 @@
-import { generateUUID } from '@/core/helpers/generate-uuid'
+import { generateUUID } from '@/core/constants/generate-uuid'
 import { relations } from 'drizzle-orm'
 import {
 	boolean,

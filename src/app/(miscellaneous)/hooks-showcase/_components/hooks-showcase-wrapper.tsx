@@ -72,7 +72,8 @@ export function HooksShowcaseWrapper({
 						fileName={fileName as string}
 						language={language as string}
 						badges={[
-							language?.charAt(0).toUpperCase() + language?.slice(1)
+							language?.charAt(0).toUpperCase() +
+								language?.slice(1)
 						]}
 					/>
 				</CardContent>

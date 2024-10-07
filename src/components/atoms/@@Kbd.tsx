@@ -1,6 +1,6 @@
-import { Tooltip, TooltipContent, TooltipTrigger } from 'ui'
 import { cn } from 'cn'
 import React from 'react'
+import { Tooltip, TooltipContent, TooltipTrigger } from 'ui'
 
 interface IconProps extends React.SVGProps<SVGSVGElement> {
 	width?: string | number

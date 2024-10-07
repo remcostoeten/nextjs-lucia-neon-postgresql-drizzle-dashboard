@@ -1,8 +1,8 @@
-import { Button } from 'ui'
 import { ArrowRightIcon } from '@radix-ui/react-icons'
 import { cn } from 'cn'
 import { motion } from 'framer-motion'
 import { ReactNode } from 'react'
+import { Button } from 'ui'
 
 type BentoGridProps = {
 	children: ReactNode
@@ -71,10 +71,10 @@ const BentoCard = ({
 			)}
 		>
 			<Button
-				variant="ghost"
+				variant="outline"
 				asChild
 				size="sm"
-				className="pointer-events-auto"
+				className="pointer-events-auto text-title border border-outline-soft hover:border-brand hover:box-shadow hover:shadow-[brand]"
 			>
 				<a href={href}>
 					{cta}

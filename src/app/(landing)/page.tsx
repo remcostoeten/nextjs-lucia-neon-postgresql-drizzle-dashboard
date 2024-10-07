@@ -18,7 +18,7 @@ export default function Home() {
 
 function Wrapper({ children }: PageProps) {
 	return (
-		<section className="mx-auto  max-w-[1440px] px-4 sm:px-6 lg:px-8">
+		<section className="mx-auto  max-w-[1440px]">
 			{children}
 		</section>
 	)

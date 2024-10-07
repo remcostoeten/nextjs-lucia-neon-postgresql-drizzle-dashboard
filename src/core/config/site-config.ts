@@ -31,8 +31,8 @@ export const siteConfig = {
 	},
 	social: {
 		github: 'remcostoeten',
-		twitter: 'remcostoeten', // Replace with your actual Twitter handle
-		linkedin: 'remcostoeten' // Replace with your actual LinkedIn username
+		twitter: 'x',
+		linkedin: 'remcostoeten'
 	},
 	metrics: {
 		githubStats: {

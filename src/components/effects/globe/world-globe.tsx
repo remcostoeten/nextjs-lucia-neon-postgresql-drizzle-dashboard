@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 const GLOBE_CONFIG: COBEOptions = {
 	width: 1211,
 	height: 1211,
-	onRender: () => { },
+	onRender: () => {},
 	devicePixelRatio: 2,
 	phi: 0,
 	theta: 0.3,

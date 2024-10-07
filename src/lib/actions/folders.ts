@@ -1,6 +1,6 @@
 'use server'
 
-import { generateUUID } from '@/core/helpers/generate-uuid'
+import { generateUUID } from '@/core/constants/generate-uuid'
 import { logActivity } from '@/core/server/actions/users/log-activity'
 import { validateRequest } from '@/lib/auth/lucia'
 import { db } from '@/lib/db'
@@ -13,7 +13,7 @@ export async function createFolder(
 	description: string | null = null,
 	parentId: string | null = null,
 	color: string = '#000000'
-): Promise<{ success: boolean, folder: any }> {
+): Promise<{ success: boolean; folder: any }> {
 	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')
@@ -81,9 +81,9 @@ export async function updateFolder(
 
 	const newPath = updates.name
 		? currentFolder.path.replace(
-			new RegExp(`${currentFolder.name}$`),
-			updates.name
-		)
+				new RegExp(`${currentFolder.name}$`),
+				updates.name
+			)
 		: currentFolder.path
 
 	await db
@@ -178,7 +178,10 @@ export async function getFolders(): Promise<{ folders: FolderType[] }> {
 	return { folders: userFolders }
 }
 
-export async function moveFolder(id: string, newParentId: string | null): Promise<void> {
+export async function moveFolder(
+	id: string,
+	newParentId: string | null
+): Promise<void> {
 	const { user } = await validateRequest()
 	if (!user) {
 		throw new Error('Not authenticated')

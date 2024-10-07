@@ -23,7 +23,11 @@ const Circle = forwardRef<
 
 Circle.displayName = 'Circle'
 
-export default function AnimatedBeams({ className }: { className?: string }) {
+export default function AnimatedBeamMultipleOutputDemo({
+	className
+}: {
+	className?: string
+}) {
 	const containerRef = useRef<HTMLDivElement>(null)
 	const div1Ref = useRef<HTMLDivElement>(null)
 	const div2Ref = useRef<HTMLDivElement>(null)

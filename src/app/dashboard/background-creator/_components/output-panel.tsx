@@ -51,7 +51,7 @@ export function OutputPanel({ config }: { config: BackgroundConfig }) {
 					</label>
 				</div>
 			</RadioGroup>
-			<pre className="bg-gray-800 p-4 rounded-md overflow-x-auto">
+			<pre className="bg-card AAA border hover:bg-body trans-100 p-4 rounded-md overflow-x-auto">
 				<code>{getOutput()}</code>
 			</pre>
 		</div>

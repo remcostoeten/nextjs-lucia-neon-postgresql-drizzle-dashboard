@@ -7,7 +7,12 @@ type CenterProps = {
 	className?: string
 }
 
-export default function Center({ children, method = 'flex', direction = 'both', className = '' }: CenterProps) {
+export default function Center({
+	children,
+	method = 'flex',
+	direction = 'both',
+	className = ''
+}: CenterProps) {
 	let centerStyles = ''
 
 	switch (method) {
@@ -35,9 +40,5 @@ export default function Center({ children, method = 'flex', direction = 'both', 
 			break
 	}
 
-	return (
-		<div className={`${centerStyles} ${className}`}>
-			{children}
-		</div>
-	)
+	return <div className={`${centerStyles} ${className}`}>{children}</div>
 }
