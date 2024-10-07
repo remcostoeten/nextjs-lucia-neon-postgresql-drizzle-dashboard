@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 
+import Center from '@/components/atoms/Center'
 import LogoIcon from '@/components/base/logo'
 import { Button, Input } from '@/components/ui'
 import SimpleCheckbox from '@/components/ui/simple-checkbox'
@@ -65,7 +66,7 @@ export default function SignInPage() {
 	}
 
 	return (
-		<section className="min-h-screen bg-[#000000] flex items-center justify-center">
+		<Center method='grid'>
 			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto w-full max-w-md">
 				<motion.a
 					href="#"
@@ -175,7 +176,7 @@ export default function SignInPage() {
 					</form>
 				</motion.div>
 			</div>
-		</section>
+		</Center>
 	)
 }
 

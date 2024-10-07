@@ -1,6 +1,5 @@
 export * from './_hook_helpers/use-event-listener'
 export * from './_hook_helpers/use-isomorphic-layout-effect'
-export * from './use-battery'
 export * from './use-geo-location'
 export * from './use-keyboard-shortcuts'
 export * from './use-local-storage'

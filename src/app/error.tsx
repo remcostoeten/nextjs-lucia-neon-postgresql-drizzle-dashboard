@@ -1,7 +1,7 @@
 'use client'
 
-import { Button } from 'ui'
 import { Flex } from '@/components/atoms'
+import { EnhancedCodeBlock } from '@/components/elements/display-code/advanced-code-block'
 import { CommandCode } from '@/components/elements/display-code/command-inline-code'
 import NoticeBox from '@/components/elements/notice-box'
 import { logActivity } from '@/core/server/actions/users/log-activity'
@@ -9,7 +9,7 @@ import { motion } from 'framer-motion'
 import { AlertTriangle, ArrowLeft, RefreshCcw } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { EnhancedCodeBlock } from '@/components/elements/display-code/advanced-code-block'
+import { Button } from 'ui'
 
 type ErrorPageProps = {
 	error: Error & { digest?: string }
@@ -148,7 +148,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 						<Button
 							variant="outline"
 							onClick={() => (window.location.href = '/')}
-							className="w-full border-zinc-700 text-zinc-300 hover:bg-zinc-800"
+							className="w-full border text-subtitle hover:bg-zinc-800"
 						>
 							<ArrowLeft className="mr-2 h-4 w-4" /> Go to Home
 						</Button>
@@ -156,7 +156,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 					<Button
 						variant="link"
 						onClick={handleReportError}
-						className="w-full text-zinc-400 hover:text-zinc-300"
+						className="w-full text-subtitle hover:text-title"
 					>
 						Report this error
 					</Button>

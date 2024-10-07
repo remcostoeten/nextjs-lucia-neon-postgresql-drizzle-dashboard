@@ -127,7 +127,7 @@ export const Folder: React.FC<FolderProps> = ({
 				onClick={onToggle}
 				data-value={value}
 				className={`
-                    cursor-pointer 
+                    cursor-pointer transition-all duration-300 ease-in-out hover:bg-section-lighter hover:scale-[1.01]
                     ${isSelectable ? '' : 'border-error'} 
                     ${isSelect ? 'bg-section-lighter border' : ''}
                 `}

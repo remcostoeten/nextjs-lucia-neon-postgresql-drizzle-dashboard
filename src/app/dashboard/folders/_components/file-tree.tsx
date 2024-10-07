@@ -1,94 +1,49 @@
 'use client'
 
-import { Button, Card, CardContent, CardHeader, CardTitle, Input } from 'ui'
-import SkeletonLoader from '@/components/effects/loaders/skeleton-loader'
-import { ConfirmationDialog } from '@/components/elements/crud/confirm-dialog'
-import {
-	CustomDropdown,
-	DropdownAction
-} from '@/components/elements/custom-dropdown'
-import {
-	Folder,
-	TreeRenderer,
-	TreeViewElement
-} from '@/components/elements/tree-renderer'
-import { useSkeletonLoader } from '@/core/hooks'
-import {
-	deleteFolder,
-	getFolderCount,
-	getFolders,
-	moveFolder,
-	updateFolder
-} from '@/lib/actions/folders'
-import {
-	ChevronDown,
-	ChevronRight,
-	FolderIcon,
-	FolderPlus,
-	Pencil,
-	Trash
-} from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useEffect, useOptimistic, useState, useTransition } from 'react'
+import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { createFolder, deleteFolder, getFolders, moveFolder, updateFolder } from '@/lib/actions/folders'
+import { FolderType } from '@/types/types.folder'
+import { AnimatePresence, motion, Reorder } from 'framer-motion'
+import { ChevronDown, ChevronRight, Folder, FolderPlus, Pencil, Trash } from 'lucide-react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { NewFolderForm } from './new-folder-form'
 
-type FolderType = {
-	id: string
-	name: string
-	color: string
-	parentId: string | null
+interface TreeViewElement extends FolderType {
+	children?: TreeViewElement[]
 }
 
-function FileTree() {
-	const [folders, setFolders] = useState<FolderType[]>([])
-	const [optimisticFolders, addOptimisticFolder] = useOptimistic<
-		FolderType[]
-	>(folders, (state, newFolder: FolderType) => [...state, newFolder])
-	const [treeElements, setTreeElements] = useState<TreeViewElement[]>([])
-	const [selectedItem, setSelectedItem] = useState<string | null>(null)
-	const [breadcrumb, setBreadcrumb] = useState<string[]>([])
+const FileTree: React.FC = () => {
+	const [elements, setElements] = useState<TreeViewElement[]>([])
 	const [expandedItems, setExpandedItems] = useState<string[]>([])
-	const [editingFolder, setEditingFolder] = useState<FolderType | null>(null)
+	const [selectedItem, setSelectedItem] = useState<string | null>(null)
+	const [editingFolder, setEditingFolder] = useState<TreeViewElement | null>(null)
 	const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 	const [isNewFolderDialogOpen, setIsNewFolderDialogOpen] = useState(false)
-	const [isPending, startTransition] = useTransition()
-	const router = useRouter()
-
-	const {
-		data: loadedFolders,
-		isLoading,
-		itemCount
-	} = useSkeletonLoader<FolderType>({
-		fetchData: getFolders,
-		getItemCount: getFolderCount
-	})
+	const [newFolderName, setNewFolderName] = useState('')
+	const [newFolderColor, setNewFolderColor] = useState('#000000')
 
 	useEffect(() => {
-		if (loadedFolders) {
-			setFolders(loadedFolders)
+		const fetchFolders = async () => {
+			try {
+				const { folders } = await getFolders()
+				setElements(buildTree(folders))
+			} catch (error) {
+				toast.error('Failed to fetch folders')
+			}
 		}
-	}, [loadedFolders])
+		fetchFolders()
+	}, [])
 
-	useEffect(() => {
-		setTreeElements(buildTreeElements(optimisticFolders))
-	}, [optimisticFolders])
-
-	const buildTreeElements = (folders: FolderType[]): TreeViewElement[] => {
+	const buildTree = (folders: FolderType[]): TreeViewElement[] => {
 		const map: { [key: string]: TreeViewElement } = {}
+		const tree: TreeViewElement[] = []
 
 		folders.forEach(folder => {
-			map[folder.id] = {
-				id: folder.id,
-				name: folder.name,
-				isSelectable: true,
-				children: [],
-				color: folder.color
-			}
+			map[folder.id] = { ...folder, children: [] }
 		})
-
-		const tree: TreeViewElement[] = []
 
 		folders.forEach(folder => {
 			if (folder.parentId) {
@@ -105,314 +60,302 @@ function FileTree() {
 		return tree
 	}
 
-	const handleSelect = (id: string) => {
-		setSelectedItem(id)
-		const path = getPath(id, treeElements)
-		setBreadcrumb(path)
-	}
+	const handleToggle = useCallback((id: string) => {
+		setExpandedItems(prev =>
+			prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+		)
+	}, [])
 
-	const getPath = (
-		id: string,
-		elements: TreeViewElement[],
-		currentPath: string[] = []
-	): string[] => {
-		for (const element of elements) {
-			if (element.id === id) {
-				return [...currentPath, element.name]
-			}
-			if (element.children) {
-				const path = getPath(id, element.children, [
-					...currentPath,
-					element.name
-				])
-				if (path.length) return path
-			}
-		}
-		return []
-	}
+	const handleSelect = useCallback((id: string) => {
+		setSelectedItem(prev => prev === id ? null : id)
+	}, [])
 
-	const handleUpdateFolder = async (
-		id: string,
-		name: string,
-		color: string
-	) => {
-		startTransition(async () => {
+	const handleUpdateFolder = async () => {
+		if (editingFolder) {
 			try {
-				await updateFolder(id, { name, color })
-				router.refresh()
-				toast.success('Folder updated')
+				await updateFolder(editingFolder.id, {
+					name: editingFolder.name,
+					description: editingFolder.description,
+					color: editingFolder.color
+				})
+				setElements(prev => updateElementInTree(prev, editingFolder))
 				setIsEditDialogOpen(false)
+				toast.success('Folder updated successfully')
 			} catch (error) {
-				console.error('Error updating folder:', error)
 				toast.error('Failed to update folder')
 			}
-		})
+		}
 	}
 
-	const handleDeleteFolder = async (id: string) => {
-		startTransition(async () => {
+	const handleDeleteFolder = async () => {
+		if (editingFolder) {
 			try {
-				await deleteFolder(id)
-				router.refresh()
-				if (selectedItem === id) {
-					setSelectedItem(null)
-					setBreadcrumb([])
-				}
-				toast.success('Folder deleted')
+				await deleteFolder(editingFolder.id)
+				setElements(prev => removeElementFromTree(prev, editingFolder.id))
 				setIsDeleteDialogOpen(false)
+				toast.success('Folder deleted successfully')
 			} catch (error) {
-				console.error('Error deleting folder:', error)
 				toast.error('Failed to delete folder')
 			}
-		})
+		}
 	}
 
-	const handleMoveFolder = async (draggedId: string, targetId: string) => {
-		startTransition(async () => {
-			try {
-				await moveFolder(draggedId, targetId)
-				router.refresh()
-				toast.success('Folder moved')
-			} catch (error) {
-				console.error('Error moving folder:', error)
-				toast.error('Failed to move folder')
+	const handleCreateFolder = async () => {
+		try {
+			const { folder } = await createFolder(newFolderName, null, selectedItem, newFolderColor)
+			setElements(prev => addElementToTree(prev, folder, selectedItem))
+			setIsNewFolderDialogOpen(false)
+			setNewFolderName('')
+			setNewFolderColor('#000000')
+			toast.success('Folder created successfully')
+		} catch (error) {
+			toast.error('Failed to create folder')
+		}
+	}
+
+	const handleMoveFolder = async (draggedId: string, targetId: string | null) => {
+		try {
+			await moveFolder(draggedId, targetId)
+			const { folders } = await getFolders()
+			setElements(buildTree(folders))
+			toast.success('Folder moved successfully')
+		} catch (error) {
+			toast.error('Failed to move folder')
+		}
+	}
+
+	const updateElementInTree = (elements: TreeViewElement[], updatedElement: TreeViewElement): TreeViewElement[] => {
+		return elements.map(element => {
+			if (element.id === updatedElement.id) {
+				return { ...element, ...updatedElement }
 			}
+			if (element.children) {
+				return { ...element, children: updateElementInTree(element.children, updatedElement) }
+			}
+			return element
 		})
 	}
 
-	const handleNewFolderSuccess = () => {
-		setIsNewFolderDialogOpen(false)
-		router.refresh()
+	const removeElementFromTree = (elements: TreeViewElement[], id: string): TreeViewElement[] => {
+		return elements.filter(element => {
+			if (element.id === id) {
+				return false
+			}
+			if (element.children) {
+				element.children = removeElementFromTree(element.children, id)
+			}
+			return true
+		})
 	}
 
-	const renderFolderSkeleton = () => (
-		<div className="flex items-center space-x-2 py-2 px-4">
-			<FolderIcon className="w-4 h-4 text-muted-foreground" />
-			<div className="h-4 bg-muted rounded w-3/4"></div>
-		</div>
+	const addElementToTree = (elements: TreeViewElement[], newElement: FolderType, parentId: string | null): TreeViewElement[] => {
+		if (!parentId) {
+			return [...elements, { ...newElement, children: [] }]
+		}
+		return elements.map(element => {
+			if (element.id === parentId) {
+				return { ...element, children: [...(element.children || []), { ...newElement, children: [] }] }
+			}
+			if (element.children) {
+				return { ...element, children: addElementToTree(element.children, newElement, parentId) }
+			}
+			return element
+		})
+	}
+
+	const renderTreeItems = (items: TreeViewElement[]): React.ReactNode => (
+		<Reorder.Group axis="y" onReorder={(newOrder) => {
+			setElements(newOrder)
+			newOrder.forEach((item, index) => {
+				if (index > 0) {
+					handleMoveFolder(item.id, newOrder[index - 1].id)
+				} else {
+					handleMoveFolder(item.id, null)
+				}
+			})
+		}} values={items}>
+			{items.map(item => (
+				<Reorder.Item key={item.id} value={item}>
+					<div className="flex items-center py-1 px-2 hover:bg-section-lighter text-subtitle hover:text-title cursor-pointer transition-all duration-300">
+						<div
+							className="flex items-center flex-grow"
+							onClick={() => handleSelect(item.id)}
+						>
+							{item.children && item.children.length > 0 && (
+								<Button
+									variant="ghost"
+									size="sm"
+									className="p-0 h-6 w-6"
+									onClick={(e) => {
+										e.stopPropagation()
+										handleToggle(item.id)
+									}}
+								>
+									{expandedItems.includes(item.id) ? (
+										<ChevronDown className="h-4 w-4" />
+									) : (
+										<ChevronRight className="h-4 w-4" />
+									)}
+								</Button>
+							)}
+							<Folder className="h-4 w-4 mr-2" style={{ color: item.color }} />
+							<span className={selectedItem === item.id ? 'font-bold' : ''}>{item.name}</span>
+						</div>
+						<div className="flex space-x-1">
+							<Button
+								variant="ghost"
+								size="sm"
+								className="p-0 h-6 w-6"
+								onClick={() => {
+									setEditingFolder(item)
+									setIsEditDialogOpen(true)
+								}}
+							>
+								<Pencil className="h-4 w-4" />
+							</Button>
+							<Button
+								variant="ghost"
+								size="sm"
+								className="p-0 h-6 w-6"
+								onClick={() => {
+									setEditingFolder(item)
+									setIsDeleteDialogOpen(true)
+								}}
+							>
+								<Trash className="h-4 w-4" />
+							</Button>
+						</div>
+					</div>
+					<AnimatePresence initial={false}>
+						{expandedItems.includes(item.id) && item.children && (
+							<motion.div
+								initial={{ opacity: 0, height: 0 }}
+								animate={{ opacity: 1, height: 'auto' }}
+								exit={{ opacity: 0, height: 0 }}
+								transition={{ duration: 0.2 }}
+								className="ml-4"
+							>
+								{renderTreeItems(item.children)}
+							</motion.div>
+						)}
+					</AnimatePresence>
+				</Reorder.Item>
+			))}
+		</Reorder.Group>
 	)
 
-	const renderTreeItems = (elements: TreeViewElement[]): React.ReactNode => {
-		return elements.map(element => {
-			const hasChildren = element.children && element.children.length > 0
-			const isExpanded = expandedItems.includes(element.id)
-			const isSelected = selectedItem === element.id
-
-			const folderActions: DropdownAction[] = [
-				{
-					label: 'New Subfolder',
-					icon: <FolderPlus className="h-4 w-4" />,
-					onClick: () => {
-						setSelectedItem(element.id)
-						setIsNewFolderDialogOpen(true)
-					}
-				},
-				{
-					label: 'Edit',
-					icon: <Pencil className="h-4 w-4" />,
-					onClick: () => {
-						setEditingFolder(
-							folders.find(f => f.id === element.id) || null
-						)
-						setIsEditDialogOpen(true)
-					}
-				},
-				{
-					label: 'Delete',
-					icon: <Trash className="h-4 w-4" />,
-					onClick: () => {
-						setEditingFolder(
-							folders.find(f => f.id === element.id) || null
-						)
-						setIsDeleteDialogOpen(true)
-					}
-				}
-			]
-
-			return (
-				<Folder
-					key={element.id}
-					element={
-						<div className="flex items-center justify-between w-full">
-							<div
-								className={`flex items-center ${isSelected ? 'font-bold' : ''}`}
-							>
-								<span>{element.name}</span>
-								{hasChildren && (
-									<span className="ml-2 text-xs text-muted-foreground">
-										({element.children?.length})
-									</span>
-								)}
-							</div>
-							<CustomDropdown actions={folderActions} />
-						</div>
-					}
-					value={element.id}
-					openIcon={
-						hasChildren ? <ChevronDown className="h-4 w-4" /> : null
-					}
-					closeIcon={
-						hasChildren ? (
-							<ChevronRight className="h-4 w-4" />
-						) : null
-					}
-					color={element.color}
-					isSelectable={true}
-					isSelect={isSelected}
-					hasChildren={hasChildren}
-					isExpanded={isExpanded}
-					onToggle={() => {
-						if (hasChildren) {
-							setExpandedItems(prev =>
-								prev.includes(element.id)
-									? prev.filter(id => id !== element.id)
-									: [...prev, element.id]
-							)
-						}
-					}}
-				>
-					{hasChildren &&
-						isExpanded &&
-						renderTreeItems(element.children)}
-				</Folder>
-			)
-		})
-	}
-
 	return (
-		<Card className="w-full max-w-md mx-auto">
-			<CardHeader>
-				<CardTitle>File Explorer</CardTitle>
-			</CardHeader>
-			<CardContent>
-				<div className="mb-4">
-					<div className="text-sm text-muted-foreground">
-						{breadcrumb.join(' > ')}
-					</div>
-				</div>
-				<Button
-					onClick={() => setIsNewFolderDialogOpen(true)}
-					className="mb-4"
-				>
-					New Folder
-				</Button>
-				{isLoading ? (
-					<SkeletonLoader
-						count={itemCount}
-						className="w-full h-8 mb-2"
-						as={renderFolderSkeleton}
-					/>
-				) : (
-					<TreeRenderer
-						className="h-[60vh] overflow-y-auto"
-						initialSelectedId={selectedItem || undefined}
-						initialExpandedItems={expandedItems}
-						onExpandedItemsChange={setExpandedItems}
-						onSelect={event => {
-							const target = event.target as HTMLElement
-							const id = target
-								.closest('[data-value]')
-								?.getAttribute('data-value')
-							if (id) handleSelect(id)
-						}}
-					>
-						{treeElements.length > 0 &&
-							renderTreeItems(treeElements)}
-					</TreeRenderer>
-				)}
-			</CardContent>
-
-			<ConfirmationDialog
-				isOpen={isEditDialogOpen}
-				onClose={() => setIsEditDialogOpen(false)}
-				onConfirm={() => {
-					if (editingFolder) {
-						handleUpdateFolder(
-							editingFolder.id,
-							editingFolder.name,
-							editingFolder.color
-						)
-					}
-				}}
-				title="Edit Folder"
-				confirmLabel="Save"
-				cancelLabel="Cancel"
+		<div className="w-full max-w-md mx-auto p-4">
+			<Button
+				onClick={() => setIsNewFolderDialogOpen(true)}
+				className="mb-4"
 			>
-				<div className="space-y-4">
-					<div>
-						<label
-							htmlFor="folderName"
-							className="block text-sm font-medium text-gray-700"
-						>
-							Folder Name
-						</label>
-						<Input
-							id="folderName"
-							value={editingFolder?.name || ''}
-							onChange={e =>
-								setEditingFolder(prev =>
-									prev
-										? { ...prev, name: e.target.value }
-										: null
-								)
-							}
-							className="mt-1"
-						/>
-					</div>
-					<div>
-						<label
-							htmlFor="folderColor"
-							className="block text-sm font-medium text-gray-700"
-						>
-							Folder Color
-						</label>
-						<Input
-							id="folderColor"
-							type="color"
-							value={editingFolder?.color || '#000000'}
-							onChange={e =>
-								setEditingFolder(prev =>
-									prev
-										? { ...prev, color: e.target.value }
-										: null
-								)
-							}
-							className="mt-1"
-						/>
-					</div>
-				</div>
-			</ConfirmationDialog>
+				<FolderPlus className="mr-2 h-4 w-4" />
+				New Folder
+			</Button>
+			<div className="border rounded-md p-2">
+				{renderTreeItems(elements)}
+			</div>
 
-			<ConfirmationDialog
-				isOpen={isDeleteDialogOpen}
-				onClose={() => setIsDeleteDialogOpen(false)}
-				onConfirm={() => {
-					if (editingFolder) {
-						handleDeleteFolder(editingFolder.id)
-					}
-				}}
-				title="Delete Folder"
-				confirmLabel="Yes"
-				cancelLabel="No"
-			>
-				<p>
-					Are you sure you want to delete this folder? This action
-					cannot be undone.
-				</p>
-			</ConfirmationDialog>
+			<Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Edit Folder</DialogTitle>
+					</DialogHeader>
+					<div className="space-y-4">
+						<div>
+							<label htmlFor="folderName" className="block text-sm font-medium">
+								Folder Name
+							</label>
+							<Input
+								id="folderName"
+								value={editingFolder?.name || ''}
+								onChange={e => setEditingFolder(prev => prev ? { ...prev, name: e.target.value } : null)}
+								className="mt-1"
+							/>
+						</div>
+						<div>
+							<label htmlFor="folderColor" className="block text-sm font-medium">
+								Folder Color
+							</label>
+							<Input
+								id="folderColor"
+								type="color"
+								value={editingFolder?.color || '#000000'}
+								onChange={e => setEditingFolder(prev => prev ? { ...prev, color: e.target.value } : null)}
+								className="mt-1"
+							/>
+						</div>
+					</div>
+					<DialogFooter>
+						<Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+							Cancel
+						</Button>
+						<Button onClick={handleUpdateFolder}>
+							Save
+						</Button>
+					</DialogFooter>
+				</DialogContent>
+			</Dialog>
 
-			<ConfirmationDialog
-				isOpen={isNewFolderDialogOpen}
-				onClose={() => setIsNewFolderDialogOpen(false)}
-				title="New Folder"
-				hideConfirmButton={true}
-			>
-				<NewFolderForm
-					parentId={selectedItem}
-					onSuccess={handleNewFolderSuccess}
-				/>
-			</ConfirmationDialog>
-		</Card>
+			<Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Delete Folder</DialogTitle>
+					</DialogHeader>
+					<p>Are you sure you want to delete this folder? This action cannot be undone.</p>
+					<DialogFooter>
+						<Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
+							Cancel
+						</Button>
+						<Button variant="destructive" onClick={handleDeleteFolder}>
+							Delete
+						</Button>
+					</DialogFooter>
+				</DialogContent>
+			</Dialog>
+
+			<Dialog open={isNewFolderDialogOpen} onOpenChange={setIsNewFolderDialogOpen}>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>New Folder</DialogTitle>
+					</DialogHeader>
+					<div className="space-y-4">
+						<div>
+							<label htmlFor="newFolderName" className="block text-sm font-medium">
+								Folder Name
+							</label>
+							<Input
+								id="newFolderName"
+								value={newFolderName}
+								onChange={e => setNewFolderName(e.target.value)}
+								className="mt-1"
+							/>
+						</div>
+						<div>
+							<label htmlFor="newFolderColor" className="block text-sm font-medium">
+								Folder Color
+							</label>
+							<Input
+								id="newFolderColor"
+								type="color"
+								value={newFolderColor}
+								onChange={e => setNewFolderColor(e.target.value)}
+								className="mt-1"
+							/>
+						</div>
+					</div>
+					<DialogFooter>
+						<Button variant="outline" onClick={() => setIsNewFolderDialogOpen(false)}>
+							Cancel
+						</Button>
+						<Button onClick={handleCreateFolder}>
+							Create
+						</Button>
+					</DialogFooter>
+				</DialogContent>
+			</Dialog>
+		</div>
 	)
 }
 

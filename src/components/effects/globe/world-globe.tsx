@@ -5,9 +5,9 @@ import createGlobe, { COBEOptions } from 'cobe'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 const GLOBE_CONFIG: COBEOptions = {
-	width: 800,
-	height: 800,
-	onRender: () => {},
+	width: 1211,
+	height: 1211,
+	onRender: () => { },
 	devicePixelRatio: 2,
 	phi: 0,
 	theta: 0.3,
@@ -82,7 +82,7 @@ export default function Globe({
 	return (
 		<div
 			className={cn(
-				'absolute inset-0 translate-x-16 translate-y-8 mx-auto aspect-[1/1] w-full max-w-[600px]',
+				'absolute inset-0 translate-x-16 translate-y-8 mx-auto aspect-[1/1] w-full max-w-[900px]',
 				className
 			)}
 		>

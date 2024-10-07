@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 import { toast } from 'sonner'
 
+import Center from '@/components/atoms/Center'
 import AuthFormError from '@/components/auth/auth-form-error'
 import LogoIcon from '@/components/base/logo'
 import { Button, Input } from '@/components/ui'
@@ -68,7 +69,7 @@ export default function SignUpPage() {
 	}
 
 	return (
-		<section className="min-h-screen bg-[#000000] flex items-center justify-center">
+		<Center method='grid'>
 			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto w-full max-w-md">
 				<motion.a
 					href="#"
@@ -114,8 +115,7 @@ export default function SignUpPage() {
 								onChange={handleEmailChange}
 								placeholder="name@company.com"
 								required
-								className="bg-[#1c1c1c] border-[#2c2c2c] text-gray-200 placeholder-gray-400"
-							/>
+								className="bg-[#1c1c1c] border-[#2c2c2c] text-gray-200 placeholder-gray-400" />
 						</motion.div>
 						<motion.div
 							initial="initial"
@@ -137,14 +137,11 @@ export default function SignUpPage() {
 									onChange={handlePasswordChange}
 									placeholder="••••••••"
 									required
-									className="bg-[#1c1c1c] border-[#2c2c2c] text-gray-200 placeholder-gray-400"
-								/>
+									className="bg-[#1c1c1c] border-[#2c2c2c] text-gray-200 placeholder-gray-400" />
 								<button
 									type="button"
 									className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200"
-									onClick={() =>
-										setShowPassword(!showPassword)
-									}
+									onClick={() => setShowPassword(!showPassword)}
 								>
 									{showPassword ? (
 										<EyeClosedIcon className="w-4 h-4" />
@@ -174,14 +171,11 @@ export default function SignUpPage() {
 									onChange={handleConfirmPasswordChange}
 									placeholder="••••••••"
 									required
-									className="bg-[#1c1c1c] border-[#2c2c2c] text-gray-200 placeholder-gray-400"
-								/>
+									className="bg-[#1c1c1c] border-[#2c2c2c] text-gray-200 placeholder-gray-400" />
 								<button
 									type="button"
 									className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200"
-									onClick={() =>
-										setShowPassword(!showPassword)
-									}
+									onClick={() => setShowPassword(!showPassword)}
 								>
 									{showPassword ? (
 										<EyeClosedIcon className="w-4 h-4" />
@@ -216,7 +210,7 @@ export default function SignUpPage() {
 				</motion.div>
 			</div>
 			<AuthFormError state={state} />
-		</section>
+		</Center>
 	)
 }
 

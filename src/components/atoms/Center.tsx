@@ -1,80 +1,43 @@
-import { ElementType, HTMLAttributes, ReactNode } from 'react'
-import { twMerge } from 'tailwind-merge'
+import { ReactNode } from 'react'
 
-type CenterProps<T extends ElementType = 'div'> = {
-	as?: T
+type CenterProps = {
+	children: ReactNode
+	method?: 'grid' | 'absolute' | 'flex'
+	direction?: 'vertical' | 'horizontal' | 'both'
 	className?: string
-	children?: ReactNode
-	fullScreen?: boolean
-	center?: 'middle' | 'vertical' | 'horizontal'
-} & HTMLAttributes<HTMLElement>
-
-/**
- * Center component to center its children both vertically and horizontally.
- *
- * @example
- * <Center as="section" className="custom-class" center="middle" fullScreen>
- *   <p>Centered content</p>
- * </Center>
- */
-export const Center = <T extends ElementType = 'div'>({
-	as,
-	className,
-	fullScreen = false,
-	children,
-	center = 'middle',
-	...props
-}: CenterProps<T>) => {
-	const Component = as || 'div'
-
-	const classes = twMerge(
-		fullScreen ? 'w-screen h-screen' : '',
-		center === 'middle'
-			? 'grid place-items-center'
-			: center === 'vertical'
-				? 'flex items-center'
-				: 'flex justify-center',
-		className
-	)
-
-	return (
-		<Component className={classes} {...props}>
-			{children}
-		</Component>
-	)
 }
 
-/**
- * AbsoluteCenter component to absolutely center its children both vertically and horizontally.
- *
- * @example
- * <AbsoluteCenter as="section" className="custom-class" center="middle" fullScreen>
- *   <p>Absolutely centered content</p>
- * </AbsoluteCenter>
- */
-export const AbsoluteCenter = <T extends ElementType = 'div'>({
-	as,
-	className,
-	fullScreen = false,
-	children,
-	center = 'middle',
-	...props
-}: CenterProps<T>) => {
-	const Component = as || 'div'
+export default function Center({ children, method = 'flex', direction = 'both', className = '' }: CenterProps) {
+	let centerStyles = ''
 
-	const classes = twMerge(
-		fullScreen ? 'w-screen h-screen' : '',
-		center === 'middle'
-			? 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'
-			: center === 'vertical'
-				? 'absolute top-1/2 transform -translate-y-1/2'
-				: 'absolute left-1/2 transform -translate-x-1/2',
-		className
-	)
+	switch (method) {
+		case 'grid':
+			centerStyles = 'grid w-screen h-screen  place-items-center'
+			break
+		case 'absolute':
+			centerStyles = 'absolute'
+			if (direction === 'vertical' || direction === 'both') {
+				centerStyles += ' top-1/2 -translate-y-1/2'
+			}
+			if (direction === 'horizontal' || direction === 'both') {
+				centerStyles += ' left-1/2 -translate-x-1/2'
+			}
+			break
+		case 'flex':
+		default:
+			centerStyles = 'flex'
+			if (direction === 'vertical' || direction === 'both') {
+				centerStyles += ' items-center'
+			}
+			if (direction === 'horizontal' || direction === 'both') {
+				centerStyles += ' justify-center'
+			}
+			break
+	}
 
 	return (
-		<Component className={classes} {...props}>
+		<div className={`${centerStyles} ${className}`}>
 			{children}
-		</Component>
+		</div>
 	)
 }

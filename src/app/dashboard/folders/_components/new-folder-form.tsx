@@ -1,11 +1,11 @@
 'use client'
 
-import { Button, Input } from 'ui'
 import { createFolder } from '@/lib/actions/folders'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
+import { Button, Input } from 'ui'
 
 function SubmitButton() {
 	const { pending } = useFormStatus()
@@ -57,7 +57,7 @@ export function NewFolderForm({ parentId, onSuccess }: NewFolderFormProps) {
 			<div>
 				<label
 					htmlFor="folderName"
-					className="block text-sm font-medium text-gray-700"
+					className="block text-sm font-medium text-subtitle"
 				>
 					Folder Name
 				</label>
@@ -74,7 +74,7 @@ export function NewFolderForm({ parentId, onSuccess }: NewFolderFormProps) {
 			<div>
 				<label
 					htmlFor="folderColor"
-					className="block text-sm font-medium text-gray-700"
+					className="block text-sm font-medium text-subtitle"
 				>
 					Folder Color
 				</label>
