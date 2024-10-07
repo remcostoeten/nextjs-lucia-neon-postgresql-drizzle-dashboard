@@ -1,14 +1,4 @@
-// @ts-nocheck
-import localFont from 'next/font/local'
+export { ptMono } from './font.pt_mono'
+export { geistMono } from './geist/font.geist'
+export { geistSans } from './geist/font.geist'
 
-export const geistSans = localFont({
-	src: './GeistVF.woff',
-	variable: '--font-geist-sans',
-	weight: '100 900'
-})
-
-export const geistMono = localFont({
-	src: './GeistMonoVF.woff',
-	variable: '--font-geist-mono',
-	weight: '100 900'
-})
