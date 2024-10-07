@@ -14,9 +14,9 @@ function getRelativeDay(commitDate: CommitDate): string {
 	yesterday.setDate(yesterday.getDate() - 1)
 
 	if (commitDate.toDateString() === today.toDateString()) {
-		return 'Today' + ','
+		return 'Today,'
 	} else if (commitDate.toDateString() === yesterday.toDateString()) {
-		return 'Yesterday' + ','
+		return 'Yesterday,'
 	} else {
 		const daysOfWeek = [
 			'Sunday',

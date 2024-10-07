@@ -58,11 +58,6 @@ export const metadata: Metadata = {
 		images: [`${appUrl}/twitter-image.png`],
 		creator: '@remcostoeten'
 	},
-	viewport: {
-		width: 'device-width',
-		initialScale: 1,
-		maximumScale: 1
-	},
 	icons: {
 		icon: '/favicon.ico',
 		shortcut: '/favicon-16x16.png',
