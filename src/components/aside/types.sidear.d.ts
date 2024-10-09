@@ -27,6 +27,8 @@ export type FolderType = {
 	name: string
 	description: string | null
 	color: string
+	parentId?: string | null
+	isSelectable?: boolean
 }
 
 export type DropdownAction = {

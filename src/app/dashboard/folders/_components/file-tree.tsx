@@ -1,14 +1,14 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import {
+	Button,
 	Dialog,
 	DialogContent,
 	DialogFooter,
 	DialogHeader,
-	DialogTitle
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
+	DialogTitle,
+	Input
+} from 'ui'
 import {
 	createFolder,
 	deleteFolder,
@@ -30,6 +30,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 interface TreeViewElement extends FolderType {
+	[x: string]: any
 	children?: TreeViewElement[]
 }
 
@@ -125,11 +126,18 @@ const FileTree: React.FC = () => {
 
 	const handleCreateFolder = async () => {
 		try {
-			const { folder } = await createFolder(
+			const parentFolder = selectedItem
+				? elements.find(el => el.id === selectedItem)
+				: null
+			const parentPath = parentFolder ? parentFolder.path : ''
+			const newPath = `${parentPath}/${newFolderName}`.replace(/^\//, '')
+
+			const folder = await createFolder(
 				newFolderName,
 				null,
 				selectedItem,
-				newFolderColor
+				newFolderColor,
+				newPath
 			)
 			setElements(prev => addElementToTree(prev, folder, selectedItem))
 			setIsNewFolderDialogOpen(false)
@@ -240,7 +248,16 @@ const FileTree: React.FC = () => {
 		>
 			{items.map(item => (
 				<Reorder.Item key={item.id} value={item}>
-					<div className="flex items-center py-1 px-2 hover:bg-section-lighter text-subtitle hover:text-title cursor-pointer transition-all duration-300">
+					<div
+						className={`flex items-center py-1 px-2 hover:bg-section-lighter text-subtitle hover:text-title cursor-pointer transition-all duration-300 ${
+							selectedItem === item.id
+								? 'bg-section-lighter font-bold border-l-4 border-primary'
+								: ''
+						}`}
+						style={{
+							paddingLeft: `${(item.path.split('/').length - 1) * 16 + 8}px`
+						}}
+					>
 						<div
 							className="flex items-center flex-grow"
 							onClick={() => handleSelect(item.id)}
@@ -249,7 +266,7 @@ const FileTree: React.FC = () => {
 								<Button
 									variant="ghost"
 									size="sm"
-									className="p-0 h-6 w-6"
+									className="p-0 h-6 w-6 mr-1"
 									onClick={e => {
 										e.stopPropagation()
 										handleToggle(item.id)
@@ -266,13 +283,7 @@ const FileTree: React.FC = () => {
 								className="h-4 w-4 mr-2"
 								style={{ color: item.color }}
 							/>
-							<span
-								className={
-									selectedItem === item.id ? 'font-bold' : ''
-								}
-							>
-								{item.name}
-							</span>
+							<span>{item.name}</span>
 						</div>
 						<div className="flex space-x-1">
 							<Button

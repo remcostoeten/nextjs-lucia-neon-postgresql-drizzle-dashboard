@@ -50,6 +50,13 @@
 			"when": 1728180351744,
 			"tag": "0006_military_paladin",
 			"breakpoints": true
+		},
+		{
+			"idx": 7,
+			"version": "5",
+			"when": 1728428157950,
+			"tag": "0007_yielding_metal_master",
+			"breakpoints": true
 		}
 	]
 }

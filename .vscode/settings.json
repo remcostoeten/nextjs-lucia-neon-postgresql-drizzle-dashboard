@@ -1,4 +1,26 @@
 {
 	"git.ignoreLimitWarning": true,
-	"typescript.tsdk": "node_modules/typescript/lib"
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"keybindings": [
+		{
+			"key": "ctrl+u",
+			"command": "workbench.action.chat.startVoiceChat",
+			"when": "!voiceChatInProgress"
+		},
+		{
+			"key": "ctrl+u",
+			"command": "workbench.action.chat.stopListeningAndSubmit",
+			"when": "voiceChatInProgress"
+		},
+		{
+			"key": "ctrl+d",
+			"command": "workbench.action.editorDictation.start",
+			"when": "!editorDictation.inProgress"
+		},
+		{
+			"key": "ctrl+d",
+			"command": "workbench.action.editorDictation.stop",
+			"when": "editorDictation.inProgress"
+		}
+	]
 }

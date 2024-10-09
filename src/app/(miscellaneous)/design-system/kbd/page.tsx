@@ -1,18 +1,21 @@
 'use client'
 
-import { Kbd, KbdKeys } from '@/components/atoms/kbd'
-import { EnhancedCodeBlock } from '@/components/elements/display-code/advanced-code-block'
-import { Button } from '@/components/ui/button'
 import {
+	Button,
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger
-} from '@/components/ui/dialog'
-import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+	DialogTrigger,
+	Label,
+	Switch,
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger
+} from 'ui'
+import { Kbd, KbdKeys } from '@/components/atoms/kbd'
+import { EnhancedCodeBlock } from '@/components/elements/display-code/advanced-code-block'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import DesignSystemWrapper from '../_components/DesignSystemWrapper'

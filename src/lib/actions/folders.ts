@@ -12,7 +12,8 @@ export async function createFolder(
 	name: string,
 	description: string | null = null,
 	parentId: string | null = null,
-	color: string = '#000000'
+	color: string = '#000000',
+	path: string
 ): Promise<{ success: boolean; folder: any }> {
 	const { user } = await validateRequest()
 	if (!user) {
@@ -20,16 +21,6 @@ export async function createFolder(
 	}
 
 	const newFolderId = generateUUID()
-
-	let path = `/${name}`
-	if (parentId) {
-		const parentFolder = await db.query.folders.findFirst({
-			where: eq(folders.id, parentId)
-		})
-		if (parentFolder) {
-			path = `${parentFolder.path}/${name}`
-		}
-	}
 
 	const newFolder = {
 		id: newFolderId,
@@ -48,7 +39,9 @@ export async function createFolder(
 	try {
 		await logActivity(user.id, 'CREATE_FOLDER', `Created folder: ${name}`, {
 			folderId: newFolderId,
-			folderName: name
+			folderName: name,
+			parentId,
+			path
 		})
 	} catch (error) {
 		console.error('Failed to log folder creation activity:', error)

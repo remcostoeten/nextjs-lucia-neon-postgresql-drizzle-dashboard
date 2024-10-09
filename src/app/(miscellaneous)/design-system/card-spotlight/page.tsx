@@ -1,5 +1,12 @@
 'use client'
 
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue
+} from 'ui'
 import { Icons } from '@/components/base/icons'
 import Banner from '@/components/effects/card-spotlight/banner'
 import Spotlight, {
@@ -15,13 +22,6 @@ import {
 	Label,
 	Slider
 } from '@/components/ui'
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue
-} from '@/components/ui/select'
 import Image from 'next/image'
 import { useState } from 'react'
 import DesignSystemWrapper from '../_components/DesignSystemWrapper'
