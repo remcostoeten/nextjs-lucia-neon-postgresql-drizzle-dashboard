@@ -22,9 +22,7 @@
 			"@/*": ["./src/*"],
 			"models": ["./src/core/models/index.ts"],
 			"toast": ["./src/core/stores/store.toasts.ts"],
-			"cn": [
-				"src/core/constants/cn-tw.ts"
-			],
+			"cn": ["src/core/constants/cn-tw.ts"],
 			"locales": ["./src/core/config/locales/locales.ts"],
 			"db": ["./src/core/server/database/index.ts"],
 			"hooks": ["./src/core/hooks/index.ts"],

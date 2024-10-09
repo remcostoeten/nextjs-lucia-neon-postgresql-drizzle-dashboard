@@ -1,1 +1,1 @@
-export * from './fetch-github-stats';
+export * from './fetch-github-stats'
