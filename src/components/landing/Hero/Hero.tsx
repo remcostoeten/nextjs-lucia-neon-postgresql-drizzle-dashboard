@@ -3,7 +3,7 @@
 import FadeIn from '@/components/effects/fade-in'
 import NumberTicker from '@/components/effects/number-ticker'
 import ShinyButton from '@/components/effects/shiny-button'
-import { fetchGitHubStats } from '@/core/server/actions/gh-stats'
+import { fetchGitHubStats } from 'actions'
 import { useInView } from 'framer-motion'
 import { en } from 'locales'
 import Link from 'next/link'
