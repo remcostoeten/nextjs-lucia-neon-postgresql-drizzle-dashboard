@@ -1,60 +1,90 @@
 'use client'
 
-import { getActivityLogs } from '@/core/server/actions/users/fetch-activity'
-import { AlertCircle } from 'lucide-react'
+import { Skeleton } from '@/components/effects/loaders/skeleton'
+import { getActivityLogs } from 'actions'
+import { AnimatePresence, motion } from 'framer-motion'
+import { AlertCircle, ChevronDown, ChevronUp, Filter, Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import {
 	Alert,
 	AlertDescription,
 	AlertTitle,
 	Button,
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
 	Input,
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue
 } from 'ui'
 
-interface ErrorFallbackProps {
-	error: Error
-	resetErrorBoundary: () => void
+const severityColors = {
+	error: 'bg-red-500',
+	warning: 'bg-yellow-500',
+	info: 'bg-blue-500'
 }
 
-function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
+type ActivityItemProps = {
+	activity: any;
+	isExpanded: boolean;
+	onToggle: () => void;
+}
+
+const ActivityItem: React.FC<ActivityItemProps> = ({ activity, isExpanded, onToggle }) => {
 	return (
-		<Alert variant="destructive">
-			<AlertCircle className="h-4 w-4" />
-			<AlertTitle>Error</AlertTitle>
-			<AlertDescription>
-				{error.message}
-				<Button
-					onClick={resetErrorBoundary}
-					variant="outline"
-					size="sm"
-					className="mt-2"
-				>
-					Try again
-				</Button>
-			</AlertDescription>
-		</Alert>
+		<motion.div
+			layout
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			className="border-l-2 border-gray-600 pl-4 py-2"
+		>
+			<div className="flex items-center justify-between cursor-pointer" onClick={onToggle}>
+				<div className="flex items-center space-x-2">
+					<div className={`w-2 h-2 rounded-full ${severityColors[activity.severity as keyof typeof severityColors]}`} />
+					<span className="font-medium">{activity.action}</span>
+				</div>
+				<div className="flex items-center space-x-2">
+					<span className="text-sm text-gray-400">{new Date(activity.timestamp).toLocaleString()}</span>
+					{isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+				</div>
+			</div>
+			<AnimatePresence>
+				{isExpanded && (
+					<motion.div
+						initial={{ opacity: 0, height: 0 }}
+						animate={{ opacity: 1, height: 'auto' }}
+						exit={{ opacity: 0, height: 0 }}
+						className="mt-2 text-sm text-gray-300"
+					>
+						<p>{activity.details}</p>
+						{activity.metadata && (
+							<pre className="mt-2 p-2 bg-gray-800 rounded">
+								{JSON.stringify(activity.metadata, null, 2)}
+							</pre>
+						)}
+					</motion.div>
+				)}
+			</AnimatePresence>
+		</motion.div>
 	)
 }
 
-function ActivityFeed() {
+type ExpandedItems = Record<string, boolean>
+
+export default function ActivityLog() {
 	const [activities, setActivities] = useState([])
 	const [isLoading, setIsLoading] = useState(true)
 	const [error, setError] = useState(null)
 	const [searchTerm, setSearchTerm] = useState('')
-	const [currentPage, setCurrentPage] = useState(1)
-	const itemsPerPage = 10
+	const [filterSeverity, setFilterSeverity] = useState('all')
+	const [expandedItems, setExpandedItems] = useState<ExpandedItems>({})
 
-	async function fetchActivities(retryCount = 0) {
+	useEffect(() => {
+		fetchActivities()
+	}, [])
+
+	async function fetchActivities() {
 		try {
 			setIsLoading(true)
 			const logs = await getActivityLogs()
@@ -62,48 +92,19 @@ function ActivityFeed() {
 			setError(null)
 		} catch (error) {
 			console.error('Failed to fetch activity logs:', error)
-
-			if (error instanceof Error) {
-				console.error('Error name:', error.name)
-				console.error('Error message:', error.message)
-				console.error('Error stack:', error.stack)
-			}
-
-			if (retryCount < 3) {
-				console.log(`Retrying... Attempt ${retryCount + 1}`)
-				setTimeout(
-					() => fetchActivities(retryCount + 1),
-					1000 * (retryCount + 1)
-				)
-			} else {
-				setError(
-					'Failed to load activity logs. Please check your connection and try again.'
-				)
-			}
+			setError('Failed to load activity logs. Please try again.')
 		} finally {
 			setIsLoading(false)
 		}
 	}
 
-	useEffect(() => {
-		fetchActivities()
-	}, [])
-
-	const filteredActivities = activities.filter(
-		activity =>
-			activity.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			activity.details.toLowerCase().includes(searchTerm.toLowerCase())
+	const filteredActivities = activities.filter(activity =>
+		(activity.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			activity.details.toLowerCase().includes(searchTerm.toLowerCase())) &&
+		(filterSeverity === 'all' || activity.severity === filterSeverity)
 	)
-
-	const paginatedActivities = filteredActivities.slice(
-		(currentPage - 1) * itemsPerPage,
-		currentPage * itemsPerPage
-	)
-
-	const totalPages = Math.ceil(filteredActivities.length / itemsPerPage)
-
-	if (isLoading) {
-		return <div className="text-center py-4">Loading activity feed...</div>
+	const toggleExpanded = (id: string) => {
+		setExpandedItems(prev => ({ ...prev, [id]: !prev[id] }))
 	}
 
 	if (error) {
@@ -117,172 +118,61 @@ function ActivityFeed() {
 	}
 
 	return (
-		<div className="space-y-4 p-4 bg-gray-100 dark:bg-gray-900">
+		<div className="space-y-4 p-4 bg-section text-subtitle">
 			<div className="flex justify-between items-center">
-				<h2 className="text-2xl font-bold">Activity Feed</h2>
-				<div className="flex items-center space-x-2">
+				<h2 className="text-2xl font-bold">Activity Log</h2>
+				<Button onClick={fetchActivities} variant="outline" size="sm">
+					Refresh
+				</Button>
+			</div>
+
+			<div className="flex space-x-2">
+				<div className="relative flex-grow">
+					<Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-subtitle" size={18} />
 					<Input
 						type="text"
 						placeholder="Search activities..."
 						value={searchTerm}
-						onChange={e => setSearchTerm(e.target.value)}
-						className="w-64"
+						onChange={(e) => setSearchTerm(e.target.value)}
 					/>
-					<Button
-						onClick={() => fetchActivities()}
-						variant="outline"
-						size="sm"
+				</div>
+				<div className="relative">
+					<Filter className="absolute left-2 top-1/2 transform -translate-y-1/2 text-subtitle" size={18} />
+					<Select
+						value={filterSeverity}
+						onValueChange={setFilterSeverity}
 					>
-						Refresh
-					</Button>
+						<SelectTrigger className="w-[180px]">
+							<SelectValue placeholder="Filter Severity" />
+						</SelectTrigger>
+						<SelectContent>
+							<SelectItem value="all">All Severities</SelectItem>
+							<SelectItem value="error">Error</SelectItem>
+							<SelectItem value="warning">Warning</SelectItem>
+							<SelectItem value="info">Info</SelectItem>
+						</SelectContent>
+					</Select>
 				</div>
 			</div>
 
-			<div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-				<Card>
-					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-sm font-medium">
-							Total Activities
-						</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<div className="text-2xl font-bold">
-							{activities.length}
-						</div>
-					</CardContent>
-				</Card>
-				<Card>
-					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-sm font-medium">
-							Unique Actions
-						</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<div className="text-2xl font-bold">
-							{new Set(activities.map(a => a.action)).size}
-						</div>
-					</CardContent>
-				</Card>
-				<Card>
-					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-sm font-medium">
-							Latest Activity
-						</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<div className="text-2xl font-bold">
-							{activities.length > 0
-								? new Date(
-										activities[0].timestamp
-									).toLocaleString()
-								: 'N/A'}
-						</div>
-					</CardContent>
-				</Card>
-				<Card>
-					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-sm font-medium">
-							Activities Today
-						</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<div className="text-2xl font-bold">
-							{
-								activities.filter(
-									a =>
-										new Date(a.timestamp).toDateString() ===
-										new Date().toDateString()
-								).length
-							}
-						</div>
-					</CardContent>
-				</Card>
+			<div className="space-y-2">
+				{isLoading ? (
+					Array.from({ length: 5 }).map((_, index) => (
+						<Skeleton key={index} className="h-12 w-full bg-gray-800" />
+					))
+				) : filteredActivities.length === 0 ? (
+					<p className="text-center py-4">No activities found.</p>
+				) : (
+					filteredActivities.map(activity => (
+						<ActivityItem
+							key={activity.id}
+							activity={activity}
+							isExpanded={expandedItems[activity.id as keyof typeof expandedItems]}
+							onToggle={() => toggleExpanded(activity.id)}
+						/>
+					))
+				)}
 			</div>
-
-			{activities.length === 0 ? (
-				<p>No activities found.</p>
-			) : (
-				<>
-					<Table>
-						<TableHeader>
-							<TableRow>
-								<TableHead>Action</TableHead>
-								<TableHead>Details</TableHead>
-								<TableHead>Timestamp</TableHead>
-								<TableHead>Metadata</TableHead>
-							</TableRow>
-						</TableHeader>
-						<TableBody>
-							{paginatedActivities.map(activity => (
-								<TableRow key={activity.id}>
-									<TableCell>{activity.action}</TableCell>
-									<TableCell>
-										{activity.details || 'N/A'}
-									</TableCell>
-									<TableCell>
-										{new Date(
-											activity.timestamp
-										).toLocaleString()}
-									</TableCell>
-									<TableCell>
-										{activity.metadata ? (
-											<Button
-												variant="link"
-												size="sm"
-												onClick={() =>
-													alert(
-														JSON.stringify(
-															activity.metadata,
-															null,
-															2
-														)
-													)
-												}
-											>
-												View Metadata
-											</Button>
-										) : (
-											'N/A'
-										)}
-									</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-					<div className="flex justify-between items-center mt-4">
-						<Button
-							onClick={() =>
-								setCurrentPage(prev => Math.max(prev - 1, 1))
-							}
-							disabled={currentPage === 1}
-						>
-							Previous
-						</Button>
-						<span>
-							Page {currentPage} of {totalPages}
-						</span>
-						<Button
-							onClick={() =>
-								setCurrentPage(prev =>
-									Math.min(prev + 1, totalPages)
-								)
-							}
-							disabled={currentPage === totalPages}
-						>
-							Next
-						</Button>
-					</div>
-				</>
-			)}
-		</div>
-	)
-}
-
-export default function ActivityPage() {
-	return (
-		<div className="container mx-auto py-8">
-			<h1 className="text-3xl font-bold mb-8">Your Activity</h1>
-			<ActivityFeed />
 		</div>
 	)
 }

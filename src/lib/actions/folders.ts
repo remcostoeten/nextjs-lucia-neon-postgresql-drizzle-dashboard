@@ -1,13 +1,13 @@
 'use server'
 
 import { generateUUID } from '@/core/constants/generate-uuid'
-import { logActivity } from '@/core/server/actions/users/log-activity'
 import { validateRequest } from '@/lib/auth/lucia'
-import { db } from '@/lib/db'
-import { folders } from '@/lib/db/schema'
 import { FolderType } from '@/types/types.folder'
+import { logActivity } from 'actions'
+import { db } from 'db'
 import { and, eq, like, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
+import { folders } from 'schema'
 export async function createFolder(
 	name: string,
 	description: string | null = null,
@@ -74,9 +74,9 @@ export async function updateFolder(
 
 	const newPath = updates.name
 		? currentFolder.path.replace(
-				new RegExp(`${currentFolder.name}$`),
-				updates.name
-			)
+			new RegExp(`${currentFolder.name}$`),
+			updates.name
+		)
 		: currentFolder.path
 
 	await db

@@ -7,11 +7,10 @@ import { useFormState, useFormStatus } from 'react-dom'
 
 import Center from '@/components/atoms/Center'
 import LogoIcon from '@/components/base/logo'
-import { Button, Input } from '@/components/ui'
-import SimpleCheckbox from '@/components/ui/simple-checkbox'
+import { fadeInUp } from '@/core/constants/animations'
 import { signInAction } from '@/lib/actions/users'
 import { toast } from 'toast'
-import { fadeInUp } from '@/core/constants/animations'
+import { Button, Checkbox, Input } from 'ui'
 
 export default function SignInPage() {
 	const showToast = toast(state => state.showToast)
@@ -158,7 +157,7 @@ export default function SignInPage() {
 							className="flex items-center justify-between mb-4"
 						>
 							<div className="flex items-start">
-								<SimpleCheckbox
+								<Checkbox
 									checked={rememberMe}
 									onCheckedChange={handleRememberMe}
 									label="Remember me"

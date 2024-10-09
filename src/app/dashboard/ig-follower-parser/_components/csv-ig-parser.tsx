@@ -1,22 +1,8 @@
 'use client'
 
 import ParsedOutputsSidebar from '@/components/aside/route-specific/ig-parsed-aside'
-import {
-	Button,
-	Card,
-	Input,
-	Label,
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-	RadioGroup,
-	RadioGroupItem,
-	ScrollArea,
-	Textarea
-} from '@/components/ui/index'
-import { saveParsedOutput } from '@/core/server/actions/save-parsed-output'
-import { useClientAuth } from '@/lib/auth/client-auth-utils'
-import { ParsedOutput } from '@/lib/db/schema'
+import { saveParsedOutput } from 'actions'
+import { useClientAuth } from 'auth'
 import confetti from 'canvas-confetti'
 import {
 	ChevronDown,
@@ -31,7 +17,21 @@ import {
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { ParsedOutput } from 'schema'
 import { toast } from 'sonner'
+import {
+	Button,
+	Card,
+	Input,
+	Label,
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+	RadioGroup,
+	RadioGroupItem,
+	ScrollArea,
+	Textarea
+} from 'ui'
 
 type Statistics = {
 	processed: number

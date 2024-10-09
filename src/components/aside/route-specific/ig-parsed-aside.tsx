@@ -2,8 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { fetchParsedOutputs } from '@/core/server/actions/save-parsed-output'
-import { ParsedOutput } from '@/lib/db/schema/parsed-ig'
+import { ParsedOutput, fetchParsedOutputs } from 'actions'
 import { ChevronLeft, ChevronRight, FileText } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -76,7 +75,8 @@ export default function CsvModifier({ onOutputSelectId }: props) {
 							key={output.id}
 							variant="ghost"
 							className={`w-full justify-start text-white hover:bg-[#3e3e42] ${isCollapsed ? 'px-2' : 'px-4'}`}
-							onClick={() => onOutputSelect(output)}
+							// @ts-ignore
+							onClick={() => onOutputSelectId(output.id)}
 						>
 							<FileText className="h-4 w-4 mr-2" />
 							{!isCollapsed && (

@@ -1,7 +1,7 @@
 'use server'
 
 import { getUserAuth } from '@/lib/auth/utils'
-import { activityLogs, db } from '@/lib/db'
+import { activityLogs, db } from 'db'
 import { desc, eq } from 'drizzle-orm'
 
 export async function getActivityLogs() {

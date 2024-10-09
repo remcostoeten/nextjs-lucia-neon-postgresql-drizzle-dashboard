@@ -1,7 +1,7 @@
 'use client'
 
 import Spotlight from '@/components/effects/card-spotlight/card-spotlight'
-import { logActivity } from '@/core/server/actions/users/log-activity'
+import { logActivity } from 'actions'
 import { Flex } from 'atoms'
 import { motion } from 'framer-motion'
 import { FileQuestion, Home, Search } from 'lucide-react'

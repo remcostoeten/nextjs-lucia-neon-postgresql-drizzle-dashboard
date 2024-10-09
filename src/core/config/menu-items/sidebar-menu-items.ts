@@ -2,7 +2,6 @@ import BackgroundGeneratorSidebar from '@/components/aside/route-specific/backgr
 import DashboardSidebar from '@/components/aside/route-specific/dashboard-home-aside'
 import FoldersAside from '@/components/aside/route-specific/folders-aside'
 import ParsedOutputsSidebar from '@/components/aside/route-specific/ig-parsed-aside'
-import NotesSidebar from '@/components/aside/route-specific/notes-aside'
 import SettingsSidebar from '@/components/aside/route-specific/settings-aside'
 import { DashboardIcon } from '@radix-ui/react-icons'
 import {
@@ -68,7 +67,6 @@ export const subSidebarConfig: SubSidebarConfig = {
 		component: ParsedOutputsSidebar,
 		allowToggle: true
 	},
-	'/dashboard/notes': { component: NotesSidebar, allowToggle: false },
 	'/dashboard/folders': { component: FoldersAside, allowToggle: true },
 	'/dashboard/background-creator': {
 		component: BackgroundGeneratorSidebar,

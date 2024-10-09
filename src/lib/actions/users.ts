@@ -9,15 +9,15 @@ import { generateId } from 'lucia'
 import { Argon2id } from 'oslo/password'
 import { lucia, validateRequest } from '../auth/lucia'
 
-import { logActivity } from '@/core/server/actions/users/log-activity'
+import { logActivity } from 'actions'
 
-import { updateUserSchema, users } from '../db/schema/auth'
 import {
-	validateAuthFormData,
-	setAuthCookie,
 	genericError,
-	getUserAuth
+	getUserAuth,
+	setAuthCookie,
+	validateAuthFormData
 } from '../auth/utils'
+import { updateUserSchema, users } from '../db/schema/auth'
 
 type ActionResult = {
 	error: string
