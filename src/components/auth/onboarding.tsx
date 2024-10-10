@@ -1,5 +1,19 @@
 'use client'
 
+import {
+	Button,
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+	Input
+} from 'ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import confetti from 'canvas-confetti'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -10,22 +24,6 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { Button } from '@/components/ui/button'
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle
-} from '@/components/ui/dialog'
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { fadeInUp } from '@/core/constants/animations'
 import { updateUserProfileSchema } from '@/lib/db/schema/auth'
 import { updateProfile } from 'actions'

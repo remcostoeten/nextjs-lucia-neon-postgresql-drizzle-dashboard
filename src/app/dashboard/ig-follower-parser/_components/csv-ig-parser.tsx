@@ -1,6 +1,5 @@
 'use client'
 
-import ParsedOutputsSidebar from '@/components/aside/route-specific/ig-parsed-aside'
 import {
 	Button,
 	Card,
@@ -13,7 +12,8 @@ import {
 	RadioGroupItem,
 	ScrollArea,
 	Textarea
-} from '@/components/ui/index'
+} from 'ui'
+import ParsedOutputsSidebar from '@/components/aside/route-specific/ig-parsed-aside'
 import { saveParsedOutput } from '@/core/server/actions/save-parsed-output'
 import { useClientAuth } from '@/lib/auth/client-auth-utils'
 import { ParsedOutput } from '@/lib/db/schema'
@@ -172,7 +172,7 @@ export default function CsvModifier() {
 			mimeType = 'application/json'
 			extension = 'json'
 			content = JSON.stringify(
-				output.split('\n').map(line => {
+				output.split('\n').map((line) => {
 					const [id, username] = line.split(',')
 					return { id, username }
 				}),
@@ -359,7 +359,9 @@ export default function CsvModifier() {
 								</Popover>
 								<Input
 									value={noteTitle}
-									onChange={e => setNoteTitle(e.target.value)}
+									onChange={(e) =>
+										setNoteTitle(e.target.value)
+									}
 									placeholder="Parsed Output Title"
 									className="w-40 bg-[#1e1e1e] text-white border-[#3e3e42]"
 								/>

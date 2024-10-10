@@ -1,18 +1,18 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import {
+	Button,
 	Card,
 	CardContent,
 	CardDescription,
 	CardFooter,
 	CardHeader,
-	CardTitle
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Separator } from '@/components/ui/separator'
-import { Textarea } from '@/components/ui/textarea'
+	CardTitle,
+	Input,
+	Label,
+	Separator,
+	Textarea
+} from 'ui'
 import { UserProfile } from '@/types/types.users'
 import { UserCircle } from 'lucide-react'
 import { ChangeEvent, FormEvent, useState } from 'react'
@@ -31,7 +31,7 @@ export default function MyAccountForm({ initialProfile }: MyAccountFormProps) {
 		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
 	) => {
 		const { name, value } = e.target
-		setUserProfile(prev => ({ ...prev, [name]: value }))
+		setUserProfile((prev) => ({ ...prev, [name]: value }))
 	}
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {

@@ -1,5 +1,6 @@
 'use client'
 
+import { Checkbox } from 'ui'
 import { Dispatch, ReactNode, SetStateAction, useState } from 'react'
 import {
 	AnimatePresence,
@@ -12,8 +13,6 @@ import { Trash } from 'lucide-react'
 import useMeasure from 'react-use-measure'
 
 import { cn } from '@/lib/utils'
-import { Checkbox } from '@/components/ui/checkbox'
-
 export type Item = {
 	text: string
 	checked: boolean
@@ -301,8 +300,8 @@ function SortableList({
 								index,
 								onCompleteItem,
 								(id: number) =>
-									setItems(items =>
-										items.filter(item => item.id !== id)
+									setItems((items) =>
+										items.filter((item) => item.id !== id)
 									)
 							)
 						)}
