@@ -300,8 +300,8 @@ function SortableList({
 								index,
 								onCompleteItem,
 								(id: number) =>
-									setItems((items) =>
-										items.filter((item) => item.id !== id)
+									setItems(items =>
+										items.filter(item => item.id !== id)
 									)
 							)
 						)}

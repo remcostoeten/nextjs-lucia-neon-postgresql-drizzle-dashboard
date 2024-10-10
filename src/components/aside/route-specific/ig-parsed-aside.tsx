@@ -70,7 +70,7 @@ export default function CsvModifier({ onOutputSelectId }: props) {
 						No saved outputs found.
 					</div>
 				) : (
-					savedOutputs.map((output) => (
+					savedOutputs.map(output => (
 						<Button
 							key={output.id}
 							variant="ghost"

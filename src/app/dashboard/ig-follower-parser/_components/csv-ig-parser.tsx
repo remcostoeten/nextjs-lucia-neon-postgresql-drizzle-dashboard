@@ -172,7 +172,7 @@ export default function CsvModifier() {
 			mimeType = 'application/json'
 			extension = 'json'
 			content = JSON.stringify(
-				output.split('\n').map((line) => {
+				output.split('\n').map(line => {
 					const [id, username] = line.split(',')
 					return { id, username }
 				}),
@@ -359,9 +359,7 @@ export default function CsvModifier() {
 								</Popover>
 								<Input
 									value={noteTitle}
-									onChange={(e) =>
-										setNoteTitle(e.target.value)
-									}
+									onChange={e => setNoteTitle(e.target.value)}
 									placeholder="Parsed Output Title"
 									className="w-40 bg-[#1e1e1e] text-white border-[#3e3e42]"
 								/>
