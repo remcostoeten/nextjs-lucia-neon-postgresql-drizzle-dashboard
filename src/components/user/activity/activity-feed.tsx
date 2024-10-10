@@ -1,10 +1,10 @@
 'use client'
 
 import { getActivityLogs } from '@/core/server/actions/users/fetch-activity'
+import { AlertCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import {
 	Alert,
-	AlertCircle,
 	AlertDescription,
 	AlertTitle,
 	Button,
@@ -21,7 +21,12 @@ import {
 	TableRow
 } from 'ui'
 
-function ErrorFallback({ error, resetErrorBoundary }) {
+interface ErrorFallbackProps {
+	error: Error
+	resetErrorBoundary: () => void
+}
+
+function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
 	return (
 		<Alert variant="destructive">
 			<AlertCircle className="h-4 w-4" />
@@ -50,51 +55,38 @@ function ActivityFeed() {
 	const itemsPerPage = 10
 
 	async function fetchActivities(retryCount = 0) {
-		const abortController = new AbortController()
-
 		try {
 			setIsLoading(true)
-			const logs = await getActivityLogs(abortController.signal)
-			if (!abortController.signal.aborted) {
-				setActivities(logs)
-				setError(null)
-			}
+			const logs = await getActivityLogs()
+			setActivities(logs)
+			setError(null)
 		} catch (error) {
-			if (!abortController.signal.aborted) {
-				console.error('Failed to fetch activity logs:', error)
+			console.error('Failed to fetch activity logs:', error)
 
-				if (error instanceof Error) {
-					console.error('Error name:', error.name)
-					console.error('Error message:', error.message)
-					console.error('Error stack:', error.stack)
-				}
+			if (error instanceof Error) {
+				console.error('Error name:', error.name)
+				console.error('Error message:', error.message)
+				console.error('Error stack:', error.stack)
+			}
 
-				if (retryCount < 3) {
-					console.log(`Retrying... Attempt ${retryCount + 1}`)
-					setTimeout(
-						() => fetchActivities(retryCount + 1),
-						1000 * (retryCount + 1)
-					)
-				} else {
-					setError(
-						'Failed to load activity logs. Please check your connection and try again.'
-					)
-				}
+			if (retryCount < 3) {
+				console.log(`Retrying... Attempt ${retryCount + 1}`)
+				setTimeout(
+					() => fetchActivities(retryCount + 1),
+					1000 * (retryCount + 1)
+				)
+			} else {
+				setError(
+					'Failed to load activity logs. Please check your connection and try again.'
+				)
 			}
 		} finally {
-			if (!abortController.signal.aborted) {
-				setIsLoading(false)
-			}
-		}
-
-		return () => {
-			abortController.abort()
+			setIsLoading(false)
 		}
 	}
 
 	useEffect(() => {
-		const cleanup = fetchActivities()
-		return cleanup
+		fetchActivities()
 	}, [])
 
 	const filteredActivities = activities.filter(

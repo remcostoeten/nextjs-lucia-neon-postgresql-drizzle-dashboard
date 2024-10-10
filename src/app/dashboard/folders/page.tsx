@@ -1,52 +1,90 @@
 'use client'
 
 import { TreeViewElement } from '@/components/elements/tree-renderer'
+import {
+	createFolder,
+	deleteFolder,
+	getFolders,
+	moveFolder,
+	updateFolder
+} from '@/lib/actions/folders'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import FileTree from './_components/file-tree'
-const initialFolders: TreeViewElement[] = [
-	{
-		id: '1',
-		name: 'Root Folder',
-		isSelectable: true,
-		color: '#ff0000',
-		children: [
-			{
-				id: '2',
-				name: 'Subfolder 1',
-				isSelectable: true,
-				color: '#00ff00'
-			},
-			{
-				id: '3',
-				name: 'Subfolder 2',
-				isSelectable: true,
-				color: '#0000ff',
-				children: [
-					{
-						id: '4',
-						name: 'Sub-subfolder',
-						isSelectable: true,
-						color: '#ffff00'
-					}
-				]
+
+export default function FoldersPage() {
+	const [folders, setFolders] = useState<TreeViewElement[]>([])
+
+	useEffect(() => {
+		const fetchFolders = async () => {
+			try {
+				const { folders } = await getFolders()
+				setFolders(buildTree(folders))
+			} catch (error) {
+				toast.error('Failed to fetch folders')
 			}
-		]
+		}
+		fetchFolders()
+	}, [])
+
+	const buildTree = (folders: TreeViewElement[]): TreeViewElement[] => {
+		const map: { [key: string]: TreeViewElement } = {}
+		const tree: TreeViewElement[] = []
+
+		folders.forEach(folder => {
+			map[folder.id] = { ...folder, children: [] }
+		})
+
+		folders.forEach(folder => {
+			if (folder.parentId) {
+				const parent = map[folder.parentId]
+				if (parent) {
+					parent.children = parent.children || []
+					parent.children.push(map[folder.id])
+				}
+			} else {
+				tree.push(map[folder.id])
+			}
+		})
+
+		return tree
 	}
-]
-export default async function FoldersPage() {
+
 	const handleUpdateFolder = async (
 		id: string,
 		name: string,
 		color: string
 	) => {
-		// Implement folder update logic here
+		try {
+			await updateFolder(id, { name, color })
+			const { folders } = await getFolders()
+			setFolders(buildTree(folders))
+			toast.success('Folder updated successfully')
+		} catch (error) {
+			toast.error('Failed to update folder')
+		}
 	}
 
 	const handleDeleteFolder = async (id: string) => {
-		// Implement folder deletion logic here
+		try {
+			await deleteFolder(id)
+			const { folders } = await getFolders()
+			setFolders(buildTree(folders))
+			toast.success('Folder deleted successfully')
+		} catch (error) {
+			toast.error('Failed to delete folder')
+		}
 	}
 
 	const handleMoveFolder = async (id: string, newParentId: string | null) => {
-		// Implement folder moving logic here
+		try {
+			await moveFolder(id, newParentId)
+			const { folders } = await getFolders()
+			setFolders(buildTree(folders))
+			toast.success('Folder moved successfully')
+		} catch (error) {
+			toast.error('Failed to move folder')
+		}
 	}
 
 	const handleCreateFolder = async (
@@ -54,15 +92,32 @@ export default async function FoldersPage() {
 		color: string,
 		parentId: string | null
 	) => {
-		// Implement folder creation logic here
+		try {
+			const { success, folder } = await createFolder(
+				name,
+				null,
+				parentId,
+				color
+			)
+			if (success && folder) {
+				const { folders } = await getFolders()
+				setFolders(buildTree(folders))
+				toast.success('Folder created successfully')
+			} else {
+				throw new Error('Failed to create folder')
+			}
+		} catch (error) {
+			toast.error('Failed to create folder')
+		}
 	}
+
 	return (
 		<div className="w-full max-w-3xl">
 			<h1 className="text-2xl font-bold mb-4 text-title">
 				File Explorer
 			</h1>
 			<FileTree
-				initialElements={initialFolders}
+				initialElements={folders}
 				onUpdateFolder={handleUpdateFolder}
 				onDeleteFolder={handleDeleteFolder}
 				onMoveFolder={handleMoveFolder}

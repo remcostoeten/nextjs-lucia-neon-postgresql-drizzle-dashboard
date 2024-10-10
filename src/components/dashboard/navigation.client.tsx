@@ -1,6 +1,14 @@
 'use client'
 
 import {
+	IconTooltips,
+	links
+} from '@/core/config/menu-items/dashboard-navigation-menu-items'
+import { ChevronDown, Settings } from 'lucide-react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import {
 	Avatar,
 	AvatarFallback,
 	Button,
@@ -13,20 +21,8 @@ import {
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger
-} from '@/components/ui'
-import {
-	IconTooltips,
-	links
-} from '@/core/config/menu-items/dashboard-navigation-menu-items'
-import {
-	createShortcutMap,
-	useKeyboardShortcuts
-} from '@/core/hooks/use-keyboard-shortcuts'
-import { signOutAction } from '@/lib/actions/users'
-import { ChevronDown, LogOut, Settings } from 'lucide-react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+} from 'ui'
+import SignOutBtn from '../auth/sign-out-button'
 import LogoIcon from '../base/logo'
 import ThemeSwitcherButton from '../elements/dark-light-toggle'
 
@@ -47,15 +43,6 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 	const handleMenuToggle = () => {
 		setMenuOpen(!isMenuOpen)
 	}
-
-	const handleLogout = async () => {
-		await signOutAction()
-		router.push('/sign-in')
-	}
-
-	const shortcuts = createShortcutMap([['shift+o', handleLogout]])
-
-	useKeyboardShortcuts(shortcuts)
 
 	return (
 		<nav className="text-subtitle fixed top-0 left-0 flex h-[77px] w-full items-center justify-between border-b">
@@ -160,9 +147,8 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 								<ThemeSwitcherButton />
 							</div>
 						</DropdownMenuItem>
-						<DropdownMenuItem onSelect={handleLogout}>
-							<LogOut className="mr-2 h-4 w-4" />
-							<span>Log out</span>
+						<DropdownMenuItem>
+							<SignOutBtn />
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>

@@ -2,60 +2,12 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { useFormState, useFormStatus } from 'react-dom'
-import { toast } from 'sonner'
-
 import Center from '@/components/atoms/Center'
-import AuthFormError from '@/components/auth/auth-form-error'
 import LogoIcon from '@/components/base/logo'
-import { Button, Input } from '@/components/ui'
-import { signUpAction } from '@/lib/actions/users'
-import { EyeClosedIcon } from '@radix-ui/react-icons'
-import { EyeIcon } from 'lucide-react'
 import { fadeInUp } from '@/core/constants/animations'
+import SignUpForm from '@/components/auth/sign-up-form'
 
 export default function SignUpPage() {
-	const router = useRouter()
-	const [state, formAction] = useFormState(signUpAction, {
-		error: ''
-	})
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
-	const [confirmPassword, setConfirmPassword] = useState('')
-	const [showPassword, setShowPassword] = useState(false)
-
-	useEffect(() => {
-		if (state.success) {
-			toast.success(state.success)
-			router.push('/dashboard')
-		}
-	}, [state.success, router])
-
-	const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setEmail(e.target.value)
-	}
-
-	const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setPassword(e.target.value)
-	}
-
-	const handleConfirmPasswordChange = (
-		e: React.ChangeEvent<HTMLInputElement>
-	) => {
-		setConfirmPassword(e.target.value)
-	}
-
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-		if (password !== confirmPassword) {
-			state.error = 'Passwords do not match'
-			return
-		}
-		formAction(new FormData(e.currentTarget))
-	}
-
 	return (
 		<Center method="grid">
 			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto w-full max-w-md">
@@ -83,111 +35,7 @@ export default function SignUpPage() {
 					>
 						Create an account
 					</motion.h1>
-					<form className="space-y-4" onSubmit={handleSubmit}>
-						<motion.div
-							initial="initial"
-							animate="animate"
-							variants={fadeInUp(0.3)}
-						>
-							<label
-								htmlFor="email"
-								className="block mb-2 text-sm font-medium text-subtitle"
-							>
-								Your email
-							</label>
-							<Input
-								type="email"
-								name="email"
-								id="email"
-								value={email}
-								onChange={handleEmailChange}
-								placeholder="name@company.com"
-								required
-								className="bg-[#1c1c1c] border-[#2c2c2c] text-title placeholder-subtitle"
-							/>
-						</motion.div>
-						<motion.div
-							initial="initial"
-							animate="animate"
-							variants={fadeInUp(0.4)}
-						>
-							<label
-								htmlFor="password"
-								className="block mb-2 text-sm font-medium text-subtitle"
-							>
-								Password
-							</label>
-							<div className="relative">
-								<Input
-									type={showPassword ? 'text' : 'password'}
-									name="password"
-									id="password"
-									value={password}
-									onChange={handlePasswordChange}
-									placeholder="••••••••"
-									required
-									className="bg-[#1c1c1c] border-[#2c2c2c] text-title placeholder-subtitle"
-								/>
-								<button
-									type="button"
-									className="absolute right-3 top-1/2 transform -translate-y-1/2 text-subtitle hover:text-title"
-									onClick={() =>
-										setShowPassword(!showPassword)
-									}
-								>
-									{showPassword ? (
-										<EyeClosedIcon className="w-4 h-4" />
-									) : (
-										<EyeIcon className="w-4 h-4" />
-									)}
-								</button>
-							</div>
-						</motion.div>
-						<motion.div
-							initial="initial"
-							animate="animate"
-							variants={fadeInUp(0.5)}
-						>
-							<label
-								htmlFor="confirmPassword"
-								className="block mb-2 text-sm font-medium text-subtitle"
-							>
-								Confirm Password
-							</label>
-							<div className="relative">
-								<Input
-									type={showPassword ? 'text' : 'password'}
-									name="confirmPassword"
-									id="confirmPassword"
-									value={confirmPassword}
-									onChange={handleConfirmPasswordChange}
-									placeholder="••••••••"
-									required
-									className="bg-[#1c1c1c] border-[#2c2c2c] text-title placeholder-subtitle"
-								/>
-								<button
-									type="button"
-									className="absolute right-3 top-1/2 transform -translate-y-1/2 text-subtitle hover:text-title"
-									onClick={() =>
-										setShowPassword(!showPassword)
-									}
-								>
-									{showPassword ? (
-										<EyeClosedIcon className="w-4 h-4" />
-									) : (
-										<EyeIcon className="w-4 h-4" />
-									)}
-								</button>
-							</div>
-						</motion.div>
-						<motion.div
-							initial="initial"
-							animate="animate"
-							variants={fadeInUp(0.6)}
-						>
-							<SubmitButton />
-						</motion.div>
-					</form>
+					<SignUpForm />
 					<motion.p
 						className="text-sm font-light text-subtitle"
 						initial="initial"
@@ -197,28 +45,13 @@ export default function SignUpPage() {
 						Already have an account?{' '}
 						<Link
 							href="/sign-in"
-							className="font-medium text-primary-500 hover:underline"
+							className="font-bold text-subtitle trans hover:text-title underline"
 						>
 							Sign in
 						</Link>
 					</motion.p>
 				</motion.div>
 			</div>
-			<AuthFormError state={state} />
 		</Center>
-	)
-}
-
-const SubmitButton = () => {
-	const { pending } = useFormStatus()
-	return (
-		<Button
-			variant="outline"
-			type="submit"
-			disabled={pending}
-			className="w-full text-title bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-		>
-			{pending ? 'Signing up...' : 'Sign up'}
-		</Button>
 	)
 }
