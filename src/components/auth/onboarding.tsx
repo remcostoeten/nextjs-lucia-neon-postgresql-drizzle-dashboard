@@ -1,175 +1,217 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
+import confetti from 'canvas-confetti'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Github, Linkedin, Twitter } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { z } from 'zod'
+
 import { Button } from '@/components/ui/button'
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle
+} from '@/components/ui/dialog'
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage
+} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { fadeInUp } from '@/core/constants/animations'
 import { updateUserProfileSchema } from '@/lib/db/schema/auth'
 import { updateProfile } from 'actions'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { toast } from 'sonner'
-import { z } from 'zod'
 
 type UpdateUserProfileInput = z.infer<typeof updateUserProfileSchema>
 
-type OnboardingFormProps = {
+type OnboardingProps = {
 	userId: string
-	onboardingCompletePath: string
 }
 
-export default function OnboardingForm({
-	userId,
-	onboardingCompletePath
-}: OnboardingFormProps) {
+export default function Onboarding({ userId }: OnboardingProps) {
 	const [step, setStep] = useState(1)
-	const [formData, setFormData] = useState<UpdateUserProfileInput>({
-		userId,
-		firstName: '',
-		lastName: '',
-		username: '',
-		dateOfBirth: '',
-		occupation: '',
-		bio: '',
-		github: '',
-		linkedin: '',
-		twitter: ''
-	})
 	const router = useRouter()
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setFormData({ ...formData, [e.target.name]: e.target.value })
-	}
+	const form = useForm<UpdateUserProfileInput>({
+		resolver: zodResolver(updateUserProfileSchema),
+		defaultValues: {
+			userId,
+			name: '',
+			bio: '',
+			github: '',
+			twitter: '',
+			linkedin: ''
+		}
+	})
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
+	const { handleSubmit, control } = form
 
-		if (step === 1) {
-			// Move to step 2 without submitting to the database
-			setStep(2)
+	const onSubmit = async (data: UpdateUserProfileInput) => {
+		if (step < 3) {
+			setStep(step + 1)
 		} else {
-			// Submit the complete form data
 			try {
-				const validatedData = updateUserProfileSchema.parse(formData)
-				const result = await updateProfile(validatedData)
-				if (result.success) {
-					toast.success(result.message)
-					router.push(onboardingCompletePath)
-				} else {
-					throw new Error(result.message)
-				}
+				await updateProfile(data)
+				confetti({
+					particleCount: 100,
+					spread: 70,
+					origin: { y: 0.6 }
+				})
+				toast.success('Profile updated successfully!')
+				router.push('/dashboard')
 			} catch (error) {
-				toast.error(
-					error instanceof Error
-						? error.message
-						: 'Error updating profile'
-				)
-				console.error(error)
+				console.error('Error updating user profile:', error)
+				toast.error('Failed to update profile. Please try again.')
 			}
 		}
 	}
 
-	const handleSkip = () => {
-		if (step === 1) {
-			setStep(2)
-		} else {
-			router.push(onboardingCompletePath)
-		}
-	}
-
 	return (
-		<AnimatePresence mode="wait">
-			<motion.div
-				key={step}
-				initial="initial"
-				animate="animate"
-				exit="exit"
-				variants={fadeInUp(0.2)}
-				className="w-full max-w-md mx-auto"
-			>
-				<form onSubmit={handleSubmit} className="space-y-4">
-					{step === 1 ? (
-						<>
-							<h2 className="text-xl font-bold mb-4">
-								Basic Information
-							</h2>
-							<Input
-								name="firstName"
-								placeholder="First Name"
-								value={formData.firstName || ''}
-								onChange={handleInputChange}
-							/>
-							<Input
-								name="lastName"
-								placeholder="Last Name"
-								value={formData.lastName || ''}
-								onChange={handleInputChange}
-							/>
-							<Input
-								name="username"
-								placeholder="Username"
-								value={formData.username || ''}
-								onChange={handleInputChange}
-							/>
-							<Input
-								name="dateOfBirth"
-								type="date"
-								placeholder="Date of Birth"
-								value={formData.dateOfBirth || ''}
-								onChange={handleInputChange}
-							/>
-						</>
-					) : (
-						<>
-							<h2 className="text-xl font-bold mb-4">
-								Additional Information
-							</h2>
-							<Input
-								name="occupation"
-								placeholder="Occupation"
-								value={formData.occupation || ''}
-								onChange={handleInputChange}
-							/>
-							<Input
-								name="bio"
-								placeholder="Bio"
-								value={formData.bio || ''}
-								onChange={handleInputChange}
-							/>
-							<Input
-								name="github"
-								placeholder="GitHub URL"
-								value={formData.github || ''}
-								onChange={handleInputChange}
-							/>
-							<Input
-								name="linkedin"
-								placeholder="LinkedIn URL"
-								value={formData.linkedin || ''}
-								onChange={handleInputChange}
-							/>
-							<Input
-								name="twitter"
-								placeholder="Twitter URL"
-								value={formData.twitter || ''}
-								onChange={handleInputChange}
-							/>
-						</>
-					)}
-					<div className="flex justify-between">
-						<Button
-							type="button"
-							variant="outline"
-							onClick={handleSkip}
-						>
-							{step === 1 ? 'Skip' : 'Skip for now'}
+		<Dialog open={true}>
+			<DialogContent className="sm:max-w-[425px]">
+				<DialogHeader>
+					<DialogTitle>Complete Your Profile</DialogTitle>
+				</DialogHeader>
+				<Form {...form}>
+					<form
+						onSubmit={handleSubmit(onSubmit)}
+						className="space-y-4"
+					>
+						<AnimatePresence mode="wait">
+							{step === 1 && (
+								<motion.div
+									key="step1"
+									initial="hidden"
+									animate="visible"
+									exit="hidden"
+									variants={fadeInUp}
+								>
+									<FormField
+										control={control}
+										name="name"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Name</FormLabel>
+												<FormControl>
+													<Input
+														placeholder="Your name"
+														{...field}
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+								</motion.div>
+							)}
+							{step === 2 && (
+								<motion.div
+									key="step2"
+									initial="hidden"
+									animate="visible"
+									exit="hidden"
+									variants={fadeInUp}
+								>
+									<FormField
+										control={control}
+										name="bio"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Bio</FormLabel>
+												<FormControl>
+													<Input
+														placeholder="Tell us about yourself"
+														{...field}
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+								</motion.div>
+							)}
+							{step === 3 && (
+								<motion.div
+									key="step3"
+									initial="hidden"
+									animate="visible"
+									exit="hidden"
+									variants={fadeInUp}
+								>
+									<FormField
+										control={control}
+										name="github"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>GitHub</FormLabel>
+												<FormControl>
+													<Input
+														placeholder="GitHub username"
+														{...field}
+														icon={
+															<Github className="h-4 w-4" />
+														}
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={control}
+										name="twitter"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Twitter</FormLabel>
+												<FormControl>
+													<Input
+														placeholder="Twitter username"
+														{...field}
+														icon={
+															<Twitter className="h-4 w-4" />
+														}
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={control}
+										name="linkedin"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>LinkedIn</FormLabel>
+												<FormControl>
+													<Input
+														placeholder="LinkedIn profile URL"
+														{...field}
+														icon={
+															<Linkedin className="h-4 w-4" />
+														}
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+								</motion.div>
+							)}
+						</AnimatePresence>
+						<Button type="submit" className="w-full">
+							{step < 3 ? 'Next' : 'Finish'}
 						</Button>
-						<Button type="submit">
-							{step === 1 ? 'Next' : 'Finish'}
-						</Button>
-					</div>
-				</form>
-			</motion.div>
-		</AnimatePresence>
+					</form>
+				</Form>
+			</DialogContent>
+		</Dialog>
 	)
 }

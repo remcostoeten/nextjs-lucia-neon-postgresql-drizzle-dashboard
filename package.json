@@ -30,6 +30,7 @@
 		"fix:ui-file": "python3 src/core/scripts/optimize-ui-imports.py --file"
 	},
 	"dependencies": {
+		"@hookform/resolvers": "^3.9.0",
 		"@kinfe123/farm-ui": "^1.0.12",
 		"@lucia-auth/adapter-drizzle": "^1.0.2",
 		"@neondatabase/serverless": "^0.8.1",
