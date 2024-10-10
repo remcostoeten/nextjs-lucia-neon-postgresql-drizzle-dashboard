@@ -1,11 +1,13 @@
 'use client'
 
+import { useState } from 'react'
 import { withUserInfo } from '@/components/auth/with-user-info'
 import { Button, Input } from '@/components/ui'
 import signUpAction from '@/core/server/actions/user/action.sign-up'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import { toast } from 'sonner'
+import { motion } from 'framer-motion'
+import { fadeInUp } from '@/core/constants/animations'
 
 type SignUpFormProps = {
 	userInfo: {
@@ -42,8 +44,14 @@ function SignUpForm({ userInfo, enhancedSubmit }: SignUpFormProps) {
 	}
 
 	return (
-		<form onSubmit={e => enhancedSubmit(e, handleSubmit)}>
-			<div className="mb-4">
+		<motion.form
+			onSubmit={e => enhancedSubmit(e, handleSubmit)}
+			initial="initial"
+			animate="animate"
+			variants={fadeInUp(0.2)}
+			className="space-y-4"
+		>
+			<div>
 				<label
 					htmlFor="email"
 					className="block mb-2 text-sm font-medium text-subtitle"
@@ -60,7 +68,7 @@ function SignUpForm({ userInfo, enhancedSubmit }: SignUpFormProps) {
 					required
 				/>
 			</div>
-			<div className="mb-4">
+			<div>
 				<label
 					htmlFor="password"
 					className="block mb-2 text-sm font-medium text-gray-300"
@@ -77,7 +85,7 @@ function SignUpForm({ userInfo, enhancedSubmit }: SignUpFormProps) {
 					required
 				/>
 			</div>
-			<div className="mb-4">
+			<div>
 				<label
 					htmlFor="confirmPassword"
 					className="block mb-2 text-sm font-medium text-gray-300"
@@ -97,7 +105,7 @@ function SignUpForm({ userInfo, enhancedSubmit }: SignUpFormProps) {
 			<Button variant="outline" type="submit" className="w-full">
 				Sign up
 			</Button>
-		</form>
+		</motion.form>
 	)
 }
 

@@ -20,7 +20,7 @@
 		"rebuild": "pnpm clear && pnpm i && pnpm build",
 		"restart": "pnpm clear && pnpm i && pnpm dev",
 		"gen": "drizzle-kit generate:pg",
-		"push": "drizzle-kit push",
+		"push": "drizzle-kit push:pg",
 		"drop": "drizzle-kit drop",
 		"pull": "drizzle-kit introspect:pg",
 		"studio": "drizzle-kit studio",

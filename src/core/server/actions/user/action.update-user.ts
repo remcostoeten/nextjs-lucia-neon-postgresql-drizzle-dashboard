@@ -1,60 +1,42 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
 import { db } from '@/lib/db/index'
+import { updateUserProfileSchema, userProfiles } from '@/lib/db/schema/auth'
 import { eq } from 'drizzle-orm'
-import { getUserAuth, genericError } from '../../../../lib/auth/utils'
-import { updateUserSchema, users } from '../../../../lib/db/schema/auth'
-import { logActivity } from '@/core/server/actions/users/log-activity'
-import { ActionResult } from '@/types/types.users'
+import { revalidatePath } from 'next/cache'
+import { z } from 'zod'
 
-export async function updateUser(
-	_: any,
-	formData: FormData
-): Promise<ActionResult> {
-	const { session } = await getUserAuth()
-	if (!session) return { error: 'Unauthorised', success: false }
-
-	const name = formData.get('name') ?? undefined
-	const email = formData.get('email') ?? undefined
-
-	const result = updateUserSchema.safeParse({ name, email })
-
-	if (!result.success) {
-		const error = result.error.flatten().fieldErrors
-		if (error.name)
-			return { error: 'Invalid name - ' + error.name[0], success: false }
-		if (error.email)
-			return {
-				error: 'Invalid email - ' + error.email[0],
-				success: false
-			}
-		return { ...genericError, success: false }
-	}
-
+export async function updateProfile(
+	data: z.infer<typeof updateUserProfileSchema>
+) {
 	try {
-		await db
-			.update(users)
-			.set({ ...result.data })
-			.where(eq(users.id, session.user.id))
+		const validatedData = updateUserProfileSchema.parse(data)
 
-		await logActivity(
-			session.user.id,
-			'Profile Update',
-			'User updated their profile',
-			{
-				updatedFields: Object.keys(result.data).join(', '),
-				timestamp: new Date().toISOString()
-			}
-		)
+		const existingProfile = await db.query.userProfiles.findFirst({
+			where: eq(userProfiles.userId, validatedData.userId)
+		})
 
-		revalidatePath('/account')
-		return {
-			success: true,
-			error: null,
-			message: 'Profile updated successfully'
+		if (existingProfile) {
+			// Update existing profile
+			await db
+				.update(userProfiles)
+				.set(validatedData)
+				.where(eq(userProfiles.userId, validatedData.userId))
+		} else {
+			// Create new profile
+			await db
+				.insert(userProfiles)
+				.values({
+					...validatedData,
+					userId: validatedData.userId as string
+				})
 		}
-	} catch (e) {
-		return { ...genericError, success: false }
+
+		revalidatePath('/profile') // Adjust this path as needed
+
+		return { success: true, message: 'Profile updated successfully' }
+	} catch (error) {
+		console.error('Error updating user profile:', error)
+		return { success: false, message: 'Failed to update profile' }
 	}
 }

@@ -3,7 +3,6 @@
 import { db } from '@/lib/db/index'
 import { ActionResult } from '@/types/types.users'
 import { generateId } from 'lucia'
-import { redirect } from 'next/navigation'
 import { Argon2id } from 'oslo/password'
 import { lucia } from '../../../../lib/auth/lucia'
 import {
@@ -17,7 +16,7 @@ import { logActivity } from '../users/log-activity'
 export default async function signUpAction(
 	_: ActionResult,
 	formData: FormData
-): Promise<ActionResult | Response> {
+): Promise<ActionResult | { userId: string }> {
 	const { data, error } = validateAuthFormData(formData)
 
 	if (error !== null) return { error, success: false }
@@ -46,7 +45,7 @@ export default async function signUpAction(
 
 		const sessionCookie = lucia.createSessionCookie(session.id)
 		setAuthCookie(sessionCookie)
-		return redirect('/dashboard')
+		return { userId }
 	} catch (e) {
 		console.error('Sign-up error:', e)
 		return { ...genericError, success: false }
