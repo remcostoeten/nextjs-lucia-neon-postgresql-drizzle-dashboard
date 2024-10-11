@@ -1,0 +1,74 @@
+.home-lights {
+	z-index: 98;
+	pointer-events: none;
+	justify-content: center;
+	align-items: flex-start;
+	display: flex;
+	position: absolute;
+	top: 0%;
+	bottom: auto;
+	left: 0%;
+	right: 0%;
+}
+
+.light-left {
+	width: 80vw;
+	max-width: 1440px;
+	position: absolute;
+	top: 0%;
+	bottom: auto;
+	left: 0%;
+	right: auto;
+	animation: glowLeft 8s infinite alternate ease-in-out;
+}
+
+.light-right {
+	width: 80vw;
+	max-width: 1440px;
+	position: absolute;
+	top: 0%;
+	bottom: auto;
+	left: auto;
+	right: 0%;
+	animation: glowRight 10s infinite alternate ease-in-out;
+}
+
+.light-wrap {
+	width: 100%;
+	min-width: 1440px;
+	position: relative;
+}
+
+@keyframes glowLeft {
+	0% {
+		transform: scale(0.95);
+		opacity: 0.9;
+	}
+
+	50% {
+		transform: scale(1.03);
+		opacity: 1;
+	}
+
+	100% {
+		transform: scale(0.98);
+		opacity: 0.95;
+	}
+}
+
+@keyframes glowRight {
+	0% {
+		transform: scale(0.97);
+		opacity: 0.93;
+	}
+
+	60% {
+		transform: scale(1.05);
+		opacity: 1;
+	}
+
+	100% {
+		transform: scale(1.02);
+		opacity: 0.97;
+	}
+}

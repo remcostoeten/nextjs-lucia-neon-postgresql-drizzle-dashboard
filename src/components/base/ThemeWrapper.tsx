@@ -25,7 +25,7 @@ export default function ThemeWrapper({
 					initialPosition={0.55}
 				/>
 				<>
-					<Toaster richColors />
+					<Toaster richColors position="top-right" />
 					{children}
 				</>
 			</TooltipProvider>

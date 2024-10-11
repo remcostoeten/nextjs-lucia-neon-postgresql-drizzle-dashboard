@@ -1,0 +1,37 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: 500;
+	margin-top: 0;
+	margin-bottom: 0;
+	font-family:
+		Bricolage Grotesque,
+		sans-serif;
+	color: var(--base--white);
+}
+
+h1 {
+	font-size: 56px;
+	letter-spacing: -0.22px;
+	line-height: 1.2;
+}
+
+h2 {
+	font-size: 48px;
+	letter-spacing: -0.19px;
+	line-height: 1.2;
+}
+
+h3 {
+	font-size: 40px;
+	letter-spacing: -0.17px;
+	line-height: 1.2;
+}
+
+p {
+	margin-top: 0;
+	margin-bottom: 0;
+}

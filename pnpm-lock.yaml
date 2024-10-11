@@ -276,7 +276,7 @@ importers:
                 specifier: ^8
                 version: 8.4.47
             tailwindcss:
-                specifier: ^3.3.0
+                specifier: ^3.4.13
                 version: 3.4.13
             tsx:
                 specifier: ^4.7.1
