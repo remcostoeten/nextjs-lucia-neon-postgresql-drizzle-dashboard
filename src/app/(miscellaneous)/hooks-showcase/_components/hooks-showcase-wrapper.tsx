@@ -12,7 +12,7 @@ import { EnhancedCodeBlock } from '../../../../components/elements/display-code/
 type HooksShowcaseWrapperProps = {
 	title?: string
 	description?: string
-	children?: React.ReactNode
+	children?: React.ReactNodee
 	codeString?: string
 	fileName?: string
 	language?: string
@@ -37,9 +37,9 @@ export function HooksShowcaseWrapper({
 }: HooksShowcaseWrapperProps) {
 	return (
 		<div className="max-w-4xl mx-auto p-6 space-y-8">
-			<Card className="bg-card text-title border-zinc-800">
-				<CardHeader className="pb-0">
-					<CardTitle className="text-2xl font-bold">
+			<Card className="bg-body border">
+				<CardHeader className="pb-0 mb-4">
+					<CardTitle className="text-2xl font-bold text-title">
 						{title}
 					</CardTitle>
 					<CardDescription className="text-text-subtitle">
@@ -65,7 +65,7 @@ export function HooksShowcaseWrapper({
 						</div>
 					)}
 				</CardContent>
-
+				e
 				<CardContent className="space-y-6">
 					<EnhancedCodeBlock
 						code={codeString as string}

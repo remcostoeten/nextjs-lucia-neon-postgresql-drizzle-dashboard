@@ -1,12 +1,8 @@
 'use client'
 
-import { ChevronDown, ChevronUp, Copy } from 'lucide-react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ChevronDown, Copy } from 'lucide-react'
 import { useState } from 'react'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { toast } from 'sonner'
-import { Badge, Button } from 'ui'
-
 import {
 	DiCss3,
 	DiHtml5,
@@ -16,23 +12,80 @@ import {
 	DiReact
 } from 'react-icons/di'
 import { SiTypescript } from 'react-icons/si'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { toast } from 'sonner'
+import { Badge, Button } from 'ui'
 
 type CodeBlockProps = {
 	code: string | undefined | any
 	fileName: string
 	language: string
 	badges?: string[]
+	animationVariant?: 'default' | 'bouncy' | 'smooth' | 'elastic' | 'snappy'
 }
 
 const getLanguageIcon = (language: string) => {
-	// ... (keep the existing getLanguageIcon function)
+	switch (language.toLowerCase()) {
+		case 'html':
+			return <DiHtml5 />
+		case 'css':
+			return <DiCss3 />
+		case 'javascript':
+			return <DiJavascript1 />
+		case 'typescript':
+			return <SiTypescript />
+		case 'python':
+			return <DiPython />
+		case 'java':
+			return <DiJava />
+		case 'react':
+		case 'jsx':
+		case 'tsx':
+			return <DiReact />
+		default:
+			return null
+	}
+}
+
+const animationVariants = {
+	default: {
+		type: 'spring',
+		stiffness: 150,
+		damping: 15,
+		duration: 0.75
+	},
+	bouncy: {
+		type: 'spring',
+		stiffness: 180,
+		damping: 10,
+		duration: 0.75
+	},
+	smooth: {
+		type: 'tween',
+		ease: 'easeInOut',
+		duration: 0.75
+	},
+	elastic: {
+		type: 'spring',
+		stiffness: 200,
+		damping: 12,
+		duration: 0.75
+	},
+	snappy: {
+		type: 'spring',
+		stiffness: 250,
+		damping: 20,
+		duration: 0.75
+	}
 }
 
 export function EnhancedCodeBlock({
 	code,
 	fileName,
 	language,
-	badges = []
+	badges = [],
+	animationVariant = 'default'
 }: CodeBlockProps) {
 	const [isCollapsed, setIsCollapsed] = useState(false)
 
@@ -52,12 +105,17 @@ export function EnhancedCodeBlock({
 		}
 	}
 
+	const openTransition = animationVariants[animationVariant]
+	const closeTransition = animationVariants.smooth
+
 	return (
 		<div className="rounded-lg overflow-hidden bg-card border w-full">
 			<div className="flex justify-between items-center border px-4 py-2 bg-section-lighter">
 				<div className="flex items-center space-x-2">
 					{languageIcon && (
-						<div className="mr-2 text-subtitle">{languageIcon}</div>
+						<span className="mr-2 text-subtitle">
+							{languageIcon}
+						</span>
 					)}
 					{badges.map((badge, index) => (
 						<Badge
@@ -77,11 +135,12 @@ export function EnhancedCodeBlock({
 						onClick={() => setIsCollapsed(!isCollapsed)}
 						className="text-zinc-400 hover:text-zinc-100"
 					>
-						{isCollapsed ? (
+						<motion.div
+							animate={{ rotate: isCollapsed ? 0 : 180 }}
+							transition={{ duration: 0.75 }}
+						>
 							<ChevronDown size={16} />
-						) : (
-							<ChevronUp size={16} />
-						)}
+						</motion.div>
 					</Button>
 					<Button
 						variant="ghost"
@@ -93,32 +152,54 @@ export function EnhancedCodeBlock({
 					</Button>
 				</div>
 			</div>
-			{!isCollapsed && (
-				<div className="p-4 max-h-[60vh] overflow-y-auto">
-					<SyntaxHighlighter
-						language={language}
-						style={customStyle}
-						customStyle={{
-							margin: 0,
-							padding: 0,
-							background: 'transparent',
-							fontSize: '0.875rem'
+			<AnimatePresence initial={false}>
+				{!isCollapsed && (
+					<motion.div
+						initial="collapsed"
+						animate="open"
+						exit="collapsed"
+						variants={{
+							open: { opacity: 1, height: 'auto' },
+							collapsed: { opacity: 0, height: 0 }
 						}}
-						showLineNumbers={true}
-						lineNumberStyle={{
-							color: '#6A737D',
-							minWidth: '2.5em',
-							paddingRight: '1em',
-							textAlign: 'right',
-							userSelect: 'none'
-						}}
-						wrapLines={true}
-						wrapLongLines={true}
+						transition={
+							isCollapsed ? closeTransition : openTransition
+						}
+						className="overflow-hidden"
 					>
-						{code}
-					</SyntaxHighlighter>
-				</div>
-			)}
+						<motion.div
+							variants={{ collapsed: { y: -10 }, open: { y: 0 } }}
+							transition={
+								isCollapsed ? closeTransition : openTransition
+							}
+							className="p-4 max-h-[60vh] overflow-y-auto"
+						>
+							<SyntaxHighlighter
+								language={language}
+								style={customStyle}
+								customStyle={{
+									margin: 0,
+									padding: 0,
+									background: 'transparent',
+									fontSize: '0.875rem'
+								}}
+								showLineNumbers={true}
+								lineNumberStyle={{
+									color: '#6A737D',
+									minWidth: '2.5em',
+									paddingRight: '1em',
+									textAlign: 'right',
+									userSelect: 'none'
+								}}
+								wrapLines={true}
+								wrapLongLines={true}
+							>
+								{code}
+							</SyntaxHighlighter>
+						</motion.div>
+					</motion.div>
+				)}
+			</AnimatePresence>
 		</div>
 	)
 }

@@ -45,7 +45,7 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 	}
 
 	return (
-		<nav className="text-subtitle fixed top-0 left-0 flex h-[77px] w-full items-center justify-between border-b">
+		<nav className="text-subtitle fixed top-0 left-0 flex h-[77px] w-full items-center justify-between border-b pr-6F">
 			<div className="flex items-center space-x-4">
 				<Link href="/" className="text-title font-semibold">
 					<LogoIcon />
@@ -53,7 +53,7 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 			</div>
 
 			<div className="flex-grow flex justify-center">
-				<div className="flex items-center space-x-4">
+				<div className="hidden sm:flex items-center space-x-4">
 					{links.map(link => (
 						<Link
 							key={link.href}
@@ -66,7 +66,7 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 				</div>
 			</div>
 
-			<div className="flex items-center space-x-4 mr-4">
+			<div className="flex items-center space-x-4 sm:mr-4">
 				{IconTooltips.map(tooltip => (
 					<Tooltip key={tooltip.label}>
 						<TooltipTrigger asChild>
@@ -92,51 +92,52 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 						</TooltipContent>
 					</Tooltip>
 				))}
+			</div>
 
-				<DropdownMenu onOpenChange={handleMenuToggle}>
-					<DropdownMenuTrigger asChild>
-						<button>
-							<div className="bg-neutral-900 flex items-center gap-1.5 transition-all duration-150 pl-0.5 pr-2 py-0.5 rounded-full">
-								<Avatar className="h-8 w-8 bg-avatar text-title">
-									<AvatarFallback>
-										{userName
-											? userName
-													.split(' ')
-													.map(name => name[0])
-													.join('')
-													.toUpperCase()
-													.slice(0, 2)
-											: 'U'}
-									</AvatarFallback>
-								</Avatar>
-								<ChevronDown className="h-3 w-3" />
-							</div>
-						</button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent className="w-56" open={isMenuOpen}>
-						<DropdownMenuLabel>
-							<div className="flex flex-col space-y-1">
-								<p className="text-sm font-medium leading-none">
-									{userName || 'User'}
-								</p>
-								<p className="text-xs leading-none text-neutral-400">
-									{userEmail}
-								</p>
-							</div>
-						</DropdownMenuLabel>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem>
-							<Link
-								href="/account"
-								className="flex w-full items-center"
-							>
-								<Settings className="mr-2 h-4 w-4" />
-								<span>Account Settings</span>
-							</Link>
-						</DropdownMenuItem>
-						<DropdownMenuItem>
-							<div className="flex items-center justify-between w-full">
-								{/* <div className="flex items-center">
+			<DropdownMenu onOpenChange={handleMenuToggle}>
+				<DropdownMenuTrigger asChild>
+					<button>
+						<div className="bg-neutral-900 flex items-center gap-1.5 transition-all duration-150 pl-0.5 pr-2 py-0.5 rounded-full">
+							<Avatar className="h-8 w-8 bg-avatar text-title">
+								<AvatarFallback>
+									{userName
+										? userName
+												.split(' ')
+												.map(name => name[0])
+												.join('')
+												.toUpperCase()
+												.slice(0, 2)
+										: 'U'}
+								</AvatarFallback>
+							</Avatar>
+							<ChevronDown className="h-3 w-3" />
+						</div>
+					</button>
+				</DropdownMenuTrigger>
+				<DropdownMenuContent className="w-56" open={isMenuOpen}>
+					<DropdownMenuLabel>
+						<div className="flex flex-col space-y-1">
+							<p className="text-sm font-medium leading-none">
+								{userName || 'User'}
+							</p>
+							<p className="text-xs leading-none text-neutral-400">
+								{userEmail}
+							</p>
+						</div>
+					</DropdownMenuLabel>
+					<DropdownMenuSeparator />
+					<DropdownMenuItem>
+						<Link
+							href="/account"
+							className="flex w-full items-center"
+						>
+							<Settings className="mr-2 h-4 w-4" />
+							<span>Account Settings</span>
+						</Link>
+					</DropdownMenuItem>
+					<DropdownMenuItem>
+						<div className="flex items-center justify-between w-full">
+							{/* <div className="flex items-center">
 									{theme === 'light' ? (
 										<Sun className="mr-2 h-4 w-4" />
 									) : (
@@ -144,15 +145,14 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 									)}
 									<span>Theme</span>
 								</div> */}
-								<ThemeSwitcherButton />
-							</div>
-						</DropdownMenuItem>
-						<DropdownMenuItem>
-							<SignOutBtn />
-						</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
-			</div>
+							<ThemeSwitcherButton />
+						</div>
+					</DropdownMenuItem>
+					<DropdownMenuItem>
+						<SignOutBtn />
+					</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
 		</nav>
 	)
 }

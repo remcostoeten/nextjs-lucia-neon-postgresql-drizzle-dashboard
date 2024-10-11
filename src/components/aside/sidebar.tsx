@@ -14,9 +14,8 @@ import {
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
 import { useSiteSettingsStore } from 'stores'
-import SiteSettingsMenu from './site-settings-menu'
+import UnifiedSettingsComponent from './site-settings-menu'
 import { MainSidebarProps, SidebarIconProps } from './types.sidear'
 
 function useActivePath(): (path: string) => boolean {
@@ -84,14 +83,9 @@ export default function MainSidebar({
 	const { disableAllAnimations } = useSiteSettingsStore()
 
 	useEffect(() => {
-		// Trigger sidebar visibility after a short delay
 		const timer = setTimeout(() => setIsSidebarVisible(true), 300)
 		return () => clearTimeout(timer)
 	}, [])
-
-	const handleSettingsChange = (setting: string, value: boolean) => {
-		toast.success(`${setting} ${value ? 'enabled' : 'disabled'}`)
-	}
 
 	const sidebarVariants = {
 		hidden: { opacity: 0 },
@@ -244,10 +238,10 @@ export default function MainSidebar({
 					)}
 				</ButtonComponent>
 			</div>
-			<SiteSettingsMenu
+			<UnifiedSettingsComponent
+				variant="modal"
 				isOpen={isSettingsOpen}
 				onClose={() => setIsSettingsOpen(false)}
-				onSettingChange={handleSettingsChange}
 			/>
 		</>
 	)
