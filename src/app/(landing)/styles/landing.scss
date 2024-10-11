@@ -113,3 +113,70 @@
 }
 
 @import './theme/_fonts.scss';
+
+// Additional styles for form elements
+input[type='email'] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+button,
+input[type='submit'] {
+	cursor: pointer;
+}
+
+// Styles for SVG icons (you may need to adjust these based on your specific SVG implementation)
+svg {
+	fill: currentColor;
+}
+
+a:focus,
+button:focus,
+input:focus {
+	outline: 2px solid var(--white--64);
+	outline-offset: 2px;
+}
+
+// Transition for smooth interactions
+* {
+	transition:
+		color 0.3s,
+		background-color 0.3s,
+		opacity 0.3s;
+}
+
+// Additional styles for form elements
+input[type='email'] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+button,
+input[type='submit'] {
+	cursor: pointer;
+}
+
+// Styles for SVG icons (you may need to adjust these based on your specific SVG implementation)
+svg {
+	fill: currentColor;
+}
+
+// Focus styles for better keyboard navigation
+a:focus,
+button:focus,
+input:focus {
+	outline: 2px solid var(--white--64);
+	outline-offset: 2px;
+}
+
+.visually-hidden {
+	position: absolute !important;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+	clip: rect(1px 1px 1px 1px);
+	clip: rect(1px, 1px, 1px, 1px);
+	white-space: nowrap;
+}
