@@ -1,13 +1,13 @@
 'use server'
 
+import { logActivity } from 'actions'
 import { db } from '@/lib/db/index'
+import { ActionResult } from '@/types/types.users'
 import { eq } from 'drizzle-orm'
 import { Argon2id } from 'oslo/password'
 import { lucia } from '../../../../lib/auth/lucia'
-import { logActivity } from '@/core/server/actions/users/log-activity'
 import { setAuthCookie, validateAuthFormData } from '../../../../lib/auth/utils'
 import { users } from '../../../../lib/db/schema/auth'
-import { ActionResult } from '@/types/types.users'
 
 export async function signInAction(
 	_: ActionResult,

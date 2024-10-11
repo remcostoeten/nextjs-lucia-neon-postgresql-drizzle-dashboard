@@ -1,3 +1,5 @@
+import { cubicBezier } from 'framer-motion'
+
 export const fadeInUp = (delay: number) => ({
 	initial: { opacity: 0, y: 20 },
 	animate: {
@@ -10,3 +12,5 @@ export const fadeInUp = (delay: number) => ({
 		}
 	}
 })
+
+export const customEasing = cubicBezier(0.35, 0.9, 0.13, 0.6)

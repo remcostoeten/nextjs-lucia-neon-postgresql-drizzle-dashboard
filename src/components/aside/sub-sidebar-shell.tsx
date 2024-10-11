@@ -1,4 +1,7 @@
+'use client'
+
 import { subSidebarConfig } from '@/core/config/menu-items/sidebar-menu-items'
+import { customEasing } from '@/core/constants/animations'
 import { useMainSidebarStore } from '@/core/stores'
 import { useSiteSettingsStore } from '@/core/stores/store.site-settings'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -10,7 +13,8 @@ import { SubSidebarShellProps } from './types.sidear'
 function SubSidebarShell({ isSubSidebarOpen }: SubSidebarShellProps) {
 	const pathname = usePathname()
 	const [currentConfig, setCurrentConfig] = useState<any>(null)
-	const { disableSidebarAnimations } = useSiteSettingsStore()
+	const { disableAllAnimations, disableSidebarAnimations } =
+		useSiteSettingsStore()
 	const { isCollapsed: isMainSidebarCollapsed } = useMainSidebarStore()
 
 	useEffect(() => {
@@ -27,24 +31,76 @@ function SubSidebarShell({ isSubSidebarOpen }: SubSidebarShellProps) {
 	const leftPosition = isMainSidebarCollapsed ? '0' : 'var(--sidebar-width)'
 	const width = isSubSidebarOpen ? '240px' : '0px'
 
+	const sidebarVariants = {
+		hidden: { width: 0, opacity: 0 },
+		visible: {
+			width,
+			opacity: 1,
+			transition: {
+				width: {
+					duration: 0.5,
+					ease: customEasing
+				},
+				opacity: {
+					duration: 0.5,
+					delay: 0.2,
+					ease: customEasing
+				}
+			}
+		},
+		exit: {
+			width: 0,
+			opacity: 0,
+			transition: {
+				width: {
+					duration: 0.5,
+					ease: customEasing
+				},
+				opacity: {
+					duration: 0.2,
+					ease: customEasing
+				}
+			}
+		}
+	}
+
+	const SidebarComponent = disableAllAnimations ? 'div' : motion.div
+
 	return (
-		<AnimatePresence>
-			{isSubSidebarOpen && (
-				<motion.div
-					initial={{ width: 0 }}
-					animate={{ width, left: leftPosition }}
-					exit={{ width: 0 }}
-					transition={
-						disableSidebarAnimations ? {} : { duration: 0.3 }
-					}
-					className="fixed z-[1] top-[var(--header-height)] bottom-0 bg-body border-outline-right overflow-hidden border-right"
-				>
-					<Suspense fallback={<SubSidebarSkeletonLoader />}>
-						<SidebarContent />
-					</Suspense>
-				</motion.div>
-			)}
-		</AnimatePresence>
+		<>
+			{isSubSidebarOpen &&
+				(disableAllAnimations ? (
+					<div
+						style={{
+							left: leftPosition,
+							width: width,
+							transition: disableSidebarAnimations
+								? 'none'
+								: `width 0.5s ${customEasing}, opacity 0.5s ${customEasing}`
+						}}
+						className="fixed z-[1] top-[var(--header-height)] bottom-0 bg-body border-outline-right overflow-hidden border-right"
+					>
+						<Suspense fallback={<SubSidebarSkeletonLoader />}>
+							<SidebarContent />
+						</Suspense>
+					</div>
+				) : (
+					<AnimatePresence>
+						<SidebarComponent
+							initial="hidden"
+							animate="visible"
+							exit="exit"
+							variants={sidebarVariants}
+							style={{ left: leftPosition }}
+							className="fixed z-[1] top-[var(--header-height)] bottom-0 bg-body border-outline-right overflow-hidden border-right"
+						>
+							<Suspense fallback={<SubSidebarSkeletonLoader />}>
+								<SidebarContent />
+							</Suspense>
+						</SidebarComponent>
+					</AnimatePresence>
+				))}
+		</>
 	)
 }
 

@@ -2,7 +2,6 @@
 
 import MainSidebar from '@/components/aside/sidebar'
 import SubSidebarShell from '@/components/aside/sub-sidebar-shell'
-import Navbar from '@/components/Navbar'
 import { subSidebarConfig } from '@/core/config/menu-items/sidebar-menu-items'
 import { useMainSidebarStore, useSubSidebarStore } from '@/core/stores'
 import { usePathname } from 'next/navigation'
@@ -38,7 +37,6 @@ export default function MainContentWrapper({
 
 	return (
 		<>
-			<Navbar />
 			<MainSidebar
 				isSubSidebarOpen={isSubSidebarOpen}
 				toggleSubSidebar={toggleSubSidebar}
@@ -49,7 +47,7 @@ export default function MainContentWrapper({
 				<SubSidebarShell isSubSidebarOpen={isSubSidebarOpen} />
 			)}
 			<main
-				className={`border-left pl-6 pt-4 mt-[77px] flex-1 overflow-x-hidden overflow-y-auto  transition-all duration-300 ease-in-out ${marginClass}`}
+				className={` pl-6 pt-4 mt-[77px] flex-1 overflow-x-hidden overflow-y-auto  transition-all duration-300 ease-in-out ${marginClass}`}
 			>
 				{children}
 			</main>

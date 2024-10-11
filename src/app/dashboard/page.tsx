@@ -1,5 +1,5 @@
-import OnboardingTrigger from '@/components/dashboard/onboarding-trigger'
 import IntroShortcutGuide from '@/components/dashboard/intro-guide'
+import OnboardingTrigger from '@/components/dashboard/onboarding-trigger'
 import { getUserAuth } from '@/lib/auth/utils'
 import { db } from '@/lib/db/index'
 import { userProfiles } from '@/lib/db/schema/auth'
@@ -20,16 +20,12 @@ export default async function DashboardPage() {
 	const hasCompletedOnboarding = !!userProfile
 
 	return (
-		<div className="container mx-auto px-4 py-8">
-			<h1 className="text-2xl font-bold mb-4">
-				Welcome to your Dashboard
-			</h1>
+		<div className=" px-4 py-8">
 			<OnboardingTrigger
 				userId={session.user.id}
 				hasCompletedOnboarding={hasCompletedOnboarding}
 			/>{' '}
 			<IntroShortcutGuide user={session.user} />
-			{/* Rest of your dashboard content */}
 		</div>
 	)
 }

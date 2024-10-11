@@ -47,7 +47,7 @@ export default function IntroShortcutGuide({ user }: DashboardIntroProps) {
 		['meta+shift+p', () => router.push('/dashboard/posts')],
 		['shift+f', () => router.push('/dashboard/folders')],
 		['/', () => setIsSettingsOpen(true)],
-		['shift+l', () => console.log('Logout')], // Implement actual logout functionality here
+		['shift+l', () => console.log('Logout')],
 		['meta+shift+plus', () => router.push('/dashboard/background-creator')],
 		['shift+plus', () => router.push('/dashboard/background-creator')]
 	])
@@ -55,7 +55,7 @@ export default function IntroShortcutGuide({ user }: DashboardIntroProps) {
 	useKeyboardShortcuts(shortcuts)
 
 	return (
-		<div className="container mx-auto px-4 py-8">
+		<>
 			<Card className="mb-8">
 				<CardHeader>
 					<CardTitle>
@@ -110,16 +110,14 @@ export default function IntroShortcutGuide({ user }: DashboardIntroProps) {
 					</Flex>
 				</CardContent>
 			</Card>
-
 			<Button onClick={() => setIsSettingsOpen(true)}>
 				Open Settings
 			</Button>
-
 			<SiteSettingsMenu
 				isOpen={isSettingsOpen}
 				onClose={() => setIsSettingsOpen(false)}
 				onSettingChange={handleSettingsChange}
 			/>
-		</div>
+		</>
 	)
 }

@@ -24,12 +24,10 @@ export async function updateProfile(
 				.where(eq(userProfiles.userId, validatedData.userId))
 		} else {
 			// Create new profile
-			await db
-				.insert(userProfiles)
-				.values({
-					...validatedData,
-					userId: validatedData.userId as string
-				})
+			await db.insert(userProfiles).values({
+				...validatedData,
+				userId: validatedData.userId as string
+			})
 		}
 
 		revalidatePath('/profile') // Adjust this path as needed

@@ -1,11 +1,11 @@
 'use server'
 
 import { generateUUID } from '@/core/constants/generate-uuid'
-import { logActivity } from '@/core/server/actions/users/log-activity'
 import { validateRequest } from '@/lib/auth/lucia'
 import { db } from '@/lib/db'
 import { folders } from '@/lib/db/schema'
 import { FolderType } from '@/types/types.folder'
+import { logActivity } from 'actions'
 import { and, eq, like, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 export async function createFolder(
@@ -44,7 +44,7 @@ export async function createFolder(
 			path
 		})
 	} catch (error) {
-		console.error('Failed to log folder creation activity:', error)
+		console.warn('Failed to log folder creation activity:', error)
 	}
 
 	revalidatePath('/dashboard/folders')

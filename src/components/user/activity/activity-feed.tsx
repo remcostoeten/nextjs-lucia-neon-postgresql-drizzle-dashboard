@@ -1,6 +1,8 @@
 'use client'
 
-import { getActivityLogs } from '@/core/server/actions/users/fetch-activity'
+import Center from '@/components/atoms/Center'
+import Spinner from '@/components/ui/spinner'
+import { getActivityLogs } from '@/core/server/actions/activity-log/fetch-activity'
 import { AlertCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import {
@@ -21,7 +23,7 @@ import {
 	TableRow
 } from 'ui'
 
-interface ErrorFallbackProps {
+type ErrorFallbackProps = {
 	error: Error
 	resetErrorBoundary: () => void
 }
@@ -103,7 +105,11 @@ function ActivityFeed() {
 	const totalPages = Math.ceil(filteredActivities.length / itemsPerPage)
 
 	if (isLoading) {
-		return <div className="text-center py-4">Loading activity feed...</div>
+		return (
+			<Center method="absolute">
+				<Spinner />
+			</Center>
+		)
 	}
 
 	if (error) {
@@ -117,7 +123,7 @@ function ActivityFeed() {
 	}
 
 	return (
-		<div className="space-y-4 p-4 bg-gray-100 dark:bg-gray-900">
+		<div className="space-y-4 bg-section border text-subtitle p-4">
 			<div className="flex justify-between items-center">
 				<h2 className="text-2xl font-bold">Activity Feed</h2>
 				<div className="flex items-center space-x-2">
@@ -278,11 +284,4 @@ function ActivityFeed() {
 	)
 }
 
-export default function ActivityPage() {
-	return (
-		<div className="container mx-auto py-8">
-			<h1 className="text-3xl font-bold mb-8">Your Activity</h1>
-			<ActivityFeed />
-		</div>
-	)
-}
+export default ActivityFeed

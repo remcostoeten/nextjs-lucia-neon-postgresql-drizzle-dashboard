@@ -1,6 +1,5 @@
 'use client'
 
-import ParsedOutputsSidebar from '@/components/aside/route-specific/ig-parsed-aside'
 import {
 	Button,
 	Card,
@@ -13,7 +12,8 @@ import {
 	RadioGroupItem,
 	ScrollArea,
 	Textarea
-} from '@/components/ui/index'
+} from 'ui'
+import ParsedOutputsSidebar from '@/components/aside/route-specific/ig-parsed-aside'
 import { saveParsedOutput } from '@/core/server/actions/save-parsed-output'
 import { useClientAuth } from '@/lib/auth/client-auth-utils'
 import { ParsedOutput } from '@/lib/db/schema'

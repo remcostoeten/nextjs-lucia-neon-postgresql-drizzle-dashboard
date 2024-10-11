@@ -11,7 +11,7 @@ import {
 	validateAuthFormData
 } from '../../../../lib/auth/utils'
 import { users } from '../../../../lib/db/schema/auth'
-import { logActivity } from '../users/log-activity'
+import { logActivity } from 'actions'
 
 export default async function signUpAction(
 	_: ActionResult,

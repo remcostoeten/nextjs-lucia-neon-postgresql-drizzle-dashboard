@@ -1,6 +1,6 @@
 'use server'
 
-import { logActivity } from '@/core/server/actions/users/log-activity'
+import { logActivity } from 'actions'
 import { redirect } from 'next/navigation'
 import { lucia, validateRequest } from '../../../../lib/auth/lucia'
 import { setAuthCookie } from '../../../../lib/auth/utils'

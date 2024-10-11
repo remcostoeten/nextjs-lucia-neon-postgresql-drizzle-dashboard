@@ -1,7 +1,6 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { Button, ScrollArea } from 'ui'
 import { fetchParsedOutputs } from '@/core/server/actions/save-parsed-output'
 import { ParsedOutput } from '@/lib/db/schema/parsed-ig'
 import { ChevronLeft, ChevronRight, FileText } from 'lucide-react'
