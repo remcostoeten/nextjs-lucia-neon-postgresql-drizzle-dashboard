@@ -58,7 +58,7 @@ const config: Config = {
 					'radial-gradient(circle, var(--tw-gradient-stops))'
 			},
 			colors: {
-				'base-background': 'var(--base--background)',
+				base: '#070707',
 				'neutral-300': 'var(--neutral--300)',
 				'neutral-400': 'var(--neutral--400)',
 				'neutral-800': 'var(--neutral--800)',
@@ -130,16 +130,10 @@ const config: Config = {
 			keyframes: {
 				marquee: {
 					'0%': {
-						transform: 'translateX(0)'
+						transform: 'translateX(0%)'
 					},
 					'100%': {
 						transform: 'translateX(-100%)'
-					},
-					from: {
-						transform: 'translateX(0)'
-					},
-					to: {
-						transform: 'translateX(calc(-100% - var(--gap)))'
 					}
 				},
 				spotlight: {
@@ -162,7 +156,7 @@ const config: Config = {
 				}
 			},
 			animation: {
-				marquee: 'marquee var(--duration) infinite linear',
+				marquee: 'marquee 110s linear infinite',
 				spotlight: 'spotlight 2s ease .75s 1 forwards',
 				'marquee-vertical':
 					'marquee-vertical var(--duration) linear infinite'

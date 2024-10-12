@@ -1,4 +1,3 @@
-import ColorPicker from '@/components/_development-utils/color-picker'
 import ThemeWrapper, { metadata } from '@/components/base/ThemeWrapper'
 import '../styles/app.scss'
 
@@ -16,11 +15,10 @@ export default function RootLayout({ children }: PageProps) {
 			{/* <body
 				className={`${geistSans.variable} ${geistMono.variable} ${ptMono.className} antialiased `}
 			> */}
-			<body className="antialiased">
+			<body className="antialiased bg-base">
 				<ThemeWrapper>
 					{/* Makes infinite requests for some reason.<AuthStatusIndicator /> */}
 					{children}
-					<ColorPicker />
 				</ThemeWrapper>
 			</body>
 		</html>

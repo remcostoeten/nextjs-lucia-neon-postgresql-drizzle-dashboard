@@ -12,7 +12,6 @@ export default function DashboardLayout({
 }) {
 	return (
 		<>
-			{/* <DropdownNavigation /> */}
 			<Navigation />
 			{children}
 			<Footer />

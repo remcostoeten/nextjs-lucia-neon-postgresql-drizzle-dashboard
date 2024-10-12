@@ -65,7 +65,6 @@ export function HooksShowcaseWrapper({
 						</div>
 					)}
 				</CardContent>
-				e
 				<CardContent className="space-y-6">
 					<EnhancedCodeBlock
 						code={codeString as string}

@@ -113,9 +113,9 @@ export default function Feature() {
 					</h2>
 					<div className={styles.maxWidthXSmall}>
 						<p className="text-xxs text-subtitle">
-							Lorem ipsum dolor sit amet, consectetur adipiscing
-							elit. Morbi vitae nulla lacinia, vulputate mauris
-							eget, accumsan justo.
+							I mostly build custom solutions for my own problems
+							which are very niche, nonetheless there will be
+							plenty of features for you.
 						</p>
 					</div>
 				</motion.div>

@@ -14,7 +14,15 @@ const fadeInVariants = {
 	visible: { opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.01 } }
 }
 
-export const DropdownNavigation = () => {
+type DropdownNavigationProps = {
+	showLogo?: boolean
+	topPosition?: string | number
+}
+
+export const DropdownNavigation = ({
+	showLogo = false,
+	topPosition = '1.5rem' // default value equivalent to top-6
+}: DropdownNavigationProps) => {
 	const pathname = usePathname()
 	const router = useRouter()
 
@@ -34,8 +42,11 @@ export const DropdownNavigation = () => {
 			animate="visible"
 			variants={fadeInVariants}
 		>
-			<span className="fixed z-50 top-6 flex items-center">
-				<Logo isLink={true} />
+			<span
+				className="fixed z-50 flex items-center"
+				style={{ top: topPosition }}
+			>
+				{showLogo && <Logo isLink={true} />}
 				<Tabs />
 			</span>
 		</motion.div>

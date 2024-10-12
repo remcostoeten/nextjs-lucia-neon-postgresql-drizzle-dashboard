@@ -5,6 +5,7 @@ import { X } from 'lucide-react'
 import { useState } from 'react'
 import HorizontalLine from '../horizontal-line'
 import styles from './video.module.scss'
+import { toast } from 'sonner'
 type LineDotProps = {
 	position: 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight'
 }
@@ -32,6 +33,7 @@ export default function YouTubeRickroll() {
 
 	const handleVideoOpen = () => {
 		setIsVideoOpen(true)
+		toast('Sorry, no promotion video yet so enjoy Rick Astley instead.')
 	}
 
 	const handleVideoClose = () => {

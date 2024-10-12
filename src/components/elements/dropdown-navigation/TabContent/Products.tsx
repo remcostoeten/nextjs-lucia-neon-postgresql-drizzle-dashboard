@@ -29,6 +29,10 @@ const productCategories: ProductCategory[] = [
 			{
 				name: 'use-geolocation',
 				href: '/hooks-showcase/geolocation'
+			},
+			{
+				name: 'KBD hook',
+				href: '/design-system/kbd-hook-showoff'
 			}
 		]
 	},
@@ -36,12 +40,8 @@ const productCategories: ProductCategory[] = [
 		name: 'Tools',
 		links: [
 			{
-				name: 'KBD hook',
-				href: '/design-system/kbd-hook-showoff'
-			},
-			{
-				name: 'Background creator',
-				href: '/dashboard/background-creator'
+				name: 'Previous landing page',
+				href: '/old-landing'
 			}
 		]
 	}

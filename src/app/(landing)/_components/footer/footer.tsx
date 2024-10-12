@@ -1,13 +1,17 @@
 'use client'
 
-import React, { useCallback, useState } from 'react'
+import { GitHubIcon } from '@/components/base/Icons'
+import { siteConfig } from '@/config/site-config'
+import React from 'react'
+import { toast } from 'sonner'
 import styles from './footer.module.scss'
 
-// Type definitions
 type FooterLink = {
 	text: string
 	href: string
 	isNew?: boolean
+	isBeta?: boolean
+	external?: boolean
 }
 
 type FooterColumnProps = {
@@ -19,12 +23,14 @@ type FooterContactLinkProps = {
 	href: string
 	icon: React.ReactNode
 	text: string
+	target?: string
+	external?: boolean
 }
-
 const FooterContactLink: React.FC<FooterContactLinkProps> = React.memo(
-	({ href, icon, text }) => (
+	({ href, icon, target, text, external }) => (
 		<a
 			href={href}
+			target={external ? '_blank' : undefined}
 			className={`${styles['footer-contact-link']} ${styles['w-inline-block']}`}
 		>
 			<div className={`${styles['icon-small']} ${styles['w-embed']}`}>
@@ -34,6 +40,12 @@ const FooterContactLink: React.FC<FooterContactLinkProps> = React.memo(
 		</a>
 	)
 )
+function handleClick(e: React.MouseEvent, isBeta: boolean) {
+	if (isBeta) {
+		e.preventDefault()
+		toast('Sorry, this feature is currently in beta and not yet available.')
+	}
+}
 
 const FooterColumn: React.FC<FooterColumnProps> = React.memo(
 	({ title, links }) => (
@@ -46,6 +58,7 @@ const FooterColumn: React.FC<FooterColumnProps> = React.memo(
 			<div className={styles['wrap-v-regular']}>
 				{links.map((link, index) => (
 					<a
+						onClick={e => handleClick(e, link.isBeta)}
 						key={`${link.text}-${index}`}
 						href={link.href}
 						className={`${styles['footer-link']} ${styles['w-inline-block']}`}
@@ -65,95 +78,25 @@ const FooterColumn: React.FC<FooterColumnProps> = React.memo(
 								</div>
 							</div>
 						)}
+						{link.isBeta && (
+							<div
+								className={`${styles['wrap-h-xsmall']} ${styles['align-c']}`}
+							>
+								<div
+									className={`${styles['icon-x-small']} ${styles['w-embed']}`}
+								>
+									<NewIcon />
+								</div>
+								<div className={styles['text-color-white']}>
+									Beta
+								</div>
+							</div>
+						)}
 					</a>
 				))}
 			</div>
 		</div>
 	)
-)
-
-const FooterForm: React.FC = () => {
-	const [email, setEmail] = useState('')
-	const [isSubmitting, setIsSubmitting] = useState(false)
-	const [submitStatus, setSubmitStatus] = useState<
-		'idle' | 'success' | 'error'
-	>('idle')
-
-	const handleSubmit = useCallback(async (e: React.FormEvent) => {
-		e.preventDefault()
-		setIsSubmitting(true)
-		try {
-			// Simulated API call
-			await new Promise(resolve => setTimeout(resolve, 1000))
-			setSubmitStatus('success')
-		} catch (error) {
-			setSubmitStatus('error')
-		} finally {
-			setIsSubmitting(false)
-		}
-	}, [])
-
-	return (
-		<div className={`${styles['footer-form-block']} ${styles['w-form']}`}>
-			<form onSubmit={handleSubmit} className={styles['footer-form']}>
-				<div className={styles['input-icon']}>
-					<input
-						className={`${styles['text-field']} ${styles['w-input']}`}
-						maxLength={256}
-						name="Email"
-						placeholder="john@flowbase.co"
-						type="email"
-						id="footer-email"
-						value={email}
-						onChange={e => setEmail(e.target.value)}
-						required
-						aria-label="Email address for newsletter"
-					/>
-					<div
-						className={`${styles['form-icon']} ${styles['w-embed']}`}
-					>
-						<EmailIcon />
-					</div>
-				</div>
-				<button
-					type="submit"
-					className={`${styles['button-primary']} ${styles['w-button']}`}
-					disabled={isSubmitting}
-				>
-					{isSubmitting ? 'Submitting...' : 'Get Started'}
-				</button>
-			</form>
-			{submitStatus === 'success' && <SuccessMessage />}
-			{submitStatus === 'error' && <ErrorMessage />}
-		</div>
-	)
-}
-
-const SuccessMessage: React.FC = () => (
-	<div
-		className={`${styles['success-message']} ${styles['w-form-done']}`}
-		role="alert"
-	>
-		<div>
-			<span className={styles['gradient-span']}>
-				Thank you! Your submission has been received!
-			</span>
-		</div>
-	</div>
-)
-
-const ErrorMessage: React.FC = () => (
-	<div
-		className={`${styles['error-message']} ${styles['w-form-fail']}`}
-		role="alert"
-	>
-		<div className={styles['error-inner']}>
-			<div className={`${styles['icon-x-small']} ${styles['w-embed']}`}>
-				<ErrorIcon />
-			</div>
-			<div>Oops! Something went wrong while submitting the form.</div>
-		</div>
-	</div>
 )
 
 export default function gitFooter() {
@@ -163,7 +106,7 @@ export default function gitFooter() {
 				<div className={styles['container-small']}>
 					<div className={styles['footer-line']}></div>
 					<div
-						className={`${styles['w-layout-grid']} ${styles['footer-grid']}`}
+						className={`${styles['w-layout-grid']} ${styles['footer-grid']} px-xl py-large`}
 					>
 						<div
 							id="w-node-_38617db4-e05b-3e02-29bd-bfc4fc1f8d62-fc1f8d5d"
@@ -181,47 +124,68 @@ export default function gitFooter() {
 									className={styles['footer-contact-details']}
 								>
 									<FooterContactLink
-										href="#"
+										href="https://g.co/kgs/mhi1a1x"
+										target="_blank"
 										icon={<LocationIcon />}
 										text="Frysian, the Netherlands"
 									/>
 									<FooterContactLink
 										href="https://github.com/remcostoeten"
-										icon={<GithubIcon />}
+										icon={<GitHubIcon />}
 										text="@remcostoeten"
-									/>
-									<FooterContactLink
-										href="mailto:hello@vario.com"
-										icon={<EmailIcon />}
-										text="hello@Notevault.com"
 									/>
 								</div>
 							</div>
 							<div className={styles['footer-links']}>
 								<FooterColumn
-									title="Features"
+									title="Previous apps"
 									links={[
-										{ text: 'Product', href: '#' },
-										{ text: 'Solutions', href: '#' },
-										{ text: 'Foundation', href: '#' },
 										{
+											text: 'Previous landing page',
+											href: '/old-landing',
+											external: false
+										},
+										{
+											text: 'All-in-one dashboard',
+											href: 'https://productivity.remcostoeten.com',
+											external: true
+										},
+										{
+											text: 'Productivity panel ',
+											href: 'https://panel.remcostoeten.com',
+											external: true
+										},
+										{
+											external: true,
 											text: 'Chanelog',
 											href: '#',
-											isNew: true
+											isBeta: true
 										}
 									]}
 								/>
 								<FooterColumn
-									title="Solutions"
+									title="Links"
 									links={[
-										{ text: 'AI Copywrite', href: '#' },
 										{
-											text: 'Automated Blogs',
-											href: '#',
+											text: 'Dashboard',
+											href: '/dashboard',
 											isNew: true
 										},
-										{ text: 'Generative UI', href: '#' },
-										{ text: 'Integrations', href: '#' }
+										{
+											text: 'Blogs',
+											href: '#',
+											isBeta: true
+										},
+										{
+											text: 'LinkedIn',
+											href: `${siteConfig.links.linkedin}`,
+											external: true
+										},
+										{
+											text: 'Github',
+											href: 'https://github.com/remcostoeten/nextjs-lucia-neon-postgresql-drizzle-dashboard',
+											external: true
+										}
 									]}
 								/>
 							</div>
@@ -234,24 +198,25 @@ export default function gitFooter() {
 								className={`${styles['wrap-v-regular']} ${styles['align-v-l']}`}
 							>
 								<div className={styles.badge}>
-									<div>Notevault Template</div>
+									<div>
+										Built with
+										<span className="text-red-40 pulse mx-2">
+											❤️
+										</span>
+										by Remco
+									</div>
 								</div>
 								<div className={styles['wrap-v-x-small']}>
 									<div className={styles['h4-heading']}>
-										<span
-											className={styles['gradient-span']}
-										>
-											Start your 7-day free trial
+										<span className="gradient-span">
+											Start your 365-day free trial
 										</span>
 									</div>
-									<p className={styles['paragraph-regular']}>
-										Lorem ipsum dolor sit amet, consectetur
-										adipiscing elit. Etiam vehicula.
+									<p className="text-xxs text-subtitle">
+										Exactly, no costs. No credit card
+										required. Remco seems like a nice dude
 									</p>
 								</div>
-							</div>
-							<div className={styles['wrap-v-regular']}>
-								<FooterForm />
 							</div>
 							<div className={styles['lines-group']}>
 								<div

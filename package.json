@@ -13,8 +13,6 @@
 		"dev": "next dev",
 		"turbo": "next dev --turbo",
 		"build": "next build",
-		"start": "next start",
-		"lint": "next lint",
 		"f": "prettier --write . --ignore-path ~/prettier/.prettierignore --config ~/prettier/.prettierrc",
 		"clear": "rm -rf node_modules && rm -rf package-lock.json && rm -rf yarn.lock && rm -rf package-lock.json && rm -rf yarn.lock",
 		"rebuild": "pnpm clear && pnpm i && pnpm build",

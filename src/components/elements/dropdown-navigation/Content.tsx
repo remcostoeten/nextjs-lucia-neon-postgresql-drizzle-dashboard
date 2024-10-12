@@ -16,7 +16,7 @@ export const Content: React.FC<ContentProps> = ({ selected, dir }) => {
 			initial={{ opacity: 0, y: 8 }}
 			animate={{ opacity: 1, y: 0 }}
 			exit={{ opacity: 0, y: 8 }}
-			className="border absolute left-0 z-50 top-[calc(100%_+_24px)] w-96 rounded-lg border-outline bg-gradient-to-b from-card via-card to-body  p-4"
+			className="border absolute left-0 z-50 top-[calc(100%_+_24px)] w-96 rounded-lg border-outline bg-gradient-to-b from-base via-base  p-4"
 		>
 			<Bridge />
 			<Triangle selected={selected} />

@@ -48,10 +48,8 @@ export default function LogoSection() {
 						animate={{ opacity: 1 }}
 						transition={{ duration: 0.75, delay: 0.75 }}
 					>
-						<div
-							className={`${styles.paragraphSmall} ${styles.textColorWhite}`}
-						>
-							Trusted by 10+ companies worldwide
+						<div className="text-subtitle text-xxs ">
+							Used by 1,(one) user worldwide! Me! ✨
 						</div>
 						<div className={styles.logoGroup}>
 							{logos.map((logo, index) => (

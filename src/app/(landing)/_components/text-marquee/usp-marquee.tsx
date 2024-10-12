@@ -1,4 +1,6 @@
 'use client'
+import Marquee from '@/components/ui/marquee'
+
 const marqueeItems = [
 	{ content: '✔ Dynamic Content Generation' },
 	{ content: '✔ Server-Side Rendering' },
@@ -28,27 +30,19 @@ const marqueeItems = [
 
 export default function UspMarquee() {
 	return (
-		<>
-			<div className="w-full overflow-hidden">
-				<div
-					className="flex animate-marquee gap-4"
-					style={{
-						animationDuration: '30s',
-						animationTimingFunction: 'linear',
-						animationIterationCount: 'infinite'
-					}}
-				>
-					{marqueeItems.map((item, index) => (
-						<div
-							key={index}
-							className="flex-shrink-0 rounded-lg text-sm text-white"
-						>
-							{item.content}
-						</div>
-					))}
-				</div>
-			</div>
-			<div className="carousel-overlay"></div>
-		</>
+		<div className="w-full overflow-hidden shadow-wrapper">
+			<span className="shadow-left" />
+			<span className="shadow-right" />
+			<Marquee className="[--duration:40s]" pauseOnHover>
+				{marqueeItems.map((item, index) => (
+					<div
+						key={index}
+						className="flex-shrink-0 rounded-lg text-sm text-subtitle px-4"
+					>
+						{item.content}
+					</div>
+				))}
+			</Marquee>
+		</div>
 	)
 }

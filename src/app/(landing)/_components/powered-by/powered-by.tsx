@@ -83,16 +83,7 @@ export default function PoweredBy() {
 				<div
 					className={`${styles['max-width-x-small']} ${styles['spacing-c']}`}
 					data-testid="max-width-x-small"
-				>
-					<p
-						className={styles['paragraph-regular']}
-						data-testid="paragraph-regular"
-					>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-						Morbi vitae nulla lacinia, vulputate mauris eget,
-						accumsan justo.
-					</p>
-				</div>
+				></div>
 			</div>
 			<div className={styles['lines-group']} data-testid="lines-group">
 				<div

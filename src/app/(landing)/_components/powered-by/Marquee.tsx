@@ -33,15 +33,19 @@ export default function MarqueeDemo({
 }) {
 	return (
 		<div className="relative w-full py-">
-			<Marquee
-				pauseOnHover
-				className="[--duration:40s]"
-				reverse={reverse}
-			>
-				{carouselbrands.map((item, index) => (
-					<CarouselItem altText={''} key={index} {...item} />
-				))}
-			</Marquee>
+			<div className="w-full overflow-hidden shadow-wrapper">
+				<span className="shadow-left" />
+				<span className="shadow-right" />{' '}
+				<Marquee
+					pauseOnHover
+					className="[--duration:40s]"
+					reverse={reverse}
+				>
+					{carouselbrands.map((item, index) => (
+						<CarouselItem altText={''} key={index} {...item} />
+					))}
+				</Marquee>
+			</div>
 		</div>
 	)
 }

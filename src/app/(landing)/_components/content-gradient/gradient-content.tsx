@@ -46,9 +46,9 @@ function Feature({ icon, title, description }: FeatureProps) {
 			</div>
 			<div className={styles.block}>
 				<div className={styles.labelRegular}>
-					<span className={styles.gradientSpan}>{title}</span>
+					<span className="gradient-span">{title}</span>
 				</div>
-				<p className={styles.paragraphSmall}>{description}</p>
+				<p className="text-subtitle text-xxs">{description}</p>
 			</div>
 		</motion.div>
 	)
@@ -74,25 +74,26 @@ export default function Content() {
 								variants={itemVariants}
 							>
 								<h3>
-									<span className={styles.gradientSpan}>
-										Revolutionize content creation with AI
+									<span className="gradient-span">
+										Log anything you wish.{' '}
 									</span>
 								</h3>
-								<p className={styles.paragraphRegular}>
-									Lorem ipsum dolor sit amet, consectetur
-									adipiscing elit. Morbi vitae nulla lacinia,
-									vulputate mauris eget, accumsan justo.
+								<p className="text-subtitle text-xxs">
+									{' '}
+									Any data you want to get a grip on. Files,
+									finances, lists, contracts, paperwork,
+									text-messages, emails, and more.
 								</p>
 							</motion.div>
 							<Feature
 								icon="/landing/gradient-icon.webp"
-								title="Intelligent Algorithms"
-								description="Lorem ipsum dolor sit amet consectetur."
+								title="You, and your brain"
+								description="No annoying prompts or bad AI implementations."
 							/>
 							<Feature
 								icon="/landing/gradient-icon2.webp"
 								title="Optimizing Data Collection"
-								description="Lorem ipsum dolor sit amet consectetur."
+								description="Privacy is key. We do our best to keep your data private."
 							/>
 						</div>
 					</motion.div>

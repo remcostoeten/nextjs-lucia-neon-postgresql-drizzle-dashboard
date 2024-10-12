@@ -1,3 +1,23 @@
 .unset-all {
 	all: unset;
 }
+
+.shadow-left,
+.shadow-right {
+	position: absolute;
+	top: 10%;
+	bottom: 0;
+	width: 45%;
+	pointer-events: none;
+	z-index: 1;
+}
+
+.shadow-left {
+	left: 0;
+	background: linear-gradient(to right, var(--base--background), transparent);
+}
+
+.shadow-right {
+	right: 0;
+	background: linear-gradient(to left, var(--base--background), transparent);
+}
