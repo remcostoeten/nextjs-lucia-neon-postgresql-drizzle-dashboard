@@ -38,8 +38,8 @@ export default function HeroBadge() {
 		<motion.div
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
-			transition={{ duration: 0.5, delay: 0 }}
-			className="w-fit flex items-center gap-0.5 rounded-full border border-white/10 bg-white/4 px-2 py-0.5 text-xs leading-relaxed text-white shadow-[inset_0_-4px_12px_0_rgba(255,255,255,0.1)] backdrop-blur-sm cursor-pointer transition-all duration-200 ease-in-out hover:border-white/16 hover:text-white"
+			transition={{ duration: 0.55, delay: 0.25 }}
+			className="!fade-in w-fit flex items-center gap-0.5 rounded-full border border-white/10 bg-white/4 px-2 py-0.5 text-xs leading-relaxed text-white shadow-[inset_0_-4px_12px_0_rgba(255,255,255,0.1)] backdrop-blur-sm cursor-pointer hover:border-white/16 hover:text-white"
 		>
 			<div className="flex flex-none justify-center items-center w-4 h-4">
 				<InfoIcon />

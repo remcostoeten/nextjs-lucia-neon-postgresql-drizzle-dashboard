@@ -1,7 +1,6 @@
-// @ts-nocheck
 'use client'
 
-import { cn } from 'cn'
+import { cn } from '@/lib/utils'
 import {
 	AnimatePresence,
 	cubicBezier,
@@ -11,6 +10,7 @@ import {
 	useTransform
 } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
+
 type ColorVariant = 'default' | 'blue' | 'green' | 'red' | 'purple'
 
 type RainbowLineProps = {
@@ -19,6 +19,7 @@ type RainbowLineProps = {
 	width?: string | number
 	disableAnimation?: boolean
 	bottomOffset?: number
+	small?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 const colorVariants: Record<ColorVariant, { from: string; to: string }> = {
@@ -40,6 +41,7 @@ export default function RainbowLine({
 	width = '100%',
 	disableAnimation = false,
 	bottomOffset = 28,
+	small = false,
 	...props
 }: RainbowLineProps) {
 	const { from, to } = colorVariants[variant]
@@ -59,13 +61,15 @@ export default function RainbowLine({
 			if (!ref.current) return
 			const rect = ref.current.getBoundingClientRect()
 			const centerX = rect.left + rect.width / 2
-			const centerY = rect.bottom
+			const centerY = small ? rect.top : rect.bottom
 
 			mouseX.set(e.clientX)
 			mouseY.set(e.clientY)
 
 			const dx = e.clientX - centerX
-			const dy = Math.max(0, e.clientY - centerY) // Ensure dy is never negative
+			const dy = small
+				? e.clientY - centerY
+				: Math.max(0, e.clientY - centerY)
 
 			const rawDistance = Math.sqrt(dx * dx + dy * dy)
 			const easedDistance = smoothStep(0, 150, rawDistance) * 100
@@ -78,16 +82,23 @@ export default function RainbowLine({
 		setIsVisible(true)
 		return () =>
 			window.removeEventListener('mousemove', updateMousePosition)
-	}, [mouseX, mouseY, distance, angle, disableAnimation])
+	}, [mouseX, mouseY, distance, angle, disableAnimation, small])
 
-	const glowSize = useTransform(distance, [0, 100], [80, 33])
+	const glowSize = useTransform(
+		distance,
+		[0, 100],
+		small ? [40, 16] : [80, 33]
+	)
 	const glowX = useTransform(
 		[distance, angle] as [MotionValue<number>, MotionValue<number>],
-		([dist, ang]) => Math.cos(ang) * dist * 0.2
+		([dist, ang]) => Math.cos(ang) * dist * (small ? 0.1 : 0.2)
 	)
 	const glowY = useTransform(
 		[distance, angle] as [MotionValue<number>, MotionValue<number>],
-		([dist, ang]) => Math.max(0, Math.sin(ang) * dist * 0.2) // Ensure glowY is never negative
+		([dist, ang]) => {
+			const rawY = Math.sin(ang) * dist * (small ? 0.1 : 0.2)
+			return small ? rawY : Math.max(0, rawY)
+		}
 	)
 
 	const boxShadow = useTransform(
@@ -97,25 +108,35 @@ export default function RainbowLine({
 			MotionValue<number>
 		],
 		([size, x, y]) => `
-            ${x}px ${y}px ${size}px ${from}99,
-            ${x * 0.6}px ${y * 0.6}px ${size * 0.6}px ${to}a3,
-            ${x * 0.4}px ${y * 0.4}px ${size * 0.4}px ${from}7a,
-            ${x * 0.3}px ${y * 0.3}px ${size * 0.3}px ${to}8f,
-            ${x * 0.2}px ${y * 0.2}px ${size * 0.2}px ${from}4d,
-            ${x * 0.1}px ${y * 0.1}px ${size * 0.1}px ${to}40
-        `
+      ${x}px ${y}px ${size}px ${from}99,
+      ${x * 0.6}px ${y * 0.6}px ${size * 0.6}px ${to}a3,
+      ${x * 0.4}px ${y * 0.4}px ${size * 0.4}px ${from}7a,
+      ${x * 0.3}px ${y * 0.3}px ${size * 0.3}px ${to}8f,
+      ${x * 0.2}px ${y * 0.2}px ${size * 0.2}px ${from}4d,
+      ${x * 0.1}px ${y * 0.1}px ${size * 0.1}px ${to}40
+    `
 	)
 
 	const Container = disableAnimation ? 'div' : motion.div
 	const Line = disableAnimation ? 'div' : motion.div
+
+	const lineHeight = small ? '2px' : '0.125rem'
+	const lineWidth = small ? '48px' : width
+	const linePosition = small
+		? { top: '1px', left: '40px' }
+		: { bottom: `-${bottomOffset}px`, left: 0 }
 
 	return (
 		<AnimatePresence>
 			{(isVisible || disableAnimation) && (
 				<Container
 					ref={ref}
-					className={cn('relative h-0.5', className)}
-					style={{ width }}
+					className={cn(
+						'relative',
+						small ? 'h-0' : 'h-0.5',
+						className
+					)}
+					style={{ width: small ? 'auto' : width }}
 					initial={
 						disableAnimation ? undefined : { opacity: 0, width: 0 }
 					}
@@ -138,11 +159,12 @@ export default function RainbowLine({
 					{...props}
 				>
 					<Line
-						className="absolute w-full h-0.5 left-0"
+						className={cn('absolute', small ? 'w-12' : 'w-full')}
 						style={{
 							backgroundImage: `linear-gradient(to right, ${from}, ${to})`,
 							boxShadow: disableAnimation ? undefined : boxShadow,
-							bottom: `-${bottomOffset}px`
+							height: lineHeight,
+							...linePosition
 						}}
 					/>
 				</Container>

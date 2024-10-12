@@ -1,7 +1,6 @@
+import ColorPicker from '@/components/_development-utils/color-picker'
 import ThemeWrapper, { metadata } from '@/components/base/ThemeWrapper'
 import '../styles/app.scss'
-import DevUtilityHelper from '@/components/_development-utils/dev-utllity-helper'
-import ColorPicker from '@/components/_development-utils/color-picker'
 
 export { metadata }
 

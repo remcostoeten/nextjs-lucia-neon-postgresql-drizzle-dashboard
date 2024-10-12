@@ -156,7 +156,7 @@ const ErrorMessage: React.FC = () => (
 	</div>
 )
 
-export default function Footer() {
+export default function gitFooter() {
 	return (
 		<footer className={`${styles.section} ${styles['snipcss-mKnwC']}`}>
 			<div className={styles['footer-container-lines']}>

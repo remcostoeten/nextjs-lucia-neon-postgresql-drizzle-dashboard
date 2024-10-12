@@ -4,6 +4,7 @@ import { AnimatePresence, easeInOut, motion } from 'framer-motion'
 import { X } from 'lucide-react'
 import { useState } from 'react'
 import HorizontalLine from '../horizontal-line'
+import UspMarquee from './usp-marquee'
 import styles from './video.module.scss'
 type LineDotProps = {
 	position: 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight'
@@ -26,7 +27,7 @@ function LinesGroup() {
 	)
 }
 
-export default function YouTubeRickroll() {
+export default function MarqueeItems() {
 	const [isVideoOpen, setIsVideoOpen] = useState(false)
 	const youtubeVideoId = 'dQw4w9WgXcQ'
 
@@ -40,36 +41,16 @@ export default function YouTubeRickroll() {
 
 	return (
 		<div className="relative">
+			<HorizontalLine />
 			<div className={styles.videoContainerLines}>
-				<div className="w-full max-w-wrapper mx-auto relative">
-					<motion.div
-						initial={{ opacity: 0, scale: 0.9 }}
-						animate={{ opacity: 1, scale: 1 }}
-						transition={{
-							duration: 0.5,
-							delay: 0.4,
-							ease: easeInOut
-						}}
-						className={`${styles.videoLightboxWrapper} ${styles.styleYWvEo}`}
-						id="style-YWvEo"
-					>
-						<motion.a
-							href="#"
-							className={`${styles.videoLightboxLink} ${styles.wInlineBlock} ${styles.wLightbox}`}
-							aria-label="open lightbox"
-							aria-haspopup="dialog"
-							onClick={handleVideoOpen}
-						>
-							<img
-								src="https://cdn.prod.website-files.com/65b8e9cb3c15d9b62f057c9a/65b8f8b4e99c725a3cdc8f4f_Play%20Icon.svg"
-								loading="lazy"
-								alt=""
-								className={styles.iconRegular}
-							/>
-						</motion.a>
-					</motion.div>
-					<LinesGroup />
-				</div>
+				<motion.div
+					initial={{ opacity: 0, scale: 0.9 }}
+					animate={{ opacity: 1, scale: 1 }}
+					transition={{ duration: 0.5, delay: 1.5, ease: easeInOut }}
+					className="h-[100px] w-full "
+				>
+					<UspMarquee />
+				</motion.div>
 				<div className={styles.linesGroup}>
 					<div className={styles.lineVerticalLeft}></div>
 					<div className={styles.lineVerticalRight}></div>

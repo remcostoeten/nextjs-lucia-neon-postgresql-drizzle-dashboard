@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils'
 import HorizontalLine from '../horizontal-line'
 import { ZenWealthContainer } from './ZenWealth/ZenWealthContainer'
 import styles from './hero.module.scss'
@@ -26,8 +27,13 @@ function LinesGroup() {
 export default function Hero() {
 	return (
 		<div className="relative">
-			<div className={styles.videoContainerLines}>
-				<div className={styles.containerRegular}>
+			<div
+				className={cn(
+					'py-[55px] ',
+					'px-theme z-5 w-full max-w-big-wrapper mx-auto relative '
+				)}
+			>
+				<div className="w-full max-w-wrapper mx-auto relative">
 					<div className={styles.inner}>
 						<ZenWealthContainer />
 					</div>

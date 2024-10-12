@@ -1,0 +1,73 @@
+$horizontal-padding: 48px;
+$vertical-padding: 72px;
+
+.px-theme {
+	padding-left: $horizontal-padding;
+	padding-right: $horizontal-padding;
+
+	@media (max-width: 1024px) {
+		padding-left: 24px;
+		padding-right: 24px;
+	}
+
+	&-medium {
+		padding-left: 32px;
+		padding-right: 32px;
+
+		@media (max-width: 1024px) {
+			padding-left: 24px;
+			padding-right: 24px;
+		}
+	}
+
+	&-small {
+		padding-left: 24px;
+		padding-right: 24px;
+
+		@media (max-width: 1024px) {
+			padding-left: 16px;
+			padding-right: 16px;
+		}
+	}
+}
+
+.py-theme {
+	padding-top: $vertical-padding;
+	padding-bottom: $vertical-padding;
+
+	@media (max-width: 1024px) {
+		padding-top: 48px;
+		padding-bottom: 48px;
+	}
+
+	@media (max-width: 768px) {
+		padding-top: 32px;
+		padding-bottom: 32px;
+	}
+
+	&-medium {
+		padding-top: 48px;
+		padding-bottom: 48px;
+
+		@media (max-width: 1024px) {
+			padding-top: 32px;
+			padding-bottom: 32px;
+		}
+
+		@media (max-width: 768px) {
+			padding-top: 32px;
+			padding-bottom: 32px;
+		}
+	}
+}
+
+.fade-in {
+	opacity: 0;
+	animation: fadeIn 500ms ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+	to {
+		opacity: 1;
+	}
+}
