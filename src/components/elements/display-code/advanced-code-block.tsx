@@ -111,7 +111,7 @@ export function EnhancedCodeBlock({
 	return (
 		<div className="rounded-lg overflow-hidden bg-card border w-full">
 			<div className="flex justify-between items-center border px-4 py-2 bg-section-lighter">
-				<div className="flex items-center space-x-2">
+				<div className="flex items-center space-x-2 lowercase">
 					{languageIcon && (
 						<span className="mr-2 text-subtitle">
 							{languageIcon}
@@ -121,7 +121,7 @@ export function EnhancedCodeBlock({
 						<Badge
 							key={index}
 							variant="outline"
-							className="bg-[#3C3C3C] text-[#D7BA7D] border-[#3C3C3C]"
+							className="bg-purple text-yellow border-purple"
 						>
 							{badge}
 						</Badge>

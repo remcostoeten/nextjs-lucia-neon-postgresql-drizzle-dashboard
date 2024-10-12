@@ -17,7 +17,6 @@ export default function RootLayout({ children }: PageProps) {
 			> */}
 			<body className="antialiased bg-base">
 				<ThemeWrapper>
-					{/* Makes infinite requests for some reason.<AuthStatusIndicator /> */}
 					{children}
 				</ThemeWrapper>
 			</body>

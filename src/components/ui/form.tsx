@@ -1,17 +1,19 @@
-import * as LabelPrimitive from '@radix-ui/react-label'
-import { Slot } from '@radix-ui/react-slot'
-import * as React from 'react'
+'use client';
+
+import * as LabelPrimitive from '@radix-ui/react-label';
+import { Slot } from '@radix-ui/react-slot';
+import * as React from 'react';
 import {
 	Controller,
 	ControllerProps,
 	FieldPath,
 	FieldValues,
 	FormProvider
-} from 'react-hook-form'
+} from 'react-hook-form';
 
-import { cn } from 'cn'
-import { Label } from '../ui/label'
-import { useFormField } from './useFormField'
+import { cn } from 'cn';
+import { Label } from '../ui/label';
+import { useFormField } from './useFormField';
 
 const Form = FormProvider
 
@@ -150,4 +152,5 @@ export {
 	FormItem,
 	FormLabel,
 	FormMessage
-}
+};
+

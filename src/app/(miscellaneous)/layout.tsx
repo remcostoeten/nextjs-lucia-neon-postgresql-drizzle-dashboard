@@ -8,7 +8,7 @@ export default function ShowcaseLayout({
 	return (
 		<>
 			<div className="translate-y-10">
-				<DropdownNavigation showLogo={true} />
+				<DropdownNavigation topPosition='-1rem' showLogo={true} />
 			</div>
 			<main className="min-h-screen mt-24 mx-auto  max-w-[90vw]">
 				{children}

@@ -67,7 +67,11 @@ export default function HeroBadge() {
 				</TooltipTrigger>
 				<TooltipContent>
 					Developed by{' '}
-					<Link href={`https://github.com/${githubStats.madeBy}`}>
+					<Link
+						target="_blank"
+						className="underline text-subtitle"
+						href={`https://github.com/${githubStats.madeBy}`}
+					>
 						{githubStats.madeBy}
 					</Link>
 				</TooltipContent>

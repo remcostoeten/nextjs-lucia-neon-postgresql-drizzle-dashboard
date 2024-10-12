@@ -1,5 +1,13 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
+import confetti from 'canvas-confetti'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Github, Linkedin, Twitter } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import {
 	Button,
 	Dialog,
@@ -14,14 +22,6 @@ import {
 	FormMessage,
 	Input
 } from 'ui'
-import { zodResolver } from '@hookform/resolvers/zod'
-import confetti from 'canvas-confetti'
-import { AnimatePresence, motion } from 'framer-motion'
-import { Github, Linkedin, Twitter } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { fadeInUp } from '@/core/constants/animations'
@@ -42,7 +42,8 @@ export default function Onboarding({ userId }: OnboardingProps) {
 		resolver: zodResolver(updateUserProfileSchema),
 		defaultValues: {
 			userId,
-			name: '',
+			firstName: '',
+			lastName: '',
 			bio: '',
 			github: '',
 			twitter: '',
@@ -94,13 +95,29 @@ export default function Onboarding({ userId }: OnboardingProps) {
 								>
 									<FormField
 										control={control}
-										name="name"
+										name="firstName"
 										render={({ field }) => (
 											<FormItem>
-												<FormLabel>Name</FormLabel>
+												<FormLabel>First Name</FormLabel>
 												<FormControl>
 													<Input
-														placeholder="Your name"
+														placeholder="Your first name"
+														{...field}
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={control}
+										name="lastName"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Last Name</FormLabel>
+												<FormControl>
+													<Input
+														placeholder="Your last name"
 														{...field}
 													/>
 												</FormControl>

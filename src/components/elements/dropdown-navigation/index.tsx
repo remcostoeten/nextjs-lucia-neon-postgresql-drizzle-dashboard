@@ -21,7 +21,7 @@ type DropdownNavigationProps = {
 
 export const DropdownNavigation = ({
 	showLogo = false,
-	topPosition = '1.5rem' // default value equivalent to top-6
+	topPosition = '1.5rem'
 }: DropdownNavigationProps) => {
 	const pathname = usePathname()
 	const router = useRouter()

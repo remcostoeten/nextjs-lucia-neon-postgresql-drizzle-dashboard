@@ -12,7 +12,6 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import {
 	Button,
-	ColorPicker,
 	Dialog,
 	DialogContent,
 	DialogHeader,
@@ -26,6 +25,7 @@ import {
 	getFolders,
 	updateFolder
 } from '@/core/server/actions/folders'
+import ColorPicker from '@/components/ui/color-picker'
 
 export default function NotesSidebar() {
 	const [folders, setFolders] = useState<FolderType[]>([])

@@ -1,7 +1,7 @@
+import ColorPicker from '@/components/ui/color-picker'
 import React, { useState } from 'react'
 import {
 	Button,
-	ColorPicker,
 	Dialog,
 	DialogContent,
 	DialogHeader,
@@ -28,6 +28,7 @@ export function EditFolderDialog({
 }: EditFolderDialogProps) {
 	const [name, setName] = useState(folder.name)
 	const [color, setColor] = useState(folder.color)
+	const [isColorPickerActive, setIsColorPickerActive] = useState(false)
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
@@ -48,7 +49,15 @@ export function EditFolderDialog({
 						placeholder="Folder Name"
 						required
 					/>
-					<ColorPicker color={color} onChange={setColor} />
+					<ColorPicker
+						onActivate={() => setIsColorPickerActive(true)}
+						onDeactivate={(newColor) => {
+							setColor(newColor)
+							setIsColorPickerActive(false)
+						}}
+						isActive={isColorPickerActive}
+						selectedColor={color}
+					/>
 					<Button type="submit">Save Changes</Button>
 				</form>
 			</DialogContent>
