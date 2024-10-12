@@ -1,7 +1,7 @@
-import AuthStatusIndicator from '@/components/_development-utils/auth-status-indicator'
 import ThemeWrapper, { metadata } from '@/components/base/ThemeWrapper'
-import { geistMono, geistSans, ptMono } from '@/core/config/fonts/fonts'
 import '../styles/app.scss'
+import DevUtilityHelper from '@/components/_development-utils/dev-utllity-helper'
+import ColorPicker from '@/components/_development-utils/color-picker'
 
 export { metadata }
 
@@ -14,12 +14,14 @@ export default function RootLayout({ children }: PageProps) {
 			color-scheme="dark"
 			suppressHydrationWarning
 		>
-			<body
-				className={`${geistSans.variable} ${geistMono.variable} ${ptMono.className} antialiased dark:bg-body relative pb-[330px]`}
-			>
+			{/* <body
+				className={`${geistSans.variable} ${geistMono.variable} ${ptMono.className} antialiased `}
+			> */}
+			<body className="antialiased">
 				<ThemeWrapper>
-					<AuthStatusIndicator />
+					{/* Makes infinite requests for some reason.<AuthStatusIndicator /> */}
 					{children}
+					<ColorPicker />
 				</ThemeWrapper>
 			</body>
 		</html>

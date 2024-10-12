@@ -1,21 +1,15 @@
-import GithubOpenSource from '@/components/effects/gitihu-oss/github-open-source'
-import BentoGrid from '@/components/landing/bento-grid/bento-grid'
-import { Footer } from '@/components/landing/footer'
-import Hero from '@/components/landing/Hero/Hero'
+import Feature from './_components/feature/feature'
+import Hero from './_components/hero/hero'
+import PoweredBy from './_components/powered-by/powered-by'
+import Video from './_components/Video/Video'
 
-export default function Home() {
+export default function LandingPage() {
 	return (
 		<>
 			<Hero />
-			<Wrapper>
-				<BentoGrid />
-			</Wrapper>
-			<GithubOpenSource />
-			<Footer />
+			<Video />
+			<Feature />
+			<PoweredBy />
 		</>
 	)
-}
-
-function Wrapper({ children }: PageProps) {
-	return <section className="mx-auto  max-w-[1440px]">{children}</section>
 }

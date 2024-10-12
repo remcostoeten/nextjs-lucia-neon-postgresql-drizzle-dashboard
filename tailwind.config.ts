@@ -1,6 +1,6 @@
 import type { Config } from 'tailwindcss'
-const defaultTheme = require('tailwindcss/defaultTheme')
-const colors = require('tailwindcss/colors')
+import { fontFamily } from 'tailwindcss/defaultTheme'
+
 const {
 	default: flattenColorPalette
 } = require('tailwindcss/lib/util/flattenColorPalette')
@@ -13,16 +13,23 @@ const config: Config = {
 		'./app/**/*.{ts,tsx}',
 		'./src/**/*.{ts,tsx}'
 	],
-	prefix: '',
 	theme: {
 		container: {
-			center: 'true',
+			center: true,
 			padding: '2rem',
 			screens: {
 				'2xl': '1400px'
 			}
 		},
 		extend: {
+			fontFamily: {
+				bricolage: ['var(--font-bricolage)', ...fontFamily.sans]
+			},
+			fontSize: {
+				h1: ['56px', { lineHeight: '1.2', letterSpacing: '-0.22px' }],
+				h2: ['48px', { lineHeight: '1.2', letterSpacing: '-0.19px' }],
+				h3: ['40px', { lineHeight: '1.2', letterSpacing: '-0.17px' }]
+			},
 			height: {
 				search: '40px',
 				header: '77px'
@@ -35,33 +42,48 @@ const config: Config = {
 				sidebar: 'var(--sidebar-width)'
 			},
 			colors: {
-				destructive: {
-					DEFAULT: 'hsl(var(--destructive))',
-					foreground: 'hsl(var(--destructive-foreground))'
-				},
+				// new landing
+				'base-background': 'var(--base--background)',
+
+				// neutrals aka grays
+				'neutral-300': 'var(--neutral--300)',
+				'neutral-400': 'var(--neutral--400)',
+				'neutral-800': 'var(--neutral--800)',
+
+				// theme colors
+				yellow: 'var(--yellow--250)',
+				purple: 'var(--purple--250)',
+
+				//  blacks
+				'black-002': 'var(--black--2)', // alpha channel 0.02
+				'black-072': 'var(--black--72)', // alpha channel 0.72
+
+				// whites
+				'white-002': 'var(--white--2)', // alpha channel 0.02
+				'white-006': 'var(--white--6)', // alpha channel 0.06
+				'white-010': 'var(--white--10)', // alpha channel 0.1
+				'white-012': 'var(--white--12)', // alpha channel 0.12
+				'white-016': 'var(--white--16)', // alpha channel 0.16
+				'white-064': 'var(--white--64)', // alpha channel 0.64
+
+				// dash + old landing
 				body: 'var(--bg-body)',
 				card: {
 					DEFAULT: 'var(--bg-card)',
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				brand: 'var(--brand)',
-				avatar: 'var(--avatar)',
 				section: 'var(--bg-section)',
 				'section-lighter': 'var(--bg-section-lighter)',
-				input: 'hsl(var(--input))',
 				dropdown: 'var(--bg-dropdown)',
 				modal: 'var(--bg-modal)',
 				'modal-hover': 'var(--bg-modal-hover)',
-				'border-default': 'var(--border-default)',
-				'border-outline': 'var(--border-outline)',
-				'border-separator': 'var(--border-separator)',
+				border: 'var(--border-default)',
 				title: 'var(--text-title)',
 				subtitle: 'var(--text-subtitle)',
 				'text-muted': 'var(--text-muted)',
 				'text-regular-nav': 'var(--text-regular-nav)',
 				'text-button': 'var(--text-button)',
-				'text-button-alt': 'var(--text-button-alt)',
-				'text-dropdown-item': 'var(--text-dropdown-item)',
 				'button-default': 'var(--button-default)',
 				'button-hover': 'var(--button-hover)',
 				success: 'var(--color-success)',
@@ -71,8 +93,6 @@ const config: Config = {
 				'input-focus': 'var(--color-input-focus)',
 				'badge-default': 'var(--badge-default)',
 				'badge-hover': 'var(--badge-hover)',
-				border: 'var(--border-default)',
-				ring: 'hsl(var(--ring))',
 				background: 'var(--bg-section)',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
@@ -82,10 +102,6 @@ const config: Config = {
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
 					foreground: 'hsl(var(--secondary-foreground))'
-				},
-				muted: {
-					DEFAULT: 'hsl(var(--muted))',
-					foreground: 'hsl(var(--muted-foreground))'
 				},
 				accent: {
 					DEFAULT: 'var(--text-regular-nav)',
@@ -99,49 +115,14 @@ const config: Config = {
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				sm: 'calc(var(--radius) - 4px)',
+				'40': 'var(--radius--40px)',
+				'24': 'var(--radius--24px)',
+				'12': 'var(--radius--12px)',
+				'8': 'var(--radius--8px)',
+				'6': 'var(--radius--6px)'
 			},
 			keyframes: {
-				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
-				},
-				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
-				},
-				ripple: {
-					'0%, 100%': {
-						transform: 'translate(-50%, -50%) scale(1)'
-					},
-					'50%': {
-						transform: 'translate(-50%, -50%) scale(0.9)'
-					}
-				},
-				marquee: {
-					from: {
-						transform: 'translateX(0)'
-					},
-					to: {
-						transform: 'translateX(calc(-100% - var(--gap)))'
-					}
-				},
-				'marquee-vertical': {
-					from: {
-						transform: 'translateY(0)'
-					},
-					to: {
-						transform: 'translateY(calc(-100% - var(--gap)))'
-					}
-				},
 				spotlight: {
 					'0%': {
 						opacity: '0',
@@ -154,12 +135,6 @@ const config: Config = {
 				}
 			},
 			animation: {
-				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out',
-				ripple: 'ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite',
-				marquee: 'marquee var(--duration) linear infinite',
-				'marquee-vertical':
-					'marquee-vertical var(--duration) linear infinite',
 				spotlight: 'spotlight 2s ease .75s 1 forwards'
 			}
 		}
