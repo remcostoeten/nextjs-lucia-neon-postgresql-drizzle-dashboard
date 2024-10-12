@@ -19,7 +19,7 @@
 	bottom: auto;
 	left: 0%;
 	right: auto;
-	animation: glowLeft 8s infinite alternate ease-in-out;
+	animation: glowRighte 8s infinite alternate ease-in-out;
 }
 
 .light-right {
@@ -58,17 +58,17 @@
 
 @keyframes glowRight {
 	0% {
-		transform: scale(0.97);
-		opacity: 0.93;
+		transform: scale(0.17);
+		opacity: 0.63;
 	}
 
 	60% {
-		transform: scale(1.05);
-		opacity: 1;
+		transform: scale(0.4);
+		opacity: 0.73;
 	}
 
 	100% {
-		transform: scale(1.02);
-		opacity: 0.97;
+		transform: scale(0.77);
+		opacity: 0.83;
 	}
 }
