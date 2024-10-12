@@ -42,6 +42,31 @@ const config: Config = {
 				sidebar: 'var(--sidebar-width)'
 			},
 			colors: {
+				// new landing
+				'base-background': 'var(--base--background)',
+
+				// neutrals aka grays
+				'neutral-300': 'var(--neutral--300)',
+				'neutral-400': 'var(--neutral--400)',
+				'neutral-800': 'var(--neutral--800)',
+
+				// theme colors
+				yellow: 'var(--yellow--250)',
+				purple: 'var(--purple--250)',
+
+				//  blacks
+				'black-002': 'var(--black--2)', // alpha channel 0.02
+				'black-072': 'var(--black--72)', // alpha channel 0.72
+
+				// whites
+				'white-002': 'var(--white--2)', // alpha channel 0.02
+				'white-006': 'var(--white--6)', // alpha channel 0.06
+				'white-010': 'var(--white--10)', // alpha channel 0.1
+				'white-012': 'var(--white--12)', // alpha channel 0.12
+				'white-016': 'var(--white--16)', // alpha channel 0.16
+				'white-064': 'var(--white--64)', // alpha channel 0.64
+
+				// dash + old landing
 				body: 'var(--bg-body)',
 				card: {
 					DEFAULT: 'var(--bg-card)',
@@ -90,7 +115,12 @@ const config: Config = {
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				sm: 'calc(var(--radius) - 4px)',
+				'40': 'var(--radius--40px)',
+				'24': 'var(--radius--24px)',
+				'12': 'var(--radius--12px)',
+				'8': 'var(--radius--8px)',
+				'6': 'var(--radius--6px)'
 			},
 			keyframes: {
 				spotlight: {

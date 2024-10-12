@@ -1,9 +1,164 @@
-import React from 'react'
+'use client'
+
+import React, { useCallback, useState } from 'react'
 import styles from './footer.module.scss'
+
+// Type definitions
+type FooterLink = {
+	text: string
+	href: string
+	isNew?: boolean
+}
+
+type FooterColumnProps = {
+	title: string
+	links: FooterLink[]
+}
+
+type FooterContactLinkProps = {
+	href: string
+	icon: React.ReactNode
+	text: string
+}
+
+const FooterContactLink: React.FC<FooterContactLinkProps> = React.memo(
+	({ href, icon, text }) => (
+		<a
+			href={href}
+			className={`${styles['footer-contact-link']} ${styles['w-inline-block']}`}
+		>
+			<div className={`${styles['icon-small']} ${styles['w-embed']}`}>
+				{icon}
+			</div>
+			<div className={styles['paragraph-small']}>{text}</div>
+		</a>
+	)
+)
+
+const FooterColumn: React.FC<FooterColumnProps> = React.memo(
+	({ title, links }) => (
+		<div className={styles['footer-column']}>
+			<div
+				className={`${styles['label-regular']} ${styles['text-color-white']}`}
+			>
+				{title}
+			</div>
+			<div className={styles['wrap-v-regular']}>
+				{links.map((link, index) => (
+					<a
+						key={`${link.text}-${index}`}
+						href={link.href}
+						className={`${styles['footer-link']} ${styles['w-inline-block']}`}
+					>
+						<div>{link.text}</div>
+						{link.isNew && (
+							<div
+								className={`${styles['wrap-h-xsmall']} ${styles['align-c']}`}
+							>
+								<div
+									className={`${styles['icon-x-small']} ${styles['w-embed']}`}
+								>
+									<NewIcon />
+								</div>
+								<div className={styles['text-color-white']}>
+									New
+								</div>
+							</div>
+						)}
+					</a>
+				))}
+			</div>
+		</div>
+	)
+)
+
+const FooterForm: React.FC = () => {
+	const [email, setEmail] = useState('')
+	const [isSubmitting, setIsSubmitting] = useState(false)
+	const [submitStatus, setSubmitStatus] = useState<
+		'idle' | 'success' | 'error'
+	>('idle')
+
+	const handleSubmit = useCallback(async (e: React.FormEvent) => {
+		e.preventDefault()
+		setIsSubmitting(true)
+		try {
+			// Simulated API call
+			await new Promise(resolve => setTimeout(resolve, 1000))
+			setSubmitStatus('success')
+		} catch (error) {
+			setSubmitStatus('error')
+		} finally {
+			setIsSubmitting(false)
+		}
+	}, [])
+
+	return (
+		<div className={`${styles['footer-form-block']} ${styles['w-form']}`}>
+			<form onSubmit={handleSubmit} className={styles['footer-form']}>
+				<div className={styles['input-icon']}>
+					<input
+						className={`${styles['text-field']} ${styles['w-input']}`}
+						maxLength={256}
+						name="Email"
+						placeholder="john@flowbase.co"
+						type="email"
+						id="footer-email"
+						value={email}
+						onChange={e => setEmail(e.target.value)}
+						required
+						aria-label="Email address for newsletter"
+					/>
+					<div
+						className={`${styles['form-icon']} ${styles['w-embed']}`}
+					>
+						<EmailIcon />
+					</div>
+				</div>
+				<button
+					type="submit"
+					className={`${styles['button-primary']} ${styles['w-button']}`}
+					disabled={isSubmitting}
+				>
+					{isSubmitting ? 'Submitting...' : 'Get Started'}
+				</button>
+			</form>
+			{submitStatus === 'success' && <SuccessMessage />}
+			{submitStatus === 'error' && <ErrorMessage />}
+		</div>
+	)
+}
+
+const SuccessMessage: React.FC = () => (
+	<div
+		className={`${styles['success-message']} ${styles['w-form-done']}`}
+		role="alert"
+	>
+		<div>
+			<span className={styles['gradient-span']}>
+				Thank you! Your submission has been received!
+			</span>
+		</div>
+	</div>
+)
+
+const ErrorMessage: React.FC = () => (
+	<div
+		className={`${styles['error-message']} ${styles['w-form-fail']}`}
+		role="alert"
+	>
+		<div className={styles['error-inner']}>
+			<div className={`${styles['icon-x-small']} ${styles['w-embed']}`}>
+				<ErrorIcon />
+			</div>
+			<div>Oops! Something went wrong while submitting the form.</div>
+		</div>
+	</div>
+)
 
 export default function Footer() {
 	return (
-		<section className={`${styles.section} ${styles['snipcss-mKnwC']}`}>
+		<footer className={`${styles.section} ${styles['snipcss-mKnwC']}`}>
 			<div className={styles['footer-container-lines']}>
 				<div className={styles['container-small']}>
 					<div className={styles['footer-line']}></div>
@@ -117,129 +272,9 @@ export default function Footer() {
 					</div>
 				</div>
 			</div>
-		</section>
+		</footer>
 	)
 }
-
-const FooterContactLink: React.FC<{
-	href: string
-	icon: React.ReactNode
-	text: string
-}> = ({ href, icon, text }) => (
-	<a
-		href={href}
-		className={`${styles['footer-contact-link']} ${styles['w-inline-block']}`}
-	>
-		<div className={`${styles['icon-small']} ${styles['w-embed']}`}>
-			{icon}
-		</div>
-		<div className={styles['paragraph-small']}>{text}</div>
-	</a>
-)
-
-const FooterColumn: React.FC<{
-	title: string
-	links: { text: string; href: string; isNew?: boolean }[]
-}> = ({ title, links }) => (
-	<div className={styles['footer-column']}>
-		<div
-			className={`${styles['label-regular']} ${styles['text-color-white']}`}
-		>
-			{title}
-		</div>
-		<div className={styles['wrap-v-regular']}>
-			{links.map((link, index) => (
-				<a
-					key={index}
-					href={link.href}
-					className={`${styles['footer-link']} ${styles['w-inline-block']}`}
-				>
-					<div>{link.text}</div>
-					{link.isNew && (
-						<div
-							className={`${styles['wrap-h-xsmall']} ${styles['align-c']}`}
-						>
-							<div
-								className={`${styles['icon-x-small']} ${styles['w-embed']}`}
-							>
-								<NewIcon />
-							</div>
-							<div className={styles['text-color-white']}>
-								New
-							</div>
-						</div>
-					)}
-				</a>
-			))}
-		</div>
-	</div>
-)
-
-const FooterForm: React.FC = () => (
-	<div className={`${styles['footer-form-block']} ${styles['w-form']}`}>
-		<form
-			id="email-form"
-			name="email-form"
-			data-name="Email Form"
-			method="get"
-			className={styles['footer-form']}
-		>
-			<div className={styles['input-icon']}>
-				<input
-					className={`${styles['text-field']} ${styles['w-input']}`}
-					maxLength={256}
-					name="Email-4"
-					data-name="Email 4"
-					placeholder="john@flowbase.co"
-					type="email"
-					id="Email-4"
-				/>
-				<div className={`${styles['form-icon']} ${styles['w-embed']}`}>
-					<EmailIcon />
-				</div>
-			</div>
-			<input
-				type="submit"
-				data-wait="Please wait..."
-				className={`${styles['button-primary']} ${styles['w-button']}`}
-				value="Get Started"
-			/>
-		</form>
-		<SuccessMessage />
-		<ErrorMessage />
-	</div>
-)
-
-const SuccessMessage: React.FC = () => (
-	<div
-		className={`${styles['success-message']} ${styles['w-form-done']}`}
-		tabIndex={-1}
-		role="region"
-		aria-label="Email Form success"
-	>
-		<div>
-			<span className={styles['gradient-span']}>
-				Thank you! Your submission has been received!
-			</span>
-		</div>
-	</div>
-)
-
-const ErrorMessage: React.FC = () => (
-	<div
-		className={`${styles['error-message']} ${styles['w-form-fail']}`}
-		tabIndex={-1}
-		role="region"
-		aria-label="Email Form failure"
-	>
-		<div className={styles['error-inner']}>
-			<div className={`${styles['icon-x-small']} ${styles['w-embed']}`}>
-				<ErrorIcon />
-			</div>
-			<div>Oops! Something went wrong while submitting the form.</div>
-		</div>
-	</div>
-)
 
 // SVG Icons
 const LocationIcon: React.FC = () => (
@@ -277,7 +312,6 @@ const GithubIcon: React.FC = () => (
 		/>
 	</svg>
 )
-
 const EmailIcon: React.FC = () => (
 	<svg
 		width="20"

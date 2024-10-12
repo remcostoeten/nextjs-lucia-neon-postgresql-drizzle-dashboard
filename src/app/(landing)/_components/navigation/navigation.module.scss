@@ -103,64 +103,6 @@
 	display: flex;
 }
 
-.button-secondary {
-	grid-column-gap: 8px;
-	grid-row-gap: 8px;
-	color: var(--base--white);
-	text-align: center;
-	border-radius: 99px;
-	flex-direction: row;
-	flex: none;
-	justify-content: center;
-	align-items: center;
-	padding: 1px;
-	font-size: 14px;
-	font-weight: 500;
-	line-height: 1.7;
-	text-decoration: none;
-	transition: all 0.5s cubic-bezier(0.6, 0.6, 0, 1);
-	position: relative;
-	background: conic-gradient(
-		rgba(255, 255, 255, 0),
-		rgba(255, 255, 255, 0),
-		rgba(255, 255, 255, 0.32)
-	) !important;
-	background: rgba(255, 255, 255, 0.12);
-}
-
-.button {
-	z-index: 2;
-	border: 4px solid var(--base--background);
-	background-color: var(--white--12);
-	background-image: linear-gradient(
-		to bottom,
-		var(--white--8),
-		rgba(142, 120, 176, 0.08)
-	);
-	box-shadow:
-		inset 0 0.75px 0.75px 0 var(--white--16),
-		inset 0 1px 0 0 var(--white--12);
-	-webkit-backdrop-filter: blur(120px);
-	backdrop-filter: blur(120px);
-	border-radius: 99px;
-	width: 100%;
-	padding: 6px 12px;
-	line-height: 1.7;
-	position: relative;
-}
-
-.button-background {
-	z-index: 0;
-	background-color: var(--white--12);
-	pointer-events: none;
-	border-radius: 99px;
-	position: absolute;
-	top: 0%;
-	bottom: 0%;
-	left: 0%;
-	right: 0%;
-}
-
 .button-bg {
 	pointer-events: none;
 	display: none;
