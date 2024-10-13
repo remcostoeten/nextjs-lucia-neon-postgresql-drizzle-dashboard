@@ -51,7 +51,7 @@ export function EditFolderDialog({
 					/>
 					<ColorPicker
 						onActivate={() => setIsColorPickerActive(true)}
-						onDeactivate={(newColor) => {
+						onDeactivate={newColor => {
 							setColor(newColor)
 							setIsColorPickerActive(false)
 						}}

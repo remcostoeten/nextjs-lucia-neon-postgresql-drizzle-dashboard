@@ -23,7 +23,7 @@ export default function Navigation() {
 
 	const menuVariants = {
 		closed: { x: '100%', opacity: 0 },
-		open: { x: 0, opacity: 1 },
+		open: { x: 0, opacity: 1 }
 	}
 
 	return (
@@ -35,7 +35,7 @@ export default function Navigation() {
 				className="flex justify-between items-center w-full max-w-[1128px] mx-auto py-4 px-theme relative z-50"
 			>
 				<Logo />
-				<div className='hidden md:block'>
+				<div className="hidden md:block">
 					<DropdownNavigation topPosition="-1rem" />
 				</div>
 				{isMobile && (
@@ -43,7 +43,9 @@ export default function Navigation() {
 						{isOpen ? <X /> : <Menu />}
 					</button>
 				)}
-				<SecondaryButton href="/dashboard" className="hidden md:block">Dashboard</SecondaryButton>
+				<SecondaryButton href="/dashboard" className="hidden md:block">
+					Dashboard
+				</SecondaryButton>
 			</motion.nav>
 			<HorizontalLine />
 
@@ -54,12 +56,21 @@ export default function Navigation() {
 						animate="open"
 						exit="closed"
 						variants={menuVariants}
-						transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+						transition={{
+							type: 'spring',
+							stiffness: 300,
+							damping: 30
+						}}
 						className="fixed top-0 right-0 h-full w-64 bg-background shadow-lg z-40 p-4"
 					>
 						<div className="flex flex-col space-y-4 mt-16">
 							<DropdownNavigation topPosition="0" />
-							<SecondaryButton href="/dashboard" className="w-full">Dashboard</SecondaryButton>
+							<SecondaryButton
+								href="/dashboard"
+								className="w-full"
+							>
+								Dashboard
+							</SecondaryButton>
 						</div>
 					</motion.div>
 				)}

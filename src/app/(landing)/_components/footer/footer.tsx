@@ -5,6 +5,7 @@ import { siteConfig } from '@/config/site-config'
 import React from 'react'
 import { toast } from 'sonner'
 import styles from './footer.module.scss'
+import RainbowLine from '../rainbow-line'
 
 type FooterLink = {
 	text: string
@@ -50,6 +51,8 @@ function handleClick(e: React.MouseEvent, isBeta: boolean) {
 const FooterColumn: React.FC<FooterColumnProps> = React.memo(
 	({ title, links }) => (
 		<div className={styles['footer-column']}>
+			<RainbowLine small />
+
 			<div
 				className={`${styles['label-regular']} ${styles['text-color-white']}`}
 			>

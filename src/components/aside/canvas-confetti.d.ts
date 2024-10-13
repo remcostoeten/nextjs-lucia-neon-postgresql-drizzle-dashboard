@@ -1,12 +1,15 @@
 declare module 'canvas-confetti' {
-    function confetti(options?: any): Promise<null>;
+	function confetti(options?: any): Promise<null>
 
-    namespace confetti {
-        function create(canvas: HTMLCanvasElement, options?: any): {
-            confetti: typeof confetti;
-            reset: () => void;
-        };
-    }
+	namespace confetti {
+		function create(
+			canvas: HTMLCanvasElement,
+			options?: any
+		): {
+			confetti: typeof confetti
+			reset: () => void
+		}
+	}
 
-    export = confetti;
+	export = confetti
 }

@@ -16,9 +16,7 @@ export default function RootLayout({ children }: PageProps) {
 				className={`${geistSans.variable} ${geistMono.variable} ${ptMono.className} antialiased `}
 			> */}
 			<body className="antialiased bg-base">
-				<ThemeWrapper>
-					{children}
-				</ThemeWrapper>
+				<ThemeWrapper>{children}</ThemeWrapper>
 			</body>
 		</html>
 	)

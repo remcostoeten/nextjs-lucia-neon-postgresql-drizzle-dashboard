@@ -98,7 +98,9 @@ export default function Onboarding({ userId }: OnboardingProps) {
 										name="firstName"
 										render={({ field }) => (
 											<FormItem>
-												<FormLabel>First Name</FormLabel>
+												<FormLabel>
+													First Name
+												</FormLabel>
 												<FormControl>
 													<Input
 														placeholder="Your first name"

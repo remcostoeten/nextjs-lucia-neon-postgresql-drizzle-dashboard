@@ -1,12 +1,6 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle
-} from '@/components/ui/dialog'
+import { Button, Dialog, DialogContent, DialogHeader, DialogTitle } from 'ui'
 import { PickaxeIcon } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { nearestTailwindColor } from './color-utils'

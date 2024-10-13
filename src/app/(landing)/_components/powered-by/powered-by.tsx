@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import IntegrationTitle from './integration-title'
 import MarqueeDemo from './Marquee'
 import styles from './powered-by.module.scss'
+import HorizontalLine from '../horizontal-line'
 
 export default function PoweredBy() {
 	const [randomStat, setRandomStat] = useState<number>(3200)
@@ -95,6 +96,7 @@ export default function PoweredBy() {
 					data-testid="line-vertical-right"
 				></div>
 			</div>
+			<HorizontalLine />
 		</div>
 	)
 }

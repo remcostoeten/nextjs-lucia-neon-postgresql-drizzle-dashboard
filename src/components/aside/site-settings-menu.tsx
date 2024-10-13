@@ -228,9 +228,9 @@ function UnifiedSettingsComponent({
 				showSubIssues,
 				disableAllAnimations,
 				disableSidebarAnimations
-			};
+			}
 
-			setUserProfile(updatedProfile);
+			setUserProfile(updatedProfile)
 
 			if (onSettingChange) {
 				await Promise.all([
@@ -239,9 +239,15 @@ function UnifiedSettingsComponent({
 					onSettingChange('grouping', grouping),
 					onSettingChange('ordering', ordering),
 					onSettingChange('showSubIssues', showSubIssues),
-					onSettingChange('disableAllAnimations', disableAllAnimations),
-					onSettingChange('disableSidebarAnimations', disableSidebarAnimations)
-				]);
+					onSettingChange(
+						'disableAllAnimations',
+						disableAllAnimations
+					),
+					onSettingChange(
+						'disableSidebarAnimations',
+						disableSidebarAnimations
+					)
+				])
 			}
 
 			await logActivity(
@@ -249,11 +255,11 @@ function UnifiedSettingsComponent({
 				'User updated site settings',
 				undefined,
 				updatedProfile
-			);
+			)
 
-			toast.success('All settings saved successfully');
+			toast.success('All settings saved successfully')
 			if (variant === 'modal') {
-				onClose();
+				onClose()
 			}
 		} catch (error: unknown) {
 			console.error('Error saving settings:', error)
