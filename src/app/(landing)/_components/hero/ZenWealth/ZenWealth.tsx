@@ -13,7 +13,7 @@ type ZenWealthProps = {
 
 export function ZenWealth({ title, subtitle, description }: ZenWealthProps) {
 	return (
-		<main className="flex flex-col gap-3 max-w-[610px]">
+		<main className="flex flex-col gap-3 pt-20 max-w-[610px]">
 			<HeroBadge />
 			<motion.div
 				initial={{ opacity: 0, y: 50 }}

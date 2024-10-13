@@ -2,15 +2,15 @@ export const siteConfig = {
 	name: 'Remco Stoeten',
 	applicationName: 'Notevault',
 	description: 'Frontend Developer specializing in Next.js and React',
-	url: 'https://notevault.remcostoeten.com', // Replace with your actual website URL
-	ogImage: 'x', // Replace with your actual OG image URL
-	username: process.env.NEXT_PUBLIC_GITHUB_USERNAME,
-	repository: process.env.NEXT_PUBLIC_GITHUB_REPOSITORY,
+	url: 'https://notevault.remcostoeten.com',
+	ogImage: '/path/to/og-image.jpg', // Replace with the actual path to your OG image
+	username: 'remcostoeten',
+	repositoryName: 'nextjs-lucia-neon-postgresql-drizzle-dashboard',
 	links: {
 		github: 'https://github.com/remcostoeten',
 		gitlab: 'https://gitlab.com/remcostoeten',
-		linkedin: 'https://linkedin.com/in/remco-stoeten', // Replace with your actual LinkedIn URL
-		twitter: 'https://twitter.com/' // Replace with your actual Twitter URL
+		linkedin: 'https://linkedin.com/in/remco-stoeten',
+		twitter: 'https://twitter.com/remcostoeten' // Assuming your Twitter handle is the same as your username
 	},
 	contact: {
 		email: {
@@ -29,12 +29,11 @@ export const siteConfig = {
 			description:
 				'A dashboard built with Next.js, Lucia, Neon, PostgreSQL, and Drizzle'
 		}
-		// Add more projects as needed
 	},
 	social: {
 		github: 'remcostoeten',
-		twitter: 'remcostoeten', // Replace with your actual Twitter handle
-		linkedin: 'remcostoeten' // Replace with your actual LinkedIn username
+		twitter: 'remcostoeten',
+		linkedin: 'remcostoeten'
 	},
 	metrics: {
 		githubStats: {
@@ -89,7 +88,7 @@ export const siteConfig = {
 	theme: {
 		colors: {
 			primary: '#ff6c00',
-			secondary: '#10B981' // Example color, adjust as needed
+			secondary: '#10B981'
 		}
 	}
 }

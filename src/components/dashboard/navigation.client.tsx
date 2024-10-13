@@ -27,11 +27,10 @@ import LogoIcon from '../base/logo'
 import ThemeSwitcherButton from '../elements/dark-light-toggle'
 
 type NavigationProps = {
-	userName: string
 	userEmail: string
 }
 
-export default function Navigation({ userName, userEmail }: NavigationProps) {
+export default function Navigation({ userEmail }: NavigationProps) {
 	const [theme, setTheme] = useState<'light' | 'dark'>('dark')
 	const [isMenuOpen, setMenuOpen] = useState(false)
 	const router = useRouter()
@@ -100,13 +99,8 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 						<div className="bg-neutral-900 flex items-center gap-1.5 transition-all duration-150 pl-0.5 pr-2 py-0.5 rounded-full">
 							<Avatar className="h-8 w-8 bg-avatar text-title">
 								<AvatarFallback>
-									{userName
-										? userName
-												.split(' ')
-												.map(name => name[0])
-												.join('')
-												.toUpperCase()
-												.slice(0, 2)
+									{userEmail
+										? userEmail.slice(0, 2).toUpperCase()
 										: 'U'}
 								</AvatarFallback>
 							</Avatar>
@@ -118,10 +112,10 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 					<DropdownMenuLabel>
 						<div className="flex flex-col space-y-1">
 							<p className="text-sm font-medium leading-none">
-								{userName || 'User'}
+								{userEmail}
 							</p>
 							<p className="text-xs leading-none text-neutral-400">
-								{userEmail}
+								User
 							</p>
 						</div>
 					</DropdownMenuLabel>
@@ -137,14 +131,6 @@ export default function Navigation({ userName, userEmail }: NavigationProps) {
 					</DropdownMenuItem>
 					<DropdownMenuItem>
 						<div className="flex items-center justify-between w-full">
-							{/* <div className="flex items-center">
-									{theme === 'light' ? (
-										<Sun className="mr-2 h-4 w-4" />
-									) : (
-										<Moon className="mr-2 h-4 w-4" />
-									)}
-									<span>Theme</span>
-								</div> */}
 							<ThemeSwitcherButton />
 						</div>
 					</DropdownMenuItem>

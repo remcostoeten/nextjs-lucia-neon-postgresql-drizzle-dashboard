@@ -4,8 +4,8 @@ import { GitHubIcon } from '@/components/base/Icons'
 import { siteConfig } from '@/config/site-config'
 import React from 'react'
 import { toast } from 'sonner'
-import styles from './footer.module.scss'
 import RainbowLine from '../rainbow-line'
+import styles from './footer.module.scss'
 
 type FooterLink = {
 	text: string
@@ -143,11 +143,6 @@ export default function gitFooter() {
 								<FooterColumn
 									title="Previous apps"
 									links={[
-										{
-											text: 'Previous landing page',
-											href: '/old-landing',
-											external: false
-										},
 										{
 											text: 'All-in-one dashboard',
 											href: 'https://productivity.remcostoeten.com',

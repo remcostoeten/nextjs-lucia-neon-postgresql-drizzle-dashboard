@@ -1,9 +1,11 @@
+import { siteConfig } from '@/config/site-config'
 import { ArrowRightIcon } from 'lucide-react'
 import React from 'react'
 
 interface ProductLink {
 	name: string
 	href: string
+	external?: boolean
 }
 
 interface ProductCategory {
@@ -27,7 +29,7 @@ const productCategories: ProductCategory[] = [
 				href: '/hooks-showcase/palette'
 			},
 			{
-				name: 'use-geolocation',
+				name: 'Geolocatinon',
 				href: '/hooks-showcase/geolocation'
 			},
 			{
@@ -37,11 +39,22 @@ const productCategories: ProductCategory[] = [
 		]
 	},
 	{
-		name: 'Tools',
+		name: 'Previous apps',
 		links: [
 			{
-				name: 'Previous landing page',
-				href: '/old-landing'
+				name: 'Productivity panel',
+				href: 'http://panel.remcostoeten.com',
+				external: true
+			},
+			{
+				name: 'All-in-one dashboard',
+				href: 'https://dashboard.remcostoeten.com/login',
+				external: true
+			},
+			{
+				name: 'GitHub Repository',
+				href: `https://github.com/${siteConfig.username}/${siteConfig.repositoryName}`,
+				external: true
 			}
 		]
 	}
@@ -61,9 +74,14 @@ const ProductCategory: React.FC<ProductCategory> = ({ name, links }) => (
 			<a
 				key={index}
 				href={link.href}
+				target={link.external ? '_blank' : undefined}
+				rel={link.external ? 'noopener noreferrer' : undefined}
 				className={`block text-sm text-subtitle ${
 					index !== links.length - 1 ? 'mb-1' : ''
 				}`}
+				{...(link.external
+					? { rel: 'noopener noreferrer', target: '_blank' }
+					: {})}
 			>
 				{link.name}
 			</a>
