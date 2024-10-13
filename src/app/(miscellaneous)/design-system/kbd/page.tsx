@@ -227,10 +227,10 @@ export default function ShortcutGuide() {
 										onChange={e =>
 											setActiveVariant(
 												e.target.value as
-												| 'default'
-												| 'frosted'
-												| 'outline'
-												| 'pulse'
+													| 'default'
+													| 'frosted'
+													| 'outline'
+													| 'pulse'
 											)
 										}
 										className="w-full p-2 rounded bg-card text-foreground border"
@@ -253,11 +253,11 @@ export default function ShortcutGuide() {
 										onChange={e =>
 											setActiveSize(
 												e.target.value as
-												| 'xs'
-												| 'sm'
-												| 'md'
-												| 'lg'
-												| 'xl'
+													| 'xs'
+													| 'sm'
+													| 'md'
+													| 'lg'
+													| 'xl'
 											)
 										}
 										className="w-full p-2 rounded bg-card text-foreground border"

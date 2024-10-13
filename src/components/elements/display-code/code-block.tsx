@@ -90,30 +90,30 @@ const EnhancedCodeBlock = ({
 		currentThemeIndex === 0
 			? dracula
 			: {
-				...nord,
-				'token.comment': '#81A1C1',
-				'token.prolog': '#81A1C1',
-				'token.doctype': '#81A1C1',
-				'token.cdata': '#81A1C1',
-				'token.punctuation': '#81A1C1',
-				'token.property': '#88C0D0',
-				'token.tag': '#8FBCBB',
-				'token.boolean': '#B48EAD',
-				'token.number': '#B48EAD',
-				'token.constant': '#B48EAD',
-				'token.symbol': '#B48EAD',
-				'token.deleted': '#B48EAD',
-				'token.string': '#A3BE8C',
-				'token.char': '#A3BE8C',
-				'token.attr-value': '#A3BE8C',
-				'token.attr-name': '#8FBCBB',
-				'token.function': '#88C0D0',
-				'token.operator': '#81A1C1',
-				'token.entity': '#81A1C1',
-				'token.url': '#81A1C1',
-				'token.variable': '#81A1C1',
-				'token.inserted': '#A3BE8C'
-			}
+					...nord,
+					'token.comment': '#81A1C1',
+					'token.prolog': '#81A1C1',
+					'token.doctype': '#81A1C1',
+					'token.cdata': '#81A1C1',
+					'token.punctuation': '#81A1C1',
+					'token.property': '#88C0D0',
+					'token.tag': '#8FBCBB',
+					'token.boolean': '#B48EAD',
+					'token.number': '#B48EAD',
+					'token.constant': '#B48EAD',
+					'token.symbol': '#B48EAD',
+					'token.deleted': '#B48EAD',
+					'token.string': '#A3BE8C',
+					'token.char': '#A3BE8C',
+					'token.attr-value': '#A3BE8C',
+					'token.attr-name': '#8FBCBB',
+					'token.function': '#88C0D0',
+					'token.operator': '#81A1C1',
+					'token.entity': '#81A1C1',
+					'token.url': '#81A1C1',
+					'token.variable': '#81A1C1',
+					'token.inserted': '#A3BE8C'
+				}
 
 	const openTransition = animationVariants[animationVariant]
 	const closeTransition = animationVariants.smooth
