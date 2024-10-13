@@ -12,3 +12,11 @@
 		opacity: 1;
 	}
 }
+
+.offcanvas-menu {
+	&:hover {
+		svg {
+			fill: white;
+		}
+	}
+}
