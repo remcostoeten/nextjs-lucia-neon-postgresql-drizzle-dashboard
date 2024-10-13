@@ -15,7 +15,6 @@ const config: Config = {
 	],
 	theme: {
 		container: {
-			center: 'true',
 			padding: '2rem',
 			screens: {
 				'2xl': '1400px'
@@ -58,12 +57,13 @@ const config: Config = {
 					'radial-gradient(circle, var(--tw-gradient-stops))'
 			},
 			colors: {
+				yellow: '#fce48d',
+				purple: '#b98dfc',
 				base: '#070707',
 				'neutral-300': 'var(--neutral--300)',
 				'neutral-400': 'var(--neutral--400)',
 				'neutral-800': 'var(--neutral--800)',
-				yellow: 'var(--yellow--250)',
-				purple: 'var(--purple--250)',
+
 				'black-002': 'var(--black--2)',
 				'black-072': 'var(--black--72)',
 				'white-002': 'var(--white--2)',

@@ -23,8 +23,8 @@ const productCategories: ProductCategory[] = [
 		name: 'Hooks showcase',
 		links: [
 			{
-				name: 'use-localstorage',
-				href: '/hooks-showcase/localstorage'
+				name: 'Color palette',
+				href: '/hooks-showcase/palette'
 			},
 			{
 				name: 'use-geolocation',

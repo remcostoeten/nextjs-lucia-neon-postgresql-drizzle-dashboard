@@ -21,7 +21,7 @@ const NoticeBoxsPage = () => {
 			demoComponent={component}
 			codeString={code}
 			fileName={`${title.replace(/\s+/g, '-').toLowerCase()}.tsx`}
-			language="tsx"
+			language="react"
 		/>
 	)
 

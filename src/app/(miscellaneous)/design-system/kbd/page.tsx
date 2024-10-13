@@ -1,5 +1,9 @@
 'use client'
 
+import { Kbd, KbdKeys } from '@/components/atoms/kbd'
+import EnhancedCodeBlock from '@/components/elements/display-code/code-block'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useState } from 'react'
 import {
 	Button,
 	Dialog,
@@ -14,10 +18,6 @@ import {
 	TabsList,
 	TabsTrigger
 } from 'ui'
-import { Kbd, KbdKeys } from '@/components/atoms/kbd'
-import { EnhancedCodeBlock } from '@/components/elements/display-code/advanced-code-block'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useState } from 'react'
 import DesignSystemWrapper from '../_components/DesignSystemWrapper'
 
 const KbdShowcase = () => {
@@ -227,10 +227,10 @@ export default function ShortcutGuide() {
 										onChange={e =>
 											setActiveVariant(
 												e.target.value as
-													| 'default'
-													| 'frosted'
-													| 'outline'
-													| 'pulse'
+												| 'default'
+												| 'frosted'
+												| 'outline'
+												| 'pulse'
 											)
 										}
 										className="w-full p-2 rounded bg-card text-foreground border"
@@ -253,11 +253,11 @@ export default function ShortcutGuide() {
 										onChange={e =>
 											setActiveSize(
 												e.target.value as
-													| 'xs'
-													| 'sm'
-													| 'md'
-													| 'lg'
-													| 'xl'
+												| 'xs'
+												| 'sm'
+												| 'md'
+												| 'lg'
+												| 'xl'
 											)
 										}
 										className="w-full p-2 rounded bg-card text-foreground border"

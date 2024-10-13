@@ -1,18 +1,11 @@
 import React from 'react'
-import {
-	Button,
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle
-} from 'ui'
-import { EnhancedCodeBlock } from '../../../../components/elements/display-code/advanced-code-block'
+import { Button, Card, CardContent, CardHeader, CardTitle } from 'ui'
+import EnhancedCodeBlock from '../../../../components/elements/display-code/code-block'
 
 type HooksShowcaseWrapperProps = {
 	title?: string
 	description?: string
-	children?: React.ReactNodee
+	children?: React.ReactNode
 	codeString?: string
 	fileName?: string
 	language?: string
@@ -27,7 +20,6 @@ type HooksShowcaseWrapperProps = {
 export function HooksShowcaseWrapper({
 	title,
 	description,
-	children,
 	codeString,
 	fileName,
 	language,
@@ -42,12 +34,10 @@ export function HooksShowcaseWrapper({
 					<CardTitle className="text-2xl font-bold text-title">
 						{title}
 					</CardTitle>
-					<CardDescription className="text-text-subtitle">
-						<p>
-							{description}
-							{explanation && <>{explanation}</>}
-						</p>
-					</CardDescription>
+					<p className="text-text-subtitle">
+						{description}
+						{explanation && <>{explanation}</>}
+					</p>
 				</CardHeader>
 				<CardContent>
 					{demoComponent && <>{demoComponent}</>}
@@ -72,7 +62,7 @@ export function HooksShowcaseWrapper({
 						language={language as string}
 						badges={[
 							language?.charAt(0).toUpperCase() +
-								language?.slice(1)
+							language?.slice(1)
 						]}
 					/>
 				</CardContent>

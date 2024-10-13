@@ -1,19 +1,19 @@
 'use client'
 
 import { AnimatePresence, motion } from 'framer-motion'
-import { ChevronDown, Copy } from 'lucide-react'
+import { ChevronDown, Code, Copy, Palette } from 'lucide-react'
 import { useState } from 'react'
 import {
-	DiCss3,
-	DiHtml5,
-	DiJava,
-	DiJavascript1,
-	DiPython,
-	DiReact
-} from 'react-icons/di'
-import { SiTypescript } from 'react-icons/si'
+	SiCss3,
+	SiHtml5,
+	SiJavascript,
+	SiMarkdown,
+	SiPython,
+	SiReactos,
+	SiTypescript
+} from 'react-icons/si'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { dracula, nord } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { toast } from 'sonner'
 import { Badge, Button } from 'ui'
 
@@ -22,29 +22,31 @@ type CodeBlockProps = {
 	fileName: string
 	language: string
 	badges?: string[]
-	animationVariant?: 'default' | 'bouncy' | 'smooth' | 'elastic' | 'snappy'
+	animationVariant?: 'default' | 'smooth'
 }
 
 const getLanguageIcon = (language: string) => {
 	switch (language.toLowerCase()) {
 		case 'html':
-			return <DiHtml5 />
+			return <SiHtml5 />
 		case 'css':
-			return <DiCss3 />
+			return <SiCss3 />
 		case 'javascript':
-			return <DiJavascript1 />
+			return <SiJavascript />
 		case 'typescript':
 			return <SiTypescript />
 		case 'python':
-			return <DiPython />
-		case 'java':
-			return <DiJava />
+			return <SiPython />
 		case 'react':
 		case 'jsx':
+			return <SiReactos />
 		case 'tsx':
-			return <DiReact />
+			return <SiTypescript />
+		case 'markdown':
+		case 'mdx':
+			return <SiMarkdown />
 		default:
-			return null
+			return <Code />
 	}
 }
 
@@ -55,39 +57,22 @@ const animationVariants = {
 		damping: 15,
 		duration: 0.75
 	},
-	bouncy: {
-		type: 'spring',
-		stiffness: 180,
-		damping: 10,
-		duration: 0.75
-	},
 	smooth: {
 		type: 'tween',
 		ease: 'easeInOut',
 		duration: 0.75
-	},
-	elastic: {
-		type: 'spring',
-		stiffness: 200,
-		damping: 12,
-		duration: 0.75
-	},
-	snappy: {
-		type: 'spring',
-		stiffness: 250,
-		damping: 20,
-		duration: 0.75
 	}
 }
 
-export function EnhancedCodeBlock({
+const EnhancedCodeBlock = ({
 	code,
 	fileName,
 	language,
 	badges = [],
 	animationVariant = 'default'
-}: CodeBlockProps) {
+}: CodeBlockProps) => {
 	const [isCollapsed, setIsCollapsed] = useState(false)
+	const [currentThemeIndex, setCurrentThemeIndex] = useState(0)
 
 	const copyToClipboard = () => {
 		navigator.clipboard.writeText(code)
@@ -96,14 +81,39 @@ export function EnhancedCodeBlock({
 
 	const languageIcon = getLanguageIcon(language)
 
-	const customStyle = {
-		...vscDarkPlus,
-		'code[class*="language-"]': {
-			...vscDarkPlus['code[class*="language-"]'],
-			whiteSpace: 'pre-wrap',
-			wordBreak: 'break-all'
-		}
+	const cycleTheme = () => {
+		setCurrentThemeIndex(prevIndex => (prevIndex + 1) % 2)
+		toast.success(`Theme: ${currentThemeIndex === 0 ? 'Dracula' : 'Nord'}`)
 	}
+
+	const currentTheme =
+		currentThemeIndex === 0
+			? dracula
+			: {
+				...nord,
+				'token.comment': '#81A1C1',
+				'token.prolog': '#81A1C1',
+				'token.doctype': '#81A1C1',
+				'token.cdata': '#81A1C1',
+				'token.punctuation': '#81A1C1',
+				'token.property': '#88C0D0',
+				'token.tag': '#8FBCBB',
+				'token.boolean': '#B48EAD',
+				'token.number': '#B48EAD',
+				'token.constant': '#B48EAD',
+				'token.symbol': '#B48EAD',
+				'token.deleted': '#B48EAD',
+				'token.string': '#A3BE8C',
+				'token.char': '#A3BE8C',
+				'token.attr-value': '#A3BE8C',
+				'token.attr-name': '#8FBCBB',
+				'token.function': '#88C0D0',
+				'token.operator': '#81A1C1',
+				'token.entity': '#81A1C1',
+				'token.url': '#81A1C1',
+				'token.variable': '#81A1C1',
+				'token.inserted': '#A3BE8C'
+			}
 
 	const openTransition = animationVariants[animationVariant]
 	const closeTransition = animationVariants.smooth
@@ -121,14 +131,22 @@ export function EnhancedCodeBlock({
 						<Badge
 							key={index}
 							variant="outline"
-							className="bg-purple text-yellow border-purple"
+							className="shadow-xl font-normal shadow-body/50 bg-[#b98dfc1a] text-subtitletext-xxs border"
 						>
 							{badge}
 						</Badge>
 					))}
-					<span className="text-sm text-zinc-400">{fileName}</span>
+					<span className="text-sm text-subtitle">{fileName}</span>
 				</div>
 				<div className="flex space-x-2">
+					<Button
+						variant="ghost"
+						size="icon"
+						onClick={cycleTheme}
+						className="text-zinc-400 hover:text-zinc-100"
+					>
+						<Palette size={16} />
+					</Button>
 					<Button
 						variant="ghost"
 						size="icon"
@@ -176,7 +194,7 @@ export function EnhancedCodeBlock({
 						>
 							<SyntaxHighlighter
 								language={language}
-								style={customStyle}
+								style={currentTheme}
 								customStyle={{
 									margin: 0,
 									padding: 0,
@@ -203,3 +221,5 @@ export function EnhancedCodeBlock({
 		</div>
 	)
 }
+
+export default EnhancedCodeBlock

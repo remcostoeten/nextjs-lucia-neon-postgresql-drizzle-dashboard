@@ -1,7 +1,7 @@
 'use client'
 
 import { Flex } from '@/components/atoms'
-import { EnhancedCodeBlock } from '@/components/elements/display-code/advanced-code-block'
+import EnhancedCodeBlock from '@/components/elements/display-code/code-block'
 import { CommandCode } from '@/components/elements/display-code/command-inline-code'
 import NoticeBox from '@/components/elements/notice-box'
 import { logActivity } from 'actions'

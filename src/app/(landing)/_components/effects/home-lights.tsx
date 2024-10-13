@@ -7,7 +7,7 @@ export default function HomeLights() {
 		<div className="home-lights">
 			<div className="light-wrap">
 				<motion.img
-					src="/landing/lights/light-1.webp"
+					src="/landing/lights/light.webp"
 					loading="lazy"
 					width="760"
 					sizes="(max-width: 1800px) 80vw, 1440px"

@@ -113,6 +113,7 @@
 		"@types/node": "^20",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
+		"@types/react-syntax-highlighter": "^15.5.13",
 		"autoprefixer": "^10.0.1",
 		"dotenv": "^16.4.5",
 		"drizzle-kit": "^0.20.14",
