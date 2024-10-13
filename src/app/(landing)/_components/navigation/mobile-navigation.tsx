@@ -2,11 +2,11 @@
 
 import { DropdownNavigation } from '@/components/elements'
 import { AnimatePresence, motion } from 'framer-motion'
+import { Menu, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import HorizontalLine from '../horizontal-line'
 import Logo from './_components/logo'
 import SecondaryButton from './_components/sign-in-button'
-import { X, Menu } from 'lucide-react'
-import { useState, useEffect } from 'react'
 
 export default function Navigation() {
 	const [isOpen, setIsOpen] = useState(false)

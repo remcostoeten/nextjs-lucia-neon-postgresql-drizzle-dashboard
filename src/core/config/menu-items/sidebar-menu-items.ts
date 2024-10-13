@@ -11,6 +11,7 @@ import {
 	FolderIcon,
 	LucideIcon,
 	Mail,
+	Mic,
 	Paintbrush,
 	User
 } from 'lucide-react'
@@ -46,6 +47,11 @@ export const sidebarItems: SidebarItem[] = [
 		name: 'IG Follower Parser',
 		path: '/dashboard/ig-follower-parser',
 		icon: FileText
+	},
+	{
+		name: 'Record MP3',
+		path: '/dashboard/record-mp3',
+		icon: Mic
 	},
 	{
 		name: 'Generate background',

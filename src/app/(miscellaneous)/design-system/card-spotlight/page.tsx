@@ -8,7 +8,6 @@ import {
 	SelectValue
 } from 'ui'
 import { Icons } from '@/components/base/icons'
-import Banner from '@/components/effects/card-spotlight/banner'
 import Spotlight, {
 	SpotlightCard
 } from '@/components/effects/card-spotlight/card-spotlight'

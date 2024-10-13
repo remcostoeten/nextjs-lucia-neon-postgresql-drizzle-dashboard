@@ -4,7 +4,7 @@ import Products from './TabContent/Products'
 
 export const TABS = [
 	{
-		title: 'Showcase & tools',
+		title: 'Showcase',
 		Component: Products
 	},
 	{

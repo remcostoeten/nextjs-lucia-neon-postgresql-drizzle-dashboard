@@ -5,17 +5,17 @@ import {
 	parseColor,
 	rgbToHex
 } from '@/components/_development-utils/color-utils'
-import { Button } from '@/components/ui/button'
+import {} from '@/components/ui/button'
 import { PointerIcon } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui'
-function ColorPickerModal({
-	color,
-	onClose
-}: {
+import { Button, Dialog, DialogContent, DialogHeader, DialogTitle } from 'ui'
+
+type ColorPickerModalProps = {
 	color: string
 	onClose: () => void
-}) {
+}
+
+function ColorPickerModal({ color, onClose }: ColorPickerModalProps) {
 	const [rgbaColor, setRgbaColor] = useState('')
 	const [hexColor, setHexColor] = useState('')
 	const [tailwindColor, setTailwindColor] = useState('')

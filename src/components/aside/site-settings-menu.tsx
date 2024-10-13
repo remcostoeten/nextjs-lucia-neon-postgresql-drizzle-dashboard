@@ -139,10 +139,10 @@ function UnifiedSettingsComponent({
 	} = useSiteSettingsStore()
 
 	useEffect(() => {
-		if (variant === 'modal' && isOpen && !userProfile.id) {
+		if (variant === 'modal' && isOpen && !initialProfile.id) {
 			loadProfile()
 		}
-	}, [variant, isOpen, userProfile.id])
+	}, [variant, isOpen, initialProfile.id])
 
 	const loadProfile = async () => {
 		setIsLoading(true)
@@ -219,9 +219,8 @@ function UnifiedSettingsComponent({
 
 	const handleSave = async () => {
 		try {
-			// Update local state
-			setUserProfile(prevProfile => ({
-				...prevProfile,
+			const updatedProfile = {
+				...userProfile,
 				theme: currentTheme,
 				accentColor,
 				grouping,
@@ -229,39 +228,35 @@ function UnifiedSettingsComponent({
 				showSubIssues,
 				disableAllAnimations,
 				disableSidebarAnimations
-			}))
+			}
 
-			// Call onSettingChange for each updated setting
+			setUserProfile(updatedProfile)
+
 			if (onSettingChange) {
-				await onSettingChange('theme', currentTheme)
-				await onSettingChange('accentColor', accentColor)
-				await onSettingChange('grouping', grouping)
-				await onSettingChange('ordering', ordering)
-				await onSettingChange('showSubIssues', showSubIssues)
-				await onSettingChange(
-					'disableAllAnimations',
-					disableAllAnimations
-				)
-				await onSettingChange(
-					'disableSidebarAnimations',
-					disableSidebarAnimations
-				)
+				await Promise.all([
+					onSettingChange('theme', currentTheme),
+					onSettingChange('accentColor', accentColor),
+					onSettingChange('grouping', grouping),
+					onSettingChange('ordering', ordering),
+					onSettingChange('showSubIssues', showSubIssues),
+					onSettingChange(
+						'disableAllAnimations',
+						disableAllAnimations
+					),
+					onSettingChange(
+						'disableSidebarAnimations',
+						disableSidebarAnimations
+					)
+				])
 			}
 
 			await logActivity(
 				'Settings Updated',
 				'User updated site settings',
 				undefined,
-				{
-					theme: currentTheme,
-					accentColor,
-					grouping,
-					ordering,
-					showSubIssues,
-					disableAllAnimations,
-					disableSidebarAnimations
-				}
+				updatedProfile
 			)
+
 			toast.success('All settings saved successfully')
 			if (variant === 'modal') {
 				onClose()
@@ -800,37 +795,6 @@ function UnifiedSettingsComponent({
 			</div>
 		</div>
 	)
-
-	// const content = (
-	// 	<div className="space-y-6">
-	// 		<form onSubmit={handleSubmit} className="space-y-6">
-	// 			{renderProfileFields()}
-	// 		</form>
-
-	// 		<Separator className="bg-border-outline" />
-
-	// 		{renderAppearanceSettings()}
-
-	// 		<Separator className="bg-border-outline" />
-
-	// 		{renderAnimationSettings()}
-
-	// 		<Separator className="bg-border-outline" />
-
-	// 		{renderUISettings()}
-
-	// 		<Separator className="bg-border-outline" />
-
-	// 		<div className="flex justify-between items-center">
-	// 			<Button variant="outline" onClick={handleReset} className="text-gray-300 border-gray-700">
-	// 				Reset to default
-	// 			</Button>
-	// 			<Button onClick={handleSave} style={{ backgroundColor: accentColor }}>
-	// 				Save all changes
-	// 			</Button>
-	// 		</div>
-	// 	</div>
-	// )
 
 	const content = (
 		<div className="space-y-6">
