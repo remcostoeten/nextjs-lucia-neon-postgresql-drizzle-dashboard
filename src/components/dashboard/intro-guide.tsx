@@ -9,15 +9,7 @@ import { Flex } from 'atoms'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useSiteSettingsStore } from 'stores'
-import {
-	Button,
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle
-} from 'ui'
-import SiteSettingsMenu from '../aside/site-settings-menu'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'ui'
 
 type DashboardIntroProps = {
 	user: {
@@ -110,14 +102,6 @@ export default function IntroShortcutGuide({ user }: DashboardIntroProps) {
 					</Flex>
 				</CardContent>
 			</Card>
-			<Button onClick={() => setIsSettingsOpen(true)}>
-				Open Settings
-			</Button>
-			<SiteSettingsMenu
-				isOpen={isSettingsOpen}
-				onClose={() => setIsSettingsOpen(false)}
-				onSettingChange={handleSettingsChange}
-			/>
 		</>
 	)
 }

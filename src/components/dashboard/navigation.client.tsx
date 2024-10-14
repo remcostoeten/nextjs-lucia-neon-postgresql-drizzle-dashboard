@@ -31,7 +31,7 @@ type NavigationProps = {
 }
 
 export default function Navigation({ userEmail }: NavigationProps) {
-	const [theme, setTheme] = useState<'light' | 'dark'>('dark')
+	const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('dark')
 	const [isMenuOpen, setMenuOpen] = useState(false)
 	const router = useRouter()
 
@@ -108,21 +108,18 @@ export default function Navigation({ userEmail }: NavigationProps) {
 						</div>
 					</button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent className="w-56" open={isMenuOpen}>
+				<DropdownMenuContent className="w-56">
 					<DropdownMenuLabel>
 						<div className="flex flex-col space-y-1">
 							<p className="text-sm font-medium leading-none">
 								{userEmail}
-							</p>
-							<p className="text-xs leading-none text-neutral-400">
-								User
 							</p>
 						</div>
 					</DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem>
 						<Link
-							href="/account"
+							href="/dashboard/profile"
 							className="flex w-full items-center"
 						>
 							<Settings className="mr-2 h-4 w-4" />
@@ -133,6 +130,15 @@ export default function Navigation({ userEmail }: NavigationProps) {
 						<div className="flex items-center justify-between w-full">
 							<ThemeSwitcherButton />
 						</div>
+					</DropdownMenuItem>
+					<DropdownMenuItem onClick={() => setTheme('light')}>
+						Light
+					</DropdownMenuItem>
+					<DropdownMenuItem onClick={() => setTheme('dark')}>
+						Dark
+					</DropdownMenuItem>
+					<DropdownMenuItem onClick={() => setTheme('system')}>
+						System
 					</DropdownMenuItem>
 					<DropdownMenuItem>
 						<SignOutBtn />

@@ -44,3 +44,4 @@ bun.lockb
 # misc
 .cursorrules
 .cursorignore
+_LOCAL/

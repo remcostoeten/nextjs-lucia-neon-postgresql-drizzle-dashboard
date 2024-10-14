@@ -1,13 +1,6 @@
 import { useUserInfo } from '@/core/hooks'
 import React from 'react'
-
-type WithUserInfoProps = {
-	userInfo: ReturnType<typeof useUserInfo>
-	enhancedSubmit: (
-		event: React.FormEvent<HTMLFormElement>,
-		originalSubmit: (formData: FormData) => Promise<void>
-	) => Promise<void>
-}
+import { WithUserInfoProps } from './auth'
 
 /**
  * Higher-order component to wrap a component with user information and enhanced form submission capabilities.

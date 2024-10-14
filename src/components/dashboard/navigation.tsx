@@ -8,10 +8,5 @@ export default async function Navigation() {
 		return null
 	}
 
-	return (
-		<NavigationClient
-			userName={session.user.name || ''}
-			userEmail={session.user.email || ''}
-		/>
-	)
+	return <NavigationClient userEmail={session.user.email || ''} />
 }

@@ -8,8 +8,8 @@ export default function RootLayout({ children }: PageProps) {
 		<html
 			lang="en"
 			dir="ltr"
-			className="scroll-smooth dark"
-			color-scheme="dark"
+			className="scroll-smooth "
+			// color-scheme="dark"
 			suppressHydrationWarning
 		>
 			{/* <body

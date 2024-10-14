@@ -91,9 +91,9 @@ const menuConfig = {
 		}
 	],
 	authentication: [
-		{ href: '/login', Icon: LogIn, text: 'Log In' },
-		{ href: '/register', Icon: UserPlus, text: 'Register' },
-		{ href: '/account', Icon: User, text: 'Account' }
+		{ href: '/sign-in', Icon: LogIn, text: 'Log In' },
+		{ href: '/sign-up', Icon: UserPlus, text: 'Register' },
+		{ href: '/dashboard', Icon: User, text: 'Dashboard' }
 	]
 }
 
