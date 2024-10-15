@@ -44,7 +44,6 @@ const config: Config = {
 				sidebar: 'var(--sidebar-width)'
 			},
 			padding: {
-				theme: 'var(--horizontal-padding)',
 				xl: '72px',
 				large: '48px'
 			},

@@ -22,17 +22,11 @@ import {
 	FormMessage,
 	Input
 } from 'ui'
-import { z } from 'zod'
 
 import { fadeInUp } from '@/core/constants/animations'
 import { updateUserProfileSchema } from '@/lib/db/schema/auth'
 import { updateProfile } from 'actions'
-
-type UpdateUserProfileInput = z.infer<typeof updateUserProfileSchema>
-
-type OnboardingProps = {
-	userId: string
-}
+import { OnboardingProps, UpdateUserProfileInput } from './auth'
 
 export default function Onboarding({ userId }: OnboardingProps) {
 	const [step, setStep] = useState(1)
@@ -91,7 +85,7 @@ export default function Onboarding({ userId }: OnboardingProps) {
 									initial="hidden"
 									animate="visible"
 									exit="hidden"
-									variants={fadeInUp}
+									variants={fadeInUp()}
 								>
 									<FormField
 										control={control}
@@ -135,7 +129,7 @@ export default function Onboarding({ userId }: OnboardingProps) {
 									initial="hidden"
 									animate="visible"
 									exit="hidden"
-									variants={fadeInUp}
+									variants={fadeInUp()}
 								>
 									<FormField
 										control={control}
@@ -161,7 +155,7 @@ export default function Onboarding({ userId }: OnboardingProps) {
 									initial="hidden"
 									animate="visible"
 									exit="hidden"
-									variants={fadeInUp}
+									variants={fadeInUp()}
 								>
 									<FormField
 										control={control}

@@ -1,21 +1,18 @@
 'use client'
 
-import { Button } from 'ui'
 import { signOutAction } from '@/core/server/actions/user/action.sign-out'
 import { LogOut } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import AuthFormError from './auth-form-error'
+import { toast } from 'sonner'
+import { Button } from 'ui'
 
-type SignOutBtnProps = {
-	className?: string
-}
-
-export default function SignOutBtn({ className }: SignOutBtnProps) {
+export default function SignOutBtn() {
 	const router = useRouter()
-	const [error, setError] = useState('')
+	const [isSigningOut, setIsSigningOut] = useState(false)
 
 	const handleSignOut = async () => {
+		setIsSigningOut(true)
 		try {
 			const formData = new FormData()
 			formData.append('device', navigator.userAgent)
@@ -26,35 +23,33 @@ export default function SignOutBtn({ className }: SignOutBtnProps) {
 			)
 			formData.append('lastPage', window.location.pathname)
 			formData.append('os', navigator.platform)
-
-			const result = await signOutAction(formData)
-			if (
-				typeof result === 'object' &&
-				result !== null &&
-				'redirected' in result &&
-				(result as { redirected: boolean }).redirected
-			) {
-				router.push((result as { url: string }).url)
-			} else {
+			toast('Signing out...')
+			try {
+				await signOutAction(formData)
 				router.push('/sign-in')
+				router.refresh()
+				toast.success('Signed out successfully')
+			} catch (error) {
+				toast.error('Sign out failed')
+				console.error('Sign out failed:', error)
 			}
 		} catch (error) {
-			console.warn('Sign out failed:', error)
-			setError('Failed to sign out. Please try again.')
+			console.error('Sign out failed:', error)
+		} finally {
+			setIsSigningOut(false)
 		}
 	}
 
 	return (
-		<>
-			<Button
-				onClick={handleSignOut}
-				className={className}
-				variant="ghost"
-			>
-				<LogOut className="mr-2 h-4 w-4" />
-				Sign out
-			</Button>
-			<AuthFormError state={{ error }} />
-		</>
+		<Button onClick={handleSignOut} disabled={isSigningOut}>
+			{isSigningOut ? (
+				'Signing out...'
+			) : (
+				<>
+					<LogOut className="mr-2 h-4 w-4" />
+					Sign out
+				</>
+			)}
+		</Button>
 	)
 }

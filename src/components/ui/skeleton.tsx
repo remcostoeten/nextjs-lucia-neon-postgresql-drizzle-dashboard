@@ -1,21 +1,20 @@
-import * as React from 'react'
-
 import { cn } from 'cn'
 
-const Skeleton = ({
+function Skeleton({
 	className,
+	noPulse = false,
 	...props
-}: React.HTMLAttributes<HTMLDivElement>) => {
+}: React.HTMLAttributes<HTMLDivElement> & { noPulse?: boolean }) {
 	return (
 		<div
 			className={cn(
-				'animate-pulse rounded-full bg-neutral-200',
+				'animate-pulse rounded-md bg-black',
+				noPulse && 'animate-none',
 				className
 			)}
 			{...props}
 		/>
 	)
 }
-Skeleton.displayName = 'Skeleton'
 
 export { Skeleton }

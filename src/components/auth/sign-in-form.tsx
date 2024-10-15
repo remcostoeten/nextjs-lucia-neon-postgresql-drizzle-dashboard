@@ -1,28 +1,15 @@
 'use client'
 
 import { withUserInfo } from '@/components/auth/with-user-info'
-import { Button, Input } from '@/components/ui'
-import SimpleCheckbox from '@/components/ui/simple-checkbox'
-import { signInAction } from '@/core/server/actions/user/action.sign-in'
+import { signInAction } from 'actions'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { Button, Input } from 'ui'
+import SimpleCheckbox from '../ui/simple-checkbox'
+import { SignInFormProps } from './auth'
 
-type SignInFormProps = {
-	userInfo: {
-		device: string
-		location: string
-		timezone: string
-		lastPage: string
-		os: string
-	}
-	enhancedSubmit: (
-		event: React.FormEvent<HTMLFormElement>,
-		originalSubmit: (formData: FormData) => Promise<void>
-	) => Promise<void>
-}
-
-function SignInForm({ userInfo, enhancedSubmit }: SignInFormProps) {
+function SignInForm({ enhancedSubmit }: SignInFormProps) {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [rememberMe, setRememberMe] = useState(false)

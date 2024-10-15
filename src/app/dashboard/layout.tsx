@@ -8,21 +8,15 @@ import Navigation from '@/components/dashboard/navigation.client'
 import { useMainSidebarStore, useSubSidebarStore } from '@/core/stores'
 import { ReactNode, Suspense } from 'react'
 
-type DashboardLayoutProps = {
+type ClientWrapperProps = {
 	children: ReactNode
-	isSubSidebarOpen: boolean
-	toggleSubSidebar: () => void
-	isMainSidebarCollapsed: boolean
-	toggleMainSidebar: () => void
-	userName: string
 	userEmail: string
 }
 
 export default function ClientWrapper({
 	children,
-	userName,
 	userEmail
-}: DashboardLayoutProps) {
+}: ClientWrapperProps) {
 	const {
 		isCollapsed: isMainSidebarCollapsed,
 		toggleCollapse: toggleMainSidebar
@@ -32,7 +26,7 @@ export default function ClientWrapper({
 
 	return (
 		<>
-			<Navigation userName={userName} userEmail={userEmail} />
+			<Navigation userEmail={userEmail} />
 			<Suspense fallback={<SidebarSkeletonLoader />}>
 				<MainSidebar
 					isSubSidebarOpen={isSubSidebarOpen}

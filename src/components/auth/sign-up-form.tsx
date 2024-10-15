@@ -1,29 +1,16 @@
 'use client'
 
-import { useState } from 'react'
 import { withUserInfo } from '@/components/auth/with-user-info'
 import { Button, Input } from '@/components/ui'
-import signUpAction from '@/core/server/actions/user/action.sign-up'
-import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
-import { motion } from 'framer-motion'
 import { fadeInUp } from '@/core/constants/animations'
+import signUpAction from '@/core/server/actions/user/action.sign-up'
+import { motion } from 'framer-motion'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { toast } from 'sonner'
+import { SignUpFormProps } from './auth'
 
-type SignUpFormProps = {
-	userInfo: {
-		device: string
-		location: string
-		timezone: string
-		lastPage: string
-		os: string
-	}
-	enhancedSubmit: (
-		event: React.FormEvent<HTMLFormElement>,
-		originalSubmit: (formData: FormData) => Promise<void>
-	) => Promise<void>
-}
-
-function SignUpForm({ userInfo, enhancedSubmit }: SignUpFormProps) {
+function SignUpForm({ enhancedSubmit }: SignUpFormProps) {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
@@ -35,7 +22,13 @@ function SignUpForm({ userInfo, enhancedSubmit }: SignUpFormProps) {
 			return
 		}
 
-		const result = await signUpAction({ error: '' }, formData)
+		const result = await signUpAction(
+			{
+				error: '',
+				success: false
+			},
+			formData
+		)
 		if ('error' in result) {
 			toast(result.error)
 		} else {
@@ -71,7 +64,7 @@ function SignUpForm({ userInfo, enhancedSubmit }: SignUpFormProps) {
 			<div>
 				<label
 					htmlFor="password"
-					className="block mb-2 text-sm font-medium text-gray-300"
+					className="block mb-2 text-sm font-medium text-subtitle"
 				>
 					Password
 				</label>
@@ -88,7 +81,7 @@ function SignUpForm({ userInfo, enhancedSubmit }: SignUpFormProps) {
 			<div>
 				<label
 					htmlFor="confirmPassword"
-					className="block mb-2 text-sm font-medium text-gray-300"
+					className="block mb-2 text-sm font-medium text-subtitle"
 				>
 					Confirm Password
 				</label>

@@ -25,7 +25,7 @@ export function useLocalStorage<T>(
 	key: string,
 	initialValue: T | (() => T),
 	options: UseLocalStorageOptions<T> = {}
-): [T, Dispatch<SetStateAction<T>>, () => void] {
+): [T, Dispatch<SetStateAction<T>>, () => void, () => void] {
 	const { initializeWithValue = true } = options
 
 	const serializer = useCallback<(value: T) => string>(
@@ -163,5 +163,66 @@ export function useLocalStorage<T>(
 	// See: useLocalStorage()
 	useEventListener('local-storage', handleStorageChange)
 
-	return [storedValue, setValue, removeValue]
+	const setDismissed = useEventCallback(() => {
+		if (IS_SERVER) {
+			return
+		}
+
+		try {
+			const dismissedKey = `${key}_dismissed`
+			window.localStorage.setItem(dismissedKey, 'true')
+			window.dispatchEvent(
+				new StorageEvent('local-storage', { key: dismissedKey })
+			)
+		} catch (_error) {
+			// Handle error if needed
+		}
+	})
+
+	const isDismissed = useCallback(() => {
+		if (IS_SERVER) {
+			return false
+		}
+
+		try {
+			const dismissedKey = `${key}_dismissed`
+			return window.localStorage.getItem(dismissedKey) === 'true'
+		} catch (_error) {
+			return false
+		}
+	}, [key])
+
+	return [storedValue, setValue, removeValue, setDismissed]
+}
+
+// New helper hook for checking dismissed state
+export function useDismissedState(key: string): [boolean, () => void] {
+	const [isDismissed, setIsDismissed] = useState(() => {
+		if (IS_SERVER) {
+			return false
+		}
+		const dismissedKey = `${key}_dismissed`
+		return window.localStorage.getItem(dismissedKey) === 'true'
+	})
+
+	const setDismissed = useEventCallback(() => {
+		if (IS_SERVER) {
+			return
+		}
+
+		const dismissedKey = `${key}_dismissed`
+		window.localStorage.setItem(dismissedKey, 'true')
+		setIsDismissed(true)
+		window.dispatchEvent(
+			new StorageEvent('local-storage', { key: dismissedKey })
+		)
+	})
+
+	useEventListener('storage', (event: StorageEvent) => {
+		if (event.key === `${key}_dismissed`) {
+			setIsDismissed(event.newValue === 'true')
+		}
+	})
+
+	return [isDismissed, setDismissed]
 }

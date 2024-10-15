@@ -1,23 +1,38 @@
 'use client'
 
 import { cn } from 'cn'
-import React from 'react'
+import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
 
-export default function ThemeSwitcherButton() {
-	const [theme, setTheme] = React.useState<'light' | 'dark'>('light')
+type ThemeSwitcherButtonProps = {
+	className?: string
+}
+
+export default function ThemeSwitcherButton({
+	className
+}: ThemeSwitcherButtonProps) {
+	const { theme, setTheme } = useTheme()
+	const [mounted, setMounted] = useState(false)
+
+	// Ensure component is mounted before rendering to avoid hydration mismatch
+	useEffect(() => {
+		setMounted(true)
+	}, [])
+
+	if (!mounted) {
+		return null
+	}
+
 	return (
 		<button
-			className="group relative inline-flex items-center gap-2 overflow-hidden rounded-md border border-neutral-500/10 bg-white px-2 py-1 font-medium text-neutral-600 tracking-tight hover:bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
-			onClick={() =>
-				setTheme(prev => (prev === 'light' ? 'dark' : 'light'))
-			}
+			className={cn(
+				'group relative inline-flex items-center gap-2 overflow-hidden rounded-md border border-neutral-500/10 bg-white px-2 py-1 font-medium text-neutral-600 tracking-tight hover:bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700',
+				className
+			)}
+			onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
 			type="button"
 		>
-			<span
-				className={cn(
-					'relative size-6 scale-75 rounded-full bg-gradient-to-tr'
-				)}
-			>
+			<span className="relative size-6 scale-75 rounded-full bg-gradient-to-tr">
 				<span
 					className={cn(
 						'absolute top-0 left-0 z-10 h-full w-full transform-gpu rounded-full bg-gradient-to-tr from-indigo-400 to-sky-200 transition-color duration-500',
