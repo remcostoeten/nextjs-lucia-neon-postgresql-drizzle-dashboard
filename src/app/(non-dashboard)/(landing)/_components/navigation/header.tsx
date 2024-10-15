@@ -14,7 +14,11 @@ import Logo from './_components/logo'
 import SecondaryButton from './_components/sign-in-button'
 import { AuthLinkProps, BlogPostProps, ProductCategoryProps } from './header.d'
 
-const ProductCategory = ({ name, links, onLinkClick }: ProductCategoryProps & { onLinkClick: () => void }) => {
+const ProductCategory = ({
+	name,
+	links,
+	onLinkClick
+}: ProductCategoryProps & { onLinkClick: () => void }) => {
 	const pathname = usePathname()
 
 	return (
@@ -29,10 +33,11 @@ const ProductCategory = ({ name, links, onLinkClick }: ProductCategoryProps & { 
 					target={link.external ? '_blank' : undefined}
 					rel={link.external ? 'noopener noreferrer' : undefined}
 					onClick={onLinkClick}
-					className={`block text-sm ${pathname === link.href
-						? 'text-title font-medium'
-						: 'text-subtitle hover:text-title'
-						} mb-1 transition-colors duration-200 flex items-center`}
+					className={`block text-sm ${
+						pathname === link.href
+							? 'text-title font-medium'
+							: 'text-subtitle hover:text-title'
+					} mb-1 transition-colors duration-200 flex items-center`}
 				>
 					{link.name}
 					{link.external && <ExternalLink className="ml-1 h-3 w-3" />}
@@ -70,17 +75,23 @@ const BlogPostCard = ({ imageSrc, title, description }: BlogPostProps) => {
 	)
 }
 
-const AuthLink = ({ href, Icon, text, onLinkClick }: AuthLinkProps & { onLinkClick: () => void }) => {
+const AuthLink = ({
+	href,
+	Icon,
+	text,
+	onLinkClick
+}: AuthLinkProps & { onLinkClick: () => void }) => {
 	const pathname = usePathname()
 
 	return (
 		<Link
 			href={href}
 			onClick={onLinkClick}
-			className={`flex flex-col items-center justify-center py-2 ${pathname === href
-				? 'text-title'
-				: 'text-subtitle hover:text-title'
-				} transition-colors duration-200`}
+			className={`flex flex-col items-center justify-center py-2 ${
+				pathname === href
+					? 'text-title'
+					: 'text-subtitle hover:text-title'
+			} transition-colors duration-200`}
 		>
 			<Icon
 				className={`mb-1 text-2xl ${pathname === href ? 'text-[#201c20]' : 'text-title'}`}
@@ -98,9 +109,7 @@ export default function Header() {
 
 	const closeMenu = () => setIsOpen(false)
 
-	const shortcuts = createShortcutMap([
-		['escape', closeMenu]
-	])
+	const shortcuts = createShortcutMap([['escape', closeMenu]])
 	useKeyboardShortcuts(shortcuts)
 
 	const menuVariants = {
@@ -175,9 +184,15 @@ export default function Header() {
 		>
 			<div className={`w-full ${isScrolled ? 'shadow-md' : ''} `}>
 				<nav className="flex justify-between items-center w-full lg:max-w-[1128px] mx-auto px-theme">
-					<Logo className={`${isScrolled ? 'translate-y-0.5' : 'translate-y-0'}`} isScrolled={isScrolled} />
+					<Logo
+						className={`${isScrolled ? 'translate-y-0.5' : 'translate-y-0'}`}
+						isScrolled={isScrolled}
+					/>
 					<Flex gap="4" align="center">
-						<SecondaryButton href="/dashboard" className={`${isScrolled ? '	 scale-75' : ''}`}>
+						<SecondaryButton
+							href="/dashboard"
+							className={`${isScrolled ? '	 scale-75' : ''}`}
+						>
 							Dashboard
 						</SecondaryButton>
 						<button
@@ -217,30 +232,50 @@ export default function Header() {
 							<X className="w-6 h-6" />
 						</button>
 						<div className="overflow-y-auto max-h-[60vh]">
-							{menuConfig.products.map((category: JSX.IntrinsicAttributes & ProductCategoryProps, index: Key) => (
-								<ProductCategory
-									key={index}
-									{...category}
-									onLinkClick={closeMenu}
-								/>
-							))}
+							{menuConfig.products.map(
+								(
+									category: JSX.IntrinsicAttributes &
+										ProductCategoryProps,
+									index: Key
+								) => (
+									<ProductCategory
+										key={index}
+										{...category}
+										onLinkClick={closeMenu}
+									/>
+								)
+							)}
 						</div>
 						<div className="overflow-y-auto max-h-[60vh]">
 							<h2 className="text-xl font-semibold mb-4">
 								<span className="gradient-span">Blog</span>
 							</h2>
-							{menuConfig.blog.map((post: JSX.IntrinsicAttributes & BlogPostProps) => (
-								<BlogPostCard key={post.id} {...post} />
-							))}
+							{menuConfig.blog.map(
+								(
+									post: JSX.IntrinsicAttributes &
+										BlogPostProps
+								) => (
+									<BlogPostCard key={post.id} {...post} />
+								)
+							)}
 						</div>
 						<div className="overflow-y-auto max-h-[60vh]">
 							<h2 className="text-lg font-semibold mb-4">
 								Authentication
 							</h2>
 							<div className="grid grid-cols-3 gap-4">
-								{menuConfig.authentication.map((link: JSX.IntrinsicAttributes & AuthLinkProps) => (
-									<AuthLink key={link.href} {...link} onLinkClick={closeMenu} />
-								))}
+								{menuConfig.authentication.map(
+									(
+										link: JSX.IntrinsicAttributes &
+											AuthLinkProps
+									) => (
+										<AuthLink
+											key={link.href}
+											{...link}
+											onLinkClick={closeMenu}
+										/>
+									)
+								)}
 							</div>
 						</div>
 					</motion.div>

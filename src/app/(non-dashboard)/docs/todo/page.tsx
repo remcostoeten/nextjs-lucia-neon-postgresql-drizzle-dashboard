@@ -1,97 +1,170 @@
-'use client';
+'use client'
 
-import EnhancedCodeBlock from "@/components/elements/display-code/code-block";
-import { Button } from "@/components/ui/button";
-import { useEffect, useState } from 'react';
+import EnhancedCodeBlock from '@/components/elements/display-code/code-block'
+import { useEffect, useState } from 'react'
+import {
+	Button
+} from 'ui'
 
-type Section = 'intro' | 'packages' | 'db-connection' | 'schema' | 'zod-schema' | 'create-todo' | 'show-todo' | 'edit-todo' | 'recap-simple' | 'advanced-intro' | 'advanced-zod' | 'advanced-schema' | 'advanced-create' | 'advanced-display' | 'advanced-edit' | 'advanced-delete' | 'toasts' | 'preloaders' | 'optimistic-updates' | 'ssr-querying' | 'pagination' | 'filtering' | 'pitfalls' | 'solid' | 'tanstack' | 'error-handling';
+type Section =
+	| 'intro'
+	| 'packages'
+	| 'db-connection'
+	| 'schema'
+	| 'zod-schema'
+	| 'create-todo'
+	| 'show-todo'
+	| 'edit-todo'
+	| 'recap-simple'
+	| 'advanced-intro'
+	| 'advanced-zod'
+	| 'advanced-schema'
+	| 'advanced-create'
+	| 'advanced-display'
+	| 'advanced-edit'
+	| 'advanced-delete'
+	| 'toasts'
+	| 'preloaders'
+	| 'optimistic-updates'
+	| 'ssr-querying'
+	| 'pagination'
+	| 'filtering'
+	| 'pitfalls'
+	| 'solid'
+	| 'tanstack'
+	| 'error-handling'
 
 export default function TodoPresentation() {
-  const [activeSection, setActiveSection] = useState<Section>("intro")
-  const [isMobile, setIsMobile] = useState(false)
+	const [activeSection, setActiveSection] = useState<Section>('intro')
+	const [isMobile, setIsMobile] = useState(false)
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+	useEffect(() => {
+		const checkMobile = () => setIsMobile(window.innerWidth < 768)
+		checkMobile()
+		window.addEventListener('resize', checkMobile)
+		return () => window.removeEventListener('resize', checkMobile)
+	}, [])
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = document.querySelectorAll('section')
-      let current = ''
-      sections.forEach((section) => {
-        const sectionTop = section.offsetTop
-        if (window.pageYOffset >= sectionTop - 60) {
-          current = section.getAttribute('id') || ''
-        }
-      })
-      setActiveSection(current as Section)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+	useEffect(() => {
+		const handleScroll = () => {
+			const sections = document.querySelectorAll('section')
+			let current = ''
+			sections.forEach(section => {
+				const sectionTop = section.offsetTop
+				if (window.pageYOffset >= sectionTop - 60) {
+					current = section.getAttribute('id') || ''
+				}
+			})
+			setActiveSection(current as Section)
+		}
+		window.addEventListener('scroll', handleScroll)
+		return () => window.removeEventListener('scroll', handleScroll)
+	}, [])
 
-  const scrollTo = (id: Section) => {
-    const element = document.getElementById(id)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
+	const scrollTo = (id: Section) => {
+		const element = document.getElementById(id)
+		if (element) {
+			element.scrollIntoView({ behavior: 'smooth' })
+		}
+	}
 
-  const sections: Section[] = ['intro', 'packages', 'db-connection', 'schema', 'zod-schema', 'create-todo', 'show-todo', 'edit-todo', 'recap-simple', 'advanced-intro', 'advanced-zod', 'advanced-schema', 'advanced-create', 'advanced-display', 'advanced-edit', 'advanced-delete', 'toasts', 'preloaders', 'optimistic-updates', 'ssr-querying', 'pagination', 'filtering', 'pitfalls', 'solid', 'tanstack', 'error-handling'];
+	const sections: Section[] = [
+		'intro',
+		'packages',
+		'db-connection',
+		'schema',
+		'zod-schema',
+		'create-todo',
+		'show-todo',
+		'edit-todo',
+		'recap-simple',
+		'advanced-intro',
+		'advanced-zod',
+		'advanced-schema',
+		'advanced-create',
+		'advanced-display',
+		'advanced-edit',
+		'advanced-delete',
+		'toasts',
+		'preloaders',
+		'optimistic-updates',
+		'ssr-querying',
+		'pagination',
+		'filtering',
+		'pitfalls',
+		'solid',
+		'tanstack',
+		'error-handling'
+	]
 
-  return (
-    <div className="flex">
-      {!isMobile && (
-        <nav className="w-64 h-screen overflow-y-auto fixed left-0 top-0 p-4 bg-gray-100">
-          <h2 className="text-xl font-bold mb-4">Inhoudsopgave</h2>
-          <ul className="space-y-2">
-            {sections.map((section) => (
-              <li key={section}>
-                <Button
-                  onClick={() => scrollTo(section)}
-                  variant={activeSection === section ? "default" : "ghost"}
-                  className="w-full justify-start"
-                >
-                  {section.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
-      <div className={`container mx-auto p-4 space-y-8 ${!isMobile ? 'ml-64' : ''}`}>
-        {isMobile && (
-          <nav className="sticky top-0 bg-white z-10 p-4 border-b">
-            <select
-              onChange={(e) => scrollTo(e.target.value as Section)}
-              value={activeSection}
-              className="w-full p-2 border rounded"
-            >
-              {sections.map((section) => (
-                <option key={section} value={section}>
-                  {section.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
-                </option>
-              ))}
-            </select>
-          </nav>
-        )}
+	return (
+		<div className="flex">
+			{!isMobile && (
+				<nav className="w-64 h-screen overflow-y-auto fixed left-0 top-14 p-4 bg-card trans border ">
+					<h2 className="text-xl font-bold mb-4">Inhoudsopgave</h2>
+					<ul className="space-y-2">
+						{sections.map(section => (
+							<li key={section}>
+								<Button
+									onClick={() => scrollTo(section)}
+									variant={
+										activeSection === section
+											? 'default'
+											: 'ghost'
+									}
+									className="w-full justify-start"
+								>
+									{section
+										.replace(/-/g, ' ')
+										.replace(/\b\w/g, l => l.toUpperCase())}
+								</Button>
+							</li>
+						))}
+					</ul>
+				</nav>
+			)}
+			<div
+				className={`container mx-auto p-4 space-y-8 ${!isMobile ? 'ml-64' : ''}`}
+			>
+				{isMobile && (
+					<nav className="sticky top-0 bg-white z-10 p-4 border-b">
+						<select
+							onChange={e => scrollTo(e.target.value as Section)}
+							value={activeSection}
+							className="w-full p-2 border rounded"
+						>
+							{sections.map(section => (
+								<option key={section} value={section}>
+									{section
+										.replace(/-/g, ' ')
+										.replace(/\b\w/g, l => l.toUpperCase())}
+								</option>
+							))}
+						</select>
+					</nav>
+				)}
 
-        <section id="intro">
-          <h1 className="text-4xl font-bold text-center mb-8">Bouwen van een Geavanceerde To-Do App met Next.js, Drizzle ORM, en Server Actions</h1>
-          <p className="text-lg mb-4">
-            In deze presentatie gaan we stap voor stap door het proces van het bouwen van een geavanceerde To-Do applicatie.
-            We beginnen met een eenvoudige implementatie en bouwen dit uit naar een meer complexe versie met geavanceerde functies.
-          </p>
-        </section>
+				<section id="intro">
+					<h1 className="text-4xl font-bold text-center mb-8">
+						Bouwen van een Geavanceerde To-Do App met Next.js,
+						Drizzle ORM, en Server Actions
+					</h1>
+					<p className="text-lg mb-4">
+						In deze presentatie gaan we stap voor stap door het
+						proces van het bouwen van een geavanceerde To-Do
+						applicatie. We beginnen met een eenvoudige implementatie
+						en bouwen dit uit naar een meer complexe versie met
+						geavanceerde functies.
+					</p>
+				</section>
 
-        <section id="packages" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Benodigde Packages</h2>
-          <p>Installeer de volgende packages om te beginnen:</p>
-          <EnhancedCodeBlock
-            code={`npm install next@latest react@latest react-dom@latest
+				<section id="packages" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Benodigde Packages
+					</h2>
+					<p>Installeer de volgende packages om te beginnen:</p>
+					<EnhancedCodeBlock
+						code={`npm install next@latest react@latest react-dom@latest
 npm install drizzle-orm @neondatabase/serverless
 npm install -D drizzle-kit
 npm install zod @hookform/resolvers react-hook-form
@@ -99,30 +172,36 @@ npm install @radix-ui/react-popover @radix-ui/react-dialog
 npm install lucide-react date-fns
 npm install @tanstack/react-query
 npm install sonner`}
-            fileName="terminal"
-            language="bash"
-            badges={["setup"]} />
-        </section>
+						fileName="terminal"
+						language="bash"
+						badges={['setup']}
+					/>
+				</section>
 
-        <section id="db-connection" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Database Connectie</h2>
-          <p>Configureer de connectie met de Neon Postgres database:</p>
-          <EnhancedCodeBlock
-            code={`import { neon } from '@neondatabase/serverless';
+				<section id="db-connection" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Database Connectie
+					</h2>
+					<p>
+						Configureer de connectie met de Neon Postgres database:
+					</p>
+					<EnhancedCodeBlock
+						code={`import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 
 const sql = neon(process.env.DATABASE_URL!);
 export const db = drizzle(sql);`}
-            fileName="src/lib/db.ts"
-            language="typescript"
-            badges={["database", "neon", "drizzle"]} />
-        </section>
+						fileName="src/lib/db.ts"
+						language="typescript"
+						badges={['database', 'neon', 'drizzle']}
+					/>
+				</section>
 
-        <section id="schema" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Database Schema</h2>
-          <p>Definieer het schema voor de todo-tabel:</p>
-          <EnhancedCodeBlock
-            code={`import { pgTable, serial, varchar, boolean, timestamp } from 'drizzle-orm/pg-core';
+				<section id="schema" className="space-y-4">
+					<h2 className="text-2xl font-semibold">Database Schema</h2>
+					<p>Definieer het schema voor de todo-tabel:</p>
+					<EnhancedCodeBlock
+						code={`import { pgTable, serial, varchar, boolean, timestamp } from 'drizzle-orm/pg-core';
 
 export const todos = pgTable('todos', {
   id: serial('id').primaryKey(),
@@ -130,30 +209,42 @@ export const todos = pgTable('todos', {
   completed: boolean('completed').default(false),
   createdAt: timestamp('created_at').defaultNow(),
 });`}
-            fileName="src/db/schema.ts"
-            language="typescript"
-            badges={["database", "drizzle"]} />
-        </section>
+						fileName="src/db/schema.ts"
+						language="typescript"
+						badges={['database', 'drizzle']}
+					/>
+				</section>
 
-        <section id="zod-schema" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Zod Validatie Schema</h2>
-          <p>Definieer een Zod schema voor het valideren van de todo input:</p>
-          <EnhancedCodeBlock
-            code={`import { z } from 'zod';
+				<section id="zod-schema" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Zod Validatie Schema
+					</h2>
+					<p>
+						Definieer een Zod schema voor het valideren van de todo
+						input:
+					</p>
+					<EnhancedCodeBlock
+						code={`import { z } from 'zod';
 
 export const todoSchema = z.object({
   title: z.string().min(1, 'Title is required').max(255, 'Title must be 255 characters or less'),
 });`}
-            fileName="src/lib/validations.ts"
-            language="typescript"
-            badges={["validation", "zod"]} />
-        </section>
+						fileName="src/lib/validations.ts"
+						language="typescript"
+						badges={['validation', 'zod']}
+					/>
+				</section>
 
-        <section id="create-todo" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Create Todo Action</h2>
-          <p>Implementeer een server action om nieuwe todo's aan te maken:</p>
-          <EnhancedCodeBlock
-            code={`import { db } from '@/lib/db';
+				<section id="create-todo" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Create Todo Action
+					</h2>
+					<p>
+						Implementeer een server action om nieuwe todo's aan te
+						maken:
+					</p>
+					<EnhancedCodeBlock
+						code={`import { db } from '@/lib/db';
 import { todos } from '@/db/schema';
 import { todoSchema } from '@/lib/validations';
 
@@ -169,31 +260,35 @@ export async function createTodo(formData: FormData) {
   await db.insert(todos).values(result.data);
   return { success: true };
 }`}
-            fileName="src/app/actions/createTodo.ts"
-            language="typescript"
-            badges={["server-action", "drizzle"]} />
-        </section>
+						fileName="src/app/actions/createTodo.ts"
+						language="typescript"
+						badges={['server-action', 'drizzle']}
+					/>
+				</section>
 
-        <section id="show-todo" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Show Todos Action</h2>
-          <p>Implementeer een server action om todos op te halen:</p>
-          <EnhancedCodeBlock
-            code={`import { db } from '@/lib/db';
+				<section id="show-todo" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Show Todos Action
+					</h2>
+					<p>Implementeer een server action om todos op te halen:</p>
+					<EnhancedCodeBlock
+						code={`import { db } from '@/lib/db';
 import { todos } from '@/db/schema';
 
 export async function getTodos() {
   return await db.select().from(todos).orderBy(todos.createdAt);
 }`}
-            fileName="src/app/actions/getTodos.ts"
-            language="typescript"
-            badges={["server-action", "drizzle"]} />
-        </section>
+						fileName="src/app/actions/getTodos.ts"
+						language="typescript"
+						badges={['server-action', 'drizzle']}
+					/>
+				</section>
 
-        <section id="edit-todo" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Edit Todo Action</h2>
-          <p>Implementeer een server action om todos te bewerken:</p>
-          <EnhancedCodeBlock
-            code={`import { db } from '@/lib/db';
+				<section id="edit-todo" className="space-y-4">
+					<h2 className="text-2xl font-semibold">Edit Todo Action</h2>
+					<p>Implementeer een server action om todos te bewerken:</p>
+					<EnhancedCodeBlock
+						code={`import { db } from '@/lib/db';
 import { todos } from '@/db/schema';
 import { todoSchema } from '@/lib/validations';
 import { eq } from 'drizzle-orm';
@@ -213,43 +308,65 @@ export async function editTodo(id: number, formData: FormData) {
   
   return { success: true };
 }`}
-            fileName="src/app/actions/editTodo.ts"
-            language="typescript"
-            badges={["server-action", "drizzle"]} />
-        </section>
+						fileName="src/app/actions/editTodo.ts"
+						language="typescript"
+						badges={['server-action', 'drizzle']}
+					/>
+				</section>
 
-        <section id="recap-simple" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Recap: Eenvoudige Todo Implementatie</h2>
-          <p>
-            We hebben nu de basis gelegd voor een eenvoudige Todo app met de volgende functionaliteiten:
-            <ul className="list-disc list-inside">
-              <li>Database connectie en schema definitie</li>
-              <li>Zod validatie voor input</li>
-              <li>Server actions voor het aanmaken, ophalen en bewerken van todos</li>
-            </ul>
-            In het volgende hoofdstuk gaan we deze basis uitbreiden met meer geavanceerde functies.
-          </p>
-        </section>
+				<section id="recap-simple" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Recap: Eenvoudige Todo Implementatie
+					</h2>
+					<p>
+						We hebben nu de basis gelegd voor een eenvoudige Todo
+						app met de volgende functionaliteiten:
+						<ul className="list-disc list-inside">
+							<li>Database connectie en schema definitie</li>
+							<li>Zod validatie voor input</li>
+							<li>
+								Server actions voor het aanmaken, ophalen en
+								bewerken van todos
+							</li>
+						</ul>
+						In het volgende hoofdstuk gaan we deze basis uitbreiden
+						met meer geavanceerde functies.
+					</p>
+				</section>
 
-        <section id="advanced-intro" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Hoofdstuk 2: Geavanceerde Todo Implementatie</h2>
-          <p>
-            In dit hoofdstuk gaan we onze Todo app uitbreiden met meer geavanceerde functies, waaronder:
-            <ul className="list-disc list-inside">
-              <li>Uitgebreide todo-structuur met categorieën en extra attributen</li>
-              <li>Geavanceerde formulieren met textarea en dropdown</li>
-              <li>Relaties tussen tabellen</li>
-              <li>Meer complexe server actions</li>
-              <li>Geavanceerde UI-componenten voor het weergeven en bewerken van todos</li>
-            </ul>
-          </p>
-        </section>
+				<section id="advanced-intro" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Hoofdstuk 2: Geavanceerde Todo Implementatie
+					</h2>
+					<p>
+						In dit hoofdstuk gaan we onze Todo app uitbreiden met
+						meer geavanceerde functies, waaronder:
+						<ul className="list-disc list-inside">
+							<li>
+								Uitgebreide todo-structuur met categorieën en
+								extra attributen
+							</li>
+							<li>
+								Geavanceerde formulieren met textarea en
+								dropdown
+							</li>
+							<li>Relaties tussen tabellen</li>
+							<li>Meer complexe server actions</li>
+							<li>
+								Geavanceerde UI-componenten voor het weergeven
+								en bewerken van todos
+							</li>
+						</ul>
+					</p>
+				</section>
 
-        <section id="advanced-zod" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Geavanceerd Zod Schema</h2>
-          <p>Laten we ons Zod schema uitbreiden met meer velden:</p>
-          <EnhancedCodeBlock
-            code={`import { z } from 'zod';
+				<section id="advanced-zod" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Geavanceerd Zod Schema
+					</h2>
+					<p>Laten we ons Zod schema uitbreiden met meer velden:</p>
+					<EnhancedCodeBlock
+						code={`import { z } from 'zod';
 
 export const advancedTodoSchema = z.object({
   title: z.string().min(1, 'Title is required').max(255, 'Title must be 255 characters or less'),
@@ -258,16 +375,22 @@ export const advancedTodoSchema = z.object({
   priority: z.number().int().min(1).max(5),
   dueDate: z.string().datetime().optional(),
 });`}
-            fileName="src/lib/validations.ts"
-            language="typescript"
-            badges={["validation", "zod"]} />
-        </section>
+						fileName="src/lib/validations.ts"
+						language="typescript"
+						badges={['validation', 'zod']}
+					/>
+				</section>
 
-        <section id="advanced-schema" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Geavanceerd Database Schema</h2>
-          <p>Laten we ons database schema uitbreiden met de nieuwe velden en een aparte tabel voor categorieën:</p>
-          <EnhancedCodeBlock
-            code={`import { pgTable, serial, varchar, text, boolean, timestamp, integer } from 'drizzle-orm/pg-core';
+				<section id="advanced-schema" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Geavanceerd Database Schema
+					</h2>
+					<p>
+						Laten we ons database schema uitbreiden met de nieuwe
+						velden en een aparte tabel voor categorieën:
+					</p>
+					<EnhancedCodeBlock
+						code={`import { pgTable, serial, varchar, text, boolean, timestamp, integer } from 'drizzle-orm/pg-core';
 
 export const categories = pgTable('categories', {
   id: serial('id').primaryKey(),
@@ -285,16 +408,22 @@ export const todos = pgTable('todos', {
   createdAt: timestamp('created_at').defaultNow(),
 
 });`}
-            fileName="src/db/schema.ts"
-            language="typescript"
-            badges={["database", "drizzle"]} />
-        </section>
+						fileName="src/db/schema.ts"
+						language="typescript"
+						badges={['database', 'drizzle']}
+					/>
+				</section>
 
-        <section id="advanced-create" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Geavanceerde Create Todo Action</h2>
-          <p>Implementeer een server action om nieuwe geavanceerde todo's aan te maken:</p>
-          <EnhancedCodeBlock
-            code={`import { db } from '@/lib/db';
+				<section id="advanced-create" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Geavanceerde Create Todo Action
+					</h2>
+					<p>
+						Implementeer een server action om nieuwe geavanceerde
+						todo's aan te maken:
+					</p>
+					<EnhancedCodeBlock
+						code={`import { db } from '@/lib/db';
 import { todos, categories } from '@/db/schema';
 import { advancedTodoSchema } from '@/lib/validations';
 import { eq } from 'drizzle-orm';
@@ -327,16 +456,22 @@ export async function createAdvancedTodo(formData: FormData) {
   await db.insert(todos).values({ ...todoData, categoryId });
   return { success: true };
 }`}
-            fileName="src/app/actions/createAdvancedTodo.ts"
-            language="typescript"
-            badges={["server-action", "drizzle"]} />
-        </section>
+						fileName="src/app/actions/createAdvancedTodo.ts"
+						language="typescript"
+						badges={['server-action', 'drizzle']}
+					/>
+				</section>
 
-        <section id="advanced-display" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Geavanceerde Todo Weergave Component</h2>
-          <p>Maak een React component om de geavanceerde todos weer te geven:</p>
-          <EnhancedCodeBlock
-            code={`import { getTodos } from '@/app/actions/getTodos';
+				<section id="advanced-display" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Geavanceerde Todo Weergave Component
+					</h2>
+					<p>
+						Maak een React component om de geavanceerde todos weer
+						te geven:
+					</p>
+					<EnhancedCodeBlock
+						code={`import { getTodos } from '@/app/actions/getTodos';
 import { format } from 'date-fns';
 
 export default async function AdvancedTodoList() {
@@ -358,22 +493,26 @@ export default async function AdvancedTodoList() {
     </div>
   );
 }`}
-            fileName="src/components/AdvancedTodoList.tsx"
-            language="tsx"
-            badges={["react", "ssr"]} />
-        </section>
+						fileName="src/components/AdvancedTodoList.tsx"
+						language="tsx"
+						badges={['react', 'ssr']}
+					/>
+				</section>
 
-        <section id="advanced-edit" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Geavanceerde Edit Todo Component</h2>
-          <p>Maak een React component om geavanceerde todos te bewerken in een popover:</p>
-          <EnhancedCodeBlock
-            code={`import { useState } from 'react';
-import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+				<section id="advanced-edit" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Geavanceerde Edit Todo Component
+					</h2>
+					<p>
+						Maak een React component om geavanceerde todos te
+						bewerken in een popover:
+					</p>
+					<EnhancedCodeBlock
+						code={`import { useState } from 'react';
 import { editAdvancedTodo } from '@/app/actions/editAdvancedTodo';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { advancedTodoSchema } from '@/lib/validations';
-import { Button } from '@/components/ui/button';
 
 export function EditTodoPopover({ todo }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -441,19 +580,23 @@ export function EditTodoPopover({ todo }) {
     </Popover>
   );
 }`}
-            fileName="src/components/EditTodoPopover.tsx"
-            language="tsx"
-            badges={["react", "form", "popover"]} />
-        </section>
+						fileName="src/components/EditTodoPopover.tsx"
+						language="tsx"
+						badges={['react', 'form', 'popover']}
+					/>
+				</section>
 
-        <section id="advanced-delete" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Geavanceerde Delete Todo Component</h2>
-          <p>Maak een React component om todos te verwijderen met een bevestigingsdialoog:</p>
-          <EnhancedCodeBlock
-            code={`import { useState } from 'react';
-import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog';
+				<section id="advanced-delete" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Geavanceerde Delete Todo Component
+					</h2>
+					<p>
+						Maak een React component om todos te verwijderen met een
+						bevestigingsdialoog:
+					</p>
+					<EnhancedCodeBlock
+						code={`import { useState } from 'react';
 import { deleteAdvancedTodo } from '@/app/actions/deleteAdvancedTodo';
-import { Button } from '@/components/ui/button';
 
 export function DeleteTodoDialog({ todoId, todoTitle }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -483,16 +626,22 @@ export function DeleteTodoDialog({ todoId, todoTitle }) {
     </Dialog>
   );
 }`}
-            fileName="src/components/DeleteTodoDialog.tsx"
-            language="tsx"
-            badges={["react", "dialog"]} />
-        </section>
+						fileName="src/components/DeleteTodoDialog.tsx"
+						language="tsx"
+						badges={['react', 'dialog']}
+					/>
+				</section>
 
-        <section id="toasts" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Toasts voor Gebruikersfeedback</h2>
-          <p>Implementeer toasts voor server-side rendering feedback bij acties:</p>
-          <EnhancedCodeBlock
-            code={`import { toast } from 'sonner';
+				<section id="toasts" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Toasts voor Gebruikersfeedback
+					</h2>
+					<p>
+						Implementeer toasts voor server-side rendering feedback
+						bij acties:
+					</p>
+					<EnhancedCodeBlock
+						code={`import { toast } from 'sonner';
 
 // In je server action
 export async function createAdvancedTodo(formData: FormData) {
@@ -518,16 +667,22 @@ export default function Layout({ children }) {
     </>
   );
 }`}
-            fileName="src/app/actions/createAdvancedTodo.ts"
-            language="typescript"
-            badges={["server-action", "toast"]} />
-        </section>
+						fileName="src/app/actions/createAdvancedTodo.ts"
+						language="typescript"
+						badges={['server-action', 'toast']}
+					/>
+				</section>
 
-        <section id="preloaders" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Server-Rendered Preloaders</h2>
-          <p>Implementeer skeleton loaders voor server-side rendering:</p>
-          <EnhancedCodeBlock
-            code={`import { Skeleton } from "@/components/ui/skeleton"
+				<section id="preloaders" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Server-Rendered Preloaders
+					</h2>
+					<p>
+						Implementeer skeleton loaders voor server-side
+						rendering:
+					</p>
+					<EnhancedCodeBlock
+						code={`import { Skeleton } from "@/components/ui/skeleton"
 
 export function TodoSkeleton() {
   return (
@@ -553,16 +708,22 @@ export default function TodoPage() {
     </Suspense>
   )
 }`}
-            fileName="src/components/TodoSkeleton.tsx"
-            language="tsx"
-            badges={["react", "skeleton"]} />
-        </section>
+						fileName="src/components/TodoSkeleton.tsx"
+						language="tsx"
+						badges={['react', 'skeleton']}
+					/>
+				</section>
 
-        <section id="optimistic-updates" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Optimistic Updates</h2>
-          <p>Implementeer optimistic updates voor een betere gebruikerservaring:</p>
-          <EnhancedCodeBlock
-            code={`import { useState } from 'react';
+				<section id="optimistic-updates" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Optimistic Updates
+					</h2>
+					<p>
+						Implementeer optimistic updates voor een betere
+						gebruikerservaring:
+					</p>
+					<EnhancedCodeBlock
+						code={`import { useState } from 'react';
 import { useOptimistic } from 'react';
 import { deleteTodo } from '@/app/actions/deleteTodo';
 
@@ -588,16 +749,22 @@ export function TodoItem({ todo }) {
     </div>
   );
 }`}
-            fileName="src/components/TodoItem.tsx"
-            language="tsx"
-            badges={["react", "optimistic-update"]} />
-        </section>
+						fileName="src/components/TodoItem.tsx"
+						language="tsx"
+						badges={['react', 'optimistic-update']}
+					/>
+				</section>
 
-        <section id="ssr-querying" className="space-y-4">
-          <h2 className="text-2xl font-semibold">SSR Querying zonder useEffect</h2>
-          <p>Implementeer server-side rendering voor het ophalen van data zonder useEffect:</p>
-          <EnhancedCodeBlock
-            code={`// In je page.tsx
+				<section id="ssr-querying" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						SSR Querying zonder useEffect
+					</h2>
+					<p>
+						Implementeer server-side rendering voor het ophalen van
+						data zonder useEffect:
+					</p>
+					<EnhancedCodeBlock
+						code={`// In je page.tsx
 import { getTodos } from '@/app/actions/getTodos';
 import { TodoList } from '@/components/TodoList';
 
@@ -628,16 +795,20 @@ export function TodoList({ initialTodos }) {
     </ul>
   );
 }`}
-            fileName="src/app/todos/page.tsx"
-            language="tsx"
-            badges={["react", "ssr", "tanstack-query"]} />
-        </section>
+						fileName="src/app/todos/page.tsx"
+						language="tsx"
+						badges={['react', 'ssr', 'tanstack-query']}
+					/>
+				</section>
 
-        <section id="pagination" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Paginatie</h2>
-          <p>Implementeer paginatie voor het efficiënt laden van grote hoeveelheden todos:</p>
-          <EnhancedCodeBlock
-            code={`import { db } from '@/lib/db';
+				<section id="pagination" className="space-y-4">
+					<h2 className="text-2xl font-semibold">Paginatie</h2>
+					<p>
+						Implementeer paginatie voor het efficiënt laden van
+						grote hoeveelheden todos:
+					</p>
+					<EnhancedCodeBlock
+						code={`import { db } from '@/lib/db';
 import { todos } from '@/db/schema';
 import { sql } from 'drizzle-orm';
 
@@ -702,16 +873,19 @@ export default async function TodoPage({ searchParams }: { searchParams: { page?
           </div>
           );
 }`}
-            fileName="src/app/actions/getPaginatedTodos.ts"
-            language="typescript"
-            badges={["server-action", "pagination"]} />
-        </section>
+						fileName="src/app/actions/getPaginatedTodos.ts"
+						language="typescript"
+						badges={['server-action', 'pagination']}
+					/>
+				</section>
 
-        <section id="filtering" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Filteren op Categorie</h2>
-          <p>Implementeer filtering op categorie:</p>
-          <EnhancedCodeBlock
-            code={`import { db } from '@/lib/db';
+				<section id="filtering" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Filteren op Categorie
+					</h2>
+					<p>Implementeer filtering op categorie:</p>
+					<EnhancedCodeBlock
+						code={`import { db } from '@/lib/db';
 import { todos, categories } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 
@@ -738,50 +912,100 @@ export default async function TodoPage({ searchParams }: { searchParams: { categ
     </div>
   );
 }`}
-            fileName="src/app/actions/getFilteredTodos.ts"
-            language="typescript"
-            badges={["server-action", "filtering"]} />
-        </section>
+						fileName="src/app/actions/getFilteredTodos.ts"
+						language="typescript"
+						badges={['server-action', 'filtering']}
+					/>
+				</section>
 
-        <section id="pitfalls" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Valkuilen en Best Practices</h2>
-          <ul className="list-disc list-inside">
-            <li>Wees voorzichtig met het gebruik van client-side state voor data die ook op de server wordt bijgehouden</li>
-            <li>Overweeg het gebruik van caching strategieën om de belasting op je database te verminderen</li>
-            <li>Zorg voor goede foutafhandeling en gebruikersfeedback</li>
-            <li>Test je applicatie grondig, inclusief edge cases en foutscenario's</li>
-          </ul>
-        </section>
+				<section id="pitfalls" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Valkuilen en Best Practices
+					</h2>
+					<ul className="list-disc list-inside">
+						<li>
+							Wees voorzichtig met het gebruik van client-side
+							state voor data die ook op de server wordt
+							bijgehouden
+						</li>
+						<li>
+							Overweeg het gebruik van caching strategieën om de
+							belasting op je database te verminderen
+						</li>
+						<li>
+							Zorg voor goede foutafhandeling en
+							gebruikersfeedback
+						</li>
+						<li>
+							Test je applicatie grondig, inclusief edge cases en
+							foutscenario's
+						</li>
+					</ul>
+				</section>
 
-        <section id="solid" className="space-y-4">
-          <h2 className="text-2xl font-semibold">SOLID Principes in React en Next.js</h2>
-          <ul className="list-disc list-inside">
-            <li>Single Responsibility: Houd componenten en functies gefocust op één taak</li>
-            <li>Open-Closed: Gebruik compositie om functionaliteit uit te breiden zonder bestaande code te wijzigen</li>
-            <li>Liskov Substitution: Zorg ervoor dat afgeleide componenten zich consistent gedragen met hun basiscomponenten</li>
-            <li>Interface Segregation: Verdeel grote interfaces in kleinere, meer specifieke interfaces</li>
-            <li>Dependency Inversion: Gebruik dependency injection en context voor het beheren van afhankelijkheden</li>
-          </ul>
-        </section>
+				<section id="solid" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						SOLID Principes in React en Next.js
+					</h2>
+					<ul className="list-disc list-inside">
+						<li>
+							Single Responsibility: Houd componenten en functies
+							gefocust op één taak
+						</li>
+						<li>
+							Open-Closed: Gebruik compositie om functionaliteit
+							uit te breiden zonder bestaande code te wijzigen
+						</li>
+						<li>
+							Liskov Substitution: Zorg ervoor dat afgeleide
+							componenten zich consistent gedragen met hun
+							basiscomponenten
+						</li>
+						<li>
+							Interface Segregation: Verdeel grote interfaces in
+							kleinere, meer specifieke interfaces
+						</li>
+						<li>
+							Dependency Inversion: Gebruik dependency injection
+							en context voor het beheren van afhankelijkheden
+						</li>
+					</ul>
+				</section>
 
-        <section id="tanstack" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Wanneer React Query (TanStack Query) in te zetten</h2>
-          <p>React Query is nuttig wanneer:</p>
-          <ul className="list-disc list-inside">
-            <li>Je complexe data fetching en caching nodig hebt</li>
-            <li>Je wilt profiteren van automatische background refetching</li>
-            <li>Je optimistic updates wilt implementeren</li>
-            <li>Je server state wilt beheren los van client state</li>
-            <li>Je wilt profiteren van ingebouwde loading en error states</li>
-          </ul>
-          <p>Voor eenvoudige use cases of wanneer je voornamelijk server-side rendering gebruikt, kan het gebruik van React Query overbodig zijn.</p>
-        </section>
+				<section id="tanstack" className="space-y-4">
+					<h2 className="text-2xl font-semibold">
+						Wanneer React Query (TanStack Query) in te zetten
+					</h2>
+					<p>React Query is nuttig wanneer:</p>
+					<ul className="list-disc list-inside">
+						<li>Je complexe data fetching en caching nodig hebt</li>
+						<li>
+							Je wilt profiteren van automatische background
+							refetching
+						</li>
+						<li>Je optimistic updates wilt implementeren</li>
+						<li>
+							Je server state wilt beheren los van client state
+						</li>
+						<li>
+							Je wilt profiteren van ingebouwde loading en error
+							states
+						</li>
+					</ul>
+					<p>
+						Voor eenvoudige use cases of wanneer je voornamelijk
+						server-side rendering gebruikt, kan het gebruik van
+						React Query overbodig zijn.
+					</p>
+				</section>
 
-        <section id="error-handling" className="space-y-4">
-          <h2 className="text-2xl font-semibold">Error Handling</h2>
-          <p>Implementeer robuuste foutafhandeling in je applicatie:</p>
-          <EnhancedCodeBlock
-            code={`// In je server action
+				<section id="error-handling" className="space-y-4">
+					<h2 className="text-2xl font-semibold">Error Handling</h2>
+					<p>
+						Implementeer robuuste foutafhandeling in je applicatie:
+					</p>
+					<EnhancedCodeBlock
+						code={`// In je server action
 import { toast } from 'sonner';
 
 export async function createTodo(formData: FormData) {
@@ -827,12 +1051,12 @@ export function CreateTodoForm() {
     </form>
   );
 }`}
-            fileName="src/components/CreateTodoForm.tsx"
-            language="tsx"
-            badges={["react", "error-handling"]}
-          />
-        </section>
-      </div>
-    </div>
-  )
+						fileName="src/components/CreateTodoForm.tsx"
+						language="tsx"
+						badges={['react', 'error-handling']}
+					/>
+				</section>
+			</div>
+		</div>
+	)
 }

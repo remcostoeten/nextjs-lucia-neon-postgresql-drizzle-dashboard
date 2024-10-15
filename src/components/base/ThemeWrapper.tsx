@@ -12,7 +12,7 @@ export { metadata }
 export default function ThemeWrapper({
 	children
 }: Readonly<{
-	children: PageProps
+	children: React.ReactNode
 }>) {
 	return (
 		<>

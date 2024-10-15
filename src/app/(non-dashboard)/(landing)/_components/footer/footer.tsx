@@ -1,6 +1,5 @@
 'use client'
 
-import { GitHubIcon } from '@/components/base/Icons'
 import { siteConfig } from '@/config/site-config'
 import React from 'react'
 import { toast } from 'sonner'
@@ -50,7 +49,6 @@ function handleClick(e: React.MouseEvent, isBeta: boolean) {
 const FooterColumn: React.FC<FooterColumnProps> = React.memo(
 	({ title, links }) => (
 		<div className={styles['footer-column']}>
-
 			<div
 				className={`${styles['label-regular']} ${styles['text-color-white']}`}
 			>
@@ -100,7 +98,7 @@ const FooterColumn: React.FC<FooterColumnProps> = React.memo(
 	)
 )
 
-export default function gitFooter() {
+export default function Footer() {
 	return (
 		<footer className={`${styles.section} ${styles['snipcss-mKnwC']}`}>
 			<div className={styles['footer-container-lines']}>
@@ -131,7 +129,7 @@ export default function gitFooter() {
 									/>
 									<FooterContactLink
 										href="https://github.com/remcostoeten"
-										icon={<GitHubIcon />}
+										icon={<GithubIcon />}
 										text="@remcostoeten"
 									/>
 								</div>

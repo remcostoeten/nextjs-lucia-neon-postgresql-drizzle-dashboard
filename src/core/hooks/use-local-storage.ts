@@ -171,7 +171,9 @@ export function useLocalStorage<T>(
 		try {
 			const dismissedKey = `${key}_dismissed`
 			window.localStorage.setItem(dismissedKey, 'true')
-			window.dispatchEvent(new StorageEvent('local-storage', { key: dismissedKey }))
+			window.dispatchEvent(
+				new StorageEvent('local-storage', { key: dismissedKey })
+			)
 		} catch (_error) {
 			// Handle error if needed
 		}
@@ -211,7 +213,9 @@ export function useDismissedState(key: string): [boolean, () => void] {
 		const dismissedKey = `${key}_dismissed`
 		window.localStorage.setItem(dismissedKey, 'true')
 		setIsDismissed(true)
-		window.dispatchEvent(new StorageEvent('local-storage', { key: dismissedKey }))
+		window.dispatchEvent(
+			new StorageEvent('local-storage', { key: dismissedKey })
+		)
 	})
 
 	useEventListener('storage', (event: StorageEvent) => {

@@ -1,6 +1,6 @@
-'use client';
+'use client'
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react'
 
 interface AnimateHeightProps {
 	children: React.ReactNode
@@ -65,7 +65,8 @@ export function ActivityCard({
 	duration
 }: ActivityCardProps) {
 	const colorClasses = {
-		default: 'bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700',
+		default:
+			'bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700',
 		red: 'bg-red-100 dark:bg-red-900/20 border-red-200 dark:border-red-700',
 		blue: 'bg-blue-100 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700',
 		green: 'bg-green-100 dark:bg-green-900/20 border-green-200 dark:border-green-700',

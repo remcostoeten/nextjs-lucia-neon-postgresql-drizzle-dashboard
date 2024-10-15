@@ -1,34 +1,40 @@
-import RecentActivities from '@/components/dashboard/features/activity/recent-activities';
-import OnboardingNotice from '@/components/effects/onboarding-trigger';
-import { validateRequest } from '@/lib/auth/lucia';
+import RecentActivities from '@/components/dashboard/features/activity/recent-activities'
+import OnboardingNotice from '@/components/effects/onboarding-trigger'
+import { validateRequest } from '@/lib/auth/lucia'
 
 type DashboardProps = {
-	user: Awaited<ReturnType<typeof validateRequest>>['user'];
-};
+	user: Awaited<ReturnType<typeof validateRequest>>['user']
+}
 
 function getGreeting(hour: number): string {
-	if (hour < 12) return 'Good morning';
-	if (hour < 18) return 'Good afternoon';
-	return 'Good evening';
+	if (hour < 12) return 'Good morning'
+	if (hour < 18) return 'Good afternoon'
+	return 'Good evening'
 }
 
 export default async function Dashboard() {
-	const { user } = await validateRequest();
+	const { user } = await validateRequest()
 
 	if (!user) {
-		return <div>Please sign in to access the dashboard.</div>;
+		return <div>Please sign in to access the dashboard.</div>
 	}
 
-	const displayName = user.name || user.email || 'Guest';
-	const currentHour = new Date().getHours();
-	const greeting = getGreeting(currentHour);
+	const displayName = user.name || user.email || 'Guest'
+	const currentHour = new Date().getHours()
+	const greeting = getGreeting(currentHour)
 
 	return (
 		<section className="max-w-[1400px] w-[1400px] max-md:pl-5 max-md:max-w-full">
 			<div className="flex gap-5 max-md:flex-col">
 				<div className="flex flex-col w-4/5 max-md:ml-0 max-md:w-full">
 					<div className="flex flex-col grow items-start mt-2 max-md:mt-10 max-md:max-w-full">
-						<OnboardingNotice userId={user.id} hasCompletedOnboarding={false} >Finished the onboarding? Click here to dismiss this notice</OnboardingNotice>
+						<OnboardingNotice
+							userId={user.id}
+							hasCompletedOnboarding={false}
+						>
+							Finished the onboarding? Click here to dismiss this
+							notice
+						</OnboardingNotice>
 
 						<h1 className="text-5xl font-semibold text-title leading-[55px] max-md:max-w-full max-md:text-4xl">
 							{greeting}, {displayName}!
@@ -38,7 +44,7 @@ export default async function Dashboard() {
 				</div>
 			</div>
 		</section>
-	);
+	)
 }
 // import SignOutBtn from '@/components/auth/sign-out-button'
 // import IntroShortcutGuide from '@/components/dashboard/intro-guide'

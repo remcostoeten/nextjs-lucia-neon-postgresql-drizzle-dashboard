@@ -1,24 +1,24 @@
-'use client';
+'use client'
 
-import OnboardingForm from '@/components/auth/onboarding';
-import { cn } from 'cn';
-import { AnimatePresence, motion } from 'framer-motion';
-import { XIcon } from 'lucide-react';
-import React, { useState } from 'react';
+import OnboardingForm from '@/components/auth/onboarding'
+import { cn } from 'cn'
+import { AnimatePresence, motion } from 'framer-motion'
+import { XIcon } from 'lucide-react'
+import React, { useState } from 'react'
 
 const fadeInUp = {
 	initial: { opacity: 0, y: 10 },
 	animate: { opacity: 1, y: 0 },
 	exit: { opacity: 0, y: 10 },
 	transition: { duration: 0.2 }
-};
+}
 
 interface OnboardingNoticeProps {
-	userId: string;
-	hasCompletedOnboarding: boolean;
-	className?: string;
-	badge?: string;
-	children?: React.ReactNode;
+	userId: string
+	hasCompletedOnboarding: boolean
+	className?: string
+	badge?: string
+	children?: React.ReactNode
 }
 
 export default function OnboardingNotice({
@@ -28,20 +28,20 @@ export default function OnboardingNotice({
 	badge,
 	children
 }: OnboardingNoticeProps) {
-	const [showOnboarding, setShowOnboarding] = useState(false);
-	const [dismissed, setDismissed] = useState(false);
+	const [showOnboarding, setShowOnboarding] = useState(false)
+	const [dismissed, setDismissed] = useState(false)
 
 	const handleComplete = () => {
-		setShowOnboarding(false);
+		setShowOnboarding(false)
 		// You might want to refresh the page or update the UI to reflect the completed onboarding
-	};
+	}
 
 	const handleDismiss = () => {
-		setDismissed(true);
-	};
+		setDismissed(true)
+	}
 
 	if (hasCompletedOnboarding || dismissed) {
-		return null;
+		return null
 	}
 
 	return (
@@ -55,7 +55,7 @@ export default function OnboardingNotice({
 						exit="exit"
 						variants={fadeInUp}
 						className={cn(
-							"pointer-events-auto flex items-center justify-between gap-x-6 bg-black/25 px-6 py-2.5 backdrop-blur-md sm:rounded-xl sm:py-3 sm:pr-3.5 sm:pl-4",
+							'pointer-events-auto flex items-center justify-between gap-x-6 bg-black/25 px-6 py-2.5 backdrop-blur-md sm:rounded-xl sm:py-3 sm:pr-3.5 sm:pl-4',
 							className
 						)}
 					>
@@ -69,7 +69,11 @@ export default function OnboardingNotice({
 								)}
 							</button>
 						</p>
-						<button className="-m-1.5 flex-none p-1.5" type="button" onClick={handleDismiss}>
+						<button
+							className="-m-1.5 flex-none p-1.5"
+							type="button"
+							onClick={handleDismiss}
+						>
 							<span className="sr-only">Dismiss</span>
 							<XIcon className="size-5 text-white" />
 						</button>
@@ -91,5 +95,5 @@ export default function OnboardingNotice({
 				)}
 			</AnimatePresence>
 		</div>
-	);
+	)
 }

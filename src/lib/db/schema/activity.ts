@@ -33,4 +33,4 @@ export const activityLogSchema = z.object({
 export type ActivityLog = typeof activityLogs.$inferSelect
 
 export type Activity = typeof activities.$inferSelect
-export type InsertActivity = typeof activities.$inferInsert;
+export type InsertActivity = typeof activities.$inferInsert

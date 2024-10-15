@@ -42,9 +42,11 @@
 }
 
 .navigation-line {
-	background-image: linear-gradient(to right,
-			var(--yellow--250),
-			var(--purple--250));
+	background-image: linear-gradient(
+		to right,
+		var(--yellow--250),
+		var(--purple--250)
+	);
 	width: 120px;
 	height: 2px;
 	position: absolute;
@@ -243,9 +245,11 @@
 }
 
 .gradient-span {
-	background-image: linear-gradient(to bottom,
-			var(--base--white),
-			var(--white--64));
+	background-image: linear-gradient(
+		to bottom,
+		var(--base--white),
+		var(--white--64)
+	);
 	-webkit-text-fill-color: transparent;
 	-webkit-background-clip: text;
 	background-clip: text;

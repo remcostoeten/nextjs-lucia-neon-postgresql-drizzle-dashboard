@@ -1,10 +1,10 @@
-import Link from 'next/link';
-import RainbowLine from '../../rainbow-line';
-import styles from '../header.module.scss';
+import Link from 'next/link'
+import RainbowLine from '../../rainbow-line'
+import styles from '../header.module.scss'
 
 type LogoProps = {
-	className?: string;
-	isScrolled: boolean;
+	className?: string
+	isScrolled: boolean
 }
 
 export default function Logo({ className, isScrolled }: LogoProps) {
@@ -20,13 +20,25 @@ export default function Logo({ className, isScrolled }: LogoProps) {
 			>
 				{name}
 			</LogoTitle>
-			<div className={`${isScrolled ? 'transform scale-75 -translate-y-0.5 -translate-y-[14px]' : ''} transition-all duration-300`}>
+			<div
+				className={`${isScrolled ? 'transform scale-75 -translate-y-0.5 -translate-y-[14px]' : ''} transition-all duration-300`}
+			>
 				<RainbowLine />
 			</div>
 		</Link>
 	)
 }
 
-function LogoTitle({ children, className }: { children: React.ReactNode; className?: string }) {
-	return <h2 className={`${styles['navigation_top-title__joNCs']} ${className}`}>{children}</h2>
+function LogoTitle({
+	children,
+	className
+}: {
+	children: React.ReactNode
+	className?: string
+}) {
+	return (
+		<h2 className={`${styles['navigation_top-title__joNCs']} ${className}`}>
+			{children}
+		</h2>
+	)
 }
