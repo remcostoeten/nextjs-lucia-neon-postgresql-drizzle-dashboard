@@ -4,7 +4,6 @@ import { GitHubIcon } from '@/components/base/Icons'
 import { siteConfig } from '@/config/site-config'
 import React from 'react'
 import { toast } from 'sonner'
-import RainbowLine from '../rainbow-line'
 import styles from './footer.module.scss'
 
 type FooterLink = {
@@ -51,7 +50,6 @@ function handleClick(e: React.MouseEvent, isBeta: boolean) {
 const FooterColumn: React.FC<FooterColumnProps> = React.memo(
 	({ title, links }) => (
 		<div className={styles['footer-column']}>
-			<RainbowLine small />
 
 			<div
 				className={`${styles['label-regular']} ${styles['text-color-white']}`}
@@ -107,7 +105,6 @@ export default function gitFooter() {
 		<footer className={`${styles.section} ${styles['snipcss-mKnwC']}`}>
 			<div className={styles['footer-container-lines']}>
 				<div className={styles['container-small']}>
-					<div className={styles['footer-line']}></div>
 					<div
 						className={`${styles['w-layout-grid']} ${styles['footer-grid']} px-xl py-large`}
 					>

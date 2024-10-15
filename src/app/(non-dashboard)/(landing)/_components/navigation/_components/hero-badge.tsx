@@ -75,7 +75,7 @@ export default function HeroBadge() {
 						{githubStats.madeBy}
 					</Link>
 				</TooltipContent>
-			</Tooltip>
+			</Tooltip>ffff
 		</motion.div>
 	)
 }

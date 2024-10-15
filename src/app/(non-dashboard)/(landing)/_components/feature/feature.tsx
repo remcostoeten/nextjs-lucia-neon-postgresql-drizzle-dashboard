@@ -99,7 +99,7 @@ export default function Feature() {
 				'px-theme z-5 w-full max-w-big-wrapper mx-auto relative'
 			)}
 		>
-			<div className="w-full max-w-wrapper mx-auto relative flex flex-col h-full">
+			<div className="w-full max-w-wrapper relative flex flex-col h-full">
 				<motion.div
 					variants={itemVariants}
 					className={`${styles.titleLarge} ${styles.styleRLdKi}`}

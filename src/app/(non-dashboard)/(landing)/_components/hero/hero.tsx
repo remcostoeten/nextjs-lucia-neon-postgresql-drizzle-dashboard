@@ -20,7 +20,7 @@ export default function Hero() {
 					'px-theme z-5 w-full max-w-big-wrapper mx-auto relative '
 				)}
 			>
-				<div className="w-full max-w-wrapper mx-auto relative">
+				<div className="w-full max-w-wrapper relative">
 					<div className={styles.inner}>
 						<ZenWealthContainer />
 					</div>

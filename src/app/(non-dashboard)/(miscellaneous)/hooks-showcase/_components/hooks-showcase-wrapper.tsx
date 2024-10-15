@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Card, CardContent, CardHeader, CardTitle } from 'ui'
-import EnhancedCodeBlock from '../../../../components/elements/display-code/code-block'
+import EnhancedCodeBlock from '../../../../../components/elements/display-code/code-block'
 
 type HooksShowcaseWrapperProps = {
 	title?: string
@@ -62,7 +62,7 @@ export function HooksShowcaseWrapper({
 						language={language as string}
 						badges={[
 							language?.charAt(0).toUpperCase() +
-								language?.slice(1)
+							language?.slice(1)
 						]}
 					/>
 				</CardContent>

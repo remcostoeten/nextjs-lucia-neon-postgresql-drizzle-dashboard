@@ -3,9 +3,9 @@
 import { AnimatePresence, easeInOut, motion } from 'framer-motion'
 import { X } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 import HorizontalLine from '../horizontal-line'
 import styles from './video.module.scss'
-import { toast } from 'sonner'
 type LineDotProps = {
 	position: 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight'
 }
@@ -43,7 +43,7 @@ export default function YouTubeRickroll() {
 	return (
 		<div className="relative">
 			<div className={styles.videoContainerLines}>
-				<div className="w-full max-w-wrapper mx-auto relative">
+				<div className="w-full max-w-wrapper relative mx-auto">
 					<motion.div
 						initial={{ opacity: 0, scale: 0.9 }}
 						animate={{ opacity: 1, scale: 1 }}

@@ -1,18 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import EnhancedCodeBlock from "@/components/elements/display-code/code-block"
-import { CheckCircle2, Code2, Database, FileJson, FormInput, Server } from "lucide-react"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Textarea } from "@/components/ui/textarea"
+
+import EnhancedCodeBlock from '@/components/elements/display-code/code-block';
+import { useEffect, useState } from 'react';
+import { Button } from 'ui';
 
 type Section = 'intro' | 'packages' | 'db-connection' | 'schema' | 'zod-schema' | 'create-todo' | 'show-todo' | 'edit-todo' | 'recap-simple' | 'advanced-intro' | 'advanced-zod' | 'advanced-schema' | 'advanced-create' | 'advanced-display' | 'advanced-edit' | 'advanced-delete' | 'toasts' | 'preloaders' | 'optimistic-updates' | 'ssr-querying' | 'pagination' | 'filtering' | 'pitfalls' | 'solid' | 'tanstack' | 'error-handling';
 
@@ -57,7 +48,7 @@ export default function TodoPresentation() {
       {!isMobile && (
         <nav className="w-64 h-screen overflow-y-auto fixed left-0 top-0 p-4 bg-gray-100">
           <h2 className="text-xl font-bold mb-4">Inhoudsopgave</h2>
-          <ul className="space-y-2">
+          <ul className="space-y-2">s
             {sections.map((section) => (
               <li key={section}>
                 <Button
@@ -712,9 +703,9 @@ export default async function TodoPage({ searchParams }: { searchParams: { page?
           </div>
           );
 }`}
-          fileName="src/app/actions/getPaginatedTodos.ts"
-          language="typescript"
-          badges={["server-action", "pagination"]} />
+            fileName="src/app/actions/getPaginatedTodos.ts"
+            language="typescript"
+            badges={["server-action", "pagination"]} />
         </section>
 
         <section id="filtering" className="space-y-4">
