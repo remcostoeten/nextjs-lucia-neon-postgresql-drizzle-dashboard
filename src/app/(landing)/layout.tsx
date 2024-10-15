@@ -12,9 +12,7 @@ export default function DashboardLayout({
 }) {
 	return (
 		<>
-			<Navigation />
 			{children}
-			<Footer />
 			<HomeLights />
 			<LandingEffects effect="noise" />
 		</>

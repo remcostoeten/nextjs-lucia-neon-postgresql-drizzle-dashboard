@@ -1,3 +1,4 @@
+import Notice from '@/components/ui/notice'
 import Content from './_components/content-gradient/gradient-content'
 import Feature from './_components/feature/feature'
 import Hero from './_components/hero/hero'
@@ -9,7 +10,10 @@ import Video from './_components/Video/Video'
 export default function LandingPage() {
 	return (
 		<>
-			<Hero />
+			<Notice id={'landing-page-notice'}
+			>
+				Just redesigned the lading page! 🎨 Content is still WIP
+			</Notice>	<Hero />
 			<Video />
 			<LogoSection />
 			<Feature />

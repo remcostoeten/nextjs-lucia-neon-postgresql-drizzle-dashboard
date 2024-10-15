@@ -1,21 +1,29 @@
 import Link from 'next/link'
+
 import RainbowLine from '../../rainbow-line'
 import styles from '../navigation.module.scss'
 
-export default function Logo() {
+type LogoProps = {
+	className?: string;
+	isScrolled: boolean;
+}
+
+export default function Logo({ className, isScrolled }: LogoProps) {
 	const name = 'remco.'
 
 	return (
 		<Link
 			href="/"
-			className={`${styles['nav-logo']} ${styles['w-nav-brand']} ${styles['w--current']}`}
+			className={`${styles['nav-logo']} ${styles['w-nav-brand']} ${styles['w--current']} ${className}`}
 		>
-			<LogoTitle>{name}</LogoTitle>
-			<RainbowLine />
+			<LogoTitle className={styles['logo-title']}>{name}</LogoTitle>
+			<div className={`${isScrolled ? 'transform -translate-y-0.5' : ''} transition-transform duration-300`}>
+				<RainbowLine />
+			</div>
 		</Link>
 	)
 }
 
-function LogoTitle({ children }: { children: React.ReactNode }) {
-	return <h2 className="navigation_top-title__joNCs">{children}</h2>
+function LogoTitle({ children, className }: { children: React.ReactNode; className?: string }) {
+	return <h2 className={`${styles['navigation_top-title__joNCs']} ${className}`}>{children}</h2>
 }

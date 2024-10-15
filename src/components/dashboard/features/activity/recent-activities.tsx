@@ -15,8 +15,8 @@ function generateMockActivities(count: number): Activity[] {
     return Array.from({ length: count }, (_, i) => ({
         id: `activity-${i + 1}`,
         name: `Activity ${i + 1}`,
-        icon: iconNames[Math.floor(Math.random() * iconNames.length)],
-        color: colors[Math.floor(Math.random() * colors.length)],
+        icon: iconNames[Math.floor(Math.random() * iconNames.length)] as IconNames,
+        color: colors[Math.floor(Math.random() * colors.length)] as string,
         duration: Math.floor(Math.random() * 120) + 15, // Random duration between 15 and 135 minutes
     }));
 }

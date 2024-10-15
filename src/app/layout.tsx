@@ -1,5 +1,7 @@
 import ThemeWrapper, { metadata } from '@/components/base/ThemeWrapper'
 import '../styles/app.scss'
+import Navigation from './(landing)/_components/navigation/navigation'
+import Footer from '@/app/(landing)/_components/footer/footer'
 
 export { metadata }
 
@@ -16,7 +18,11 @@ export default function RootLayout({ children }: PageProps) {
 				className={`${geistSans.variable} ${geistMono.variable} ${ptMono.className} antialiased `}
 			> */}
 			<body className="antialiased bg-base">
-				<ThemeWrapper>{children}</ThemeWrapper>
+				<ThemeWrapper>
+					<Navigation />
+					{children}
+					<Footer />
+				</ThemeWrapper>
 			</body>
 		</html>
 	)
