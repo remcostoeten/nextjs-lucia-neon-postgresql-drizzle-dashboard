@@ -1,5 +1,4 @@
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Button, Input } from 'ui'
 import { StopIcon } from '@radix-ui/react-icons'
 import { Pause, Play, Trash2, Video } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'

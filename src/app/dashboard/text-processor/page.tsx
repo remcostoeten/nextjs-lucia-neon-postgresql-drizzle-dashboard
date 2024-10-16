@@ -14,6 +14,9 @@ export default function IGParserPage() {
 		<TextProcessor
 			processorFunction={removeNumbers}
 			processorName="Number Remover"
+			processorType={''}
+			options={[]}
+			optionType={'checkbox'}
 		/>
 	)
 }

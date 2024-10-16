@@ -1,14 +1,14 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import {
+	Button,
+	Input,
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue
-} from '@/components/ui/select'
+} from 'ui'
 import { Task, TaskStatus } from '@/types/tasks.d'
 import { motion } from 'framer-motion'
 import { Grid, List, Search } from 'lucide-react'

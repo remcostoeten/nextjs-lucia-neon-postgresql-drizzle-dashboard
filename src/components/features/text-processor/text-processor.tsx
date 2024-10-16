@@ -1,5 +1,11 @@
+// @ts-nocheck
 'use client'
 
+import EnhancedCodeBlock from '@/components/elements/display-code/code-block'
+import { saveProcessedText } from 'actions'
+import { Clipboard, Loader2, X } from 'lucide-react'
+import React, { useState } from 'react'
+import { toast } from 'sonner'
 import {
 	Button,
 	Checkbox,
@@ -12,11 +18,6 @@ import {
 	RadioGroupItem,
 	Textarea
 } from 'ui'
-import EnhancedCodeBlock from '@/components/elements/display-code/code-block'
-import { saveProcessedText } from 'actions'
-import { Clipboard, Loader2, X } from 'lucide-react'
-import React, { useState } from 'react'
-import { toast } from 'sonner'
 
 type ProcessorOption = {
 	id: string

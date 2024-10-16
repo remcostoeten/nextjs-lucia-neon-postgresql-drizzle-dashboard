@@ -1,28 +1,26 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
+	Button,
+	Calendar,
+	Input,
+	Label,
 	Popover,
 	PopoverContent,
 	PopoverTrigger
-} from '@/components/ui/popover'
+} from 'ui'
+import { useState, useEffect } from 'react'
+import { useClientAuth } from '@/lib/auth/client-auth-utils'
 import { Task, TaskStatus } from '@/types/tasks'
 import { createTask } from 'actions'
 import { format } from 'date-fns'
 import { CalendarIcon, Plus } from 'lucide-react'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
-
-type CreateTaskPopoverProps = {
-	onTaskCreated: () => void
-}
+import { toast } from 'sonner'
 
 export default function CreateTaskPopover() {
-	const router = useRouter()
+	const { getClientSession } = useClientAuth()
 	const [isOpen, setIsOpen] = useState(false)
+	const [userId, setUserId] = useState<string | null>(null)
 	const [newTask, setNewTask] = useState<Partial<Task>>({
 		title: '',
 		content: '',
@@ -31,11 +29,26 @@ export default function CreateTaskPopover() {
 		subtasks: []
 	})
 
+	useEffect(() => {
+		const fetchUserSession = async () => {
+			const session = await getClientSession()
+			if (session.user) {
+				setUserId(session.user.id)
+			}
+		}
+		fetchUserSession()
+	}, [])
+
 	const handleCreateTask = async () => {
+		if (!userId) {
+			toast.error('User not authenticated. Please sign in.')
+			return
+		}
+
 		if (newTask.title && newTask.content) {
 			try {
 				await createTask(
-					'user123',
+					userId,
 					newTask as Omit<Task, 'id' | 'createdAt' | 'updatedAt'>
 				)
 				setIsOpen(false)
@@ -46,9 +59,10 @@ export default function CreateTaskPopover() {
 					labels: [],
 					subtasks: []
 				})
-				router.reload()
+				toast.success('Task created successfully!')
 			} catch (error) {
 				console.error('Failed to create task:', error)
+				toast.error('Failed to create task. Please try again.')
 			}
 		}
 	}

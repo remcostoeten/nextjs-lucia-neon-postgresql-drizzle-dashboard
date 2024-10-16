@@ -1,6 +1,4 @@
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Badge, Button, Checkbox } from 'ui'
 import { Task, TaskStatus } from '@/types/tasks.d'
 import { format } from 'date-fns'
 import { motion } from 'framer-motion'

@@ -3,6 +3,7 @@
 import { siteConfig } from '@/config/site-config'
 import React from 'react'
 import { toast } from 'sonner'
+import RainbowLine from '../rainbow-line'
 import styles from './footer.module.scss'
 
 type FooterLink = {
@@ -110,10 +111,11 @@ export default function Footer() {
 							<div
 								className={`flex flex-col items-start gap-4 ${styles['custom-class']}`}
 							>
+								<RainbowLine small className="footer-rainbow" />
+
 								<div className="mb-0 text-sm font-medium leading-[1.7] text-neutral-300">
 									Notevault
 								</div>
-
 								<div className="flex flex-wrap items-center gap-14">
 									<FooterContactLink
 										href="https://g.co/kgs/mhi1a1x"
