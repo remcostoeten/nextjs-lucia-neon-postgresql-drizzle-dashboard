@@ -1,10 +1,5 @@
 import { env } from '@/lib/env.mjs'
-import {
-	neon,
-	neonConfig,
-	NeonQueryFunction,
-	Pool
-} from '@neondatabase/serverless'
+import { neon, NeonQueryFunction, Pool } from '@neondatabase/serverless'
 import { drizzle } from 'drizzle-orm/neon-http'
 
 // Import all schemas and relations
@@ -12,9 +7,6 @@ import * as activity from './schema/activity'
 import * as auth from './schema/auth'
 import * as folders from './schema/folders'
 import * as notes from './schema/notes'
-
-neonConfig.fetchConnectionCache = true
-
 const schema = {
 	...auth,
 	...folders,
@@ -38,3 +30,5 @@ export * from './schema/activity'
 export * from './schema/auth'
 export * from './schema/folders'
 // export * from './schema/notes'
+export * from './schema/finance'
+export * from './schema/processed-text'

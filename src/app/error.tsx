@@ -29,6 +29,15 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 	}, [error])
 
 	const logErrorToActivity = async (error: Error & { digest?: string }) => {
+		const errorKey = `${error.message}:${error.digest || ''}`
+		const now = Date.now()
+		const lastErrorTime = localStorage.getItem(errorKey)
+
+		if (lastErrorTime && now - parseInt(lastErrorTime) < 60000) {
+			console.log('Skipping error log due to recent occurrence')
+			return
+		}
+
 		try {
 			await logActivity(
 				'ERROR_ENCOUNTERED',
@@ -41,6 +50,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 					timestamp: new Date().toISOString()
 				})
 			)
+			localStorage.setItem(errorKey, now.toString())
 		} catch (logError) {
 			console.error('Failed to log error to activity log:', logError)
 		}

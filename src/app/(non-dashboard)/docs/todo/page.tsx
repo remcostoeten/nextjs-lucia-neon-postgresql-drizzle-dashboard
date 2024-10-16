@@ -2,9 +2,7 @@
 
 import EnhancedCodeBlock from '@/components/elements/display-code/code-block'
 import { useEffect, useState } from 'react'
-import {
-	Button
-} from 'ui'
+import { Button } from 'ui'
 
 type Section =
 	| 'intro'

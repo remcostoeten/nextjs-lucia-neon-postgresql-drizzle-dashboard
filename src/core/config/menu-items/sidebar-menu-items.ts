@@ -50,7 +50,7 @@ export const sidebarItems: SidebarItem[] = [
 	},
 	{
 		name: 'Record MP3',
-		path: '/dashboard/record-mp3',
+		path: '/dashboard/media-recorder',
 		icon: Mic
 	},
 	{

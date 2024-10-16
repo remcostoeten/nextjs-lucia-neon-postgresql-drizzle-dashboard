@@ -1,19 +1,11 @@
 'use client'
 
 import { Flex } from '@/components/atoms'
+import EmptyStateMessage from '@/components/effects/empty-state-loader'
 import { ConfirmationDialog } from '@/components/elements/crud/confirm-dialog'
 import { useLocalStorage } from '@/core/hooks/use-local-storage'
 import { StopIcon } from '@radix-ui/react-icons'
-import {
-	DownloadIcon,
-	FastForwardIcon,
-	MicIcon,
-	PauseIcon,
-	PlayIcon,
-	RewindIcon,
-	TrashIcon,
-	Volume2
-} from 'lucide-react'
+import { Download, MicIcon, PauseIcon, PlayIcon, TrashIcon } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import {
@@ -27,11 +19,10 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-	Slider,
-	Switch
+	Slider
 } from 'ui'
 
-interface AudioItem {
+type AudioItem = {
 	id: string
 	url: string
 	fileName: string
@@ -39,7 +30,7 @@ interface AudioItem {
 	duration: number
 }
 
-export default function EnhancedMultiAudioRecorder() {
+export default function AudioRecorder() {
 	const [isRecording, setIsRecording] = useState(false)
 	const [isPaused, setIsPaused] = useState(false)
 	const [duration, setDuration] = useState(0)
@@ -58,6 +49,10 @@ export default function EnhancedMultiAudioRecorder() {
 	const [isLooping, setIsLooping] = useState(false)
 	const [selectedInputDevice, setSelectedInputDevice] = useState<string>('')
 	const [inputDevices, setInputDevices] = useState<MediaDeviceInfo[]>([])
+	const [elapsedTime, setElapsedTime] = useState(0)
+	const recordingStartTimeRef = useRef<number | null>(null)
+	const pauseStartTimeRef = useRef<number | null>(null)
+	const totalPausedTimeRef = useRef(0)
 
 	const mediaRecorderRef = useRef<MediaRecorder | null>(null)
 	const audioContextRef = useRef<AudioContext | null>(null)
@@ -67,6 +62,7 @@ export default function EnhancedMultiAudioRecorder() {
 	const chunksRef = useRef<Blob[]>([])
 	const startTimeRef = useRef<number | null>(null)
 	const pausedDurationRef = useRef<number>(0)
+	const [audioDuration, setAudioDuration] = useState<number>(0)
 
 	useEffect(() => {
 		loadInputDevices()
@@ -77,11 +73,20 @@ export default function EnhancedMultiAudioRecorder() {
 		}
 	}, [])
 
+	useEffect(() => {
+		if (currentAudio) {
+			const audio = new Audio(currentAudio.url)
+			audio.addEventListener('loadedmetadata', () => {
+				setAudioDuration(audio.duration)
+			})
+		}
+	}, [currentAudio])
+
 	const loadInputDevices = async () => {
 		try {
 			const devices = await navigator.mediaDevices.enumerateDevices()
 			const audioInputDevices = devices.filter(
-				device => device.kind === 'audioinput'
+				device => device.kind === 'audioinput' && device.deviceId
 			)
 			setInputDevices(audioInputDevices)
 			if (audioInputDevices.length > 0) {
@@ -94,48 +99,62 @@ export default function EnhancedMultiAudioRecorder() {
 
 	const startRecording = async () => {
 		try {
-			const stream = await navigator.mediaDevices.getUserMedia({
-				audio: {
-					deviceId: selectedInputDevice
-						? { exact: selectedInputDevice }
-						: undefined
+			if (isPaused) {
+				mediaRecorderRef.current?.resume()
+				if (pauseStartTimeRef.current) {
+					totalPausedTimeRef.current +=
+						Date.now() - pauseStartTimeRef.current
 				}
-			})
-			mediaRecorderRef.current = new MediaRecorder(stream)
-			audioContextRef.current = new AudioContext()
-			analyserRef.current = audioContextRef.current.createAnalyser()
-			analyserRef.current.fftSize = 256
-			const source =
-				audioContextRef.current.createMediaStreamSource(stream)
-			source.connect(analyserRef.current)
+				pauseStartTimeRef.current = null
+				setIsPaused(false)
+			} else {
+				const stream = await navigator.mediaDevices.getUserMedia({
+					audio: {
+						deviceId: selectedInputDevice
+							? { exact: selectedInputDevice }
+							: undefined
+					}
+				})
+				mediaRecorderRef.current = new MediaRecorder(stream)
+				audioContextRef.current = new AudioContext()
+				analyserRef.current = audioContextRef.current.createAnalyser()
+				analyserRef.current.fftSize = 256
+				const source =
+					audioContextRef.current.createMediaStreamSource(stream)
+				source.connect(analyserRef.current)
 
-			mediaRecorderRef.current.ondataavailable = event => {
-				chunksRef.current.push(event.data)
-			}
-
-			mediaRecorderRef.current.onstop = () => {
-				const blob = new Blob(chunksRef.current, { type: 'audio/mp3' })
-				const url = URL.createObjectURL(blob)
-				const timestamp = new Date().toLocaleString()
-				const newAudio: AudioItem = {
-					id: Date.now().toString(),
-					url,
-					fileName: `recorded_audio_${audioList.length + 1}`,
-					timestamp,
-					duration
+				mediaRecorderRef.current.ondataavailable = event => {
+					chunksRef.current.push(event.data)
 				}
-				setAudioList(prevList => [...prevList, newAudio])
-				setCurrentAudio(newAudio)
-				chunksRef.current = []
-			}
 
-			mediaRecorderRef.current.start(100)
-			setIsRecording(true)
-			setIsPaused(false)
-			setDuration(0)
-			startTimeRef.current = Date.now()
-			pausedDurationRef.current = 0
-			animationRef.current = requestAnimationFrame(updateMeters)
+				mediaRecorderRef.current.onstop = () => {
+					const blob = new Blob(chunksRef.current, {
+						type: 'audio/mp3'
+					})
+					const url = URL.createObjectURL(blob)
+					const timestamp = new Date().toLocaleString()
+					const newAudio: AudioItem = {
+						id: Date.now().toString(),
+						url,
+						fileName: `recorded_audio_${audioList.length + 1}`,
+						timestamp,
+						duration
+					}
+					setAudioList(prevList => [...prevList, newAudio])
+					setCurrentAudio(newAudio)
+					chunksRef.current = []
+				}
+
+				mediaRecorderRef.current.start(100)
+				setIsRecording(true)
+				setIsPaused(false)
+				setElapsedTime(0)
+				recordingStartTimeRef.current = Date.now()
+				totalPausedTimeRef.current = 0
+			}
+			if (!animationRef.current) {
+				animationRef.current = requestAnimationFrame(updateMeters)
+			}
 		} catch (error) {
 			console.error('Error starting recording:', error)
 			toast.error(
@@ -148,15 +167,14 @@ export default function EnhancedMultiAudioRecorder() {
 		if (mediaRecorderRef.current && isRecording) {
 			if (isPaused) {
 				mediaRecorderRef.current.resume()
-				startTimeRef.current = Date.now() - duration * 1000
-				animationRef.current = requestAnimationFrame(updateMeters)
+				if (pauseStartTimeRef.current) {
+					totalPausedTimeRef.current +=
+						Date.now() - pauseStartTimeRef.current
+				}
+				pauseStartTimeRef.current = null
 			} else {
 				mediaRecorderRef.current.pause()
-				pausedDurationRef.current +=
-					Date.now() - (startTimeRef.current || 0)
-				if (animationRef.current) {
-					cancelAnimationFrame(animationRef.current)
-				}
+				pauseStartTimeRef.current = Date.now()
 			}
 			setIsPaused(!isPaused)
 		}
@@ -169,34 +187,45 @@ export default function EnhancedMultiAudioRecorder() {
 			setIsPaused(false)
 			if (animationRef.current) {
 				cancelAnimationFrame(animationRef.current)
+				animationRef.current = null
 			}
+			recordingStartTimeRef.current = null
+			pauseStartTimeRef.current = null
+			totalPausedTimeRef.current = 0
+			setAudioDuration(elapsedTime) // Set the duration when stopping the recording
 		}
 	}
 
 	const updateMeters = () => {
-		if (analyserRef.current && startTimeRef.current) {
-			const dataArray = new Uint8Array(
-				analyserRef.current.frequencyBinCount
-			)
-			analyserRef.current.getByteFrequencyData(dataArray)
+		if (recordingStartTimeRef.current) {
+			const now = Date.now()
+			let currentPausedTime = totalPausedTimeRef.current
 
-			const normalizedData = Array.from(dataArray).map(
-				value => value / 255
-			)
-			const averageVolume =
-				normalizedData.reduce((sum, value) => sum + value, 0) /
-				normalizedData.length
-			setWaveform(prevWaveform => [
-				...prevWaveform.slice(1),
-				averageVolume
-			])
+			if (pauseStartTimeRef.current) {
+				currentPausedTime += now - pauseStartTimeRef.current
+			}
 
-			const currentDuration =
-				(Date.now() -
-					startTimeRef.current -
-					pausedDurationRef.current) /
-				1000
-			setDuration(currentDuration)
+			const currentElapsedTime =
+				(now - recordingStartTimeRef.current - currentPausedTime) / 1000
+			setElapsedTime(currentElapsedTime)
+
+			if (analyserRef.current && !isPaused) {
+				const dataArray = new Uint8Array(
+					analyserRef.current.frequencyBinCount
+				)
+				analyserRef.current.getByteFrequencyData(dataArray)
+
+				const normalizedData = Array.from(dataArray).map(
+					value => value / 255
+				)
+				const averageVolume =
+					normalizedData.reduce((sum, value) => sum + value, 0) /
+					normalizedData.length
+				setWaveform(prevWaveform => [
+					...prevWaveform.slice(1),
+					averageVolume
+				])
+			}
 		}
 		animationRef.current = requestAnimationFrame(updateMeters)
 	}
@@ -261,6 +290,7 @@ export default function EnhancedMultiAudioRecorder() {
 	}
 
 	const formatTime = (time: number) => {
+		if (!isFinite(time) || isNaN(time)) return '00:00.000'
 		const minutes = Math.floor(time / 60)
 		const seconds = Math.floor(time % 60)
 		const milliseconds = Math.floor((time % 1) * 1000)
@@ -298,6 +328,23 @@ export default function EnhancedMultiAudioRecorder() {
 		}
 	}
 
+	const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const time = parseFloat(e.target.value)
+		setCurrentTime(time)
+		if (audioRef.current) {
+			audioRef.current.currentTime = time
+		}
+	}
+
+	const handleDownload = (audio: AudioItem) => {
+		const link = document.createElement('a')
+		link.href = audio.url
+		link.download = `${audio.fileName}.mp3`
+		document.body.appendChild(link)
+		link.click()
+		document.body.removeChild(link)
+	}
+
 	return (
 		<>
 			<Card>
@@ -323,7 +370,7 @@ export default function EnhancedMultiAudioRecorder() {
 							Stop
 						</Button>
 						<div className="text-lg font-mono">
-							{formatTime(duration)}
+							{formatTime(elapsedTime)}
 						</div>
 					</div>
 
@@ -347,13 +394,17 @@ export default function EnhancedMultiAudioRecorder() {
 								<SelectValue placeholder="Select input device" />
 							</SelectTrigger>
 							<SelectContent>
-								{inputDevices.map(device => (
+								{inputDevices.map((device, index) => (
 									<SelectItem
-										key={device.deviceId}
-										value={device.deviceId}
+										key={
+											device.deviceId || `device-${index}`
+										}
+										value={
+											device.deviceId || `device-${index}`
+										}
 									>
 										{device.label ||
-											`Microphone ${device.deviceId}`}
+											`Microphone ${index + 1}`}
 									</SelectItem>
 								))}
 							</SelectContent>
@@ -375,164 +426,144 @@ export default function EnhancedMultiAudioRecorder() {
 							)}
 						</Flex>
 						<ul className="space-y-2">
-							{audioList.map(audio => (
-								<li
-									key={audio.id}
-									className="flex items-center justify-between bg-secondary p-2 rounded"
-								>
-									<div className="flex-grow mr-2">
-										<Input
-											value={audio.fileName}
-											onChange={e =>
-												updateFileName(
-													audio.id,
-													e.target.value
-												)
-											}
-											className="mb-1"
-										/>
-										<span className="text-sm text-gray-500">
-											{audio.timestamp}
-										</span>
-									</div>
-									<div className="flex space-x-2">
-										<Button
-											onClick={() => playAudio(audio)}
-											size="sm"
-										>
-											<PlayIcon className="h-4 w-4" />
-										</Button>
-										<Button
-											onClick={() =>
-												handleDeleteAudio(audio.id)
-											}
-											size="sm"
-											variant="destructive"
-										>
-											<TrashIcon className="h-4 w-4" />
-										</Button>
-									</div>
-								</li>
-							))}
+							{audioList.length > 0 ? (
+								audioList.map(audio => (
+									<li
+										key={audio.id}
+										className="flex items-stretch justify-between bg-secondary p-2 rounded"
+									>
+										<div className="flex-grow mr-2">
+											<Input
+												value={audio.fileName}
+												onChange={e =>
+													updateFileName(
+														audio.id,
+														e.target.value
+													)
+												}
+												className="mb-1"
+											/>
+											<span className="text-sm text-gray-500">
+												{audio.timestamp}
+											</span>
+										</div>
+										<div className="flex space-x-2">
+											<Button
+												onClick={() => playAudio(audio)}
+												size="sm"
+											>
+												<PlayIcon className="h-4 w-4" />
+											</Button>
+											<Button
+												onClick={() =>
+													handleDeleteAudio(audio.id)
+												}
+												size="sm"
+												variant="destructive"
+											>
+												<TrashIcon className="h-4 w-4" />
+											</Button>
+											<Button
+												onClick={() =>
+													handleDownload(audio)
+												}
+												size="sm"
+											>
+												<Download className="h-4 w-4" />
+											</Button>
+										</div>
+									</li>
+								))
+							) : (
+								<EmptyStateMessage
+									message="Your audio stage is empty! Hit record and transform this silence into your personal soundtrack."
+									cardCount={6}
+									animate={true}
+									opacity={75}
+								/>
+							)}
 						</ul>
 					</div>
 
 					{currentAudio && (
-						<div className="mt-4">
+						<div className="mt-4 space-y-4">
 							<audio
 								ref={audioRef}
 								src={currentAudio.url}
 								onTimeUpdate={handleTimeUpdate}
-								onEnded={() => setIsPlaying(false)}
-								loop={isLooping}
-							/>
-							<div className="flex items-center justify-between mb-2">
-								<Button
-									onClick={
-										isPlaying
-											? pauseAudio
-											: () => playAudio(currentAudio)
+								onLoadedMetadata={() => {
+									if (audioRef.current) {
+										setAudioDuration(
+											audioRef.current.duration
+										)
 									}
+								}}
+							/>
+							<div className="flex items-center space-x-2">
+								<Button
+									onClick={() => audioRef.current?.play()}
 								>
-									{isPlaying ? (
-										<PauseIcon className="h-4 w-4 mr-2" />
-									) : (
-										<PlayIcon className="h-4 w-4 mr-2" />
-									)}
-									{isPlaying ? 'Pause' : 'Play'}
+									Play
 								</Button>
-								<div className="text-sm font-mono">
-									{formatTime(currentTime)}
+								<Button
+									onClick={() => audioRef.current?.pause()}
+								>
+									Pause
+								</Button>
+								<Button onClick={() => handleSkip(-10)}>
+									-10s
+								</Button>
+								<Button onClick={() => handleSkip(10)}>
+									+10s
+								</Button>
+								<Button onClick={toggleLoop}>
+									{isLooping ? 'Disable Loop' : 'Enable Loop'}
+								</Button>
+							</div>
+							<div className="space-y-2">
+								<Label>Playback Progress</Label>
+								<Slider
+									min={0}
+									max={audioDuration || 100}
+									value={[currentTime]}
+									onValueChange={handleSliderChange}
+									className="w-full"
+								/>
+								<div className="flex justify-between text-sm">
+									<span>{formatTime(currentTime)}</span>
+									<span>{formatTime(audioDuration)}</span>
 								</div>
 							</div>
-							<Slider
-								value={[currentTime]}
-								max={currentAudio.duration || 100}
-								step={0.1}
-								onValueChange={handleSliderChange}
-								className="mb-4"
-							/>
-
-							<div className="flex items-center space-x-2 mb-4">
-								<Volume2 className="h-4 w-4" />
+							<div className="space-y-2">
+								<Label>Volume</Label>
 								<Slider
-									value={[volume]}
+									min={0}
 									max={1}
 									step={0.01}
+									value={[volume]}
 									onValueChange={handleVolumeChange}
-									className="w-32"
 								/>
-								<span className="text-sm">
-									{Math.round(volume * 100)}%
-								</span>
 							</div>
-
-							<div className="flex items-center space-x-2 mb-4">
-								<Label htmlFor="playbackRate">
-									Playback Speed:
-								</Label>
+							<div className="space-y-2">
+								<Label>Playback Rate</Label>
 								<Select
 									onValueChange={handlePlaybackRateChange}
 									value={playbackRate.toString()}
 								>
-									<SelectTrigger className="w-[180px]">
-										<SelectValue placeholder="Select playback speed" />
+									<SelectTrigger>
+										<SelectValue placeholder="Select playback rate" />
 									</SelectTrigger>
 									<SelectContent>
 										<SelectItem value="0.5">
 											0.5x
 										</SelectItem>
-										<SelectItem value="0.75">
-											0.75x
-										</SelectItem>
-										<SelectItem value="1">
-											1x (Normal)
-										</SelectItem>
-										<SelectItem value="1.25">
-											1.25x
-										</SelectItem>
+										<SelectItem value="1">1x</SelectItem>
 										<SelectItem value="1.5">
 											1.5x
 										</SelectItem>
 										<SelectItem value="2">2x</SelectItem>
 									</SelectContent>
 								</Select>
-							</div>
-
-							<div className="flex items-center space-x-2 mb-4">
-								<Button
-									onClick={() => handleSkip(-10)}
-									size="sm"
-								>
-									<RewindIcon className="h-4 w-4 mr-1" /> -10s
-								</Button>
-								<Button
-									onClick={() => handleSkip(10)}
-									size="sm"
-								>
-									<FastForwardIcon className="h-4 w-4 mr-1" />{' '}
-									+10s
-								</Button>
-								<div className="flex items-center space-x-2">
-									<Switch
-										id="loop-mode"
-										checked={isLooping}
-										onCheckedChange={toggleLoop}
-									/>
-									<Label htmlFor="loop-mode">Loop</Label>
-								</div>
-							</div>
-
-							<div className="flex space-x-2">
-								<Button asChild className="flex-grow">
-									<a
-										href={currentAudio.url}
-										download={`${currentAudio.fileName}.mp3`}
-									>
-										<DownloadIcon className="mr-2 h-4 w-4" />{' '}
-										Download MP3
-									</a>
-								</Button>
 							</div>
 						</div>
 					)}

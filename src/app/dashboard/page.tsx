@@ -2,10 +2,6 @@ import RecentActivities from '@/components/dashboard/features/activity/recent-ac
 import OnboardingNotice from '@/components/effects/onboarding-trigger'
 import { validateRequest } from '@/lib/auth/lucia'
 
-type DashboardProps = {
-	user: Awaited<ReturnType<typeof validateRequest>>['user']
-}
-
 function getGreeting(hour: number): string {
 	if (hour < 12) return 'Good morning'
 	if (hour < 18) return 'Good afternoon'

@@ -162,7 +162,7 @@ importers:
                 version: 0.5.1(drizzle-orm@0.29.5(@neondatabase/serverless@0.8.1)(@types/pg@8.6.6)(@types/react@18.3.11)(pg@8.13.0)(react@18.3.1))(zod@3.23.8)
             framer-motion:
                 specifier: ^11.7.0
-                version: 11.11.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+                version: 11.11.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
             lowlight:
                 specifier: ^3.1.0
                 version: 3.1.0
@@ -195,7 +195,7 @@ importers:
                 version: 5.6.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
             react-day-picker:
                 specifier: ^9.1.2
-                version: 9.1.3(react@18.3.1)
+                version: 9.1.4(react@18.3.1)
             react-dnd:
                 specifier: ^16.0.1
                 version: 16.0.1(@types/node@20.16.11)(@types/react@18.3.11)(react@18.3.1)
@@ -220,6 +220,9 @@ importers:
             react-use-measure:
                 specifier: ^2.1.1
                 version: 2.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+            recharts:
+                specifier: ^2.13.0
+                version: 2.13.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
             remcostoeten-lucia-postgresql:
                 specifier: 'link:'
                 version: 'link:'
@@ -237,7 +240,7 @@ importers:
                 version: 2.5.4
             tailwindcss-animate:
                 specifier: ^1.0.7
-                version: 1.0.7(tailwindcss@3.4.13)
+                version: 1.0.7(tailwindcss@3.4.14)
             tiptap-markdown:
                 specifier: ^0.8.10
                 version: 0.8.10(@tiptap/core@2.8.0(@tiptap/pm@2.8.0))
@@ -286,7 +289,7 @@ importers:
                 version: 8.4.47
             tailwindcss:
                 specifier: ^3.4.13
-                version: 3.4.13
+                version: 3.4.14
             tsx:
                 specifier: ^4.7.1
                 version: 4.19.1
@@ -3456,6 +3459,60 @@ packages:
                 integrity: sha512-6+7nlbMVX/PVDCwaIQ8nTOPveOcFLSt8GcXdx8hD0bt39uWxYT88uXzqTd4fTvqta7oeUJqudepapKNt2DYJFw==
             }
 
+    '@types/d3-array@3.2.1':
+        resolution:
+            {
+                integrity: sha512-Y2Jn2idRrLzUfAKV2LyRImR+y4oa2AntrgID95SHJxuMUrkNXmanDSed71sRNZysveJVt1hLLemQZIady0FpEg==
+            }
+
+    '@types/d3-color@3.1.3':
+        resolution:
+            {
+                integrity: sha512-iO90scth9WAbmgv7ogoq57O9YpKmFBbmoEoCHDB2xMBY0+/KVrqAaCDyCE16dUspeOvIxFFRI+0sEtqDqy2b4A==
+            }
+
+    '@types/d3-ease@3.0.2':
+        resolution:
+            {
+                integrity: sha512-NcV1JjO5oDzoK26oMzbILE6HW7uVXOHLQvHshBUW4UMdZGfiY6v5BeQwh9a9tCzv+CeefZQHJt5SRgK154RtiA==
+            }
+
+    '@types/d3-interpolate@3.0.4':
+        resolution:
+            {
+                integrity: sha512-mgLPETlrpVV1YRJIglr4Ez47g7Yxjl1lj7YKsiMCb27VJH9W8NVM6Bb9d8kkpG/uAQS5AmbA48q2IAolKKo1MA==
+            }
+
+    '@types/d3-path@3.1.0':
+        resolution:
+            {
+                integrity: sha512-P2dlU/q51fkOc/Gfl3Ul9kicV7l+ra934qBFXCFhrZMOL6du1TM0pm1ThYvENukyOn5h9v+yMJ9Fn5JK4QozrQ==
+            }
+
+    '@types/d3-scale@4.0.8':
+        resolution:
+            {
+                integrity: sha512-gkK1VVTr5iNiYJ7vWDI+yUFFlszhNMtVeneJ6lUTKPjprsvLLI9/tgEGiXJOnlINJA8FyA88gfnQsHbybVZrYQ==
+            }
+
+    '@types/d3-shape@3.1.6':
+        resolution:
+            {
+                integrity: sha512-5KKk5aKGu2I+O6SONMYSNflgiP0WfZIQvVUMan50wHsLG1G94JlxEVnCpQARfTtzytuY0p/9PXXZb3I7giofIA==
+            }
+
+    '@types/d3-time@3.0.3':
+        resolution:
+            {
+                integrity: sha512-2p6olUZ4w3s+07q3Tm2dbiMZy5pCDfYwtLXXHUnVzXgQlZ/OyPtUz6OL382BkOuGlLXqfT+wqv8Fw2v8/0geBw==
+            }
+
+    '@types/d3-timer@3.0.2':
+        resolution:
+            {
+                integrity: sha512-Ps3T8E8dZDam6fUyNiMkekK3XUsaUEik+idO9/YjPtfj2qruF8tFBXS7XhtE4iIXBLxhmLjP3SXpLhVf21I9Lw==
+            }
+
     '@types/hast@2.3.10':
         resolution:
             {
@@ -4265,6 +4322,83 @@ packages:
                 integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==
             }
 
+    d3-array@3.2.4:
+        resolution:
+            {
+                integrity: sha512-tdQAmyA18i4J7wprpYq8ClcxZy3SC31QMeByyCFyRt7BVHdREQZ5lpzoe5mFEYZUWe+oq8HBvk9JjpibyEV4Jg==
+            }
+        engines: { node: '>=12' }
+
+    d3-color@3.1.0:
+        resolution:
+            {
+                integrity: sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==
+            }
+        engines: { node: '>=12' }
+
+    d3-ease@3.0.1:
+        resolution:
+            {
+                integrity: sha512-wR/XK3D3XcLIZwpbvQwQ5fK+8Ykds1ip7A2Txe0yxncXSdq1L9skcG7blcedkOX+ZcgxGAmLX1FrRGbADwzi0w==
+            }
+        engines: { node: '>=12' }
+
+    d3-format@3.1.0:
+        resolution:
+            {
+                integrity: sha512-YyUI6AEuY/Wpt8KWLgZHsIU86atmikuoOmCfommt0LYHiQSPjvX2AcFc38PX0CBpr2RCyZhjex+NS/LPOv6YqA==
+            }
+        engines: { node: '>=12' }
+
+    d3-interpolate@3.0.1:
+        resolution:
+            {
+                integrity: sha512-3bYs1rOD33uo8aqJfKP3JWPAibgw8Zm2+L9vBKEHJ2Rg+viTR7o5Mmv5mZcieN+FRYaAOWX5SJATX6k1PWz72g==
+            }
+        engines: { node: '>=12' }
+
+    d3-path@3.1.0:
+        resolution:
+            {
+                integrity: sha512-p3KP5HCf/bvjBSSKuXid6Zqijx7wIfNW+J/maPs+iwR35at5JCbLUT0LzF1cnjbCHWhqzQTIN2Jpe8pRebIEFQ==
+            }
+        engines: { node: '>=12' }
+
+    d3-scale@4.0.2:
+        resolution:
+            {
+                integrity: sha512-GZW464g1SH7ag3Y7hXjf8RoUuAFIqklOAq3MRl4OaWabTFJY9PN/E1YklhXLh+OQ3fM9yS2nOkCoS+WLZ6kvxQ==
+            }
+        engines: { node: '>=12' }
+
+    d3-shape@3.2.0:
+        resolution:
+            {
+                integrity: sha512-SaLBuwGm3MOViRq2ABk3eLoxwZELpH6zhl3FbAoJ7Vm1gofKx6El1Ib5z23NUEhF9AsGl7y+dzLe5Cw2AArGTA==
+            }
+        engines: { node: '>=12' }
+
+    d3-time-format@4.1.0:
+        resolution:
+            {
+                integrity: sha512-dJxPBlzC7NugB2PDLwo9Q8JiTR3M3e4/XANkreKSUxF8vvXKqm1Yfq4Q5dl8budlunRVlUUaDUgFt7eA8D6NLg==
+            }
+        engines: { node: '>=12' }
+
+    d3-time@3.1.0:
+        resolution:
+            {
+                integrity: sha512-VqKjzBLejbSMT4IgbmVgDjpkYrNWUYJnbCGo874u7MMKIWsILRX+OpX/gTk8MqjpT1A/c6HY2dCA77ZN0lkQ2Q==
+            }
+        engines: { node: '>=12' }
+
+    d3-timer@3.0.1:
+        resolution:
+            {
+                integrity: sha512-ndfJ/JxxMd3nw31uyKoY2naivF+r29V+Lc0svZxe1JvvIRmi8hUsrMvdOwgS1o6uBHmiz91geQ0ylPP0aj1VUA==
+            }
+        engines: { node: '>=12' }
+
     d@1.0.2:
         resolution:
             {
@@ -4340,6 +4474,12 @@ packages:
         peerDependenciesMeta:
             supports-color:
                 optional: true
+
+    decimal.js-light@2.5.1:
+        resolution:
+            {
+                integrity: sha512-qIMFpTMZmny+MMIitAB6D7iVPEorVw6YQRWkvarTkT4tBeSLLiHzcwj6q0MmYSFCiVpiqPJTJEYIrpcPzVEIvg==
+            }
 
     deep-equal@2.2.3:
         resolution:
@@ -4453,6 +4593,12 @@ packages:
             }
         engines: { node: '>=6.0.0' }
 
+    dom-helpers@5.2.1:
+        resolution:
+            {
+                integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==
+            }
+
     dotenv@16.4.5:
         resolution:
             {
@@ -4563,10 +4709,10 @@ packages:
                 integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==
             }
 
-    electron-to-chromium@1.5.37:
+    electron-to-chromium@1.5.38:
         resolution:
             {
-                integrity: sha512-u7000ZB/X0K78TaQqXZ5ktoR7J79B9US7IkE4zyvcILYwOGY2Tx9GRPYstn7HmuPcMxZ+BDGqIsyLpZQi9ufPw==
+                integrity: sha512-VbeVexmZ1IFh+5EfrYz1I0HTzHVIlJa112UEWhciPyeOcKJGeTv6N8WnG4wsQB81DGCaVEGhpSb6o6a8WYFXXg==
             }
 
     emoji-regex@8.0.0:
@@ -4925,6 +5071,12 @@ packages:
                 integrity: sha512-D9rRn9y7kLPnJ+hMq7S/nhvoKwwvVJahBi2BPmx3bvbsEdK3W9ii8cBSGjP+72/LnM4n6fo3+dkCX5FeTQruXA==
             }
 
+    eventemitter3@4.0.7:
+        resolution:
+            {
+                integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
+            }
+
     execa@7.2.0:
         resolution:
             {
@@ -4943,6 +5095,13 @@ packages:
             {
                 integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
             }
+
+    fast-equals@5.0.1:
+        resolution:
+            {
+                integrity: sha512-WF1Wi8PwwSY7/6Kx0vKXtw8RwuSGoM1bvDaJbu7MxDlR1vovZjIAKrnzyrThgAjm6JDTu0fVgWXDlMGspodfoQ==
+            }
+        engines: { node: '>=6.0.0' }
 
     fast-glob@3.3.2:
         resolution:
@@ -5049,10 +5208,10 @@ packages:
                 integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==
             }
 
-    framer-motion@11.11.8:
+    framer-motion@11.11.9:
         resolution:
             {
-                integrity: sha512-mnGQNEoz99GtFXBBPw+Ag5K4FcfP5XrXxrxHz+iE4Lmg7W3sf2gKmGuvfkZCW/yIfcdv5vJd6KiSPETH1Pw68Q==
+                integrity: sha512-XpdZseuCrZehdHGuW22zZt3SF5g6AHJHJi7JwQIigOznW4Jg1n0oGPMJQheMaKLC+0rp5gxUKMRYI6ytd3q4RQ==
             }
         peerDependencies:
             '@emotion/is-prop-valid': '*'
@@ -5340,10 +5499,10 @@ packages:
                 integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
             }
 
-    hono@4.6.4:
+    hono@4.6.5:
         resolution:
             {
-                integrity: sha512-T5WqBkTOcIQblqBKB5mpzaH/A+dSpvVe938xZJCHOmOuYfF7DSwE/9/10+BMvwSPq9N/f6LiQ38HxrZSQOsXKw==
+                integrity: sha512-qsmN3V5fgtwdKARGLgwwHvcdLKursMd+YOt69eGpl1dUCJb8mCd7hZfyZnBYjxCegBG7qkJRQRUy2oO25yHcyQ==
             }
         engines: { node: '>=16.9.0' }
 
@@ -5413,6 +5572,13 @@ packages:
                 integrity: sha512-NGnrKwXzSms2qUUih/ILZ5JBqNTSa1+ZmP6flaIp6KmSElgE9qdndzS3cqjrDovwFdmwsGsLdeFgB6suw+1e9g==
             }
         engines: { node: '>= 0.4' }
+
+    internmap@2.0.3:
+        resolution:
+            {
+                integrity: sha512-5Hh7Y1wQbvY5ooGgPbDaL5iYLAPzMTUrjMulskHLH6wnv/A+1q5rgEaiuqEjB+oxGXIVZs1FF+R/KPN3ZSQYYg==
+            }
+        engines: { node: '>=12' }
 
     invariant@2.2.4:
         resolution:
@@ -5915,6 +6081,12 @@ packages:
         resolution:
             {
                 integrity: sha512-wIkUCfVKpVsWo3JSZlc+8MB5it+2AN5W8J7YVMST30UrvcQNZ1Okbj+rbVniijTWE6FGYy4XJq/rHkas8qJMLQ==
+            }
+
+    lodash@4.17.21:
+        resolution:
+            {
+                integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
             }
 
     log-symbols@5.1.0:
@@ -6815,11 +6987,12 @@ packages:
             react: '>=16.8.0'
             react-dom: '>=16.8.0'
 
-    react-day-picker@9.1.3:
+    react-day-picker@9.1.4:
         resolution:
             {
-                integrity: sha512-2PLtAcO5QORfGosywl8KeqqjOkwz8r4PQYRA4QwHU3ayb7y9nDN5foXK3/hUiM8cNycOQD8vuV6DHy81H0wxPQ==
+                integrity: sha512-S5ixQz32vl9OTvtu8STGhZH6yQnqAqWTTeiTBgaYNgrVda5+cAUL3+cgvozG3BUruiXETAnVXDFkFmoB2brkwQ==
             }
+        engines: { node: '>=18' }
         peerDependencies:
             react: '>=16.8.0'
 
@@ -6878,6 +7051,12 @@ packages:
                 integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
             }
 
+    react-is@18.3.1:
+        resolution:
+            {
+                integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==
+            }
+
     react-remove-scroll-bar@2.3.6:
         resolution:
             {
@@ -6913,6 +7092,15 @@ packages:
             react: ^16.14.0 || ^17.0.0 || ^18.0.0
             react-dom: ^16.14.0 || ^17.0.0 || ^18.0.0
 
+    react-smooth@4.0.1:
+        resolution:
+            {
+                integrity: sha512-OE4hm7XqR0jNOq3Qmk9mFLyd6p2+j6bvbPJ7qlB7+oo0eNcL2l7WQzG6MBnT3EXY6xzkLMUBec3AfewJdA0J8w==
+            }
+        peerDependencies:
+            react: ^16.8.0 || ^17.0.0 || ^18.0.0
+            react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+
     react-style-singleton@2.2.1:
         resolution:
             {
@@ -6933,6 +7121,15 @@ packages:
             }
         peerDependencies:
             react: '>= 0.14.0'
+
+    react-transition-group@4.4.5:
+        resolution:
+            {
+                integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==
+            }
+        peerDependencies:
+            react: '>=16.6.0'
+            react-dom: '>=16.6.0'
 
     react-use-measure@2.1.1:
         resolution:
@@ -6983,6 +7180,22 @@ packages:
                 integrity: sha512-Hx/BGIbwj+Des3+xy5uAtAbdCyqK9y9wbBcDFDYanLS9JnMqf7OeF87HQwUimE87OEc72mr6tkKUKMBBL+hF9Q==
             }
         engines: { node: '>= 4' }
+
+    recharts-scale@0.4.5:
+        resolution:
+            {
+                integrity: sha512-kivNFO+0OcUNu7jQquLXAxz1FIwZj8nrj+YkOKc5694NbjCvcT6aSZiIzNzd2Kul4o4rTto8QVR9lMNtxD4G1w==
+            }
+
+    recharts@2.13.0:
+        resolution:
+            {
+                integrity: sha512-sbfxjWQ+oLWSZEWmvbq/DFVdeRLqqA6d0CDjKx2PkxVVdoXo16jvENCE+u/x7HxOO+/fwx//nYRwb8p8X6s/lQ==
+            }
+        engines: { node: '>=14' }
+        peerDependencies:
+            react: ^16.0.0 || ^17.0.0 || ^18.0.0
+            react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
 
     redux@4.2.1:
         resolution:
@@ -7276,11 +7489,12 @@ packages:
             }
         engines: { node: '>=12' }
 
-    string.prototype.includes@2.0.0:
+    string.prototype.includes@2.0.1:
         resolution:
             {
-                integrity: sha512-E34CkBgyeqNDcrbU76cDjL5JLcVrtSdYq0MEh/B10r17pRP4ciHLwTgnuLV8Ay6cgEMLkcBkFCKyFZ43YldYzg==
+                integrity: sha512-o7+c9bW6zpAdJHTtujeePODAhkuicdAryFsfVKwA+wGw89wJ4GTY484WTucM9hLtDEOpOvI+aHnzqnC5lHp4Rg==
             }
+        engines: { node: '>= 0.4' }
 
     string.prototype.matchall@4.0.11:
         resolution:
@@ -7422,10 +7636,10 @@ packages:
         peerDependencies:
             tailwindcss: '>=3.0.0 || insiders'
 
-    tailwindcss@3.4.13:
+    tailwindcss@3.4.14:
         resolution:
             {
-                integrity: sha512-KqjHOJKogOUt5Bs752ykCeiwvi0fKVkr5oqsFNt/8px/tA8scFPIlkygsf6jXrfCqGHz7VflA6+yytWuM+XhFw==
+                integrity: sha512-IcSvOcTRcUtQQ7ILQL5quRDg7Xs93PdJEk1ZLbhhvJc7uj/OAhYOnruEiwnGgBvUtaUAJ8/mhSw1o8L2jCiENA==
             }
         engines: { node: '>=14.0.0' }
         hasBin: true
@@ -7549,10 +7763,10 @@ packages:
             }
         engines: { node: '>=6' }
 
-    tslib@2.7.0:
+    tslib@2.8.0:
         resolution:
             {
-                integrity: sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==
+                integrity: sha512-jWVzBLplnCmoaTr13V9dYbiQ99wvZRd0vNWaDRg+aVYRcjDF3nDksxFDE/+fkXnKhpnUUkmx5pK/v8mCtLVqZA==
             }
 
     tsx@4.19.1:
@@ -7718,6 +7932,12 @@ packages:
                 integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==
             }
         hasBin: true
+
+    victory-vendor@36.9.2:
+        resolution:
+            {
+                integrity: sha512-PnpQQMuxlwYdocC8fIJqVXvkeViHYzotI+NJrCuav0ZYFoq912ZHBk3mCeuj+5/VpodOjPe1z0Fk2ihgzlXqjQ==
+            }
 
     w3c-keyname@2.2.8:
         resolution:
@@ -8053,28 +8273,28 @@ snapshots:
 
     '@emnapi/core@0.45.0':
         dependencies:
-            tslib: 2.7.0
+            tslib: 2.8.0
         optional: true
 
     '@emnapi/core@1.3.1':
         dependencies:
             '@emnapi/wasi-threads': 1.0.1
-            tslib: 2.7.0
+            tslib: 2.8.0
         optional: true
 
     '@emnapi/runtime@0.45.0':
         dependencies:
-            tslib: 2.7.0
+            tslib: 2.8.0
         optional: true
 
     '@emnapi/runtime@1.3.1':
         dependencies:
-            tslib: 2.7.0
+            tslib: 2.8.0
         optional: true
 
     '@emnapi/wasi-threads@1.0.1':
         dependencies:
-            tslib: 2.7.0
+            tslib: 2.8.0
         optional: true
 
     '@esbuild-kit/core-utils@3.3.2':
@@ -8334,13 +8554,13 @@ snapshots:
 
     '@floating-ui/utils@0.2.8': {}
 
-    '@hono/node-server@1.13.2(hono@4.6.4)':
+    '@hono/node-server@1.13.2(hono@4.6.5)':
         dependencies:
-            hono: 4.6.4
+            hono: 4.6.5
 
-    '@hono/zod-validator@0.2.2(hono@4.6.4)(zod@3.23.8)':
+    '@hono/zod-validator@0.2.2(hono@4.6.5)(zod@3.23.8)':
         dependencies:
-            hono: 4.6.4
+            hono: 4.6.5
             zod: 3.23.8
 
     '@hookform/resolvers@3.9.0(react-hook-form@7.53.0(react@18.3.1))':
@@ -9529,7 +9749,7 @@ snapshots:
     '@swc/helpers@0.5.5':
         dependencies:
             '@swc/counter': 0.1.3
-            tslib: 2.7.0
+            tslib: 2.8.0
 
     '@t3-oss/env-core@0.9.2(typescript@5.6.3)(zod@3.23.8)':
         dependencies:
@@ -9744,13 +9964,37 @@ snapshots:
 
     '@tybys/wasm-util@0.8.3':
         dependencies:
-            tslib: 2.7.0
+            tslib: 2.8.0
         optional: true
 
     '@tybys/wasm-util@0.9.0':
         dependencies:
-            tslib: 2.7.0
+            tslib: 2.8.0
         optional: true
+
+    '@types/d3-array@3.2.1': {}
+
+    '@types/d3-color@3.1.3': {}
+
+    '@types/d3-ease@3.0.2': {}
+
+    '@types/d3-interpolate@3.0.4':
+        dependencies:
+            '@types/d3-color': 3.1.3
+
+    '@types/d3-path@3.1.0': {}
+
+    '@types/d3-scale@4.0.8':
+        dependencies:
+            '@types/d3-time': 3.0.3
+
+    '@types/d3-shape@3.1.6':
+        dependencies:
+            '@types/d3-path': 3.1.0
+
+    '@types/d3-time@3.0.3': {}
+
+    '@types/d3-timer@3.0.2': {}
 
     '@types/hast@2.3.10':
         dependencies:
@@ -9954,7 +10198,7 @@ snapshots:
 
     aria-hidden@1.2.4:
         dependencies:
-            tslib: 2.7.0
+            tslib: 2.8.0
 
     aria-query@5.1.3:
         dependencies:
@@ -10029,7 +10273,7 @@ snapshots:
 
     ast-types@0.16.1:
         dependencies:
-            tslib: 2.7.0
+            tslib: 2.8.0
 
     autoprefixer@10.4.20(postcss@8.4.47):
         dependencies:
@@ -10079,7 +10323,7 @@ snapshots:
     browserslist@4.24.0:
         dependencies:
             caniuse-lite: 1.0.30001668
-            electron-to-chromium: 1.5.37
+            electron-to-chromium: 1.5.38
             node-releases: 2.0.18
             update-browserslist-db: 1.1.1(browserslist@4.24.0)
 
@@ -10240,6 +10484,44 @@ snapshots:
 
     csstype@3.1.3: {}
 
+    d3-array@3.2.4:
+        dependencies:
+            internmap: 2.0.3
+
+    d3-color@3.1.0: {}
+
+    d3-ease@3.0.1: {}
+
+    d3-format@3.1.0: {}
+
+    d3-interpolate@3.0.1:
+        dependencies:
+            d3-color: 3.1.0
+
+    d3-path@3.1.0: {}
+
+    d3-scale@4.0.2:
+        dependencies:
+            d3-array: 3.2.4
+            d3-format: 3.1.0
+            d3-interpolate: 3.0.1
+            d3-time: 3.1.0
+            d3-time-format: 4.1.0
+
+    d3-shape@3.2.0:
+        dependencies:
+            d3-path: 3.1.0
+
+    d3-time-format@4.1.0:
+        dependencies:
+            d3-time: 3.1.0
+
+    d3-time@3.1.0:
+        dependencies:
+            d3-array: 3.2.4
+
+    d3-timer@3.0.1: {}
+
     d@1.0.2:
         dependencies:
             es5-ext: 0.10.64
@@ -10278,6 +10560,8 @@ snapshots:
     debug@4.3.7:
         dependencies:
             ms: 2.1.3
+
+    decimal.js-light@2.5.1: {}
 
     deep-equal@2.2.3:
         dependencies:
@@ -10354,6 +10638,11 @@ snapshots:
         dependencies:
             esutils: 2.0.3
 
+    dom-helpers@5.2.1:
+        dependencies:
+            '@babel/runtime': 7.25.7
+            csstype: 3.1.3
+
     dotenv@16.4.5: {}
 
     dreamopt@0.8.0:
@@ -10363,8 +10652,8 @@ snapshots:
     drizzle-kit@0.20.18:
         dependencies:
             '@esbuild-kit/esm-loader': 2.6.5
-            '@hono/node-server': 1.13.2(hono@4.6.4)
-            '@hono/zod-validator': 0.2.2(hono@4.6.4)(zod@3.23.8)
+            '@hono/node-server': 1.13.2(hono@4.6.5)
+            '@hono/zod-validator': 0.2.2(hono@4.6.5)(zod@3.23.8)
             camelcase: 7.0.1
             chalk: 5.3.0
             commander: 9.5.0
@@ -10373,7 +10662,7 @@ snapshots:
             esbuild-register: 3.6.0(esbuild@0.19.12)
             glob: 8.1.0
             hanji: 0.0.5
-            hono: 4.6.4
+            hono: 4.6.5
             json-diff: 0.9.0
             minimatch: 7.4.6
             semver: 7.6.3
@@ -10397,7 +10686,7 @@ snapshots:
 
     eastasianwidth@0.2.0: {}
 
-    electron-to-chromium@1.5.37: {}
+    electron-to-chromium@1.5.38: {}
 
     emoji-regex@8.0.0: {}
 
@@ -10741,7 +11030,7 @@ snapshots:
             minimatch: 3.1.2
             object.fromentries: 2.0.8
             safe-regex-test: 1.0.3
-            string.prototype.includes: 2.0.0
+            string.prototype.includes: 2.0.1
 
     eslint-plugin-react-hooks@5.0.0-canary-7118f5dd7-20230705(eslint@8.57.1):
         dependencies:
@@ -10851,6 +11140,8 @@ snapshots:
             d: 1.0.2
             es5-ext: 0.10.64
 
+    eventemitter3@4.0.7: {}
+
     execa@7.2.0:
         dependencies:
             cross-spawn: 7.0.3
@@ -10868,6 +11159,8 @@ snapshots:
             type: 2.7.3
 
     fast-deep-equal@3.1.3: {}
+
+    fast-equals@5.0.1: {}
 
     fast-glob@3.3.2:
         dependencies:
@@ -10932,9 +11225,9 @@ snapshots:
 
     fraction.js@4.3.7: {}
 
-    framer-motion@11.11.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    framer-motion@11.11.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
         dependencies:
-            tslib: 2.7.0
+            tslib: 2.8.0
         optionalDependencies:
             react: 18.3.1
             react-dom: 18.3.1(react@18.3.1)
@@ -11101,7 +11394,7 @@ snapshots:
         dependencies:
             react-is: 16.13.1
 
-    hono@4.6.4: {}
+    hono@4.6.5: {}
 
     https-proxy-agent@6.2.1:
         dependencies:
@@ -11137,6 +11430,8 @@ snapshots:
             es-errors: 1.3.0
             hasown: 2.0.2
             side-channel: 1.0.6
+
+    internmap@2.0.3: {}
 
     invariant@2.2.4:
         dependencies:
@@ -11388,6 +11683,8 @@ snapshots:
             lodash._reinterpolate: 3.0.0
 
     lodash.throttle@4.1.1: {}
+
+    lodash@4.17.21: {}
 
     log-symbols@5.1.0:
         dependencies:
@@ -11943,7 +12240,7 @@ snapshots:
             react: 18.3.1
             react-dom: 18.3.1(react@18.3.1)
 
-    react-day-picker@9.1.3(react@18.3.1):
+    react-day-picker@9.1.4(react@18.3.1):
         dependencies:
             '@date-fns/tz': 1.1.2
             date-fns: 4.1.0
@@ -11981,11 +12278,13 @@ snapshots:
 
     react-is@16.13.1: {}
 
+    react-is@18.3.1: {}
+
     react-remove-scroll-bar@2.3.6(@types/react@18.3.11)(react@18.3.1):
         dependencies:
             react: 18.3.1
             react-style-singleton: 2.2.1(@types/react@18.3.11)(react@18.3.1)
-            tslib: 2.7.0
+            tslib: 2.8.0
         optionalDependencies:
             '@types/react': 18.3.11
 
@@ -11994,7 +12293,7 @@ snapshots:
             react: 18.3.1
             react-remove-scroll-bar: 2.3.6(@types/react@18.3.11)(react@18.3.1)
             react-style-singleton: 2.2.1(@types/react@18.3.11)(react@18.3.1)
-            tslib: 2.7.0
+            tslib: 2.8.0
             use-callback-ref: 1.3.2(@types/react@18.3.11)(react@18.3.1)
             use-sidecar: 1.1.2(@types/react@18.3.11)(react@18.3.1)
         optionalDependencies:
@@ -12005,12 +12304,20 @@ snapshots:
             react: 18.3.1
             react-dom: 18.3.1(react@18.3.1)
 
+    react-smooth@4.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+        dependencies:
+            fast-equals: 5.0.1
+            prop-types: 15.8.1
+            react: 18.3.1
+            react-dom: 18.3.1(react@18.3.1)
+            react-transition-group: 4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+
     react-style-singleton@2.2.1(@types/react@18.3.11)(react@18.3.1):
         dependencies:
             get-nonce: 1.0.1
             invariant: 2.2.4
             react: 18.3.1
-            tslib: 2.7.0
+            tslib: 2.8.0
         optionalDependencies:
             '@types/react': 18.3.11
 
@@ -12022,6 +12329,15 @@ snapshots:
             prismjs: 1.29.0
             react: 18.3.1
             refractor: 3.6.0
+
+    react-transition-group@4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+        dependencies:
+            '@babel/runtime': 7.25.7
+            dom-helpers: 5.2.1
+            loose-envify: 1.4.0
+            prop-types: 15.8.1
+            react: 18.3.1
+            react-dom: 18.3.1(react@18.3.1)
 
     react-use-measure@2.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
         dependencies:
@@ -12055,7 +12371,24 @@ snapshots:
             esprima: 4.0.1
             source-map: 0.6.1
             tiny-invariant: 1.3.3
-            tslib: 2.7.0
+            tslib: 2.8.0
+
+    recharts-scale@0.4.5:
+        dependencies:
+            decimal.js-light: 2.5.1
+
+    recharts@2.13.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+        dependencies:
+            clsx: 2.1.1
+            eventemitter3: 4.0.7
+            lodash: 4.17.21
+            react: 18.3.1
+            react-dom: 18.3.1(react@18.3.1)
+            react-is: 18.3.1
+            react-smooth: 4.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+            recharts-scale: 0.4.5
+            tiny-invariant: 1.3.3
+            victory-vendor: 36.9.2
 
     redux@4.2.1:
         dependencies:
@@ -12256,8 +12589,9 @@ snapshots:
             emoji-regex: 9.2.2
             strip-ansi: 7.1.0
 
-    string.prototype.includes@2.0.0:
+    string.prototype.includes@2.0.1:
         dependencies:
+            call-bind: 1.0.7
             define-properties: 1.2.1
             es-abstract: 1.23.3
 
@@ -12351,11 +12685,11 @@ snapshots:
 
     tailwind-merge@2.5.4: {}
 
-    tailwindcss-animate@1.0.7(tailwindcss@3.4.13):
+    tailwindcss-animate@1.0.7(tailwindcss@3.4.14):
         dependencies:
-            tailwindcss: 3.4.13
+            tailwindcss: 3.4.14
 
-    tailwindcss@3.4.13:
+    tailwindcss@3.4.14:
         dependencies:
             '@alloc/quick-lru': 5.2.0
             arg: 5.0.2
@@ -12452,7 +12786,7 @@ snapshots:
             minimist: 1.2.8
             strip-bom: 3.0.0
 
-    tslib@2.7.0: {}
+    tslib@2.8.0: {}
 
     tsx@4.19.1:
         dependencies:
@@ -12533,7 +12867,7 @@ snapshots:
     use-callback-ref@1.3.2(@types/react@18.3.11)(react@18.3.1):
         dependencies:
             react: 18.3.1
-            tslib: 2.7.0
+            tslib: 2.8.0
         optionalDependencies:
             '@types/react': 18.3.11
 
@@ -12541,7 +12875,7 @@ snapshots:
         dependencies:
             detect-node-es: 1.1.0
             react: 18.3.1
-            tslib: 2.7.0
+            tslib: 2.8.0
         optionalDependencies:
             '@types/react': 18.3.11
 
@@ -12552,6 +12886,23 @@ snapshots:
     util-deprecate@1.0.2: {}
 
     uuid@10.0.0: {}
+
+    victory-vendor@36.9.2:
+        dependencies:
+            '@types/d3-array': 3.2.1
+            '@types/d3-ease': 3.0.2
+            '@types/d3-interpolate': 3.0.4
+            '@types/d3-scale': 4.0.8
+            '@types/d3-shape': 3.1.6
+            '@types/d3-time': 3.0.3
+            '@types/d3-timer': 3.0.2
+            d3-array: 3.2.4
+            d3-ease: 3.0.1
+            d3-interpolate: 3.0.1
+            d3-scale: 4.0.2
+            d3-shape: 3.2.0
+            d3-time: 3.1.0
+            d3-timer: 3.0.1
 
     w3c-keyname@2.2.8: {}
 
