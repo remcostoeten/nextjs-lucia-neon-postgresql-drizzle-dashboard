@@ -6,6 +6,20 @@ This is an application that in the future will be a collection of all kinds of a
 
 This won't be a SaaS for others or an attempt to monotize anything. Although, if others want to use the features I'm building or use code as an example for their own projects you're free to. Hence I'm developing it in open source.
 
+## Features 
+
+Most are not totally done as I switch from one feature to another if I feel like it. But im activly worlikg om these and most are commkng to am MVP. Features include authentication and use server actions only for mutating data in a postgres db. 
+- sick new landing and megemenu
+- Folder creation (for notes, files, anything that meeds sn parent)
+- Text parse tool (personal needs but bas some generic features like remove duplicates, sort etc)
+- Peripherals tester (cam&mic test)
+    - record audio and edit, download mp3, speach to text
+- user settings
+- user profile 
+- diff checker
+- tasks creation and view in list & kanban
+- finance board 
+
 ## Tech stack
 
 -   Nextjs 14+
