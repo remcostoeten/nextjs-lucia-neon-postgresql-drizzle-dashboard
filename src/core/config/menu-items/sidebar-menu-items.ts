@@ -7,6 +7,7 @@ import SettingsSidebar from '@/components/aside/route-specific/settings-aside'
 import { DashboardIcon } from '@radix-ui/react-icons'
 import {
 	Activity,
+	CalendarIcon,
 	FileText,
 	FolderIcon,
 	LucideIcon,
@@ -52,6 +53,11 @@ export const sidebarItems: SidebarItem[] = [
 		name: 'Record MP3',
 		path: '/dashboard/media-recorder',
 		icon: Mic
+	},
+	{
+		name: 'Tasks',
+		path: '/dashboard/tasks',
+		icon: CalendarIcon
 	},
 	{
 		name: 'Generate background',

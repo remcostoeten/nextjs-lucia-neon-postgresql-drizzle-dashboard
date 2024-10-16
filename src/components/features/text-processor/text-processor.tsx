@@ -86,7 +86,7 @@ const TextProcessor: React.FC<TextProcessorProps> = ({
 				)
 			)
 		} else {
-			setSelectedOptions((prev) => ({ ...prev, [optionId]: value }))
+			setSelectedOptions(prev => ({ ...prev, [optionId]: value }))
 		}
 	}
 
@@ -94,14 +94,14 @@ const TextProcessor: React.FC<TextProcessorProps> = ({
 		optionId: keyof typeof formatOptions,
 		value: boolean | string
 	) => {
-		setFormatOptions((prev) => ({ ...prev, [optionId]: value }))
+		setFormatOptions(prev => ({ ...prev, [optionId]: value }))
 	}
 
 	const applyFormatOptions = (text: string): string => {
 		let lines = text.split('\n')
 
 		if (formatOptions.removeEmptyLines) {
-			lines = lines.filter((line) => line.trim() !== '')
+			lines = lines.filter(line => line.trim() !== '')
 		}
 
 		if (formatOptions.removeDuplicates) {
@@ -110,14 +110,14 @@ const TextProcessor: React.FC<TextProcessorProps> = ({
 
 		if (formatOptions.removeLinesWith) {
 			lines = lines.filter(
-				(line) => !line.includes(formatOptions.removeLinesWith)
+				line => !line.includes(formatOptions.removeLinesWith)
 			)
 		}
 
 		if (formatOptions.removeEmojis) {
 			const emojiRegex =
 				/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu
-			lines = lines.filter((line) => !emojiRegex.test(line))
+			lines = lines.filter(line => !emojiRegex.test(line))
 		}
 
 		return lines.join('\n')
@@ -177,7 +177,7 @@ const TextProcessor: React.FC<TextProcessorProps> = ({
 				</div>
 				<Textarea
 					value={input}
-					onChange={(e) => setInput(e.target.value)}
+					onChange={e => setInput(e.target.value)}
 					placeholder="Paste your text here..."
 					className="w-full h-64 bg-gray-800 text-white border-gray-700 pr-20"
 				/>
@@ -188,7 +188,7 @@ const TextProcessor: React.FC<TextProcessorProps> = ({
 			<div className="flex flex-col space-y-2">
 				<h2 className="text-lg font-semibold">Processing Options</h2>
 				{optionType === 'checkbox' ? (
-					options.map((option) => (
+					options.map(option => (
 						<div
 							key={option.id}
 							className="flex items-center space-x-2"
@@ -196,7 +196,7 @@ const TextProcessor: React.FC<TextProcessorProps> = ({
 							<Checkbox
 								id={option.id}
 								checked={selectedOptions[option.id]}
-								onCheckedChange={(checked) =>
+								onCheckedChange={checked =>
 									handleOptionChange(
 										option.id,
 										checked as boolean
@@ -208,16 +208,14 @@ const TextProcessor: React.FC<TextProcessorProps> = ({
 					))
 				) : (
 					<RadioGroup
-						onValueChange={(value) =>
-							handleOptionChange(value, true)
-						}
+						onValueChange={value => handleOptionChange(value, true)}
 						value={
 							Object.keys(selectedOptions).find(
-								(key) => selectedOptions[key]
+								key => selectedOptions[key]
 							) || ''
 						}
 					>
-						{options.map((option) => (
+						{options.map(option => (
 							<div
 								key={option.id}
 								className="flex items-center space-x-2"
@@ -242,7 +240,7 @@ const TextProcessor: React.FC<TextProcessorProps> = ({
 					<Checkbox
 						id="removeEmptyLines"
 						checked={formatOptions.removeEmptyLines}
-						onCheckedChange={(checked) =>
+						onCheckedChange={checked =>
 							handleFormatOptionChange(
 								'removeEmptyLines',
 								checked as boolean
@@ -255,7 +253,7 @@ const TextProcessor: React.FC<TextProcessorProps> = ({
 					<Checkbox
 						id="removeDuplicates"
 						checked={formatOptions.removeDuplicates}
-						onCheckedChange={(checked) =>
+						onCheckedChange={checked =>
 							handleFormatOptionChange(
 								'removeDuplicates',
 								checked as boolean
@@ -268,7 +266,7 @@ const TextProcessor: React.FC<TextProcessorProps> = ({
 					<Checkbox
 						id="removeEmojis"
 						checked={formatOptions.removeEmojis}
-						onCheckedChange={(checked) =>
+						onCheckedChange={checked =>
 							handleFormatOptionChange(
 								'removeEmojis',
 								checked as boolean
@@ -286,7 +284,7 @@ const TextProcessor: React.FC<TextProcessorProps> = ({
 					<Input
 						id="removeLinesWith"
 						value={formatOptions.removeLinesWith}
-						onChange={(e) =>
+						onChange={e =>
 							handleFormatOptionChange(
 								'removeLinesWith',
 								e.target.value
@@ -327,7 +325,7 @@ const TextProcessor: React.FC<TextProcessorProps> = ({
 										type="text"
 										placeholder="Enter title"
 										value={saveTitle}
-										onChange={(e) =>
+										onChange={e =>
 											setSaveTitle(e.target.value)
 										}
 									/>

@@ -132,14 +132,14 @@ export default function Feature() {
 								className={styles.iconWrap}
 							>
 								<Image
-									src="https://cdn.prod.website-files.com/65b8e9cb3c15d9b62f057c9a/65ba147e893caa2c9bff1605_Feature%20Icon%2001.webp"
+									src="/landing/feature/feature1.webp"
 									width={22}
 									height={22}
 									alt=""
 									className={styles.featureIcon}
 								/>
 								<Image
-									src="https://cdn.prod.website-files.com/65b8e9cb3c15d9b62f057c9a/65ba147efb6d9006e1aed951_Icon%20Blur.svg"
+									src="/landing/feature/feature2.webp"
 									width={22}
 									height={22}
 									alt=""
