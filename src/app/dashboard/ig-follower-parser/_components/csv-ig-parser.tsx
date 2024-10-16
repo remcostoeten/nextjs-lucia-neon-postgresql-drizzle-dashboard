@@ -1,5 +1,26 @@
 'use client'
 
+import CsvModifier from '@/components/aside/route-specific/ig-parsed-aside'
+import {
+	fetchParsedOutputById,
+	saveParsedOutput
+} from '@/core/server/actions/save-parsed-output'
+import { useClientAuth } from '@/lib/auth/client-auth-utils'
+import confetti from 'canvas-confetti'
+import {
+	ChevronDown,
+	ChevronUp,
+	Clipboard,
+	ClipboardCheck,
+	Copy,
+	FileText,
+	Play,
+	Save,
+	Trash2
+} from 'lucide-react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import {
 	Button,
 	Card,
@@ -13,25 +34,6 @@ import {
 	ScrollArea,
 	Textarea
 } from 'ui'
-import ParsedOutputsSidebar from '@/components/aside/route-specific/ig-parsed-aside'
-import { saveParsedOutput } from '@/core/server/actions/save-parsed-output'
-import { useClientAuth } from '@/lib/auth/client-auth-utils'
-import { ParsedOutput } from '@/lib/db/schema'
-import confetti from 'canvas-confetti'
-import {
-	ChevronDown,
-	ChevronUp,
-	Clipboard,
-	ClipboardCheck,
-	Copy,
-	FileText,
-	Play,
-	Save,
-	Trash2
-} from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
 
 type Statistics = {
 	processed: number
@@ -39,7 +41,7 @@ type Statistics = {
 	failed: string[]
 }
 
-export default function CsvModifier() {
+export default function CsvIgParser() {
 	const [input, setInput] = useState('')
 	const [output, setOutput] = useState('')
 	const [mode, setMode] = useState('both')
@@ -56,6 +58,7 @@ export default function CsvModifier() {
 	const [noteTitle, setNoteTitle] = useState('')
 	const router = useRouter()
 	const { clientCheckAuth, clientSignOut } = useClientAuth()
+	const searchParams = useSearchParams()
 
 	useEffect(() => {
 		const checkAuthentication = async () => {
@@ -67,6 +70,19 @@ export default function CsvModifier() {
 		}
 		checkAuthentication()
 	}, [router, clientCheckAuth])
+
+	useEffect(() => {
+		const selectedOutputId = searchParams.get('selectedOutput')
+		if (selectedOutputId) {
+			fetchSelectedOutput(selectedOutputId)
+		}
+	}, [searchParams])
+
+	useEffect(() => {
+		if (input) {
+			processData()
+		}
+	}, [input])
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
 		setInput(e.target.value)
@@ -202,18 +218,30 @@ export default function CsvModifier() {
 		router.push('/login')
 	}
 
-	const handleOutputSelect = (output: ParsedOutput) => {
-		setInput(output.content)
-		setNoteTitle(output.title)
-		toast.info(`Loaded: ${output.title}`)
+	const fetchSelectedOutput = async (outputId: string) => {
+		try {
+			const result = await fetchParsedOutputById(outputId)
+			if (result.success && result.data) {
+				setInput(result.data.content)
+				setOutput(result.data.content) // Also update the output state
+				setNoteTitle(result.data.title)
+				toast.success(`Loaded: ${result.data.title}`)
+			} else {
+				console.error('Failed to load selected output:', result.error)
+				toast.error('Failed to load selected output')
+			}
+		} catch (error) {
+			console.error('Error fetching selected output:', error)
+			toast.error('Failed to load selected output')
+		}
 	}
 
 	return (
-		<div className="flex h-screen bg-[#1e1e1e]">
-			<ParsedOutputsSidebar onOutputSelectId={handleOutputSelect} />
+		<div className="flex h-screen border-t border-r ">
+			<CsvModifier />
 			<div className="flex-1 p-4 overflow-auto">
 				<div className="space-y-4">
-					<Card className="p-6 bg-[#252526] border-[#3e3e42]">
+					<Card className="p-6 bg-card border-[#3e3e42]">
 						<div className="flex justify-between items-center mb-4">
 							<h2 className="text-2xl font-bold text-white">
 								Input
@@ -301,7 +329,7 @@ export default function CsvModifier() {
 						</div>
 					</Card>
 
-					<Card className="p-6 bg-[#252526] border-[#3e3e42]">
+					<Card className="p-6 bg-card border-[#3e3e42]">
 						<div className="flex justify-between items-center mb-4">
 							<h2 className="text-2xl font-bold text-white">
 								Output
@@ -331,7 +359,7 @@ export default function CsvModifier() {
 											Save List
 										</Button>
 									</PopoverTrigger>
-									<PopoverContent className="w-48 bg-[#252526] border-[#3e3e42]">
+									<PopoverContent className="w-48 bg-card border-[#3e3e42]">
 										<div className="flex flex-col space-y-2">
 											<Button
 												onClick={() => saveFile('csv')}

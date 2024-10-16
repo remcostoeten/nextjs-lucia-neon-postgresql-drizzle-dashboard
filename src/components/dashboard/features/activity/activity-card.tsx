@@ -57,7 +57,7 @@ ActivityCard.Skeleton = function ActivityCardSkeleton({
 	opacity?: number
 }) {
 	return (
-		<lia
+		<li
 			className="shrink-0 basis-full lg:basis-[250px]"
 			style={{ opacity: `${opacity}%` }}
 		>
@@ -72,7 +72,7 @@ ActivityCard.Skeleton = function ActivityCardSkeleton({
 					className={`mt-1 h-4 w-[50px] rounded bg-gray-200 dark:bg-gray-700 ${animate ? 'animate-pulse' : ''}`}
 				/>
 			</div>
-		</lia>
+		</li>
 	)
 }
 ActivityCard.Skeleton = function ActivityCardSkeleton({

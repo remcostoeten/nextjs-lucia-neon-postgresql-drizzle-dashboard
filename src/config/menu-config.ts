@@ -20,8 +20,7 @@ export const menuConfig = {
 				{
 					name: 'use-geolocation',
 					href: '/hooks-showcase/geolocation'
-				},
-				{ name: 'KBD hook', href: '/design-system/kbd-hook-showoff' }
+				}
 			]
 		},
 		{

@@ -1,22 +1,7 @@
-.section {
-	z-index: 2;
-	padding-bottom: 1px;
-	padding-left: 3%;
-	padding-right: 3%;
-	position: relative;
-}
-
 .footer-container-lines {
 	z-index: 5;
 	width: 100%;
 	max-width: 1128px;
-	margin-left: auto;
-	margin-right: auto;
-	position: relative;
-}
-
-.container-small {
-	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 	position: relative;
@@ -108,21 +93,6 @@
 
 .text-color-neutral-300 {
 	color: var(--neutral--300);
-}
-
-.label-regular {
-	margin-bottom: 0;
-	font-size: 14px;
-	font-weight: 500;
-	line-height: 1.7;
-}
-
-.footer-contact-details {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	grid-column-gap: 48px;
-	grid-row-gap: 16px;
 }
 
 .footer-column {

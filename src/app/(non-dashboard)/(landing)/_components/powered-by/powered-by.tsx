@@ -1,10 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import HorizontalLine from '../horizontal-line'
 import IntegrationTitle from './integration-title'
 import MarqueeDemo from './Marquee'
 import styles from './powered-by.module.scss'
-import HorizontalLine from '../horizontal-line'
 
 export default function PoweredBy() {
 	const [randomStat, setRandomStat] = useState<number>(3200)
@@ -65,7 +65,7 @@ export default function PoweredBy() {
 								</div>
 							</div>
 							<img
-								src="https://cdn.prod.website-files.com/65b8e9cb3c15d9b62f057c9a/65be03ec94b722f627489a4e_Integration%20Circle.webp"
+								src="/landing/powered/shape2.svg"
 								loading="lazy"
 								alt=""
 								className={styles['circle-background']}
@@ -73,7 +73,7 @@ export default function PoweredBy() {
 							/>
 						</div>
 						<img
-							src="https://cdn.prod.website-files.com/65b8e9cb3c15d9b62f057c9a/65be04fcd42815524b602891_Dash%20Border.svg"
+							src="/landing/powered/shape.webp"
 							loading="lazy"
 							alt=""
 							className={styles['circle-dash-border']}

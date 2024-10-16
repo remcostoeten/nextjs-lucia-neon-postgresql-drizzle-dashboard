@@ -15,7 +15,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useSiteSettingsStore } from 'stores'
-import UnifiedSettingsComponent from './site-settings-menu'
 import { MainSidebarProps, SidebarIconProps } from './types.sidear'
 
 function useActivePath(): (path: string) => boolean {
@@ -238,11 +237,11 @@ export default function MainSidebar({
 					)}
 				</ButtonComponent>
 			</div>
-			<UnifiedSettingsComponent
+			{/* <UnifiedSettingsComponent
 				variant="modal"
 				isOpen={isSettingsOpen}
 				onClose={() => setIsSettingsOpen(false)}
-			/>
+			/> */}
 		</>
 	)
 }

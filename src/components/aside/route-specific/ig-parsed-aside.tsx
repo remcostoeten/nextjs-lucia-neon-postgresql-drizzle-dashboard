@@ -1,21 +1,19 @@
 'use client'
 
-import { Button, ScrollArea } from 'ui'
 import { fetchParsedOutputs } from '@/core/server/actions/save-parsed-output'
 import { ParsedOutput } from '@/lib/db/schema/parsed-ig'
 import { ChevronLeft, ChevronRight, FileText } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { Button, ScrollArea } from 'ui'
 
-type props = {
-	onOutputSelectId?: string
-}
-export default function CsvModifier({ onOutputSelectId }: props) {
+export default function CsvModifier() {
 	const [savedOutputs, setSavedOutputs] = useState<ParsedOutput[]>([])
 	const [isCollapsed, setIsCollapsed] = useState(false)
 	const [isLoading, setIsLoading] = useState(true)
 	const [error, setError] = useState<string | null>(null)
 	const router = useRouter()
+	const searchParams = useSearchParams()
 
 	useEffect(() => {
 		const loadSavedOutputs = async () => {
@@ -35,13 +33,30 @@ export default function CsvModifier({ onOutputSelectId }: props) {
 		loadSavedOutputs()
 	}, [router])
 
+	useEffect(() => {
+		const selectedOutputId = searchParams.get('selectedOutput')
+		if (selectedOutputId) {
+			fetchSelectedOutput(selectedOutputId)
+		}
+	}, [searchParams])
+
+	const handleOutputSelect = (outputId: string) => {
+		const params = new URLSearchParams(searchParams)
+		params.set('selectedOutput', outputId)
+		router.push(`?${params.toString()}`)
+	}
+
 	return (
 		<div
-			className={`bg-[#252526] border-r border-[#3e3e42] h-screen transition-all duration-300 ${isCollapsed ? 'w-12' : 'w-64'}`}
+			className={`bg-card border-r h-screen transition-all duration-300 ${
+				isCollapsed ? 'w-12' : ''
+			}`}
 		>
 			<div className="flex justify-between items-center p-4">
 				<h2
-					className={`text-lg font-semibold text-white ${isCollapsed ? 'hidden' : 'block'}`}
+					className={`text-lg font-semibold text-white ${
+						isCollapsed ? 'hidden' : 'block'
+					}`}
 				>
 					Saved Outputs
 				</h2>
@@ -74,8 +89,10 @@ export default function CsvModifier({ onOutputSelectId }: props) {
 						<Button
 							key={output.id}
 							variant="ghost"
-							className={`w-full justify-start text-white hover:bg-[#3e3e42] ${isCollapsed ? 'px-2' : 'px-4'}`}
-							onClick={() => onOutputSelect(output)}
+							className={`w-full justify-start text-white hover:bg-[#3e3e42] ${
+								isCollapsed ? 'px-2' : 'px-4'
+							}`}
+							onClick={() => handleOutputSelect(output.id)}
 						>
 							<FileText className="h-4 w-4 mr-2" />
 							{!isCollapsed && (
