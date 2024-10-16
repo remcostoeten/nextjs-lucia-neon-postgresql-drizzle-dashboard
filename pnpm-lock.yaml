@@ -154,6 +154,9 @@ importers:
             cobe:
                 specifier: ^0.6.3
                 version: 0.6.3
+            date-fns:
+                specifier: ^4.1.0
+                version: 4.1.0
             drizzle-orm:
                 specifier: ^0.29.4
                 version: 0.29.5(@neondatabase/serverless@0.8.1)(@types/pg@8.6.6)(@types/react@18.3.11)(pg@8.13.0)(react@18.3.1)
@@ -216,7 +219,7 @@ importers:
                 version: 2.1.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
             react-syntax-highlighter:
                 specifier: ^15.5.0
-                version: 15.5.0(react@18.3.1)
+                version: 15.6.1(react@18.3.1)
             react-use-measure:
                 specifier: ^2.1.1
                 version: 2.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3762,10 +3765,10 @@ packages:
         peerDependencies:
             acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
 
-    acorn@8.12.1:
+    acorn@8.13.0:
         resolution:
             {
-                integrity: sha512-tcpGyI9zbizT9JbV6oYE477V6mTlXvvi0T0G3SNIYE2apm/G5huBa1+K89VGeovbg+jycCrfhl3ADxErOuO6Jg==
+                integrity: sha512-8zSiw54Oxrdym50NlZ9sUusyO1Z1ZchgRLWRaK6c86XJFClyCgFKetdowBg5bKxyp/u+CDBJG4Mpp0m3HLZl9w==
             }
         engines: { node: '>=0.4.0' }
         hasBin: true
@@ -4061,10 +4064,10 @@ packages:
             }
         engines: { node: '>=14.16' }
 
-    caniuse-lite@1.0.30001668:
+    caniuse-lite@1.0.30001669:
         resolution:
             {
-                integrity: sha512-nWLrdxqCdblixUO+27JtGJJE/txpJlyUy5YN1u53wLZkP0emYCo5zgS6QYft7VUYR42LGgi/S5hdLZTrnyIddw==
+                integrity: sha512-DlWzFDJqstqtIVx1zeSpIMLjunf5SmwOw0N2Ck/QSQdS8PLS4+9HrLaYei4w8BIAL7IB/UEDu889d8vhCTPA0w==
             }
 
     canvas-confetti@1.9.3:
@@ -4709,10 +4712,10 @@ packages:
                 integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==
             }
 
-    electron-to-chromium@1.5.38:
+    electron-to-chromium@1.5.39:
         resolution:
             {
-                integrity: sha512-VbeVexmZ1IFh+5EfrYz1I0HTzHVIlJa112UEWhciPyeOcKJGeTv6N8WnG4wsQB81DGCaVEGhpSb6o6a8WYFXXg==
+                integrity: sha512-4xkpSR6CjuiaNyvwiWDI85N9AxsvbPawB8xc7yzLPonYTuP19BVgYweKyUMFtHEZgIcHWMt1ks5Cqx2m+6/Grg==
             }
 
     emoji-regex@8.0.0:
@@ -5492,6 +5495,12 @@ packages:
                 integrity: sha512-fJ7cW7fQGCYAkgv4CPfwFHrfd/cLS4Hau96JuJ+ZTOWhjnhoeN1ub1tFmALm/+lW5z4WCAuAV9bm05AP0mS6Gw==
             }
         engines: { node: '>=12.0.0' }
+
+    highlightjs-vue@1.0.0:
+        resolution:
+            {
+                integrity: sha512-PDEfEF102G23vHmPhLyPboFCD+BkMGu+GuJe2d9/eH4FsCwvgBpnc9n0pGE+ffKdph38s6foEZiEjdgHdzp+IA==
+            }
 
     hoist-non-react-statics@3.3.2:
         resolution:
@@ -7114,10 +7123,10 @@ packages:
             '@types/react':
                 optional: true
 
-    react-syntax-highlighter@15.5.0:
+    react-syntax-highlighter@15.6.1:
         resolution:
             {
-                integrity: sha512-+zq2myprEnQmH5yw6Gqc8lD55QHnpKaU8TOcFeC/Lg/MQSs8UknEA0JC4nTZGFAXC2J2Hyj/ijJ7NlabyPi2gg==
+                integrity: sha512-OqJ2/vL7lEeV5zTJyG7kmARppUjiB9h9udl4qHQjjgEos66z00Ia0OckwYfRxCSFrW8RJIBnsBwQsHZbVPspqg==
             }
         peerDependencies:
             react: '>= 0.14.0'
@@ -10152,11 +10161,11 @@ snapshots:
             next: 14.2.14(@babel/core@7.25.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.79.5)
             react: 18.3.1
 
-    acorn-jsx@5.3.2(acorn@8.12.1):
+    acorn-jsx@5.3.2(acorn@8.13.0):
         dependencies:
-            acorn: 8.12.1
+            acorn: 8.13.0
 
-    acorn@8.12.1: {}
+    acorn@8.13.0: {}
 
     agent-base@7.1.1:
         dependencies:
@@ -10278,7 +10287,7 @@ snapshots:
     autoprefixer@10.4.20(postcss@8.4.47):
         dependencies:
             browserslist: 4.24.0
-            caniuse-lite: 1.0.30001668
+            caniuse-lite: 1.0.30001669
             fraction.js: 4.3.7
             normalize-range: 0.1.2
             picocolors: 1.1.0
@@ -10322,8 +10331,8 @@ snapshots:
 
     browserslist@4.24.0:
         dependencies:
-            caniuse-lite: 1.0.30001668
-            electron-to-chromium: 1.5.38
+            caniuse-lite: 1.0.30001669
+            electron-to-chromium: 1.5.39
             node-releases: 2.0.18
             update-browserslist-db: 1.1.1(browserslist@4.24.0)
 
@@ -10352,7 +10361,7 @@ snapshots:
 
     camelcase@7.0.1: {}
 
-    caniuse-lite@1.0.30001668: {}
+    caniuse-lite@1.0.30001669: {}
 
     canvas-confetti@1.9.3: {}
 
@@ -10686,7 +10695,7 @@ snapshots:
 
     eastasianwidth@0.2.0: {}
 
-    electron-to-chromium@1.5.38: {}
+    electron-to-chromium@1.5.39: {}
 
     emoji-regex@8.0.0: {}
 
@@ -11117,8 +11126,8 @@ snapshots:
 
     espree@9.6.1:
         dependencies:
-            acorn: 8.12.1
-            acorn-jsx: 5.3.2(acorn@8.12.1)
+            acorn: 8.13.0
+            acorn-jsx: 5.3.2(acorn@8.13.0)
             eslint-visitor-keys: 3.4.3
 
     esprima@4.0.1: {}
@@ -11389,6 +11398,8 @@ snapshots:
     highlight.js@10.7.3: {}
 
     highlight.js@11.9.0: {}
+
+    highlightjs-vue@1.0.0: {}
 
     hoist-non-react-statics@3.3.2:
         dependencies:
@@ -11820,7 +11831,7 @@ snapshots:
             '@next/env': 14.2.14
             '@swc/helpers': 0.5.5
             busboy: 1.6.0
-            caniuse-lite: 1.0.30001668
+            caniuse-lite: 1.0.30001669
             graceful-fs: 4.2.11
             postcss: 8.4.31
             react: 18.3.1
@@ -12321,10 +12332,11 @@ snapshots:
         optionalDependencies:
             '@types/react': 18.3.11
 
-    react-syntax-highlighter@15.5.0(react@18.3.1):
+    react-syntax-highlighter@15.6.1(react@18.3.1):
         dependencies:
             '@babel/runtime': 7.25.7
             highlight.js: 10.7.3
+            highlightjs-vue: 1.0.0
             lowlight: 1.20.0
             prismjs: 1.29.0
             react: 18.3.1

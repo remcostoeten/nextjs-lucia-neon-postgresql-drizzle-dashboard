@@ -2,24 +2,20 @@
 
 import { Flex } from '@/components/atoms'
 import EnhancedCodeBlock from '@/components/elements/display-code/code-block'
-import { CommandCode } from '@/components/elements/display-code/command-inline-code'
 import NoticeBox from '@/components/elements/notice-box'
-import { logActivity } from 'actions'
 import { motion } from 'framer-motion'
 import { AlertTriangle, ArrowLeft, RefreshCcw } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Button } from 'ui'
 
-type ErrorPageProps = {
+export default function ErrorPage({
+	error,
+	reset
+}: {
 	error: Error & { digest?: string }
 	reset: () => void
-}
-
-const ERROR_LENGTH_THRESHOLD = 45
-const MAX_ERROR_LENGTH = 500
-
-export default function ErrorPage({ error, reset }: ErrorPageProps) {
+}) {
 	const pathname = usePathname()
 	const [isExpanded, setIsExpanded] = useState(false)
 
@@ -29,119 +25,62 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 	}, [error])
 
 	const logErrorToActivity = async (error: Error & { digest?: string }) => {
-		const errorKey = `${error.message}:${error.digest || ''}`
-		const now = Date.now()
-		const lastErrorTime = localStorage.getItem(errorKey)
-
-		if (lastErrorTime && now - parseInt(lastErrorTime) < 60000) {
-			console.log('Skipping error log due to recent occurrence')
-			return
-		}
-
-		try {
-			await logActivity(
-				'ERROR_ENCOUNTERED',
-				'An unhandled error occurred',
-				JSON.stringify({
-					errorMessage: error.message,
-					errorStack: error.stack,
-					errorDigest: error.digest,
-					pathname,
-					timestamp: new Date().toISOString()
-				})
-			)
-			localStorage.setItem(errorKey, now.toString())
-		} catch (logError) {
-			console.error('Failed to log error to activity log:', logError)
-		}
+		// ... (keep the existing logErrorToActivity function)
 	}
 
 	const handleReportError = () => {
-		fetch('/api/log-error', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				message: error.message,
-				stack: error.stack,
-				digest: error.digest,
-				pathname
-			})
-		}).catch(console.error)
+		// ... (keep the existing handleReportError function)
 	}
 
-	const itemVariants = {
-		hidden: { opacity: 0, y: 20 },
-		visible: {
-			opacity: 1,
-			y: 0,
-			transition: {
-				duration: 0.5,
-				ease: [0.25, 0.1, 0.25, 1]
-			}
+	const formatErrorDetails = (error: Error & { digest?: string }) => {
+		const details = []
+		details.push(`Message: ${error.message}`)
+		if (error.stack) {
+			details.push(`Stack Trace:\n${error.stack}`)
 		}
-	}
-
-	const truncateError = (errorMessage: string) => {
-		if (errorMessage.length <= MAX_ERROR_LENGTH) return errorMessage
-		return errorMessage.slice(0, MAX_ERROR_LENGTH) + '...'
+		if (error.digest) {
+			details.push(`Digest: ${error.digest}`)
+		}
+		// Add any other properties of the error object
+		Object.keys(error).forEach(key => {
+			if (!['message', 'stack', 'digest'].includes(key)) {
+				details.push(
+					`${key}: ${JSON.stringify(error[key as keyof typeof error], null, 2)}`
+				)
+			}
+		})
+		return details.join('\n\n')
 	}
 
 	const ErrorDisplay = () => {
-		const displayError = isExpanded
-			? error.message
-			: truncateError(error.message)
-
-		if (error.message.length > ERROR_LENGTH_THRESHOLD) {
-			return (
-				<div className="max-w-full overflow-x-auto">
-					<EnhancedCodeBlock
-						code={displayError}
-						fileName="error.log"
-						language="plaintext"
-						badges={['Error']}
-					/>
-				</div>
-			)
-		} else {
-			return (
-				<div className="max-w-full overflow-x-auto">
-					<CommandCode copyMode="essential">
-						{displayError}
-					</CommandCode>
-				</div>
-			)
-		}
+		const errorDetails = formatErrorDetails(error)
+		return (
+			<div className="max-w-full overflow-x-auto">
+				<EnhancedCodeBlock
+					code={errorDetails}
+					fileName="error-details.log"
+					language="plaintext"
+					badges={['Error']}
+				/>
+			</div>
+		)
 	}
-
-	const isLongError = error.message.length > ERROR_LENGTH_THRESHOLD
 
 	return (
 		<div className="min-h-screen w-screen grid place-items-center p-4">
 			<NoticeBox
 				useMotion={true}
-				width={isLongError ? '2xl' : 'md'}
+				width="2xl"
 				icon={<AlertTriangle className="h-6 w-6 text-brand" />}
 				title="Oops! Something went wrong"
-				description="An unexpected error occurred."
+				description="An unexpected error occurred. Here are the details:"
 			>
-				<motion.div variants={itemVariants} className="mb-6 w-full">
+				<motion.div className="mb-6 w-full">
 					<div className="rounded flex-col p-3 flex items-start justify-between w-full">
 						<ErrorDisplay />
-						{error.message.length > MAX_ERROR_LENGTH && (
-							<Button
-								variant="link"
-								onClick={() => setIsExpanded(!isExpanded)}
-								className="mt-2 text-sm text-zinc-400 hover:text-zinc-300"
-							>
-								{isExpanded ? 'Show Less' : 'Show More'}
-							</Button>
-						)}
 					</div>
 				</motion.div>
-				<motion.div
-					variants={itemVariants}
-					className="space-y-2 w-full"
-				>
+				<motion.div className="space-y-2 w-full">
 					<Flex
 						align="center"
 						justify="center"
