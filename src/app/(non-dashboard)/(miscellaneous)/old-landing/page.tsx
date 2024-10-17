@@ -1,5 +1,5 @@
-import BentoGridIntro from '@/app/components/_old-landing/bent-grid'
-import Hero from '@/app/components/_old-landing/Hero/Hero'
+import BentoGridIntro from '@/components/_old-landing/bent-grid'
+import Hero from '@/components/_old-landing/Hero/Hero'
 
 export default function Home() {
 	return (

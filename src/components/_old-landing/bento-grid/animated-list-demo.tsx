@@ -1,7 +1,7 @@
 'use client'
 
+import { AnimatedList } from '@/components/effects/animated-list'
 import { cn } from 'cn'
-import { AnimatedList } from '../../effects/animated-list'
 
 interface Item {
 	name: string
