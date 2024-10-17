@@ -25,7 +25,7 @@ const DeploymentInfo: React.FC<DeploymentInfoProps> = ({
 	return (
 		<div
 			ref={hoverRef}
-			className="bg-white-006 rounded-lg p-6 hover-effect mb-8"
+			className="bg-card border rounded-lg p-6 hover-effect mb-8"
 		>
 			<h2 className="text-2xl font-semibold mb-4">
 				Deployment Information
