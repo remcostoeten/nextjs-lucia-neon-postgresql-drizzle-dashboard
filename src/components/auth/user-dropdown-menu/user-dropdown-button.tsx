@@ -1,6 +1,9 @@
 'use client'
 
-import { ClientAuthSession, useClientAuth } from '@/lib/auth/client-auth-utils'
+import {
+	ClientAuthSession,
+	useClientAuth
+} from '@/core/server/auth/client-auth-utils'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'

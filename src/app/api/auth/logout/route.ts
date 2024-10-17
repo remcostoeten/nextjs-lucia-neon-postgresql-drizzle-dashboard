@@ -1,4 +1,4 @@
-import { lucia } from '@/lib/auth/lucia'
+import { lucia } from '@/core/server/auth/lucia'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 

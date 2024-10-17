@@ -1,6 +1,9 @@
 'use client'
 
-import { ClientAuthSession, useClientAuth } from '@/lib/auth/client-auth-utils'
+import {
+	ClientAuthSession,
+	useClientAuth
+} from '@/core/server/auth/client-auth-utils'
 import { Frown, Smile } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Tooltip, TooltipContent, TooltipTrigger } from 'ui'

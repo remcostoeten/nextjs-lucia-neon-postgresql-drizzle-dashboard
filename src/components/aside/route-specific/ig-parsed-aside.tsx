@@ -1,7 +1,7 @@
 'use client'
 
 import { fetchParsedOutputs } from '@/core/server/actions/save-parsed-output'
-import { ParsedOutput } from '@/lib/db/schema/parsed-ig'
+import { ParsedOutput } from '@/core/server/db/schema/parsed-ig'
 import { ChevronLeft, ChevronRight, FileText } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'

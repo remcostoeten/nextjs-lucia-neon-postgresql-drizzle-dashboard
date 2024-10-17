@@ -1,8 +1,8 @@
 'use server'
 
 import { createActivitySchema } from '@/core/models/activities'
-import { db } from '@/lib/db'
-import { activities } from '@/lib/db/schema'
+import { db } from 'db'
+import { activities } from '@/core/server/db/schema'
 import { revalidatePath } from 'next/cache'
 
 export async function createActivity(formData: FormData) {

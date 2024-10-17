@@ -1,8 +1,8 @@
 'use server'
 
-import { validateRequest } from '@/lib/auth/lucia'
-import { db } from '@/lib/db'
-import { folders } from '@/lib/db/schema'
+import { validateRequest } from '@/core/server/auth/lucia'
+import { folders } from '@/core/server/db/schema'
+import { db } from 'db'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 

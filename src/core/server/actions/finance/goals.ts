@@ -1,8 +1,9 @@
 'use server'
 
-import { db } from '@/lib/db'
-import { goals } from '@/lib/db/schema'
-import { getUserAuth } from '@/lib/auth/utils'
+import { getUserAuth } from '@/core/server/auth/utils'
+import { goals } from '@/core/server/db/schema'
+
+import { db } from 'db'
 import { revalidatePath } from 'next/cache'
 
 export async function createGoal(title: string, targetAmount: string) {

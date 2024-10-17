@@ -1,5 +1,4 @@
 import { Flex } from '@/components/atoms'
-import { Icons } from '@/components/base/icons'
 import useMouseHoverEffect from '@/core/hooks/use-mouse-hover'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
@@ -11,6 +10,7 @@ import { logos } from '../logo-section/logo-section'
 import RainbowLine from '../rainbow-line'
 import FeatureBadges from './_components/emoji-badges'
 import styles from './feature.module.scss'
+import { Icons } from '@/components/base/icons'
 
 const containerVariants = {
 	hidden: { opacity: 0 },

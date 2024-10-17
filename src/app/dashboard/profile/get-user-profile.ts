@@ -1,8 +1,8 @@
 'use server'
 
-import { db } from '@/lib/db/index'
-import { userProfiles } from '@/lib/db/schema/auth'
+import { userProfiles } from '@/core/server/db/schema/auth'
 import { UserProfile } from '@/types/types.users'
+import { db } from 'db'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 

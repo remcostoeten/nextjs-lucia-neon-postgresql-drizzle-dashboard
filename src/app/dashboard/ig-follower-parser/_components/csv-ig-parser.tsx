@@ -5,7 +5,7 @@ import {
 	fetchParsedOutputById,
 	saveParsedOutput
 } from '@/core/server/actions/save-parsed-output'
-import { useClientAuth } from '@/lib/auth/client-auth-utils'
+import { useClientAuth } from '@/core/server/auth/client-auth-utils'
 import confetti from 'canvas-confetti'
 import {
 	ChevronDown,

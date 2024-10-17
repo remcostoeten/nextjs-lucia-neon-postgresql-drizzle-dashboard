@@ -24,8 +24,8 @@ import {
 } from 'ui'
 
 import { fadeInUp } from '@/core/constants/animations'
-import { updateUserProfileSchema } from '@/lib/db/schema/auth'
 import { updateProfile } from 'actions'
+import { updateUserProfileSchema } from 'db'
 import { OnboardingProps, UpdateUserProfileInput } from './auth'
 
 export default function Onboarding({ userId }: OnboardingProps) {

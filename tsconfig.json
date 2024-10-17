@@ -24,7 +24,7 @@
 			"toast": ["./src/core/stores/store.toasts.ts"],
 			"cn": ["src/core/constants/cn-tw.ts"],
 			"locales": ["./src/core/config/locales/locales.ts"],
-			"db": ["./src/core/server/database/index.ts"],
+			"db": ["./src/core/server/db/index.ts"],
 			"hooks": ["./src/core/hooks/index.ts"],
 			"schema": ["./src/core/server/schema/index.ts"],
 			"actions": ["./src/core/server/actions/index.ts"],

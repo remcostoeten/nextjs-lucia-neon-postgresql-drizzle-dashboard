@@ -1,5 +1,6 @@
 import UnifiedSettingsComponent from '@/components/aside/site-settings-menu'
-import { getUserAuth } from '@/lib/auth/utils'
+import { getUserAuth } from '@/core/server/auth/utils'
+
 import { UserProfile } from '@/types/types.users'
 import { getUserProfile } from './get-user-profile'
 

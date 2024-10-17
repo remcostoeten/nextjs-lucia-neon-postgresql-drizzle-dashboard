@@ -2,8 +2,7 @@ import Link from 'next/link'
 
 import SidebarItems from './SidebarItems'
 import { Avatar, AvatarFallback } from './ui/avatar'
-
-import { AuthSession, getUserAuth } from '@/lib/auth/utils'
+import { getUserAuth, AuthSession } from '@/core/server/auth/utils'
 
 const Sidebar = async () => {
 	const session = await getUserAuth()

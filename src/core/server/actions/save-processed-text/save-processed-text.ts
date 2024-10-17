@@ -1,5 +1,5 @@
-import { db } from '@/lib/db'
-import { processedTexts } from '@/lib/db/schema'
+import { processedTexts } from '@/core/server/db/schema'
+import { db } from 'db'
 
 export async function saveProcessedText(
 	name: string,

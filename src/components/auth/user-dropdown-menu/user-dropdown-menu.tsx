@@ -2,7 +2,7 @@
 
 import { Flex } from '@/components/atoms'
 import ModeToggle from '@/components/ui/ThemeToggle'
-import { useClientAuth } from '@/lib/auth/client-auth-utils'
+import { useClientAuth } from '@/core/server/auth/client-auth-utils'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import MenuItem from './user-dropdown-menu-item'

@@ -1,4 +1,5 @@
-import { getUserAuth } from '@/lib/auth/utils'
+import { getUserAuth } from '@/core/server/auth/utils'
+
 import { NextResponse } from 'next/server'
 
 export async function GET() {

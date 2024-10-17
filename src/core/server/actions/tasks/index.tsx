@@ -1,8 +1,8 @@
 'use server'
 
-import { db } from '@/lib/db'
-import { labels, taskLabels, tasks } from '@/lib/db/schema'
+import { labels, taskLabels, tasks } from '@/core/server/db/schema'
 import { NewTask, Subtask, Task, TaskStatus } from '@/types/tasks'
+import { db } from 'db'
 import { and, eq } from 'drizzle-orm'
 
 export async function getTasks(userId: string): Promise<Task[]> {

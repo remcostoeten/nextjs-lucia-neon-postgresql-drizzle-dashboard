@@ -1,8 +1,9 @@
 'use server'
 
-import { getUserAuth } from '@/lib/auth/utils'
-import { db } from '@/lib/db/index'
-import { notes } from '@/lib/db/schema/notes'
+import { getUserAuth } from '@/core/server/auth/utils'
+import { notes } from '@/core/server/db/schema/notes'
+
+import { db } from 'db'
 import { and, eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
