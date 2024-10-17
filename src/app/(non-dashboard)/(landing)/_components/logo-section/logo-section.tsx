@@ -49,7 +49,10 @@ export default function LogoSection() {
 						transition={{ duration: 0.75, delay: 0.75 }}
 					>
 						<div className="text-subtitle text-xs text-center mb-6 space-x-2">
-							<span className='span-gradient'>Used by 1,(one) user worldwide! Me! </span><span className='animate-pulse'>✨</span>
+							<span className="span-gradient">
+								Used by 1,(one) user worldwide! Me!{' '}
+							</span>
+							<span className="animate-pulse">✨</span>
 						</div>
 						<div className="flex flex-wrap justify-between gap-6">
 							{logos.map((logo, index) => (

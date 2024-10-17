@@ -4,7 +4,7 @@ import MainSidebar from '@/components/aside/sidebar'
 import SidebarSkeletonLoader from '@/components/aside/skeleton.sidebbar'
 import SubSidebarShell from '@/components/aside/sub-sidebar-shell'
 import MainContentWrapper from '@/components/base/layout/main-content-wrapper'
-import Navigation from '@/components/dashboard/navigation.client'
+import Navigation from '@/components/dashboard/layout/top-bar/top-bar'
 import { useMainSidebarStore, useSubSidebarStore } from '@/core/stores'
 import { ReactNode, Suspense } from 'react'
 
@@ -13,10 +13,7 @@ type ClientWrapperProps = {
 	userEmail: string
 }
 
-export default function ClientWrapper({
-	children,
-	userEmail
-}: ClientWrapperProps) {
+export default function ClientWrapper({ children }: ClientWrapperProps) {
 	const {
 		isCollapsed: isMainSidebarCollapsed,
 		toggleCollapse: toggleMainSidebar
@@ -26,7 +23,7 @@ export default function ClientWrapper({
 
 	return (
 		<>
-			<Navigation userEmail={userEmail} />
+			<Navigation />
 			<Suspense fallback={<SidebarSkeletonLoader />}>
 				<MainSidebar
 					isSubSidebarOpen={isSubSidebarOpen}

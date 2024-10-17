@@ -1,7 +1,7 @@
 'use client'
 
-import { Button } from 'ui'
 import { useState } from 'react'
+import { Button } from 'ui'
 import { AnimateHeight } from '../dashboard/features/activity/animate-height'
 
 type ShowHideProps = {
@@ -22,7 +22,7 @@ export default function ShowHide({
 
 	return (
 		<div
-			className={`${className} mt-6 overflow-hidden rounded-xl border px-4 py-3 ${width}`}
+			className={`${className} mt-6 -z-10 overflow-hidden rounded-xl border px-4 py-3 ${width}`}
 			{...props}
 		>
 			<div className="flex justify-between">
