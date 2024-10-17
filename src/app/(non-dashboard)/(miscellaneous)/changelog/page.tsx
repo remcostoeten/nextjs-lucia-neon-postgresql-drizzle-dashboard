@@ -5,7 +5,6 @@ import { GitHubIcon } from '@/components/base/Icons'
 import DeploymentInfo from '@/components/DeploymentInfo'
 import HeartbeatLoader from '@/components/effects/loaders/heartbeat-loader'
 import useMouseHoverEffect from '@/core/hooks/use-mouse-hover'
-import { ChangelogEntry } from '@/types/changelog'
 import { Octokit } from '@octokit/rest'
 import { format } from 'date-fns'
 import {
@@ -39,6 +38,7 @@ import {
 
 const octokit = new Octokit({ auth: process.env.NEXT_PUBLIC_GITHUB_TOKEN })
 
+// Types
 interface Release {
 	id: number
 	name: string
@@ -473,11 +473,7 @@ const IssueTrackerSummary: React.FC<{ issues: IssueData }> = ({ issues }) => {
 	)
 }
 
-type Props = {
-	changelogEntries: ChangelogEntry[]
-}
-
-export default function ChangelogPage({ changelogEntries }: Props) {
+const ChangelogPage: React.FC = () => {
 	const [releases, setReleases] = useState<Release[]>([])
 	const [metrics, setMetrics] = useState<Metrics | null>(null)
 	const [timeline, setTimeline] = useState<TimelineItem[]>([])
@@ -718,7 +714,7 @@ export default function ChangelogPage({ changelogEntries }: Props) {
 
 	if (loading) {
 		return (
-			<div className="min-h-screen bg-body text-title flex items-center justify-center">
+			<div className="text-title flex items-center justify-center">
 				<Flex dir="col" align="center" justify="center" gap="2">
 					<HeartbeatLoader />
 					<span>Loading changelog...</span>
@@ -736,9 +732,9 @@ export default function ChangelogPage({ changelogEntries }: Props) {
 	}
 
 	return (
-		<div className="min-h-screen bg-body  text-title p-8">
-			<h1 className="text-4xl font-bol mb-4">
-				<span className="gradient-span">Changelog & Codebase info</span>
+		<div className="min-h-screen bg-body  text-title ">
+			<h1 className="text-4xl font-bold mb-4">
+				<span className="gradient-span">Changelog & git metrics</span>
 			</h1>
 
 			{deploymentData && <DeploymentInfo {...deploymentData} />}
@@ -746,7 +742,7 @@ export default function ChangelogPage({ changelogEntries }: Props) {
 
 			<SearchBar onSearch={handleSearch} />
 
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				{contributionData.length > 0 && (
 					<ContributionGraph data={contributionData} />
 				)}
@@ -844,3 +840,5 @@ export default function ChangelogPage({ changelogEntries }: Props) {
 		</div>
 	)
 }
+
+export default ChangelogPage

@@ -4,28 +4,44 @@ import { siteConfig } from './site-config'
 export const menuConfig = {
 	products: [
 		{
-			name: 'Elements',
+			name: 'Individual elements',
 			links: [
 				{ name: 'Notice box', href: '/design-system/notice' },
 				{
 					name: 'Card spotlight',
 					href: '/design-system/card-spotlight'
-				}
-			]
-		},
-		{
-			name: 'Hooks showcase',
-			links: [
-				{ name: 'Color palette', href: '/hooks-showcase/palette' },
+				},
 				{
 					name: 'use-geolocation',
 					href: '/hooks-showcase/geolocation'
+				},
+				{ name: 'Theme color palette', href: '/hooks-showcase/palette' }
+			]
+		},
+		{
+			name: 'Miscellaneous',
+			links: [
+				{
+					name: 'Changelog',
+					href: '/changelog'
+				},
+				{
+					name: 'NextJS fulltack tutorial - Todo app				',
+					href: '/docs/todo'
+				},
+				{
+					name: 'NextJS fulltack tutorial - Kanban board',
+					href: '/docs/kanban-board'
 				}
 			]
 		},
 		{
 			name: 'Previous itterations',
 			links: [
+				{
+					name: 'Old landing page',
+					href: '/old-landing'
+				},
 				{
 					name: 'Productivity panel',
 					href: 'http://panel.remcostoeten.com',
@@ -41,14 +57,6 @@ export const menuConfig = {
 					href: `https://github.com/${siteConfig.username}/${siteConfig.repositoryName}`,
 					external: true
 				}
-			]
-		},
-		{
-			name: 'Docs',
-			links: [
-				{ name: 'To Do', href: '/docs/todo' },
-				{ name: 'P', href: '/docs/p' },
-				{ name: 'Kanban Board', href: '/docs/kanban-board' }
 			]
 		}
 	],

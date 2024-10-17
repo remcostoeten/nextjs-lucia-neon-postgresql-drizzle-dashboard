@@ -37,7 +37,7 @@ const ProductCategory = ({
 						pathname === link.href
 							? 'text-title font-medium'
 							: 'text-subtitle hover:text-title'
-					} mb-1 transition-colors duration-200 flex items-center`}
+					} mb-1.5 transition-colors duration-200 flex items-center`}
 				>
 					{link.name}
 					{link.external && <ExternalLink className="ml-1 h-3 w-3" />}
