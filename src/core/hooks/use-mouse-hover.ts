@@ -20,8 +20,12 @@ export default function useMouseHoverEffect() {
 
 		element.addEventListener('mousemove', handleMouseMove)
 
+		// Add border class
+		element.classList.add('border', 'border-white-012')
+
 		return () => {
 			element.removeEventListener('mousemove', handleMouseMove)
+			element.classList.remove('border', 'border-white-012')
 		}
 	}, [])
 

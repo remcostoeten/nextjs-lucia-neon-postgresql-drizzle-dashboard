@@ -2,7 +2,7 @@
 
 import { siteConfig } from '@/config/site-config'
 import React from 'react'
-import { toast } from 'sonner'
+import HorizontalLine from '../horizontal-line'
 import RainbowLine from '../rainbow-line'
 import styles from './footer.module.scss'
 
@@ -40,12 +40,6 @@ const FooterContactLink: React.FC<FooterContactLinkProps> = React.memo(
 		</a>
 	)
 )
-function handleClick(e: React.MouseEvent, isBeta: boolean) {
-	if (isBeta) {
-		e.preventDefault()
-		toast('Sorry, this feature is currently in beta and not yet available.')
-	}
-}
 
 const FooterColumn: React.FC<FooterColumnProps> = React.memo(
 	({ title, links }) => (
@@ -103,6 +97,7 @@ export default function Footer() {
 	return (
 		<footer className="relative z-2 pb-px px-[3%]">
 			<div className={styles['footer-container-lines']}>
+				<HorizontalLine />
 				<div className="w-full mx-auto relative">
 					<div
 						className={`${styles['w-layout-grid']} ${styles['footer-grid']} px-xl py-large`}
@@ -133,6 +128,10 @@ export default function Footer() {
 									title="Previous apps"
 									links={[
 										{
+											text: 'Old landing page',
+											href: '/old-landing'
+										},
+										{
 											text: 'All-in-one dashboard',
 											href: 'https://productivity.remcostoeten.com',
 											external: true
@@ -145,7 +144,7 @@ export default function Footer() {
 										{
 											external: true,
 											text: 'Chanelog',
-											href: '#',
+											href: '/changelog',
 											isBeta: true
 										}
 									]}
@@ -156,7 +155,7 @@ export default function Footer() {
 										{
 											text: 'Dashboard',
 											href: '/dashboard',
-											isNew: true
+											isBeta: true
 										},
 										{
 											text: 'Blogs',
@@ -187,7 +186,7 @@ export default function Footer() {
 								<div className={styles.badge}>
 									<div>
 										Built with
-										<span className="text-red-40 pulse mx-2">
+										<span className="text-red-40 pulse mx-2 hover:text-red-500">
 											❤️
 										</span>
 										by Remco

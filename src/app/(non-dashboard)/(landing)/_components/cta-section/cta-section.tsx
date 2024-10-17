@@ -3,8 +3,16 @@
 import useMouseHoverEffect from '@/core/hooks/use-mouse-hover'
 import { Check } from 'lucide-react'
 import React from 'react'
+import HorizontalLine from '../horizontal-line'
 
-const CTASection: React.FC = () => {
+type CTAFeatureProps = {
+	icon: string
+	title: string
+	description: string
+	isFirst?: boolean
+	isLast?: boolean
+}
+function CTASection() {
 	return (
 		<div className="container-lines-large z-[5] w-full max-w-[1128px] mx-auto my-0 py-[120px] px-12 relative">
 			<div className="container-regular w-full max-w-[984px] mx-auto relative">
@@ -29,26 +37,19 @@ const CTASection: React.FC = () => {
 				</div>
 				<CTABlock />
 			</div>
+			<HorizontalLine />
 			<LinesGroup />
 		</div>
 	)
 }
 
-interface CTAFeatureProps {
-	icon: string
-	title: string
-	description: string
-	isFirst?: boolean
-	isLast?: boolean
-}
-
-const CTAFeature: React.FC<CTAFeatureProps> = ({
+function CTAFeature({
 	icon,
 	title,
 	description,
 	isFirst,
 	isLast
-}) => {
+}: CTAFeatureProps) {
 	const featureRef = useMouseHoverEffect()
 	const featureClass = `cta-feature flex flex-col gap-2 border border-neutral-800 bg-base-background p-4 pb-6 relative
     ${isFirst ? 'rounded-tl-[24px]' : isLast ? 'rounded-tr-[24px]' : 'rounded-[12px]'}
@@ -70,9 +71,13 @@ const CTAFeature: React.FC<CTAFeatureProps> = ({
 	)
 }
 
-const CTABlock: React.FC = () => {
+function CTABlock() {
+	const mouseHover = useMouseHoverEffect()
 	return (
-		<div className="cta-block flex justify-between items-center gap-12 border border-neutral-800 rounded-t-[12px] rounded-b-[24px] bg-base-background bg-gradient-to-b from-white-4 to-transparent mt-4 py-1 px-1.5 pr-1.5">
+		<div
+			className="cta-block flex justify-between items-center gap-12 border border-neutral-800 rounded-t-[12px] rounded-b-[24px] bg-base-background bg-gradient-to-b from-white-4 to-transparent mt-4 py-1 px-1.5 pr-1.5 hover-effect"
+			ref={mouseHover}
+		>
 			<div className="cta-content flex flex-col gap-8 w-full max-w-[550px] py-11 pl-11">
 				<h4 className="text-[36px] font-medium leading-[1.25] tracking-[-0.17px] text-base-white">
 					<span className="gradient-span">

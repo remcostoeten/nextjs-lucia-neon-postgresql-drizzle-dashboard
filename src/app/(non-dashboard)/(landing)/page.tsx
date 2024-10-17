@@ -5,6 +5,7 @@ import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import Content from './_components/content-gradient/gradient-content'
 import CTASection from './_components/cta-section/cta-section'
+import FAQSection from './_components/faq/faq'
 import Feature from './_components/feature/feature'
 import Hero from './_components/hero/hero'
 import LogoSection from './_components/logo-section/logo-section'
@@ -34,37 +35,32 @@ export default function LandingPage() {
 			<Notice id={'landing-page-notice'}>
 				Just redesigned the landing page! 🎨 Content is still WIP
 			</Notice>
-
 			<FadeInSection>
 				<Hero />
 			</FadeInSection>
-
 			<FadeInSection>
 				<Video />
 			</FadeInSection>
-
 			<FadeInSection>
 				<LogoSection />
 			</FadeInSection>
-
 			<FadeInSection>
 				<Feature />
 			</FadeInSection>
-
 			<FadeInSection>
 				<MarqueeItems />
 			</FadeInSection>
-
 			<FadeInSection>
 				<Content />
 			</FadeInSection>
-
 			<FadeInSection>
 				<PoweredBy />
 			</FadeInSection>
-
 			<FadeInSection>
 				<CTASection />
+			</FadeInSection>
+			<FadeInSection>
+				<FAQSection />
 			</FadeInSection>
 		</>
 	)
