@@ -67,11 +67,11 @@ export default function TaskList({
 			ref={drop}
 			className={`space-y-4 ${viewMode === 'grid' ? 'min-h-[200px]' : ''}`}
 		>
-			{tasks.map((task) => {
+			{tasks.map(task => {
 				const [{ isDragging }, drag] = useDrag({
 					type: 'task',
 					item: { id: task.id },
-					collect: (monitor) => ({
+					collect: monitor => ({
 						isDragging: monitor.isDragging()
 					})
 				})
@@ -131,7 +131,7 @@ export default function TaskList({
 								)}
 							</div>
 							<div className="flex flex-wrap gap-2 mb-2">
-								{task.labels?.map((label) => (
+								{task.labels?.map(label => (
 									<span
 										key={label}
 										className="bg-blue-500 text-white px-2 py-1 rounded-full text-xs flex items-center"
@@ -146,7 +146,7 @@ export default function TaskList({
 									<CheckCircle2 className="h-4 w-4 inline mr-1" />
 									{
 										task.subtasks.filter(
-											(subtask) => subtask.completed
+											subtask => subtask.completed
 										).length
 									}{' '}
 									/ {task.subtasks.length} subtasks
@@ -167,7 +167,7 @@ export default function TaskList({
 							{viewMode === 'list' && (
 								<select
 									value={task.status}
-									onChange={(e) =>
+									onChange={e =>
 										onStatusChange(
 											task.id,
 											e.target.value as TaskStatus
@@ -185,7 +185,7 @@ export default function TaskList({
 							<Button
 								variant="destructive"
 								size="sm"
-								onClick={(e) => {
+								onClick={e => {
 									e.stopPropagation()
 									onTaskDeleted(task.id)
 								}}

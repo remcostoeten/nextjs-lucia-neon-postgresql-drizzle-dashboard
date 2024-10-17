@@ -1,4 +1,3 @@
-
 export type TaskStatus = 'backlog' | 'in-progress' | 'completed'
 export type TaskPriority = 1 | 2 | 3
 
@@ -34,7 +33,7 @@ export type Task = {
 }
 
 export type NewTask = {
-    subtasks: any[]
+	subtasks: any[]
 	title: string
 	content: string
 	status: TaskStatus

@@ -61,6 +61,46 @@ $vertical-padding: 72px;
 	}
 }
 
+.button {
+	$common-styles: (
+		gap: 2px,
+		border: 0.8px solid var(--white--6),
+		border-radius: var(--radius--6px),
+		background-color: var(--white--2),
+		box-shadow: inset 0 -4px 12px 0 var(--white--6),
+		backdrop-filter: blur(12px),
+		color: var(--base--white),
+		cursor: pointer,
+		justify-content: space-between,
+		align-items: center,
+		width: 100%,
+		font-size: 12px,
+		line-height: 1.7,
+		transition: all 0.3s ease 0s,
+		display: flex
+	);
+
+	&--feature,
+	&--small {
+		@each $property, $value in $common-styles {
+			#{$property}: $value;
+		}
+
+		&:hover {
+			border-color: var(--white--20);
+			background-color: var(--white--4);
+		}
+	}
+
+	&--feature {
+		padding: 10px 12px;
+	}
+
+	&--small {
+		padding: 4px 10px 4px 8px;
+	}
+}
+
 .fade-in {
 	opacity: 0;
 	animation: fadeIn 500ms ease-in-out forwards;

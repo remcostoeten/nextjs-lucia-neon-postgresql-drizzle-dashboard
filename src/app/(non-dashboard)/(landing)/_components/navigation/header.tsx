@@ -223,7 +223,7 @@ export default function Header() {
 				{isOpen && (
 					<motion.div
 						variants={menuVariants}
-						className="max-w-[1128px] mx-auto px-4 md:px-theme py-6 grid grid-cowws-1 md:grid-cols-3 gap-8 relative max-h-[80vh] overflow-hidden w-screen md:w-full trans-1000"
+						className="max-w-[1128px] mx-auto px-4 md:px-theme py-6 grid grid-cowws-1 md:grid-cols-3 gap-8 relative max-h-[80vh] overflow-hidden w-screen md:w-full"
 					>
 						<button
 							onClick={closeMenu}

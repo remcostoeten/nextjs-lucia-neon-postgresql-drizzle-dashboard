@@ -110,12 +110,6 @@
 	position: absolute;
 }
 
-.wrapVXSmall {
-	gap: 8px;
-	flex-direction: column;
-	display: flex;
-}
-
 .h6Heading {
 	color: var(--base--white);
 	letter-spacing: -0.1px;
@@ -123,24 +117,6 @@
 	font-size: 24px;
 	font-weight: 500;
 	line-height: 1.4;
-}
-
-.featureInner {
-	gap: 24px;
-	border: 1px solid var(--neutral--800);
-	border-radius: var(--radius--12px) var(--radius--12px) var(--radius--20px)
-		var(--radius--20px);
-	flex-direction: column;
-	align-items: stretch;
-	padding: 28px 34px;
-	display: flex;
-}
-
-.paragraphSmall {
-	letter-spacing: -0.02em;
-	margin-bottom: 0px;
-	font-size: 12px;
-	line-height: 1.7;
 }
 
 .textColorNeutral300 {
@@ -176,13 +152,6 @@
 	align-items: center;
 	width: 16px;
 	height: 16px;
-	display: flex;
-}
-
-.horizontalDividerDash {
-	align-items: center;
-	width: 100%;
-	height: 2px;
 	display: flex;
 }
 
