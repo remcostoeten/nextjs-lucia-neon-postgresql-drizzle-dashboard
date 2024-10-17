@@ -1,0 +1,56 @@
+$HOVER_EFFECT_TRANSITION_DURATION: 0.3s;
+$HOVER_EFFECT_TRANSITION_TIMING: ease;
+$HOVER_EFFECT_TRANSFORM_AMOUNT: -2px;
+
+$HOVER_EFFECT_GRADIENT_SIZE_OUTER: 350px;
+$HOVER_EFFECT_GRADIENT_SIZE_INNER: 350px;
+$HOVER_EFFECT_GRADIENT_OPACITY_OUTER: 0.03;
+$HOVER_EFFECT_GRADIENT_OPACITY_INNER: 0.05;
+$HOVER_EFFECT_GRADIENT_SPREAD: 50%;
+
+.hover-effect {
+	position: relative;
+	transition: transform $HOVER_EFFECT_TRANSITION_DURATION
+		$HOVER_EFFECT_TRANSITION_TIMING;
+
+	&::before,
+	&::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		border-radius: inherit;
+		pointer-events: none;
+		opacity: 0;
+		transition: opacity $HOVER_EFFECT_TRANSITION_DURATION;
+	}
+
+	&::before {
+		background: radial-gradient(
+			#{$HOVER_EFFECT_GRADIENT_SIZE_OUTER} circle at var(--mouse-x) var(--mouse-y),
+			rgba(137, 119, 125, $HOVER_EFFECT_GRADIENT_OPACITY_OUTER),
+			transparent $HOVER_EFFECT_GRADIENT_SPREAD
+		);
+		z-index: 1;
+	}
+
+	&::after {
+		background: radial-gradient(
+			#{$HOVER_EFFECT_GRADIENT_SIZE_INNER} circle at var(--mouse-x) var(--mouse-y),
+			rgba(137, 119, 125, $HOVER_EFFECT_GRADIENT_OPACITY_INNER),
+			transparent $HOVER_EFFECT_GRADIENT_SPREAD
+		);
+		z-index: 2;
+	}
+
+	&:hover {
+		transform: translateY($HOVER_EFFECT_TRANSFORM_AMOUNT);
+
+		&::before,
+		&::after {
+			opacity: 1;
+		}
+	}
+}

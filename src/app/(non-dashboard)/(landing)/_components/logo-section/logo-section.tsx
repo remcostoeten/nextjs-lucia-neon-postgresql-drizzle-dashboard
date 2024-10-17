@@ -5,53 +5,53 @@ import Image from 'next/image'
 import HorizontalLine from '../horizontal-line'
 import styles from './logos.module.scss'
 
-export default function LogoSection() {
-	const logos = [
-		{
-			src: 'https://cdn.prod.website-files.com/65b8e9cb3c15d9b62f057c9a/65b8fcb604e608e9c9bea553_Logo%2004.webp',
-			width: 32
-		},
-		{
-			src: 'https://cdn.prod.website-files.com/65b8e9cb3c15d9b62f057c9a/65b8fcb65f79476f2d80d5b5_Logo%2007.webp',
-			width: 32
-		},
-		{
-			src: 'https://cdn.prod.website-files.com/65b8e9cb3c15d9b62f057c9a/65b8fcb6fa0980238f56800e_Logo%2002.webp',
-			width: 32
-		},
-		{
-			src: 'https://cdn.prod.website-files.com/65b8e9cb3c15d9b62f057c9a/65b8fcb6c2934f49cce3e541_Logo%2005.webp',
-			width: 32
-		},
-		{
-			src: 'https://cdn.prod.website-files.com/65b8e9cb3c15d9b62f057c9a/65b8fcb7478024bd67ee81d9_Logo%2001.webp',
-			width: 32
-		},
-		{
-			src: 'https://cdn.prod.website-files.com/65b8e9cb3c15d9b62f057c9a/65b8fcb774d33600cce11313_Logo%2006.webp',
-			width: 32
-		},
-		{
-			src: 'https://cdn.prod.website-files.com/65b8e9cb3c15d9b62f057c9a/65b8fcb85f1d9774b9242163_Logo%2003.webp',
-			width: 32.5
-		}
-	]
+export const logos = [
+	{
+		src: '/landing/icon-logos/logo1.webp',
+		width: 32
+	},
+	{
+		src: '/landing/icon-logos/logo2.webp',
+		width: 32
+	},
+	{
+		src: '/landing/icon-logos/logo3.webp',
+		width: 32
+	},
+	{
+		src: '/landing/icon-logos/logo4.webp',
+		width: 32
+	},
+	{
+		src: '/landing/icon-logos/logo5.webp',
+		width: 32
+	},
+	{
+		src: '/landing/icon-logos/logo6.webp',
+		width: 32
+	},
+	{
+		src: '/landing/icon-logos/logo7.webp',
+		width: 32.5
+	}
+]
 
+export default function LogoSection() {
 	return (
 		<div className="relative">
 			<div className={styles.containerLinesRegular}>
-				<div className={styles.containerRegular}>
+				<div className="containerRegular">
 					<motion.div
-						className={styles.logoWrapper}
+						className="logoWrapper"
 						id="style-HGdCz"
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{ duration: 0.75, delay: 0.75 }}
 					>
-						<div className="text-subtitle text-xxs ">
-							Used by 1,(one) user worldwide! Me! ✨
+						<div className="text-subtitle text-xs text-center mb-6 space-x-2">
+							<span className='span-gradient'>Used by 1,(one) user worldwide! Me! </span><span className='animate-pulse'>✨</span>
 						</div>
-						<div className={styles.logoGroup}>
+						<div className="flex flex-wrap justify-between gap-6">
 							{logos.map((logo, index) => (
 								<Image
 									key={index}
@@ -59,7 +59,7 @@ export default function LogoSection() {
 									width={logo.width}
 									height={32}
 									alt=""
-									className={styles.logo}
+									className="cursor-pointer transition-all duration-300 ease-in-out hover:scale-110"
 								/>
 							))}
 						</div>

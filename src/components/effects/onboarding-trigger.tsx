@@ -45,7 +45,7 @@ export default function OnboardingNotice({
 	}
 
 	return (
-		<div className="pointer-events-none fixed inset-x-0 bottom-0 z-10 sm:flex sm:justify-center sm:px-6 sm:pb-5 lg:px-8">
+		<div className="pointer-events-none fixed inset-x-0 bottom-0 z-10 sm:flex sm:justify-center sm:px-6 sm:pb-5 lg:px-8  ">
 			<AnimatePresence mode="wait">
 				{!showOnboarding ? (
 					<motion.div
@@ -55,7 +55,7 @@ export default function OnboardingNotice({
 						exit="exit"
 						variants={fadeInUp}
 						className={cn(
-							'pointer-events-auto flex items-center justify-between gap-x-6 bg-black/25 px-6 py-2.5 backdrop-blur-md sm:rounded-xl sm:py-3 sm:pr-3.5 sm:pl-4',
+							'pointer-events-auto flex border items-center justify-between gap-x-6 bg-card text-subtitle px-6 py-2.5 backdrop-blur-md sm:rounded-xl sm:py-3 sm:pr-3.5 sm:pl-4',
 							className
 						)}
 					>
@@ -63,7 +63,7 @@ export default function OnboardingNotice({
 							<button onClick={() => setShowOnboarding(true)}>
 								{children}
 								{badge && (
-									<span className="ml-1 cursor-pointer rounded-full bg-white px-2 py-0.5 font-medium text-black text-sm">
+									<span className="ml-1 cursor-pointer rounded-full px-2 py-0.5 font-medium text-black text-sm">
 										{badge}
 									</span>
 								)}

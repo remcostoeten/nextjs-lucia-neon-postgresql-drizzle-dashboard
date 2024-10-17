@@ -87,15 +87,6 @@ export async function fetchGitHubStats() {
 		const hours = commitDate.getHours().toString().padStart(2, '0')
 		const minutes = commitDate.getMinutes().toString().padStart(2, '0')
 
-		console.log('Fetched GitHub stats:', {
-			codingStreak,
-			totalCommits,
-			lastCommitDate,
-			relativeDay,
-			hours,
-			minutes
-		})
-
 		return {
 			codingStreak,
 			totalCommits,

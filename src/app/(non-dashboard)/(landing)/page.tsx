@@ -4,6 +4,7 @@ import Notice from '@/components/ui/notice'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import Content from './_components/content-gradient/gradient-content'
+import CTASection from './_components/cta-section/cta-section'
 import Feature from './_components/feature/feature'
 import Hero from './_components/hero/hero'
 import LogoSection from './_components/logo-section/logo-section'
@@ -60,6 +61,10 @@ export default function LandingPage() {
 
 			<FadeInSection>
 				<PoweredBy />
+			</FadeInSection>
+
+			<FadeInSection>
+				<CTASection />
 			</FadeInSection>
 		</>
 	)

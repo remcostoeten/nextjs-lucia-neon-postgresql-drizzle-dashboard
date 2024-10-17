@@ -14,6 +14,9 @@ import {
 	CardContent,
 	CardHeader,
 	CardTitle,
+	Dialog,
+	DialogContent,
+	DialogTrigger,
 	Input,
 	Table,
 	TableBody,
@@ -231,25 +234,32 @@ function ActivityFeed() {
 										).toLocaleString()}
 									</TableCell>
 									<TableCell>
-										{activity.metadata ? (
-											<Button
-												variant="link"
-												size="sm"
-												onClick={() =>
-													alert(
-														JSON.stringify(
-															activity.metadata,
-															null,
-															2
-														)
-													)
-												}
-											>
-												View Metadata
-											</Button>
-										) : (
-											'N/A'
-										)}
+										<Dialog>
+											{activity.metadata ? (
+												<DialogTrigger>
+													<Button
+														variant="link"
+														size="sm"
+														className="text-blue-500 hover:text-blue-700"
+													>
+														View Metadata
+													</Button>
+													<DialogContent>
+														<div className="p-4">
+															<pre className="text-sm text-gray-700">
+																{JSON.stringify(
+																	activity.metadata,
+																	null,
+																	2
+																)}
+															</pre>
+														</div>
+													</DialogContent>
+												</DialogTrigger>
+											) : (
+												'N/A'
+											)}
+										</Dialog>
 									</TableCell>
 								</TableRow>
 							))}

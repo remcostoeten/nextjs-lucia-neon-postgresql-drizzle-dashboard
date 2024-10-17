@@ -25,3 +25,7 @@
 .footer-rainbow {
 	transform: translate(-40px, -49px);
 }
+
+li:marker {
+	display: none !important;
+}

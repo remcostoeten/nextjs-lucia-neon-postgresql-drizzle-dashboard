@@ -40,7 +40,7 @@ function SkeletonLoader({
 	opacity?: number
 }) {
 	return (
-		<li
+		<div
 			className="shrink-0 basis-full lg:basis-[250px]"
 			style={{ opacity: `${opacity}%` }}
 		>
@@ -49,6 +49,6 @@ function SkeletonLoader({
 				<Skeleton noPulse={!animate} className="mt-2 h-6 w-full" />
 				<Skeleton noPulse={!animate} className="mt-1 h-4 w-[50px]" />
 			</div>
-		</li>
+		</div>
 	)
 }

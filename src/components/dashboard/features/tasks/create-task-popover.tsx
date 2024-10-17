@@ -102,7 +102,7 @@ export default function CreateTaskPopover({
 	const removeLabel = (label: string) => {
 		setNewTask({
 			...newTask,
-			labels: newTask.labels?.filter((l) => l !== label)
+			labels: newTask.labels?.filter(l => l !== label)
 		})
 	}
 
@@ -134,7 +134,7 @@ export default function CreateTaskPopover({
 						<Input
 							id="title"
 							value={newTask.title}
-							onChange={(e) =>
+							onChange={e =>
 								setNewTask({
 									...newTask,
 									title: e.target.value
@@ -150,7 +150,7 @@ export default function CreateTaskPopover({
 						<Textarea
 							id="content"
 							value={newTask.content}
-							onChange={(e) =>
+							onChange={e =>
 								setNewTask({
 									...newTask,
 									content: e.target.value
@@ -229,7 +229,7 @@ export default function CreateTaskPopover({
 								<Calendar
 									mode="single"
 									selected={newTask.dueDate || undefined}
-									onSelect={(date) =>
+									onSelect={date =>
 										setNewTask({
 											...newTask,
 											dueDate: date || null
@@ -246,7 +246,7 @@ export default function CreateTaskPopover({
 							Labels
 						</Label>
 						<div className="flex flex-wrap gap-2 mb-2">
-							{newTask.labels?.map((label) => (
+							{newTask.labels?.map(label => (
 								<span
 									key={label}
 									className="bg-blue-500 text-white px-2 py-1 rounded-full text-sm flex items-center"
@@ -267,7 +267,7 @@ export default function CreateTaskPopover({
 									<SelectValue placeholder="Add label" />
 								</SelectTrigger>
 								<SelectContent>
-									{labels.map((label) => (
+									{labels.map(label => (
 										<SelectItem key={label} value={label}>
 											{label}
 										</SelectItem>
@@ -277,9 +277,7 @@ export default function CreateTaskPopover({
 							<div className="flex">
 								<Input
 									value={newLabel}
-									onChange={(e) =>
-										setNewLabel(e.target.value)
-									}
+									onChange={e => setNewLabel(e.target.value)}
 									placeholder="New label"
 									className="bg-[#3C3C3C] text-white border-gray-600"
 								/>

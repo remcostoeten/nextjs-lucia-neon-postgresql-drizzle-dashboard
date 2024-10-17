@@ -1,18 +1,18 @@
-'use client'
+'use client';
 
-import { Flex } from '@/components/atoms'
-import { menuConfig } from '@/config/menu-config'
-import { createShortcutMap, useKeyboardShortcuts } from '@/core/hooks'
-import { AnimatePresence, motion } from 'framer-motion'
-import { ExternalLink, X } from 'lucide-react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { JSX, Key, useEffect, useState } from 'react'
-import { toast } from 'sonner'
-import HorizontalLine from '../horizontal-line'
-import Logo from './_components/logo'
-import SecondaryButton from './_components/sign-in-button'
-import { AuthLinkProps, BlogPostProps, ProductCategoryProps } from './header.d'
+import { Flex } from '@/components/atoms';
+import { menuConfig } from '@/config/menu-config';
+import { createShortcutMap, useKeyboardShortcuts } from '@/core/hooks';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ExternalLink, X } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { JSX, Key, useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
+import HorizontalLine from '../horizontal-line';
+import Logo from './_components/logo';
+import SecondaryButton from './_components/sign-in-button';
+import { AuthLinkProps, BlogPostProps, ProductCategoryProps } from './header.d';
 
 const ProductCategory = ({
 	name,
@@ -33,11 +33,10 @@ const ProductCategory = ({
 					target={link.external ? '_blank' : undefined}
 					rel={link.external ? 'noopener noreferrer' : undefined}
 					onClick={onLinkClick}
-					className={`block text-sm ${
-						pathname === link.href
-							? 'text-title font-medium'
-							: 'text-subtitle hover:text-title'
-					} mb-1 transition-colors duration-200 flex items-center`}
+					className={`block text-sm ${pathname === link.href
+						? 'text-title font-medium'
+						: 'text-subtitle hover:text-title'
+						} mb-1 transition-colors duration-200 flex items-center`}
 				>
 					{link.name}
 					{link.external && <ExternalLink className="ml-1 h-3 w-3" />}
@@ -87,11 +86,10 @@ const AuthLink = ({
 		<Link
 			href={href}
 			onClick={onLinkClick}
-			className={`flex flex-col items-center justify-center py-2 ${
-				pathname === href
-					? 'text-title'
-					: 'text-subtitle hover:text-title'
-			} transition-colors duration-200`}
+			className={`flex flex-col items-center justify-center py-2 ${pathname === href
+				? 'text-title'
+				: 'text-subtitle hover:text-title'
+				} transition-colors duration-200`}
 		>
 			<Icon
 				className={`mb-1 text-2xl ${pathname === href ? 'text-[#201c20]' : 'text-title'}`}
@@ -104,10 +102,17 @@ const AuthLink = ({
 export default function Header() {
 	const [isOpen, setIsOpen] = useState(false)
 	const [isScrolled, setIsScrolled] = useState(false)
+	const menuRef = useRef<HTMLDivElement>(null)
 
-	const toggleMenu = () => setIsOpen(!isOpen)
+	const toggleMenu = () => {
+		setIsOpen(!isOpen)
+		document.body.style.overflow = isOpen ? 'auto' : 'hidden'
+	}
 
-	const closeMenu = () => setIsOpen(false)
+	const closeMenu = () => {
+		setIsOpen(false)
+		document.body.style.overflow = 'auto'
+	}
 
 	const shortcuts = createShortcutMap([['escape', closeMenu]])
 	useKeyboardShortcuts(shortcuts)
@@ -164,6 +169,22 @@ export default function Header() {
 	}, [])
 
 	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+				closeMenu()
+			}
+		}
+
+		if (isOpen) {
+			document.addEventListener('mousedown', handleClickOutside)
+		}
+
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside)
+		}
+	}, [isOpen])
+
+	useEffect(() => {
 		const handleRouteChange = () => {
 			closeMenu()
 		}
@@ -171,6 +192,8 @@ export default function Header() {
 		window.addEventListener('routeChangeStart', handleRouteChange)
 		return () => {
 			window.removeEventListener('routeChangeStart', handleRouteChange)
+			// Ensure overflow is reset when component unmounts
+			document.body.style.overflow = 'auto'
 		}
 	}, [])
 
@@ -191,12 +214,12 @@ export default function Header() {
 					<Flex gap="4" align="center">
 						<SecondaryButton
 							href="/dashboard"
-							className={`${isScrolled ? '	 scale-75' : ''}`}
+							className={`${isScrolled ? '   scale-75' : ''}`}
 						>
 							Dashboard
 						</SecondaryButton>
 						<button
-							className="flex items-center justify-center p-2 {isScrolled ? 'rounded-lg' : ''}  rounded-lg bg-body border hover:bg-section transition-colors duration-200 ease-in-out"
+							className="flex items-center justify-center p-2 {isScrolled ? 'rounded-lg border' : 'border'}  rounded-lg bg-body hover:border hover:bg-section transition-colors duration-200 ease-in-out"
 							onClick={toggleMenu}
 						>
 							<svg
@@ -222,8 +245,9 @@ export default function Header() {
 			<AnimatePresence>
 				{isOpen && (
 					<motion.div
+						ref={menuRef}
 						variants={menuVariants}
-						className="max-w-[1128px] mx-auto px-4 md:px-theme py-6 grid grid-cowws-1 md:grid-cols-3 gap-8 relative max-h-[80vh] overflow-hidden w-screen md:w-full"
+						className="max-w-[1128px] mx-auto px-4 md:px-theme py-6 grid grid-cols-1 md:grid-cols-3 gap-8 relative max-h-[80vh] overflow-y-auto w-screen md:w-full"
 					>
 						<button
 							onClick={closeMenu}

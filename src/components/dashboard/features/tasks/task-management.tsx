@@ -89,7 +89,7 @@ export default function TaskManagement() {
 	}
 
 	const filteredAndSortedTasks = tasks
-		.filter((task) => {
+		.filter(task => {
 			const statusMatch = filter === 'all' || task.status === filter
 			const priorityMatch =
 				priorityFilter === 'all' || task.priority === priorityFilter
@@ -118,13 +118,13 @@ export default function TaskManagement() {
 
 	const tasksByStatus = {
 		backlog: filteredAndSortedTasks.filter(
-			(task) => task.status === 'backlog'
+			task => task.status === 'backlog'
 		),
 		'in-progress': filteredAndSortedTasks.filter(
-			(task) => task.status === 'in-progress'
+			task => task.status === 'in-progress'
 		),
 		completed: filteredAndSortedTasks.filter(
-			(task) => task.status === 'completed'
+			task => task.status === 'completed'
 		)
 	}
 
@@ -162,7 +162,7 @@ export default function TaskManagement() {
 								type="text"
 								placeholder="Search tasks..."
 								value={searchTerm}
-								onChange={(e) => setSearchTerm(e.target.value)}
+								onChange={e => setSearchTerm(e.target.value)}
 								className="pl-10 bg-[#2C2C2C] text-white border-gray-600 w-64"
 							/>
 						</div>
@@ -217,7 +217,7 @@ export default function TaskManagement() {
 							</SelectTrigger>
 							<SelectContent>
 								<SelectItem value="all">All Labels</SelectItem>
-								{labels.map((label) => (
+								{labels.map(label => (
 									<SelectItem key={label} value={label}>
 										{label}
 									</SelectItem>
@@ -255,7 +255,7 @@ export default function TaskManagement() {
 					className={`grid ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-3 gap-6' : 'grid-cols-1 gap-4'}`}
 				>
 					{(['backlog', 'in-progress', 'completed'] as const).map(
-						(status) => (
+						status => (
 							<motion.div
 								key={status}
 								initial={{ opacity: 0, y: 20 }}

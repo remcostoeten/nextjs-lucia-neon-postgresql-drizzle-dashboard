@@ -1,5 +1,4 @@
 import BackgroundGeneratorSidebar from '@/components/aside/route-specific/background-creator-aside'
-import DashboardSidebar from '@/components/aside/route-specific/dashboard-home-aside'
 import FoldersAside from '@/components/aside/route-specific/folders-aside'
 import ParsedOutputsSidebar from '@/components/aside/route-specific/ig-parsed-aside'
 import NotesSidebar from '@/components/aside/route-specific/notes-aside'
@@ -74,7 +73,6 @@ type SubSidebarConfig = {
 }
 
 export const subSidebarConfig: SubSidebarConfig = {
-	'/dashboard': { component: DashboardSidebar, allowToggle: true },
 	'/dashboard/settings': { component: SettingsSidebar, allowToggle: true },
 	'/dashboard/ig-follower-parser': {
 		component: ParsedOutputsSidebar,

@@ -108,9 +108,7 @@ export default function Footer() {
 						className={`${styles['w-layout-grid']} ${styles['footer-grid']} px-xl py-large`}
 					>
 						<div className="flex flex-col justify-between w-full max-w-[680px] gap-10 lg:max-w-full">
-							<div
-								className={`flex flex-col items-start gap-4 ${styles['custom-class']}`}
-							>
+							<div className="flex flex-col items-start gap-4">
 								<RainbowLine small className="footer-rainbow" />
 
 								<div className="mb-0 text-sm font-medium leading-[1.7] text-neutral-300">

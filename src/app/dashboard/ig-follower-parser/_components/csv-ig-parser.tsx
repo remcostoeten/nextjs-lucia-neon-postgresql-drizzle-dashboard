@@ -19,7 +19,7 @@ import {
 	Trash2
 } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import {
 	Button,
@@ -119,19 +119,27 @@ export default function CsvIgParser() {
 		let result: string[] = []
 
 		lines.forEach((line, index) => {
-			const trimmedLine = line.trim()
+			// Remove surrounding quotes from the entire line
+			const trimmedLine = line.trim().replace(/^"|"$/g, '')
+
 			if (trimmedLine) {
-				const parts = trimmedLine.split(',')
-				if (parts.length >= 2) {
-					const id = parts[0].trim()
-					const username = parts[1].trim()
-					if (
-						mode === 'both' ||
-						(mode === 'id' && id) ||
-						(mode === 'username' && username)
-					) {
-						result.push(`${id},${username}`)
-						processed++
+				// Use regex to match the pattern "User ID","Username" at the start of the line
+				const match = trimmedLine.match(/^"?(\d+)"?,"?([^,"]+)"?/)
+
+				if (match) {
+					const [, id, username] = match
+					// Validate username (allow letters, numbers, dots, underscores)
+					if (/^[a-zA-Z0-9._]+$/.test(username)) {
+						if (
+							mode === 'both' ||
+							(mode === 'id' && id) ||
+							(mode === 'username' && username)
+						) {
+							result.push(`${id},${username}`)
+							processed++
+						} else {
+							ignored++
+						}
 					} else {
 						ignored++
 					}

@@ -1,5 +1,6 @@
 'use client'
 
+import useMouseHoverEffect from '@/core/hooks/use-mouse-hover'
 import {
 	ArrowLeftFromLine,
 	ArrowRightFromLine,
@@ -7,7 +8,7 @@ import {
 	Cat,
 	Phone
 } from 'lucide-react'
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { SiHellofresh } from 'react-icons/si'
 
 type CardProps = {
@@ -44,28 +45,7 @@ function Card({ icon, title, description }: CardProps) {
 }
 
 export default function CardLayout() {
-	const cardsRef = useRef<HTMLDivElement>(null)
-
-	useEffect(() => {
-		const cards = cardsRef.current
-
-		function handleMouseMove(e: MouseEvent) {
-			for (const card of cards?.getElementsByClassName('card') || []) {
-				const rect = card.getBoundingClientRect(),
-					x = e.clientX - rect.left,
-					y = e.clientY - rect.top
-
-				;(card as HTMLElement).style.setProperty('--mouse-x', `${x}px`)
-				;(card as HTMLElement).style.setProperty('--mouse-y', `${y}px`)
-			}
-		}
-
-		cards?.addEventListener('mousemove', handleMouseMove)
-
-		return () => {
-			cards?.removeEventListener('mousemove', handleMouseMove)
-		}
-	}, [])
+	const cardsRef = useMouseHoverEffect()
 
 	return (
 		<div className="flex items-center justify-center min-h-screen bg-[var(--bg-color)] overflow-hidden p-0 m-0">

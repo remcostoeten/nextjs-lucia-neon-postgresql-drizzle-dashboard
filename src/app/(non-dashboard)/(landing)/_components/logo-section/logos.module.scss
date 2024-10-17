@@ -27,14 +27,6 @@
 	right: 0%;
 }
 
-.logoWrapper {
-	grid-column-gap: 24px;
-	grid-row-gap: 24px;
-	flex-direction: column;
-	align-items: center;
-	display: flex;
-	opacity: 1;
-}
 
 .lineVerticalLeft,
 .lineVerticalRight {
@@ -92,15 +84,7 @@
 	color: var(--base--white);
 }
 
-.logoGroup {
-	grid-column-gap: 24px;
-	grid-row-gap: 24px;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-	display: flex;
-}
+
 
 .logo {
 	cursor: pointer;
