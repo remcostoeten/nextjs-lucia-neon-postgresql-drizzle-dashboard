@@ -23,7 +23,7 @@ export default function Activities({
 	}
 
 	return (
-		<div className="mt-6 overflow-hidden rounded-xl border px-4 py-3">
+		<div className="-z-10 mt-6 overflow-hidden rounded-xl border px-4 py-3">
 			<div className="flex justify-between items-center">
 				<h2 className="text-lg font-semibold">Activities</h2>
 				<div className="flex items-center gap-2">

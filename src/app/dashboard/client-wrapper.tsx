@@ -4,7 +4,7 @@ import MainSidebar from '@/components/aside/sidebar'
 import SidebarSkeletonLoader from '@/components/aside/skeleton.sidebbar'
 import SubSidebarShell from '@/components/aside/sub-sidebar-shell'
 import MainContentWrapper from '@/components/base/layout/main-content-wrapper'
-import Navigation from '@/components/dashboard/navigation.client'
+import Navigation from '@/components/dashboard/layout/top-bar/top-bar'
 import { useMainSidebarStore, useSubSidebarStore } from '@/core/stores'
 import { ReactNode, Suspense } from 'react'
 

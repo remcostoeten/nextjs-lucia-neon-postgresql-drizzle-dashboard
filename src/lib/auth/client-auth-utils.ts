@@ -40,7 +40,7 @@ export const useClientAuth = () => {
 			if (!response.ok) {
 				throw new Error('Failed to sign out')
 			}
-			router.push('/login') // Redirect to login page after sign out
+			router.push('/') // Redirect to  page after sign out
 		} catch (error) {
 			console.error('Error signing out:', error)
 		}
@@ -49,7 +49,7 @@ export const useClientAuth = () => {
 	const clientCheckAuth = async () => {
 		const { user } = await getClientSession()
 		if (!user) {
-			router.push('/login')
+			router.push('/')
 		}
 		return user
 	}

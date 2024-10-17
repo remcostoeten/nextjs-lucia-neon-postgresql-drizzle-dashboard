@@ -47,7 +47,7 @@ export default function RecentActivities() {
 	const [activities] = useState<Activity[]>(generateMockActivities(10))
 
 	return (
-		<div className="mt-6 overflow-hidden rounded-xl border px-4 py-3">
+		<div className="-z-10 mt-6 overflow-hidden rounded-xl border px-4 py-3">
 			<div className="flex justify-between">
 				<h2 className="text-lg font-semibold">Recent Activities</h2>
 				<Button

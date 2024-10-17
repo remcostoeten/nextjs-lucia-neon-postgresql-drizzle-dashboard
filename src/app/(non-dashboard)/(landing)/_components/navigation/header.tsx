@@ -1,18 +1,18 @@
-'use client';
+'use client'
 
-import { Flex } from '@/components/atoms';
-import { menuConfig } from '@/config/menu-config';
-import { createShortcutMap, useKeyboardShortcuts } from '@/core/hooks';
-import { AnimatePresence, motion } from 'framer-motion';
-import { ExternalLink, X } from 'lucide-react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { JSX, Key, useEffect, useRef, useState } from 'react';
-import { toast } from 'sonner';
-import HorizontalLine from '../horizontal-line';
-import Logo from './_components/logo';
-import SecondaryButton from './_components/sign-in-button';
-import { AuthLinkProps, BlogPostProps, ProductCategoryProps } from './header.d';
+import { Flex } from '@/components/atoms'
+import { menuConfig } from '@/config/menu-config'
+import { createShortcutMap, useKeyboardShortcuts } from '@/core/hooks'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ExternalLink, X } from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { JSX, Key, useEffect, useRef, useState } from 'react'
+import { toast } from 'sonner'
+import HorizontalLine from '../horizontal-line'
+import Logo from './_components/logo'
+import SecondaryButton from './_components/sign-in-button'
+import { AuthLinkProps, BlogPostProps, ProductCategoryProps } from './header.d'
 
 const ProductCategory = ({
 	name,
@@ -33,10 +33,11 @@ const ProductCategory = ({
 					target={link.external ? '_blank' : undefined}
 					rel={link.external ? 'noopener noreferrer' : undefined}
 					onClick={onLinkClick}
-					className={`block text-sm ${pathname === link.href
-						? 'text-title font-medium'
-						: 'text-subtitle hover:text-title'
-						} mb-1 transition-colors duration-200 flex items-center`}
+					className={`block text-sm ${
+						pathname === link.href
+							? 'text-title font-medium'
+							: 'text-subtitle hover:text-title'
+					} mb-1 transition-colors duration-200 flex items-center`}
 				>
 					{link.name}
 					{link.external && <ExternalLink className="ml-1 h-3 w-3" />}
@@ -86,10 +87,11 @@ const AuthLink = ({
 		<Link
 			href={href}
 			onClick={onLinkClick}
-			className={`flex flex-col items-center justify-center py-2 ${pathname === href
-				? 'text-title'
-				: 'text-subtitle hover:text-title'
-				} transition-colors duration-200`}
+			className={`flex flex-col items-center justify-center py-2 ${
+				pathname === href
+					? 'text-title'
+					: 'text-subtitle hover:text-title'
+			} transition-colors duration-200`}
 		>
 			<Icon
 				className={`mb-1 text-2xl ${pathname === href ? 'text-[#201c20]' : 'text-title'}`}
@@ -170,7 +172,10 @@ export default function Header() {
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
-			if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+			if (
+				menuRef.current &&
+				!menuRef.current.contains(event.target as Node)
+			) {
 				closeMenu()
 			}
 		}

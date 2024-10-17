@@ -1,3 +1,4 @@
+import { siteConfig } from '@/config/site-config'
 import { Github, HelpCircle } from 'lucide-react'
 
 export const links = [
@@ -8,5 +9,10 @@ export const links = [
 
 export const IconTooltips = [
 	{ href: '#', label: 'Help', icon: HelpCircle, isButton: true },
-	{ href: '#', label: 'GitHub', icon: Github, isButton: true }
+	{
+		href: siteConfig.projects.main.url,
+		label: 'GitHub',
+		icon: Github,
+		isButton: true
+	}
 ]
