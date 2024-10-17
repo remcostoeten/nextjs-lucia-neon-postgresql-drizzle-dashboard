@@ -2,6 +2,7 @@
 
 import { GitHubIcon } from '@/components/base/Icons'
 import DeploymentInfo from '@/components/DeploymentInfo'
+import HeartbeatLoader from '@/components/effects/loaders/heartbeat-loader'
 import useMouseHoverEffect from '@/core/hooks/use-mouse-hover'
 import { Octokit } from '@octokit/rest'
 import { format } from 'date-fns'
@@ -24,10 +25,15 @@ import React, { useEffect, useState } from 'react'
 import {
 	Area,
 	AreaChart,
+	Cell,
+	Pie,
+	PieChart,
 	ResponsiveContainer,
 	Tooltip,
 	XAxis,
-	YAxis
+	YAxis,
+	BarChart,
+	Bar
 } from 'recharts'
 
 const octokit = new Octokit({ auth: process.env.NEXT_PUBLIC_GITHUB_TOKEN })
@@ -100,6 +106,22 @@ interface DeploymentData {
 		date: string
 		url: string
 	}
+}
+
+interface Contributor {
+	login: string
+	avatar_url: string
+	contributions: number
+}
+
+interface LanguageData {
+	name: string
+	value: number
+}
+
+interface IssueData {
+	open: number
+	closed: number
 }
 
 const MetricCard: React.FC<MetricCardProps> = ({ icon, label, value }) => {
@@ -282,6 +304,126 @@ const SearchBar: React.FC<{ onSearch: (query: string) => void }> = ({
 	</div>
 )
 
+const RecentContributors: React.FC<{ contributors: Contributor[] }> = ({ contributors }) => {
+	const hoverRef = useMouseHoverEffect()
+	return (
+		<div ref={hoverRef} className="bg-white-006 rounded-lg p-6 hover-effect mb-8">
+			<h3 className="text-xl font-semibold mb-4">Recent Contributors</h3>
+			<div className="flex flex-wrap gap-4">
+				{contributors.map((contributor) => (
+					<div key={contributor.login} className="flex items-center">
+						<img src={contributor.avatar_url} alt={contributor.login} className="w-10 h-10 rounded-full mr-2" />
+						<div>
+							<p className="text-subtitle">{contributor.login}</p>
+							<p className="text-sm text-text-muted">{contributor.contributions} commits</p>
+						</div>
+					</div>
+				))}
+			</div>
+		</div>
+	)
+}
+
+const FileChangeHeatmap: React.FC<{ data: any[] }> = ({ data }) => {
+	const hoverRef = useMouseHoverEffect()
+	return (
+		<div ref={hoverRef} className="bg-white-006 rounded-lg p-6 hover-effect mb-8">
+			<h3 className="text-xl font-semibold mb-4">File Change Heatmap</h3>
+			<ResponsiveContainer width="100%" height={300}>
+				<BarChart data={data}>
+					<XAxis dataKey="name" />
+					<YAxis />
+					<Tooltip />
+					<Bar dataKey="size" fill="#8884d8" />
+				</BarChart>
+			</ResponsiveContainer>
+		</div>
+	)
+}
+
+const PullRequestStats: React.FC<{ open: number, closed: number, merged: number }> = ({ open, closed, merged }) => {
+	const hoverRef = useMouseHoverEffect()
+	const data = [
+		{ name: 'Open', value: open },
+		{ name: 'Closed', value: closed },
+		{ name: 'Merged', value: merged },
+	]
+	const COLORS = ['#FFBB28', '#FF8042', '#00C49F']
+
+	return (
+		<div ref={hoverRef} className="bg-white-006 rounded-lg p-6 hover-effect mb-8">
+			<h3 className="text-xl font-semibold mb-4">Pull Request Statistics</h3>
+			<ResponsiveContainer width="100%" height={300}>
+				<PieChart>
+					<Pie
+						data={data}
+						cx="50%"
+						cy="50%"
+						labelLine={false}
+						outerRadius={80}
+						fill="#8884d8"
+						dataKey="value"
+						label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+					>
+						{data.map((entry, index) => (
+							<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+						))}
+					</Pie>
+					<Tooltip />
+				</PieChart>
+			</ResponsiveContainer>
+		</div>
+	)
+}
+
+const LanguageDistribution: React.FC<{ languages: LanguageData[] }> = ({ languages }) => {
+	const hoverRef = useMouseHoverEffect()
+	const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8']
+
+	return (
+		<div ref={hoverRef} className="bg-white-006 rounded-lg p-6 hover-effect mb-8">
+			<h3 className="text-xl font-semibold mb-4">Language Distribution</h3>
+			<ResponsiveContainer width="100%" height={300}>
+				<PieChart>
+					<Pie
+						data={languages}
+						cx="50%"
+						cy="50%"
+						outerRadius={80}
+						fill="#8884d8"
+						dataKey="value"
+						label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+					>
+						{languages.map((entry, index) => (
+							<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+						))}
+					</Pie>
+					<Tooltip />
+				</PieChart>
+			</ResponsiveContainer>
+		</div>
+	)
+}
+
+const IssueTrackerSummary: React.FC<{ issues: IssueData }> = ({ issues }) => {
+	const hoverRef = useMouseHoverEffect()
+	return (
+		<div ref={hoverRef} className="bg-white-006 rounded-lg p-6 hover-effect mb-8">
+			<h3 className="text-xl font-semibold mb-4">Issue Tracker Summary</h3>
+			<div className="flex justify-around">
+				<div className="text-center">
+					<p className="text-2xl font-bold text-green-500">{issues.open}</p>
+					<p className="text-subtitle">Open Issues</p>
+				</div>
+				<div className="text-center">
+					<p className="text-2xl font-bold text-blue-500">{issues.closed}</p>
+					<p className="text-subtitle">Closed Issues</p>
+				</div>
+			</div>
+		</div>
+	)
+}
+
 const ChangelogPage: React.FC = () => {
 	const [releases, setReleases] = useState<Release[]>([])
 	const [metrics, setMetrics] = useState<Metrics | null>(null)
@@ -298,6 +440,11 @@ const ChangelogPage: React.FC = () => {
 	const [deploymentData, setDeploymentData] = useState<DeploymentData | null>(
 		null
 	)
+	const [recentContributors, setRecentContributors] = useState<Contributor[]>([]);
+	const [fileChangeData, setFileChangeData] = useState<any[]>([]);
+	const [prStats, setPrStats] = useState({ open: 0, closed: 0, merged: 0 });
+	const [languageData, setLanguageData] = useState<LanguageData[]>([]);
+	const [issueData, setIssueData] = useState<IssueData>({ open: 0, closed: 0 });
 
 	const metricsRef = useMouseHoverEffect()
 
@@ -319,7 +466,7 @@ const ChangelogPage: React.FC = () => {
 					octokit.repos.listReleases({ owner, repo }),
 					octokit.repos.listCommits({ owner, repo }),
 					octokit.pulls.list({ owner, repo, state: 'all' }),
-					octokit.repos.getContributorsStats({ owner, repo })
+					octokit.repos.listContributors({ owner, repo })
 				])
 
 				setReleases(releasesResponse.data)
@@ -332,7 +479,7 @@ const ChangelogPage: React.FC = () => {
 				const closedPRs = prsResponse.data.filter(
 					pr => pr.state === 'closed'
 				).length
-				const contributors = contributorsResponse.data?.length || 0
+				const contributorCount = contributorsResponse.data?.length || 0  // Renamed from 'contributors'
 				const linesAdded = totalCommits * 10 // Simplified estimate
 				const linesDeleted = totalCommits * 5 // Simplified estimate
 
@@ -340,7 +487,7 @@ const ChangelogPage: React.FC = () => {
 					totalCommits,
 					openPRs,
 					closedPRs,
-					contributors,
+					contributors: contributorCount,  // Use the renamed variable here
 					linesAdded,
 					linesDeleted
 				})
@@ -395,12 +542,12 @@ const ChangelogPage: React.FC = () => {
 					date: format(
 						new Date(
 							Date.now() -
-								(weeklyData.length - 1 - index) *
-									7 *
-									24 *
-									60 *
-									60 *
-									1000
+							(weeklyData.length - 1 - index) *
+							7 *
+							24 *
+							60 *
+							60 *
+							1000
 						),
 						'MMM d'
 					),
@@ -433,6 +580,33 @@ const ChangelogPage: React.FC = () => {
 					},
 					latestDeployment
 				})
+
+				// Fetch recent contributors (this was likely the cause of the duplicate name)
+				const { data: recentContributors } = await octokit.repos.listContributors({ owner, repo, per_page: 5 })
+				setRecentContributors(recentContributors)
+
+				// Fetch file change data (simplified example)
+				const { data: files } = await octokit.repos.getContent({ owner, repo, path: '' })
+				setFileChangeData(files.map((file: any) => ({ name: file.name, size: file.size })))
+
+				// Fetch PR stats
+				const { data: prs } = await octokit.pulls.list({ owner, repo, state: 'all' })
+				setPrStats({
+					open: prs.filter(pr => pr.state === 'open').length,
+					closed: prs.filter(pr => pr.state === 'closed' && !pr.merged_at).length,
+					merged: prs.filter(pr => pr.merged_at).length
+				})
+
+				// Fetch language data
+				const { data: languages } = await octokit.repos.listLanguages({ owner, repo })
+				setLanguageData(Object.entries(languages).map(([name, value]) => ({ name, value })))
+
+				// Fetch issue data
+				const { data: issues } = await octokit.issues.listForRepo({ owner, repo, state: 'all' })
+				setIssueData({
+					open: issues.filter(issue => issue.state === 'open').length,
+					closed: issues.filter(issue => issue.state === 'closed').length
+				})
 			} catch (err) {
 				console.error('Error fetching data:', err)
 				setError(
@@ -454,7 +628,7 @@ const ChangelogPage: React.FC = () => {
 	if (loading) {
 		return (
 			<div className="min-h-screen bg-body text-title flex items-center justify-center">
-				<Loader2 className="animate-spin mr-2" />
+				<HeartbeatLoader/>
 				<span>Loading changelog...</span>
 			</div>
 		)
@@ -473,14 +647,18 @@ const ChangelogPage: React.FC = () => {
 			<h1 className="text-4xl font-bold mb-8">Changelog</h1>
 
 			{deploymentData && <DeploymentInfo {...deploymentData} />}
-
 			{projectSummary && <ProjectSummaryCard summary={projectSummary} />}
 
 			<SearchBar onSearch={handleSearch} />
 
-			{contributionData.length > 0 && (
-				<ContributionGraph data={contributionData} />
-			)}
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+				{contributionData.length > 0 && <ContributionGraph data={contributionData} />}
+				{recentContributors.length > 0 && <RecentContributors contributors={recentContributors} />}
+				{fileChangeData.length > 0 && <FileChangeHeatmap data={fileChangeData} />}
+				<PullRequestStats {...prStats} />
+				{languageData.length > 0 && <LanguageDistribution languages={languageData} />}
+				<IssueTrackerSummary issues={issueData} />
+			</div>
 
 			{metrics && (
 				<div

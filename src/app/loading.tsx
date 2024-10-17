@@ -1,9 +1,10 @@
-import { TwisterSpinner } from 'ui'
 import Center from '@/components/atoms/Center'
+import HeartbeatLoader from '@/components/effects/loaders/heartbeat-loader'
+
 export default function Loading() {
 	return (
 		<Center method="grid">
-			<TwisterSpinner />
+			<HeartbeatLoader />
 		</Center>
 	)
 }
