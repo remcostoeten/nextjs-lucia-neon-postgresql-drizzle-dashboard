@@ -1,11 +1,11 @@
 'use server'
 
 import { generateUUID } from '@/core/constants/generate-uuid'
-import { validateRequest } from '@/lib/auth/lucia'
-import { db } from '@/lib/db'
-import { folders } from '@/lib/db/schema'
+import { validateRequest } from '@/core/server/auth/lucia'
+import { folders } from '@/core/server/db/schema'
 import { FolderType } from '@/types/types.folder'
 import { logActivity } from 'actions'
+import { db } from 'db'
 import { and, eq, like, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 export async function createFolder(

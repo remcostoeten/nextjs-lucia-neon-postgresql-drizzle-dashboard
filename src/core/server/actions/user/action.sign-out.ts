@@ -2,8 +2,8 @@
 
 import { logActivity } from 'actions'
 import { redirect } from 'next/navigation'
-import { lucia, validateRequest } from '../../../../lib/auth/lucia'
-import { setAuthCookie } from '../../../../lib/auth/utils'
+import { validateRequest, lucia } from '../../auth/lucia'
+import { setAuthCookie } from '../../auth/utils'
 
 export async function signOutAction(formData: FormData) {
 	console.log('signOutAction called')

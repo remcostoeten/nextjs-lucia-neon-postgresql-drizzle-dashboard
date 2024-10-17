@@ -1,11 +1,10 @@
 import { cookies } from 'next/headers'
 import { cache } from 'react'
 
-import { db } from '@/lib/db/index'
+import { db, keys, sessions, users } from 'db'
 import { type Session, type User, Lucia } from 'lucia'
 
 import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle'
-import { keys, sessions, users } from '../db/schema/auth'
 
 export const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users, keys)
 

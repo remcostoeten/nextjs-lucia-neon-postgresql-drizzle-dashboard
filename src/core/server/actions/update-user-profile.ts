@@ -1,4 +1,4 @@
-import { db, users } from '@/lib/db'
+import { db, users } from '@/core/server/db'
 import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 

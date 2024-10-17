@@ -3,8 +3,8 @@ import { Flex } from '@/components/atoms/Flex'
 import EmptyStateMessage from '@/components/effects/empty-state-loader'
 import OnboardingNotice from '@/components/effects/onboarding-trigger'
 import ShowHide from '@/components/effects/show-hide'
-import { validateRequest } from '@/lib/auth/lucia'
-import { db, userProfiles } from '@/lib/db'
+import { validateRequest } from '@/core/server/auth/lucia'
+import { db, userProfiles } from '@/core/server/db'
 import { eq } from 'drizzle-orm'
 
 export default async function Dashboard() {

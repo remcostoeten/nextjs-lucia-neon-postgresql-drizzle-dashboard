@@ -1,8 +1,9 @@
 'use server'
 
-import { getUserAuth } from '@/lib/auth/utils'
-import { db } from '@/lib/db/index'
-import { activityLogs } from '@/lib/db/schema/activity'
+import { getUserAuth } from '@/core/server/auth/utils'
+import { activityLogs } from '@/core/server/db/schema/activity'
+
+import { db } from 'db'
 import { generateId } from 'lucia'
 
 export async function logActivity(

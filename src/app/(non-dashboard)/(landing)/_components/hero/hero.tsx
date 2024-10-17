@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from 'cn'
 import HorizontalLine from '../horizontal-line'
 import { ZenWealthContainer } from './ZenWealth/ZenWealthContainer'
 import styles from './hero.module.scss'

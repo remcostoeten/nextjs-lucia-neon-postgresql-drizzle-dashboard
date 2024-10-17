@@ -1,8 +1,8 @@
 'use server'
 
-import { getUserAuth } from '@/lib/auth/utils'
-import { db } from '@/lib/db'
-import { transactions } from '@/lib/db/schema'
+import { getUserAuth } from '@/core/server/auth/utils'
+
+import { db, transactions } from 'db'
 import { revalidatePath } from 'next/cache'
 
 export async function createTransaction(

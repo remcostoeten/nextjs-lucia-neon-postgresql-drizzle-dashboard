@@ -1,17 +1,16 @@
 'use server'
 
-import { db } from '@/lib/db/index'
 import { ActionResult } from '@/types/types.users'
+import { logActivity } from 'actions'
+import { db, users } from 'db'
 import { generateId } from 'lucia'
 import { Argon2id } from 'oslo/password'
-import { lucia } from '../../../../lib/auth/lucia'
+import { lucia } from '../../auth/lucia'
 import {
 	genericError,
 	setAuthCookie,
 	validateAuthFormData
-} from '../../../../lib/auth/utils'
-import { users } from '../../../../lib/db/schema/auth'
-import { logActivity } from 'actions'
+} from '../../auth/utils'
 
 export default async function signUpAction(
 	_: ActionResult,

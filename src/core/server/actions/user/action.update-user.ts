@@ -1,7 +1,10 @@
 'use server'
 
-import { db } from '@/lib/db/index'
-import { updateUserProfileSchema, userProfiles } from '@/lib/db/schema/auth'
+import {
+	updateUserProfileSchema,
+	userProfiles
+} from '@/core/server/db/schema/auth'
+import { db } from 'db'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'

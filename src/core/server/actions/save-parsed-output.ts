@@ -1,8 +1,9 @@
 'use server'
 
-import { getUserAuth } from '@/lib/auth/utils'
-import { db } from '@/lib/db/index'
-import { processedTexts } from '@/lib/db/schema'
+import { getUserAuth } from '@/core/server/auth/utils'
+import { processedTexts } from '@/core/server/db/schema'
+
+import { db } from 'db'
 import { eq } from 'drizzle-orm'
 
 export async function saveProcessedText(

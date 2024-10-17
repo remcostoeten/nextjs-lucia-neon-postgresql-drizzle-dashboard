@@ -1,5 +1,13 @@
 'use client'
 
+import { useClientAuth } from '@/core/server/auth/client-auth-utils'
+import { Task, TaskPriority, TaskStatus } from '@/types/tasks'
+import { deleteTask, getLabels, getTasks, updateTaskStatus } from 'actions'
+import { motion } from 'framer-motion'
+import { Grid, List, Plus, Search } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 import {
 	Button,
 	Input,
@@ -9,14 +17,6 @@ import {
 	SelectTrigger,
 	SelectValue
 } from 'ui'
-import { useClientAuth } from '@/lib/auth/client-auth-utils'
-import { Task, TaskPriority, TaskStatus } from '@/types/tasks'
-import { deleteTask, getLabels, getTasks, updateTaskStatus } from 'actions'
-import { motion } from 'framer-motion'
-import { Grid, List, Plus, Search } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 import CreateTaskPopover from './create-task-popover'
 import TaskList from './task-list'
 

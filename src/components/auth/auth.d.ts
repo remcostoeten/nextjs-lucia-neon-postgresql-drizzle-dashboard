@@ -1,4 +1,4 @@
-import { updateUserProfileSchema } from '@/lib/db/schema/auth'
+import { updateUserProfileSchema } from '@/core/server/db/schema/auth'
 import { z } from 'zod'
 
 export type WithUserInfoProps = {
