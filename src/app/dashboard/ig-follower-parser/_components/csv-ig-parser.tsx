@@ -1,9 +1,10 @@
 'use client'
 
 import CsvModifier from '@/components/aside/route-specific/ig-parsed-aside'
-import {
-	fetchParsedOutputById,
-	saveParsedOutput
+import                           {
+	fetchProcessedTextById,
+	fetchProcessedTexts,
+	saveProcessedText
 } from '@/core/server/actions/save-parsed-output'
 import { useClientAuth } from '@/core/server/auth/client-auth-utils'
 import confetti from 'canvas-confetti'
@@ -167,7 +168,7 @@ export default function CsvIgParser() {
 			toast.error('Please enter a title for the parsed output')
 			return
 		}
-		const result = await saveParsedOutput(output, noteTitle)
+		const result = await fetchProcessedTexts(output, noteTitle)
 		if (result.success) {
 			toast.success('Output saved successfully')
 			setNoteTitle('')
@@ -228,7 +229,7 @@ export default function CsvIgParser() {
 
 	const fetchSelectedOutput = async (outputId: string) => {
 		try {
-			const result = await fetchParsedOutputById(outputId)
+			const result = await fetchProcessedTextById(outputId)
 			if (result.success && result.data) {
 				setInput(result.data.content)
 				setOutput(result.data.content) // Also update the output state

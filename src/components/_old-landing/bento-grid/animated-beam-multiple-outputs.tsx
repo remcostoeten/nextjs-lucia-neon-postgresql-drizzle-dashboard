@@ -1,8 +1,8 @@
 'use client'
 
+import { AnimatedBeam } from '@/components/effects/animated-beam';
 import { cn } from 'cn'
 import React, { forwardRef, useRef } from 'react'
-import { AnimatedBeam } from '../../effects/animated-beam'
 
 const Circle = forwardRef<
 	HTMLDivElement,
