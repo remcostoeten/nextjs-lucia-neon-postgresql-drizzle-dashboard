@@ -28,6 +28,7 @@ type TaskDetailPopoverProps = {
 	onTaskUpdated: () => void
 	onTaskDeleted: (id: string) => void
 	allTasks: Task[]
+	isOpen: boolean
 }
 
 export default function TaskDetailPopover({

@@ -52,7 +52,6 @@ const FooterColumn: React.FC<FooterColumnProps> = React.memo(
 			<div className={styles['wrap-v-regular']}>
 				{links.map((link, index) => (
 					<a
-						onClick={e => handleClick(e, link.isBeta)}
 						key={`${link.text}-${index}`}
 						href={link.href}
 						className={`${styles['footer-link']} ${styles['w-inline-block']}`}

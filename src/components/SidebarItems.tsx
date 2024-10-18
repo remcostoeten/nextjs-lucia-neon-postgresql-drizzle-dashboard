@@ -20,13 +20,13 @@ const SidebarItems = () => {
 			<SidebarLinkGroup links={defaultLinks} />
 			{additionalLinks.length > 0
 				? additionalLinks.map(l => (
-					<SidebarLinkGroup
-						links={l.links}
-						title={l.title}
-						border
-						key={l.title}
-					/>
-				))
+						<SidebarLinkGroup
+							links={l.links}
+							title={l.title}
+							border
+							key={l.title}
+						/>
+					))
 				: null}
 		</>
 	)
@@ -79,7 +79,7 @@ const SidebarLink = ({
 	const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
 		if (link.disabled) {
 			e.preventDefault()
-			toast.error("This page is currently not available.")
+			toast.error('This page is currently not available.')
 		}
 	}
 

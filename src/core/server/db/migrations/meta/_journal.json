@@ -15,6 +15,13 @@
 			"when": 1729250275731,
 			"tag": "0001_chemical_infant_terrible",
 			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "5",
+			"when": 1729274115597,
+			"tag": "0002_amused_mentor",
+			"breakpoints": true
 		}
 	]
 }

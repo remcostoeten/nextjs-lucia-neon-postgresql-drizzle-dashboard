@@ -1,13 +1,6 @@
 'use client'
 
-import { useClientAuth } from '@/core/server/auth/client-auth-utils'
-import { Task, TaskPriority, TaskStatus } from '@/types/tasks'
-import { deleteTask, getTasks, updateTaskStatus } from 'actions'
-import { motion } from 'framer-motion'
-import { Grid, List, Plus, Search } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
+import EmptyStateMessage from '@/components/effects/empty-state-loader'
 import {
 	Button,
 	Input,
@@ -16,7 +9,17 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue
-} from 'ui'
+} from '@/components/ui'
+import { useClientAuth } from '@/core/server/auth/client-auth-utils'
+import { Board, Task, TaskPriority, TaskStatus } from '@/types/tasks'
+import { deleteTask, getBoards, getTasks, updateTaskStatus } from 'actions'
+import { motion } from 'framer-motion'
+import { Grid, List, Plus, PlusCircle, Search } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import FeatureTitle from '../../layout/page-intro'
+import CreateBoardModal from '../board/create-board'
 import CreateTaskPopover from './create-task-popover'
 import TaskDetailPopover from './task-detail-popover'
 import TaskList from './task-list'
@@ -27,8 +30,11 @@ export default function TaskManagement() {
 	const [selectedTask, setSelectedTask] = useState<Task | null>(null)
 	const [isDetailPopoverOpen, setIsDetailPopoverOpen] = useState(false)
 	const [tasks, setTasks] = useState<Task[]>([])
+	const [boards, setBoards] = useState<Board[]>([])
+	const [selectedBoard, setSelectedBoard] = useState<string | null>(null)
 	const [labels, setLabels] = useState<string[]>([])
 	const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false)
+	const [isCreateBoardOpen, setIsCreateBoardOpen] = useState(false)
 	const [filter, setFilter] = useState<TaskStatus | 'all'>('all')
 	const [priorityFilter, setPriorityFilter] = useState<TaskPriority | 'all'>(
 		'all'
@@ -39,7 +45,6 @@ export default function TaskManagement() {
 	)
 	const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid')
 	const [searchTerm, setSearchTerm] = useState('')
-	const [isOpen, setIsOpen] = useState(false)
 
 	useEffect(() => {
 		const fetchUserSession = async () => {
@@ -53,14 +58,38 @@ export default function TaskManagement() {
 
 	useEffect(() => {
 		if (userId) {
-			fetchTasks()
+			fetchBoards()
 		}
 	}, [userId])
 
-	const fetchTasks = async () => {
+	useEffect(() => {
+		if (userId && selectedBoard) {
+			fetchTasks()
+		}
+	}, [userId, selectedBoard])
+
+	const fetchBoards = async () => {
 		if (userId) {
-			const fetchedTasks = await getTasks(userId)
-			setTasks(fetchedTasks)
+			try {
+				const fetchedBoards = await getBoards(userId)
+				setBoards(fetchedBoards as Board[])
+				if (fetchedBoards.length > 0) {
+					setSelectedBoard(fetchedBoards[0].id)
+				}
+			} catch (error) {
+				console.error('Error fetching boards:', error)
+			}
+		}
+	}
+
+	const fetchTasks = async () => {
+		if (userId && selectedBoard) {
+			try {
+				const fetchedTasks = await getTasks(userId, selectedBoard)
+				setTasks(fetchedTasks)
+			} catch (error) {
+				console.error('Error fetching tasks:', error)
+			}
 		}
 	}
 
@@ -86,7 +115,7 @@ export default function TaskManagement() {
 	}
 
 	const filteredAndSortedTasks = tasks
-		.filter(task => {
+		.filter((task: Task) => {
 			const statusMatch = filter === 'all' || task.status === filter
 			const priorityMatch =
 				priorityFilter === 'all' || task.priority === priorityFilter
@@ -115,43 +144,80 @@ export default function TaskManagement() {
 
 	const tasksByStatus = {
 		backlog: filteredAndSortedTasks.filter(
-			task => task.status === 'backlog'
+			(task: Task) => task.status === 'backlog'
 		),
 		'in-progress': filteredAndSortedTasks.filter(
-			task => task.status === 'in-progress'
+			(task: Task) => task.status === 'in-progress'
 		),
 		completed: filteredAndSortedTasks.filter(
-			task => task.status === 'completed'
+			(task: Task) => task.status === 'completed'
 		)
 	}
 
-	return (
-		<DndProvider backend={HTML5Backend}>
-			<div className="container mx-auto p-4 bg-[#1C1C1C] text-white min-h-screen">
-				<h1 className="text-3xl font-bold mb-6">Task Management</h1>
+	const handleCreateBoard = () => {
+		setIsCreateBoardOpen(true)
+	}
+
+	const handleBoardCreated = (newBoard: Board) => {
+		setBoards([...boards, newBoard])
+		setSelectedBoard(newBoard.id)
+		setIsCreateBoardOpen(false)
+	}
+
+	const renderCreateBoardModal = () => (
+		<CreateBoardModal
+			isOpen={isCreateBoardOpen}
+			onClose={() => setIsCreateBoardOpen(false)}
+			onBoardCreated={handleBoardCreated}
+			userId={userId || ''}
+		/>
+	)
+
+	const renderContent = () => {
+		if (boards.length === 0) {
+			return (
+				<EmptyStateMessage
+					message="You don't have any boards created yet. Let's get started!"
+					cardCount={10}
+					animate={true}
+					opacity={75}
+					actions={[
+						{
+							label: 'Create Board',
+							onClick: handleCreateBoard,
+							icon: PlusCircle
+						}
+					]}
+				/>
+			)
+		}
+
+		return (
+			<>
+				<FeatureTitle
+					title="Task Management"
+					description="Manage your tasks efficiently with our intuitive interface."
+					action={() => setIsCreateBoardOpen(true)}
+					actionText="Create New Board"
+				/>
 				<div className="flex flex-wrap justify-between items-center mb-6 gap-4">
-					<div className="flex space-x-2">
-						<Button
-							variant={
-								viewMode === 'list' ? 'default' : 'outline'
-							}
-							onClick={() => setViewMode('list')}
-							className="bg-[#2C2C2C] text-white border-gray-600 hover:bg-[#3C3C3C]"
-						>
-							<List className="h-4 w-4 mr-2" />
-							List
-						</Button>
-						<Button
-							variant={
-								viewMode === 'grid' ? 'default' : 'outline'
-							}
-							onClick={() => setViewMode('grid')}
-							className="bg-[#2C2C2C] text-white border-gray-600 hover:bg-[#3C3C3C]"
-						>
-							<Grid className="h-4 w-4 mr-2" />
-							Grid
-						</Button>
-					</div>
+					<Select
+						value={selectedBoard || ''}
+						onValueChange={(value: string) =>
+							setSelectedBoard(value)
+						}
+					>
+						<SelectTrigger className="w-[200px] bg-[#2C2C2C] text-white border-gray-600">
+							<SelectValue placeholder="Select a board" />
+						</SelectTrigger>
+						<SelectContent>
+							{boards.map(board => (
+								<SelectItem key={board.id} value={board.id}>
+									{board.name}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
 					<div className="flex items-center space-x-2">
 						<div className="relative">
 							<Search className="h-4 w-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -242,12 +308,28 @@ export default function TaskManagement() {
 								</SelectItem>
 							</SelectContent>
 						</Select>
-						<CreateTaskPopover
-							onTaskCreated={fetchTasks}
-							labels={labels}
-							isOpen={isCreateTaskOpen}
-							setIsOpen={setIsCreateTaskOpen}
-						/>
+						<div className="flex space-x-2">
+							<Button
+								variant={
+									viewMode === 'list' ? 'default' : 'outline'
+								}
+								onClick={() => setViewMode('list')}
+								className="bg-[#2C2C2C] text-white border-gray-600 hover:bg-[#3C3C3C]"
+							>
+								<List className="h-4 w-4 mr-2" />
+								List
+							</Button>
+							<Button
+								variant={
+									viewMode === 'grid' ? 'default' : 'outline'
+								}
+								onClick={() => setViewMode('grid')}
+								className="bg-[#2C2C2C] text-white border-gray-600 hover:bg-[#3C3C3C]"
+							>
+								<Grid className="h-4 w-4 mr-2" />
+								Grid
+							</Button>
+						</div>
 					</div>
 				</div>
 				<div
@@ -267,11 +349,17 @@ export default function TaskManagement() {
 								</h2>
 								<TaskList
 									tasks={tasksByStatus[status]}
-									onTaskStatusChange={handleStatusChange}
+									status={status}
+									onStatusChange={handleStatusChange}
 									onTaskClick={task => {
 										setSelectedTask(task)
 										setIsDetailPopoverOpen(true)
 									}}
+									viewMode={viewMode}
+									onTaskUpdated={fetchTasks}
+									onTaskDeleted={handleDeleteTask}
+									allTasks={tasks}
+									selectedBoard={selectedBoard}
 								/>
 								{viewMode === 'grid' && (
 									<Button
@@ -289,6 +377,15 @@ export default function TaskManagement() {
 						)
 					)}
 				</div>
+			</>
+		)
+	}
+
+	return (
+		<DndProvider backend={HTML5Backend}>
+			<>
+				{renderContent()}
+				{renderCreateBoardModal()}
 				{selectedTask && (
 					<TaskDetailPopover
 						task={selectedTask}
@@ -300,7 +397,13 @@ export default function TaskManagement() {
 						isOpen={isDetailPopoverOpen}
 					/>
 				)}
-			</div>
+				<CreateTaskPopover
+					onTaskCreated={fetchTasks}
+					isOpen={isCreateTaskOpen}
+					setIsOpen={setIsCreateTaskOpen}
+					boardId={selectedBoard || undefined}
+				/>
+			</>
 		</DndProvider>
 	)
 }

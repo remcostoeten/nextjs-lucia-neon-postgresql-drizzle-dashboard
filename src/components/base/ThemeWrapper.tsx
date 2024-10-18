@@ -22,7 +22,6 @@ export default function ThemeWrapper({
 				enableSystem
 				disableTransitionOnChange
 			>
-				{' '}
 				<TooltipProvider>
 					<NextTopLoader
 						color="#89777d"
@@ -33,7 +32,7 @@ export default function ThemeWrapper({
 						initialPosition={0.55}
 					/>
 					<>
-						<Toaster richColors position="center" />
+						<Toaster richColors />
 						{children}
 					</>
 				</TooltipProvider>

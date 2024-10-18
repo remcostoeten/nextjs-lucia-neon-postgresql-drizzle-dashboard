@@ -1,7 +1,7 @@
 'use client'
 
 import { useClientAuth } from '@/core/server/auth/client-auth-utils'
-import { Task, TaskStatus } from '@/types/tasks'
+import { Task, TaskPriority, TaskStatus } from '@/types/tasks'
 import { createTask } from 'actions'
 import { format } from 'date-fns'
 import { CalendarIcon, Plus } from 'lucide-react'
@@ -24,26 +24,34 @@ import {
 } from 'ui'
 
 type CreateTaskPopoverProps = {
-	onTaskCreated: () => void
+	onTaskCreated: (createdTask: Task) => void
 	isOpen: boolean
 	setIsOpen: (isOpen: boolean) => void
+	boardId: string | undefined
 }
+
+type NewTaskData = Omit<Task, 'id' | 'createdAt' | 'updatedAt' | 'boardId'>
 
 export default function CreateTaskPopover({
 	onTaskCreated,
 	isOpen,
-	setIsOpen
+	setIsOpen,
+	boardId
 }: CreateTaskPopoverProps) {
 	const { getClientSession } = useClientAuth()
 	const [userId, setUserId] = useState<string | null>(null)
-	const [newTask, setNewTask] = useState<Partial<Task>>({
+	const [newTask, setNewTask] = useState<NewTaskData>({
 		title: '',
 		content: '',
-		status: 'backlog' as TaskStatus,
+		status: 'backlog',
 		labels: [],
 		subtasks: [],
 		dueDate: null,
-		priority: 1
+		priority: 1,
+		actualTime: null,
+		estimatedTime: null,
+		assignee: null,
+		dependencies: []
 	})
 
 	useEffect(() => {
@@ -62,34 +70,41 @@ export default function CreateTaskPopover({
 			return
 		}
 
+		if (!boardId) {
+			toast.error('No board selected. Please select a board.')
+			return
+		}
+
 		if (newTask.title && newTask.content) {
 			try {
-				const createdTask = await createTask(
-					userId,
-					newTask as Omit<Task, 'id' | 'createdAt' | 'updatedAt'>
-				)
+				const createdTask = await createTask(userId, {
+					...newTask,
+					boardId
+				})
 				if (createdTask && createdTask.id) {
 					setIsOpen(false)
 					setNewTask({
 						title: '',
 						content: '',
-						status: 'backlog' as TaskStatus,
+						status: 'backlog',
 						labels: [],
 						subtasks: [],
 						dueDate: null,
-						priority: 1
+						priority: 1,
+						actualTime: null,
+						estimatedTime: null,
+						assignee: null,
+						dependencies: []
 					})
-					onTaskCreated()
-					toast.success('Task created successfully!')
-				} else {
-					throw new Error('Failed to create task')
+					onTaskCreated(createdTask)
+					toast.success('Task created successfully')
 				}
 			} catch (error) {
-				console.error('Failed to create task:', error)
-				toast.error('Failed to create task. Please try again.')
+				console.error('Error creating task:', error)
+				toast.error('Failed to create task')
 			}
 		} else {
-			toast.error('Please provide a title and description for the task.')
+			toast.error('Please fill in all required fields')
 		}
 	}
 
@@ -169,11 +184,11 @@ export default function CreateTaskPopover({
 							Priority
 						</Label>
 						<Select
-							value={newTask.priority?.toString()}
+							value={newTask.priority.toString()}
 							onValueChange={(value: string) =>
 								setNewTask({
 									...newTask,
-									priority: parseInt(value)
+									priority: parseInt(value) as TaskPriority
 								})
 							}
 						>

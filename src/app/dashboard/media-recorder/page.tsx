@@ -1,12 +1,24 @@
 'use client'
 
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Progress } from "@/components/ui/progress"
-import { Slider } from "@/components/ui/slider"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { Progress } from '@/components/ui/progress'
+import { Slider } from '@/components/ui/slider'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useLocalStorage } from 'hooks'
-import { Camera, Download, Edit2, FastForward, Mic, Pause, Play, RotateCcw, Square, Trash, Volume2 } from 'lucide-react'
+import {
+	Camera,
+	Download,
+	Edit2,
+	FastForward,
+	Mic,
+	Pause,
+	Play,
+	RotateCcw,
+	Square,
+	Trash,
+	Volume2
+} from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
 interface AudioTrack {
@@ -21,7 +33,10 @@ export default function AudioVideoRecorder() {
 	const [isRecording, setIsRecording] = useState(false)
 	const [isPaused, setIsPaused] = useState(false)
 	const [recordingTime, setRecordingTime] = useState(0)
-	const [audioTracks, setAudioTracks] = useLocalStorage<AudioTrack[]>('audioTracks', [])
+	const [audioTracks, setAudioTracks] = useLocalStorage<AudioTrack[]>(
+		'audioTracks',
+		[]
+	)
 	const [currentTrack, setCurrentTrack] = useState<AudioTrack | null>(null)
 	const [isPlaying, setIsPlaying] = useState(false)
 	const [volume, setVolume] = useState(1)
@@ -67,10 +82,13 @@ export default function AudioVideoRecorder() {
 
 	const setupAudioContext = async () => {
 		try {
-			const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+			const stream = await navigator.mediaDevices.getUserMedia({
+				audio: true
+			})
 			audioContextRef.current = new AudioContext()
 			analyserRef.current = audioContextRef.current.createAnalyser()
-			const source = audioContextRef.current.createMediaStreamSource(stream)
+			const source =
+				audioContextRef.current.createMediaStreamSource(stream)
 			source.connect(analyserRef.current)
 			drawWaveform()
 		} catch (error) {
@@ -80,7 +98,9 @@ export default function AudioVideoRecorder() {
 
 	const setupWebcam = async () => {
 		try {
-			const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+			const stream = await navigator.mediaDevices.getUserMedia({
+				video: true
+			})
 			if (videoRef.current) {
 				videoRef.current.srcObject = stream
 			}
@@ -114,7 +134,12 @@ export default function AudioVideoRecorder() {
 			for (let i = 0; i < bufferLength; i++) {
 				const barHeight = dataArray[i] / 2
 
-				const gradient = canvasCtx.createLinearGradient(0, HEIGHT, 0, HEIGHT - barHeight)
+				const gradient = canvasCtx.createLinearGradient(
+					0,
+					HEIGHT,
+					0,
+					HEIGHT - barHeight
+				)
 				gradient.addColorStop(0, '#0070f3')
 				gradient.addColorStop(1, '#00a8ff')
 
@@ -130,9 +155,11 @@ export default function AudioVideoRecorder() {
 
 	const startRecording = async () => {
 		try {
-			const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+			const stream = await navigator.mediaDevices.getUserMedia({
+				audio: true
+			})
 			mediaRecorderRef.current = new MediaRecorder(stream)
-			mediaRecorderRef.current.ondataavailable = (event) => {
+			mediaRecorderRef.current.ondataavailable = event => {
 				if (event.data.size > 0) {
 					audioChunksRef.current.push(event.data)
 				}
@@ -173,7 +200,9 @@ export default function AudioVideoRecorder() {
 	}
 
 	const saveRecording = () => {
-		const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/mp3' })
+		const audioBlob = new Blob(audioChunksRef.current, {
+			type: 'audio/mp3'
+		})
 		const audioUrl = URL.createObjectURL(audioBlob)
 		const audio = new Audio(audioUrl)
 		audio.onloadedmetadata = () => {
@@ -265,9 +294,11 @@ export default function AudioVideoRecorder() {
 	}
 
 	const handleRenameTrack = (id: string, newName: string) => {
-		setAudioTracks(audioTracks.map(track =>
-			track.id === id ? { ...track, name: newName } : track
-		))
+		setAudioTracks(
+			audioTracks.map(track =>
+				track.id === id ? { ...track, name: newName } : track
+			)
+		)
 	}
 
 	const handleDownload = (track: AudioTrack) => {
@@ -281,7 +312,11 @@ export default function AudioVideoRecorder() {
 
 	return (
 		<div className="container mx-auto p-4 bg-background text-foreground">
-			<Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+			<Tabs
+				value={activeTab}
+				onValueChange={setActiveTab}
+				className="w-full"
+			>
 				<TabsList className="grid w-full grid-cols-2">
 					<TabsTrigger value="audio">Audio</TabsTrigger>
 					<TabsTrigger value="video">Video</TabsTrigger>
@@ -289,41 +324,67 @@ export default function AudioVideoRecorder() {
 				<TabsContent value="audio" className="mt-4">
 					<div className="space-y-4">
 						<div className="border rounded-lg p-4 bg-card">
-							<canvas ref={canvasRef} width="600" height="200" className="w-full rounded-md" />
+							<canvas
+								ref={canvasRef}
+								width="600"
+								height="200"
+								className="w-full rounded-md"
+							/>
 						</div>
 						<div className="flex items-center space-x-4">
 							{!isRecording && (
-								<Button onClick={startRecording} variant="default">
+								<Button
+									onClick={startRecording}
+									variant="default"
+								>
 									<Mic className="mr-2 h-4 w-4" />
 									Start Recording
 								</Button>
 							)}
 							{isRecording && !isPaused && (
-								<Button onClick={pauseRecording} variant="outline">
+								<Button
+									onClick={pauseRecording}
+									variant="outline"
+								>
 									<Pause className="mr-2 h-4 w-4" />
 									Pause Recording
 								</Button>
 							)}
 							{isRecording && isPaused && (
-								<Button onClick={resumeRecording} variant="outline">
+								<Button
+									onClick={resumeRecording}
+									variant="outline"
+								>
 									<Play className="mr-2 h-4 w-4" />
 									Resume Recording
 								</Button>
 							)}
 							{isRecording && (
-								<Button onClick={stopRecording} variant="destructive">
+								<Button
+									onClick={stopRecording}
+									variant="destructive"
+								>
 									<Square className="mr-2 h-4 w-4" />
 									Stop Recording
 								</Button>
 							)}
-							<div className="text-sm font-medium">Recording Time: {formatTime(recordingTime / 1000)}</div>
+							<div className="text-sm font-medium">
+								Recording Time:{' '}
+								{formatTime(recordingTime / 1000)}
+							</div>
 						</div>
 					</div>
 				</TabsContent>
 				<TabsContent value="video" className="mt-4">
 					<div className="space-y-4">
 						<div className="border rounded-lg p-4 bg-card">
-							<video ref={videoRef} autoPlay playsInline muted className="w-full rounded-md" />
+							<video
+								ref={videoRef}
+								autoPlay
+								playsInline
+								muted
+								className="w-full rounded-md"
+							/>
 						</div>
 						<Button disabled>
 							<Camera className="mr-2 h-4 w-4" />
@@ -335,27 +396,61 @@ export default function AudioVideoRecorder() {
 
 			<div className="mt-8">
 				<h2 className="text-2xl font-bold mb-4">Recorded Tracks</h2>
-				{audioTracks.map((track) => (
-					<div key={track.id} className="mb-4 p-4 border rounded bg-card">
+				{audioTracks.map(track => (
+					<div
+						key={track.id}
+						className="mb-4 p-4 border rounded bg-card"
+					>
 						<div className="flex items-center justify-between mb-2">
 							<div className="font-medium">{track.name}</div>
-							<div className="text-sm text-muted-foreground">{formatTime(track.duration)}</div>
+							<div className="text-sm text-muted-foreground">
+								{formatTime(track.duration)}
+							</div>
 						</div>
-						<Progress value={(currentTrack?.id === track.id ? currentTime : 0) / track.duration * 100} className="mb-2" />
+						<Progress
+							value={
+								((currentTrack?.id === track.id
+									? currentTime
+									: 0) /
+									track.duration) *
+								100
+							}
+							className="mb-2"
+						/>
 						<div className="flex items-center space-x-2">
-							<Button variant="outline" size="sm" onClick={() => setCurrentTrack(track)}>
+							<Button
+								variant="outline"
+								size="sm"
+								onClick={() => setCurrentTrack(track)}
+							>
 								<Play className="h-4 w-4" />
 							</Button>
-							<Button variant="outline" size="sm" onClick={() => {
-								const newName = prompt('Enter new name', track.name)
-								if (newName) handleRenameTrack(track.id, newName)
-							}}>
+							<Button
+								variant="outline"
+								size="sm"
+								onClick={() => {
+									const newName = prompt(
+										'Enter new name',
+										track.name
+									)
+									if (newName)
+										handleRenameTrack(track.id, newName)
+								}}
+							>
 								<Edit2 className="h-4 w-4" />
 							</Button>
-							<Button variant="outline" size="sm" onClick={() => handleDeleteTrack(track.id)}>
+							<Button
+								variant="outline"
+								size="sm"
+								onClick={() => handleDeleteTrack(track.id)}
+							>
 								<Trash className="h-4 w-4" />
 							</Button>
-							<Button variant="outline" size="sm" onClick={() => handleDownload(track)}>
+							<Button
+								variant="outline"
+								size="sm"
+								onClick={() => handleDownload(track)}
+							>
 								<Download className="h-4 w-4" />
 							</Button>
 						</div>
@@ -365,31 +460,49 @@ export default function AudioVideoRecorder() {
 
 			{currentTrack && (
 				<div className="mt-8 p-4 border rounded bg-card">
-					<h3 className="text-xl font-bold mb-2">Now Playing: {currentTrack.name}</h3>
+					<h3 className="text-xl font-bold mb-2">
+						Now Playing: {currentTrack.name}
+					</h3>
 					<audio
-
 						ref={audioRef}
 						src={currentTrack.url}
 						onEnded={() => setIsPlaying(false)}
 						onPlay={() => setIsPlaying(true)}
 						onPause={() => setIsPlaying(false)}
 					/>
-					<Progress value={currentTime / currentTrack.duration * 100} className="mb-2" />
+					<Progress
+						value={(currentTime / currentTrack.duration) * 100}
+						className="mb-2"
+					/>
 					<div className="flex items-center justify-between mb-2">
 						<div className="text-sm">{formatTime(currentTime)}</div>
-						<div className="text-sm">{formatTime(currentTrack.duration)}</div>
+						<div className="text-sm">
+							{formatTime(currentTrack.duration)}
+						</div>
 					</div>
 					<div className="flex items-center space-x-2 mb-4">
 						<Button onClick={handlePlayPause} variant="outline">
-							{isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+							{isPlaying ? (
+								<Pause className="h-4 w-4" />
+							) : (
+								<Play className="h-4 w-4" />
+							)}
 						</Button>
-						<Button onClick={toggleLoop} variant={isLooping ? "default" : "outline"}>
+						<Button
+							onClick={toggleLoop}
+							variant={isLooping ? 'default' : 'outline'}
+						>
 							<RotateCcw className="h-4 w-4" />
 						</Button>
 					</div>
 					<div className="space-y-4">
 						<div>
-							<Label htmlFor="volume" className="text-sm font-medium">Volume</Label>
+							<Label
+								htmlFor="volume"
+								className="text-sm font-medium"
+							>
+								Volume
+							</Label>
 							<div className="flex items-center space-x-2">
 								<Volume2 className="h-4 w-4" />
 								<Slider
@@ -404,7 +517,12 @@ export default function AudioVideoRecorder() {
 							</div>
 						</div>
 						<div>
-							<Label htmlFor="speed" className="text-sm font-medium">Playback Speed</Label>
+							<Label
+								htmlFor="speed"
+								className="text-sm font-medium"
+							>
+								Playback Speed
+							</Label>
 							<div className="flex items-center space-x-2">
 								<FastForward className="h-4 w-4" />
 								<Slider

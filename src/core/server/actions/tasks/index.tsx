@@ -1,7 +1,7 @@
 'use server'
 
 import { tasks } from '@/core/server/db/schema'
-import { NewTask, Subtask, Task, TaskStatus } from '@/types/tasks'
+import { Board, NewTask, Subtask, Task, TaskStatus } from '@/types/tasks'
 import { db } from 'db'
 import { eq } from 'drizzle-orm'
 

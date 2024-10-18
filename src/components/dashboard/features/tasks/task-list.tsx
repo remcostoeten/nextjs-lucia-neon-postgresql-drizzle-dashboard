@@ -203,6 +203,7 @@ export default function TaskList({
 					onTaskUpdated={onTaskUpdated}
 					onTaskDeleted={onTaskDeleted}
 					allTasks={allTasks}
+					isOpen={false}
 				/>
 			)}
 		</div>
