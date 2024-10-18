@@ -1,12 +1,10 @@
 'use client'
 
-import { useClientAuth } from '@/core/server/auth/client-auth-utils'
-import { Task, TaskStatus } from '@/types/tasks'
-import { addTaskLabel, createTask } from 'actions'
+import { Task, TaskPriority, TaskStatus } from '@/types/tasks'
+import { updateTask } from 'actions'
 import { format } from 'date-fns'
-import { CalendarIcon, Plus, X } from 'lucide-react'
+import { CalendarIcon, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
 import {
 	Button,
 	Calendar,
@@ -23,108 +21,98 @@ import {
 	Textarea
 } from 'ui'
 
-type CreateTaskPopoverProps = {
-	onTaskCreated: () => void
-	labels: string[]
+type TaskDetailPopoverProps = {
+	task: Task
+	onClose: () => void
+	onStatusChange: (id: string, status: TaskStatus) => void
+	onTaskUpdated: () => void
+	onTaskDeleted: (id: string) => void
+	allTasks: Task[]
 }
 
-export default function CreateTaskPopover({
-	onTaskCreated,
-	labels
-}: CreateTaskPopoverProps) {
-	const { getClientSession } = useClientAuth()
-	const [isOpen, setIsOpen] = useState(false)
-	const [userId, setUserId] = useState<string | null>(null)
-	const [newTask, setNewTask] = useState<Partial<Task>>({
-		title: '',
-		content: '',
-		status: 'backlog' as TaskStatus,
-		labels: [],
-		subtasks: [],
-		dueDate: null,
-		priority: 1
-	})
-	const [newLabel, setNewLabel] = useState('')
+export default function TaskDetailPopover({
+	task,
+	onClose,
+	onStatusChange,
+	onTaskUpdated,
+	onTaskDeleted,
+	allTasks
+}: TaskDetailPopoverProps) {
+	const [editedTask, setEditedTask] = useState<Task>(task)
+	const [newSubtask, setNewSubtask] = useState('')
+	const [newDependency, setNewDependency] = useState('')
 
 	useEffect(() => {
-		const fetchUserSession = async () => {
-			const session = await getClientSession()
-			if (session.user) {
-				setUserId(session.user.id)
-			}
-		}
-		fetchUserSession()
-	}, [])
+		setEditedTask(task)
+	}, [task])
 
-	const handleCreateTask = async () => {
-		if (!userId) {
-			toast.error('User not authenticated. Please sign in.')
-			return
-		}
-
-		if (newTask.title && newTask.content) {
-			try {
-				const createdTask = await createTask(
-					userId,
-					newTask as Omit<Task, 'id' | 'createdAt' | 'updatedAt'>
-				)
-				for (const label of newTask.labels || []) {
-					await addTaskLabel(createdTask.id, label)
-				}
-				setIsOpen(false)
-				setNewTask({
-					title: '',
-					content: '',
-					status: 'backlog' as TaskStatus,
-					labels: [],
-					subtasks: [],
-					dueDate: null,
-					priority: 1
-				})
-				onTaskCreated()
-				toast.success('Task created successfully!')
-			} catch (error) {
-				console.error('Failed to create task:', error)
-				toast.error('Failed to create task. Please try again.')
-			}
+	const handleUpdateTask = async () => {
+		try {
+			await updateTask(editedTask)
+			onTaskUpdated()
+			onClose()
+		} catch (error) {
+			console.error('Failed to update task:', error)
 		}
 	}
 
-	const addLabel = (label: string) => {
-		if (!newTask.labels?.includes(label)) {
-			setNewTask({
-				...newTask,
-				labels: [...(newTask.labels || []), label]
-			})
+	const addSubtask = () => {
+		if (newSubtask.trim() !== '') {
+			setEditedTask(prevTask => ({
+				...prevTask,
+				subtasks: [
+					...(prevTask.subtasks || []),
+					{ title: newSubtask, completed: false }
+				]
+			}))
+			setNewSubtask('')
 		}
 	}
 
-	const removeLabel = (label: string) => {
-		setNewTask({
-			...newTask,
-			labels: newTask.labels?.filter(l => l !== label)
-		})
+	const toggleSubtaskCompletion = (index: number) => {
+		setEditedTask(prevTask => ({
+			...prevTask,
+			subtasks: prevTask.subtasks.map((subtask, i) =>
+				i === index
+					? { ...subtask, completed: !subtask.completed }
+					: subtask
+			)
+		}))
 	}
 
-	const handleAddNewLabel = () => {
-		if (newLabel && !labels.includes(newLabel)) {
-			addLabel(newLabel)
-			setNewLabel('')
+	const removeSubtask = (index: number) => {
+		setEditedTask(prevTask => ({
+			...prevTask,
+			subtasks: prevTask.subtasks.filter((_, i) => i !== index)
+		}))
+	}
+
+	const addDependency = () => {
+		if (newDependency && !editedTask.dependencies.includes(newDependency)) {
+			setEditedTask(prevTask => ({
+				...prevTask,
+				dependencies: [...prevTask.dependencies, newDependency]
+			}))
+			setNewDependency('')
 		}
+	}
+
+	const removeDependency = (dependency: string) => {
+		setEditedTask(prevTask => ({
+			...prevTask,
+			dependencies: prevTask.dependencies.filter(
+				dep => dep !== dependency
+			)
+		}))
 	}
 
 	return (
-		<Popover open={isOpen} onOpenChange={setIsOpen}>
-			<PopoverTrigger asChild>
-				<Button className="bg-primary text-primary-foreground">
-					<Plus className="mr-2 h-4 w-4" /> Create Task
-				</Button>
-			</PopoverTrigger>
+		<Popover open={true} onOpenChange={onClose}>
 			<PopoverContent className="w-[400px] bg-[#2C2C2C] border-gray-600">
 				<div className="grid gap-4">
 					<div className="space-y-2">
 						<h4 className="font-medium leading-none text-white">
-							Create New Task
+							Edit Task
 						</h4>
 					</div>
 					<div className="grid gap-2">
@@ -133,10 +121,10 @@ export default function CreateTaskPopover({
 						</Label>
 						<Input
 							id="title"
-							value={newTask.title}
+							value={editedTask.title}
 							onChange={e =>
-								setNewTask({
-									...newTask,
+								setEditedTask({
+									...editedTask,
 									title: e.target.value
 								})
 							}
@@ -149,10 +137,10 @@ export default function CreateTaskPopover({
 						</Label>
 						<Textarea
 							id="content"
-							value={newTask.content}
+							value={editedTask.content}
 							onChange={e =>
-								setNewTask({
-									...newTask,
+								setEditedTask({
+									...editedTask,
 									content: e.target.value
 								})
 							}
@@ -165,9 +153,9 @@ export default function CreateTaskPopover({
 							Status
 						</Label>
 						<Select
-							value={newTask.status}
+							value={editedTask.status}
 							onValueChange={(value: TaskStatus) =>
-								setNewTask({ ...newTask, status: value })
+								setEditedTask({ ...editedTask, status: value })
 							}
 						>
 							<SelectTrigger className="bg-[#3C3C3C] text-white border-gray-600">
@@ -189,11 +177,11 @@ export default function CreateTaskPopover({
 							Priority
 						</Label>
 						<Select
-							value={newTask.priority?.toString()}
+							value={editedTask.priority.toString()}
 							onValueChange={(value: string) =>
-								setNewTask({
-									...newTask,
-									priority: parseInt(value)
+								setEditedTask({
+									...editedTask,
+									priority: parseInt(value) as TaskPriority
 								})
 							}
 						>
@@ -215,11 +203,17 @@ export default function CreateTaskPopover({
 							<PopoverTrigger asChild>
 								<Button
 									variant={'outline'}
-									className={`justify-start text-left font-normal bg-[#3C3C3C] text-white border-gray-600 ${!newTask.dueDate && 'text-muted-foreground'}`}
+									className={`justify-start text-left font-normal bg-[#3C3C3C] text-white border-gray-600 ${
+										!editedTask.dueDate &&
+										'text-muted-foreground'
+									}`}
 								>
 									<CalendarIcon className="mr-2 h-4 w-4" />
-									{newTask.dueDate ? (
-										format(newTask.dueDate, 'PPP')
+									{editedTask.dueDate ? (
+										format(
+											new Date(editedTask.dueDate),
+											'PPP'
+										)
 									) : (
 										<span>Pick a date</span>
 									)}
@@ -228,73 +222,126 @@ export default function CreateTaskPopover({
 							<PopoverContent className="w-auto p-0 bg-[#2C2C2C] border-gray-600">
 								<Calendar
 									mode="single"
-									selected={newTask.dueDate || undefined}
+									selected={
+										editedTask.dueDate
+											? new Date(editedTask.dueDate)
+											: undefined
+									}
 									onSelect={date =>
-										setNewTask({
-											...newTask,
-											dueDate: date || null
+										setEditedTask({
+											...editedTask,
+											dueDate: date?.toISOString() || null
 										})
 									}
-									initialFocus
 									className="bg-[#2C2C2C] text-white"
 								/>
 							</PopoverContent>
 						</Popover>
 					</div>
 					<div className="grid gap-2">
-						<Label htmlFor="labels" className="text-white">
-							Labels
+						<Label htmlFor="subtasks" className="text-white">
+							Subtasks
 						</Label>
-						<div className="flex flex-wrap gap-2 mb-2">
-							{newTask.labels?.map(label => (
-								<span
-									key={label}
-									className="bg-blue-500 text-white px-2 py-1 rounded-full text-sm flex items-center"
+						<div className="space-y-2">
+							{editedTask.subtasks?.map((subtask, index) => (
+								<div
+									key={index}
+									className="flex items-center gap-2"
 								>
-									{label}
-									<button
-										onClick={() => removeLabel(label)}
-										className="ml-1"
+									<input
+										type="checkbox"
+										checked={subtask.completed}
+										onChange={() =>
+											toggleSubtaskCompletion(index)
+										}
+										className="form-checkbox h-4 w-4 text-blue-600"
+									/>
+									<span
+										className={`flex-grow ${subtask.completed ? 'line-through text-gray-500' : 'text-white'}`}
 									>
-										<X className="h-3 w-3" />
-									</button>
-								</span>
+										{subtask.title}
+									</span>
+									<Button
+										size="sm"
+										variant="destructive"
+										onClick={() => removeSubtask(index)}
+									>
+										<X className="h-4 w-4" />
+									</Button>
+								</div>
 							))}
 						</div>
 						<div className="flex gap-2">
-							<Select onValueChange={addLabel}>
+							<Input
+								value={newSubtask}
+								onChange={e => setNewSubtask(e.target.value)}
+								placeholder="New subtask"
+								className="bg-[#3C3C3C] text-white border-gray-600"
+							/>
+							<Button onClick={addSubtask}>Add</Button>
+						</div>
+					</div>
+					<div className="grid gap-2">
+						<Label htmlFor="dependencies" className="text-white">
+							Dependencies
+						</Label>
+						<div className="space-y-2">
+							{editedTask.dependencies?.map(dependency => (
+								<div
+									key={dependency}
+									className="flex items-center gap-2"
+								>
+									<span className="flex-grow text-white">
+										{dependency}
+									</span>
+									<Button
+										size="sm"
+										variant="destructive"
+										onClick={() =>
+											removeDependency(dependency)
+										}
+									>
+										<X className="h-4 w-4" />
+									</Button>
+								</div>
+							))}
+						</div>
+						<div className="flex gap-2">
+							<Select onValueChange={setNewDependency}>
 								<SelectTrigger className="bg-[#3C3C3C] text-white border-gray-600">
-									<SelectValue placeholder="Add label" />
+									<SelectValue placeholder="Add dependency" />
 								</SelectTrigger>
 								<SelectContent>
-									{labels.map(label => (
-										<SelectItem key={label} value={label}>
-											{label}
-										</SelectItem>
-									))}
+									{allTasks &&
+										allTasks
+											.filter(t => t.id !== editedTask.id)
+											.map(task => (
+												<SelectItem
+													key={task.id}
+													value={task.id}
+												>
+													{task.title}
+												</SelectItem>
+											))}
 								</SelectContent>
 							</Select>
-							<div className="flex">
-								<Input
-									value={newLabel}
-									onChange={e => setNewLabel(e.target.value)}
-									placeholder="New label"
-									className="bg-[#3C3C3C] text-white border-gray-600"
-								/>
-								<Button
-									onClick={handleAddNewLabel}
-									className="ml-2"
-								>
-									Add
-								</Button>
-							</div>
+							<Button onClick={addDependency}>Add</Button>
 						</div>
 					</div>
 					<Button
-						onClick={handleCreateTask}
+						onClick={handleUpdateTask}
 						className="bg-primary text-primary-foreground"
 					>
-						Create Task
+						Update Task
+					</Button>
+					<Button
+						variant="destructive"
+						onClick={() => {
+							onTaskDeleted(editedTask.id)
+							onClose()
+						}}
+					>
+						Delete Task
 					</Button>
 				</div>
 			</PopoverContent>

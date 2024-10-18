@@ -1,9 +1,9 @@
 'use server'
 
-import { labels, taskLabels, tasks } from '@/core/server/db/schema'
+import { tasks } from '@/core/server/db/schema'
 import { NewTask, Subtask, Task, TaskStatus } from '@/types/tasks'
 import { db } from 'db'
-import { and, eq } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 
 export async function getTasks(userId: string): Promise<Task[]> {
 	try {
@@ -11,23 +11,15 @@ export async function getTasks(userId: string): Promise<Task[]> {
 			.select()
 			.from(tasks)
 			.where(eq(tasks.userId, userId))
-		const tasksWithLabels = await Promise.all(
+		const tasksWithSubtasks = await Promise.all(
 			tasksData.map(async task => {
-				const taskLabelsData = await db
-					.select()
-					.from(taskLabels)
-					.innerJoin(labels, eq(taskLabels.labelId, labels.id))
-					.where(eq(taskLabels.taskId, task.id))
-
-				const labelNames = taskLabelsData.map(tl => tl.label.name)
 				return {
 					...task,
-					labels: labelNames,
 					subtasks: task.subtasks as Subtask[]
 				}
 			})
 		)
-		return tasksWithLabels
+		return tasksWithSubtasks
 	} catch (error) {
 		console.error('Error fetching tasks:', error)
 		throw new Error('Failed to fetch tasks')
@@ -56,15 +48,8 @@ export async function createTask(
 			)
 		}
 
-		if (taskData.labels && taskData.labels.length > 0) {
-			for (const labelName of taskData.labels) {
-				await addTaskLabel(newTask.id, labelName)
-			}
-		}
-
 		return {
 			...newTask,
-			labels: taskData.labels || [],
 			subtasks: newTask.subtasks as Subtask[]
 		}
 	} catch (error) {
@@ -92,15 +77,8 @@ export async function updateTask(task: Task): Promise<Task> {
 			)
 		}
 
-		// Update labels
-		await db.delete(taskLabels).where(eq(taskLabels.taskId, task.id))
-		for (const labelName of task.labels) {
-			await addTaskLabel(task.id, labelName)
-		}
-
 		return {
 			...updatedTask,
-			labels: task.labels,
 			subtasks: updatedTask.subtasks as Subtask[]
 		}
 	} catch (error) {
@@ -111,7 +89,6 @@ export async function updateTask(task: Task): Promise<Task> {
 
 export async function deleteTask(taskId: string): Promise<void> {
 	try {
-		await db.delete(taskLabels).where(eq(taskLabels.taskId, taskId))
 		await db.delete(tasks).where(eq(tasks.id, taskId))
 	} catch (error) {
 		console.error('Error deleting task:', error)
@@ -161,61 +138,6 @@ export async function updateTaskPriority(
 	} catch (error) {
 		console.error('Error updating task priority:', error)
 		throw new Error('Failed to update task priority')
-	}
-}
-
-export async function addTaskLabel(
-	taskId: string,
-	labelName: string
-): Promise<void> {
-	try {
-		const [existingLabel] = await db
-			.select()
-			.from(labels)
-			.where(eq(labels.name, labelName))
-			.limit(1)
-
-		let labelId: string
-		if (existingLabel) {
-			labelId = existingLabel.id
-		} else {
-			const [newLabel] = await db
-				.insert(labels)
-				.values({ name: labelName })
-				.returning({ id: labels.id })
-			labelId = newLabel.id
-		}
-
-		await db.insert(taskLabels).values({ taskId, labelId })
-	} catch (error) {
-		console.error('Error adding task label:', error)
-		throw new Error('Failed to add task label')
-	}
-}
-
-export async function removeTaskLabel(
-	taskId: string,
-	labelName: string
-): Promise<void> {
-	try {
-		const [label] = await db
-			.select()
-			.from(labels)
-			.where(eq(labels.name, labelName))
-			.limit(1)
-		if (label) {
-			await db
-				.delete(taskLabels)
-				.where(
-					and(
-						eq(taskLabels.taskId, taskId),
-						eq(taskLabels.labelId, label.id)
-					)
-				)
-		}
-	} catch (error) {
-		console.error('Error removing task label:', error)
-		throw new Error('Failed to remove task label')
 	}
 }
 
@@ -309,19 +231,6 @@ export async function removeSubtask(
 	} catch (error) {
 		console.error('Error removing subtask:', error)
 		throw new Error('Failed to remove subtask')
-	}
-}
-
-export async function getLabels(userId: string): Promise<string[]> {
-	try {
-		const labelsData = await db
-			.select()
-			.from(labels)
-			.where(eq(labels.userId, userId))
-		return labelsData.map(label => label.name)
-	} catch (error) {
-		console.error('Error fetching labels:', error)
-		throw new Error('Failed to fetch labels')
 	}
 }
 

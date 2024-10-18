@@ -11,9 +11,9 @@ import {
 	PanelLeftOpen,
 	Settings2Icon
 } from 'lucide-react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { useSiteSettingsStore } from 'stores'
 import { MainSidebarProps, SidebarIconProps } from './types.sidear'
 
@@ -33,21 +33,33 @@ function useActivePath(): (path: string) => boolean {
 function SidebarIcon({ item, isActive, onClick }: SidebarIconProps) {
 	const [isHovered, setIsHovered] = useState<boolean>(false)
 	const { disableAllAnimations } = useSiteSettingsStore()
+	const router = useRouter()
 
 	const IconComponent = disableAllAnimations ? 'div' : motion.div
 
+	const handleClick = (e: React.MouseEvent) => {
+		if (item.disabled) {
+			e.preventDefault()
+			toast.error(`The ${item.name} feature is currently unavailable.`)
+		} else if (onClick) {
+			onClick()
+		} else {
+			router.push(item.path)
+		}
+	}
+
 	return (
 		<IconComponent
-			className={`relative z-50 flex items-center justify-center size-10 mb-2 rounded-md transition-colors duration-200 ${
-				isActive
+			className={`relative z-50 flex items-center justify-center size-10 mb-2 rounded-md transition-colors duration-200 ${isActive
 					? 'bg-body border-outline text-white'
 					: 'text-zinc-400 hover:text-title hover:bg-body'
-			} ${isHovered ? 'border border-outline' : ''}`}
+				} ${isHovered ? 'border border-outline' : ''} ${item.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+				}`}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 			whileHover={disableAllAnimations ? undefined : { scale: 1.1 }}
 			whileTap={disableAllAnimations ? undefined : { scale: 0.95 }}
-			onClick={onClick}
+			onClick={handleClick}
 		>
 			<item.icon className="w-4 h-4" aria-hidden="true" />
 			<span className="sr-only">{item.name}</span>
@@ -155,12 +167,10 @@ export default function MainSidebar({
 											: itemVariants
 									}
 								>
-									<Link href={item.path}>
-										<SidebarIcon
-											item={item}
-											isActive={isActivePath(item.path)}
-										/>
-									</Link>
+									<SidebarIcon
+										item={item}
+										isActive={isActivePath(item.path)}
+									/>
 								</ItemComponent>
 							))}
 						</nav>
@@ -213,9 +223,8 @@ export default function MainSidebar({
 				</SidebarComponent>
 				<ButtonComponent
 					onClick={toggleCollapse}
-					className={`fixed top-[66px] p-1 bg-body border border-outline text-white hover:bg-opacity-80 z-20 border-outline rounded-full shadow-xl backdrop-filter backdrop-blur-lg ${
-						isCollapsed ? 'left-2' : 'left-0'
-					} filter drop-shadow-[0_4px_6px_rgba(255,165,0,0.4)]`}
+					className={`fixed top-[66px] p-1 bg-body border border-outline text-white hover:bg-opacity-80 z-20 border-outline rounded-full shadow-xl backdrop-filter backdrop-blur-lg ${isCollapsed ? 'left-2' : 'left-0'
+						} filter drop-shadow-[0_4px_6px_rgba(255,165,0,0.4)]`}
 					aria-label={
 						isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'
 					}

@@ -2,7 +2,7 @@
 
 import { useClientAuth } from '@/core/server/auth/client-auth-utils'
 import { Task, TaskPriority, TaskStatus } from '@/types/tasks'
-import { deleteTask, getLabels, getTasks, updateTaskStatus } from 'actions'
+import { deleteTask, getTasks, updateTaskStatus } from 'actions'
 import { motion } from 'framer-motion'
 import { Grid, List, Plus, Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -18,13 +18,17 @@ import {
 	SelectValue
 } from 'ui'
 import CreateTaskPopover from './create-task-popover'
+import TaskDetailPopover from './task-detail-popover'
 import TaskList from './task-list'
 
 export default function TaskManagement() {
 	const { getClientSession } = useClientAuth()
 	const [userId, setUserId] = useState<string | null>(null)
+	const [selectedTask, setSelectedTask] = useState<Task | null>(null)
+	const [isDetailPopoverOpen, setIsDetailPopoverOpen] = useState(false)
 	const [tasks, setTasks] = useState<Task[]>([])
 	const [labels, setLabels] = useState<string[]>([])
+	const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false)
 	const [filter, setFilter] = useState<TaskStatus | 'all'>('all')
 	const [priorityFilter, setPriorityFilter] = useState<TaskPriority | 'all'>(
 		'all'
@@ -35,6 +39,7 @@ export default function TaskManagement() {
 	)
 	const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid')
 	const [searchTerm, setSearchTerm] = useState('')
+	const [isOpen, setIsOpen] = useState(false)
 
 	useEffect(() => {
 		const fetchUserSession = async () => {
@@ -49,7 +54,6 @@ export default function TaskManagement() {
 	useEffect(() => {
 		if (userId) {
 			fetchTasks()
-			fetchLabels()
 		}
 	}, [userId])
 
@@ -57,13 +61,6 @@ export default function TaskManagement() {
 		if (userId) {
 			const fetchedTasks = await getTasks(userId)
 			setTasks(fetchedTasks)
-		}
-	}
-
-	const fetchLabels = async () => {
-		if (userId) {
-			const fetchedLabels = await getLabels(userId)
-			setLabels(fetchedLabels)
 		}
 	}
 
@@ -248,6 +245,8 @@ export default function TaskManagement() {
 						<CreateTaskPopover
 							onTaskCreated={fetchTasks}
 							labels={labels}
+							isOpen={isCreateTaskOpen}
+							setIsOpen={setIsCreateTaskOpen}
 						/>
 					</div>
 				</div>
@@ -268,18 +267,19 @@ export default function TaskManagement() {
 								</h2>
 								<TaskList
 									tasks={tasksByStatus[status]}
-									status={status}
-									onStatusChange={handleStatusChange}
-									viewMode={viewMode}
-									onTaskUpdated={fetchTasks}
-									onTaskDeleted={handleDeleteTask}
-									allTasks={tasks}
+									onTaskStatusChange={handleStatusChange}
+									onTaskClick={task => {
+										setSelectedTask(task)
+										setIsDetailPopoverOpen(true)
+									}}
 								/>
 								{viewMode === 'grid' && (
 									<Button
 										variant="outline"
 										className="w-full mt-4 bg-[#3C3C3C] text-white border-gray-600 hover:bg-[#4C4C4C]"
-										onClick={() => setIsOpen(true)}
+										onClick={() =>
+											setIsCreateTaskOpen(true)
+										}
 									>
 										<Plus className="h-4 w-4 mr-2" />
 										Add Task
@@ -289,6 +289,17 @@ export default function TaskManagement() {
 						)
 					)}
 				</div>
+				{selectedTask && (
+					<TaskDetailPopover
+						task={selectedTask}
+						onClose={() => setIsDetailPopoverOpen(false)}
+						onStatusChange={handleStatusChange}
+						onTaskUpdated={fetchTasks}
+						onTaskDeleted={handleDeleteTask}
+						allTasks={tasks}
+						isOpen={isDetailPopoverOpen}
+					/>
+				)}
 			</div>
 		</DndProvider>
 	)

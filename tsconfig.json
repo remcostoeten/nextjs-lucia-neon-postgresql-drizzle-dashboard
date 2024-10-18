@@ -10,6 +10,7 @@
 		"module": "esnext",
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
+		"noImplicitAny": false,
 		"isolatedModules": true,
 		"jsx": "preserve",
 		"incremental": true,

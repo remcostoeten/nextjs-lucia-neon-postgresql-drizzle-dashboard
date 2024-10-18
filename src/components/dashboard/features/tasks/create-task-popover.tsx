@@ -2,9 +2,9 @@
 
 import { useClientAuth } from '@/core/server/auth/client-auth-utils'
 import { Task, TaskStatus } from '@/types/tasks'
-import { addTaskLabel, createTask } from 'actions'
+import { createTask } from 'actions'
 import { format } from 'date-fns'
-import { CalendarIcon, Plus, X } from 'lucide-react'
+import { CalendarIcon, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import {
@@ -25,15 +25,16 @@ import {
 
 type CreateTaskPopoverProps = {
 	onTaskCreated: () => void
-	labels: string[]
+	isOpen: boolean
+	setIsOpen: (isOpen: boolean) => void
 }
 
 export default function CreateTaskPopover({
 	onTaskCreated,
-	labels
+	isOpen,
+	setIsOpen
 }: CreateTaskPopoverProps) {
 	const { getClientSession } = useClientAuth()
-	const [isOpen, setIsOpen] = useState(false)
 	const [userId, setUserId] = useState<string | null>(null)
 	const [newTask, setNewTask] = useState<Partial<Task>>({
 		title: '',
@@ -44,7 +45,6 @@ export default function CreateTaskPopover({
 		dueDate: null,
 		priority: 1
 	})
-	const [newLabel, setNewLabel] = useState('')
 
 	useEffect(() => {
 		const fetchUserSession = async () => {
@@ -68,48 +68,28 @@ export default function CreateTaskPopover({
 					userId,
 					newTask as Omit<Task, 'id' | 'createdAt' | 'updatedAt'>
 				)
-				for (const label of newTask.labels || []) {
-					await addTaskLabel(createdTask.id, label)
+				if (createdTask && createdTask.id) {
+					setIsOpen(false)
+					setNewTask({
+						title: '',
+						content: '',
+						status: 'backlog' as TaskStatus,
+						labels: [],
+						subtasks: [],
+						dueDate: null,
+						priority: 1
+					})
+					onTaskCreated()
+					toast.success('Task created successfully!')
+				} else {
+					throw new Error('Failed to create task')
 				}
-				setIsOpen(false)
-				setNewTask({
-					title: '',
-					content: '',
-					status: 'backlog' as TaskStatus,
-					labels: [],
-					subtasks: [],
-					dueDate: null,
-					priority: 1
-				})
-				onTaskCreated()
-				toast.success('Task created successfully!')
 			} catch (error) {
 				console.error('Failed to create task:', error)
 				toast.error('Failed to create task. Please try again.')
 			}
-		}
-	}
-
-	const addLabel = (label: string) => {
-		if (!newTask.labels?.includes(label)) {
-			setNewTask({
-				...newTask,
-				labels: [...(newTask.labels || []), label]
-			})
-		}
-	}
-
-	const removeLabel = (label: string) => {
-		setNewTask({
-			...newTask,
-			labels: newTask.labels?.filter(l => l !== label)
-		})
-	}
-
-	const handleAddNewLabel = () => {
-		if (newLabel && !labels.includes(newLabel)) {
-			addLabel(newLabel)
-			setNewLabel('')
+		} else {
+			toast.error('Please provide a title and description for the task.')
 		}
 	}
 
@@ -240,55 +220,6 @@ export default function CreateTaskPopover({
 								/>
 							</PopoverContent>
 						</Popover>
-					</div>
-					<div className="grid gap-2">
-						<Label htmlFor="labels" className="text-white">
-							Labels
-						</Label>
-						<div className="flex flex-wrap gap-2 mb-2">
-							{newTask.labels?.map(label => (
-								<span
-									key={label}
-									className="bg-blue-500 text-white px-2 py-1 rounded-full text-sm flex items-center"
-								>
-									{label}
-									<button
-										onClick={() => removeLabel(label)}
-										className="ml-1"
-									>
-										<X className="h-3 w-3" />
-									</button>
-								</span>
-							))}
-						</div>
-						<div className="flex gap-2">
-							<Select onValueChange={addLabel}>
-								<SelectTrigger className="bg-[#3C3C3C] text-white border-gray-600">
-									<SelectValue placeholder="Add label" />
-								</SelectTrigger>
-								<SelectContent>
-									{labels.map(label => (
-										<SelectItem key={label} value={label}>
-											{label}
-										</SelectItem>
-									))}
-								</SelectContent>
-							</Select>
-							<div className="flex">
-								<Input
-									value={newLabel}
-									onChange={e => setNewLabel(e.target.value)}
-									placeholder="New label"
-									className="bg-[#3C3C3C] text-white border-gray-600"
-								/>
-								<Button
-									onClick={handleAddNewLabel}
-									className="ml-2"
-								>
-									Add
-								</Button>
-							</div>
-						</div>
 					</div>
 					<Button
 						onClick={handleCreateTask}

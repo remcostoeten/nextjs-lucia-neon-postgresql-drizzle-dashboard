@@ -5,13 +5,16 @@ import { drizzle } from 'drizzle-orm/neon-http'
 // Import all schemas and relations
 import * as activity from './schema/activity'
 import * as auth from './schema/auth'
+import { chatsSchema } from './schema/chats'
 import * as folders from './schema/folders'
 import * as notes from './schema/notes'
+
 const schema = {
 	...auth,
 	...folders,
 	...notes,
-	...activity
+	...activity,
+	...chatsSchema
 }
 
 let sql: NeonQueryFunction<boolean, boolean>
@@ -28,7 +31,7 @@ export { db, pool, sql }
 
 export * from './schema/activity'
 export * from './schema/auth'
-export * from './schema/folders'
-// export * from './schema/notes'
+export * from './schema/chats'
 export * from './schema/finance'
+export * from './schema/folders'
 export * from './schema/processed-text'

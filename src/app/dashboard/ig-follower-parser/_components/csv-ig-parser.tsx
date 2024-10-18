@@ -1,7 +1,7 @@
 'use client'
 
 import CsvModifier from '@/components/aside/route-specific/ig-parsed-aside'
-import                           {
+import {
 	fetchProcessedTextById,
 	fetchProcessedTexts,
 	saveProcessedText

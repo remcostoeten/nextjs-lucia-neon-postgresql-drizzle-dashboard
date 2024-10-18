@@ -1,17 +1,17 @@
 'use client'
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-
-import { LucideIcon } from 'lucide-react'
-
 import { additionalLinks, defaultLinks } from '@/config/nav'
 import { cn } from 'cn'
+import { LucideIcon } from 'lucide-react'
+import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 export interface SidebarLink {
 	title: string
 	href: string
 	icon: LucideIcon
+	disabled?: boolean
 }
 
 const SidebarItems = () => {
@@ -20,17 +20,18 @@ const SidebarItems = () => {
 			<SidebarLinkGroup links={defaultLinks} />
 			{additionalLinks.length > 0
 				? additionalLinks.map(l => (
-						<SidebarLinkGroup
-							links={l.links}
-							title={l.title}
-							border
-							key={l.title}
-						/>
-					))
+					<SidebarLinkGroup
+						links={l.links}
+						title={l.title}
+						border
+						key={l.title}
+					/>
+				))
 				: null}
 		</>
 	)
 }
+
 export default SidebarItems
 
 const SidebarLinkGroup = ({
@@ -65,6 +66,7 @@ const SidebarLinkGroup = ({
 		</div>
 	)
 }
+
 const SidebarLink = ({
 	link,
 	active
@@ -72,12 +74,22 @@ const SidebarLink = ({
 	link: SidebarLink
 	active: boolean
 }) => {
+	const router = useRouter()
+
+	const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+		if (link.disabled) {
+			e.preventDefault()
+			toast.error("This page is currently not available.")
+		}
+	}
+
 	return (
 		<Link
 			href={link.href}
-			className={`group transition-colors p-2 inline-block hover:bg-popover hover:text-primary text-muted-foreground text-xs hover:shadow rounded-md w-full${
-				active ? ' text-primary font-semibold' : ''
-			}`}
+			onClick={handleClick}
+			className={`group transition-colors p-2 inline-block hover:bg-popover hover:text-primary text-muted-foreground text-xs hover:shadow rounded-md w-full
+        ${active ? ' text-primary font-semibold' : ''}
+        ${link.disabled ? ' opacity-50 cursor-not-allowed' : ''}`}
 		>
 			<div className="flex items-center">
 				<div

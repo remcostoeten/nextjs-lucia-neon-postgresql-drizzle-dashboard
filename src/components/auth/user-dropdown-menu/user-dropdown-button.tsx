@@ -6,7 +6,7 @@ import {
 } from '@/core/server/auth/client-auth-utils'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import UserDropdownMenu from './user-dropdown-menu'
 
 const COLORS = {
@@ -33,6 +33,7 @@ export default function UserDropdownButton({
 	const [isOpen, setIsOpen] = useState(false)
 	const [session, setSession] = useState<ClientAuthSession | null>(null)
 	const { getClientSession, clientSignOut } = useClientAuth()
+	const dropdownRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
 		async function fetchSession() {
@@ -41,6 +42,25 @@ export default function UserDropdownButton({
 		}
 		fetchSession()
 	}, [])
+
+	useEffect(() => {
+		const handleOutsideClick = (event: MouseEvent) => {
+			if (
+				dropdownRef.current &&
+				!dropdownRef.current.contains(event.target as Node)
+			) {
+				setIsOpen(false)
+			}
+		}
+
+		if (isOpen) {
+			document.addEventListener('mousedown', handleOutsideClick)
+		}
+
+		return () => {
+			document.removeEventListener('mousedown', handleOutsideClick)
+		}
+	}, [isOpen])
 
 	function toggleDropdown() {
 		setIsOpen(!isOpen)
@@ -66,7 +86,7 @@ export default function UserDropdownButton({
 	const initials = displayName.slice(0, 2).toUpperCase()
 
 	return (
-		<div className={`relative ${className}`}>
+		<div className={`relative ${className}`} ref={dropdownRef}>
 			<button
 				type="button"
 				id="accountDropdown"
@@ -106,7 +126,7 @@ export default function UserDropdownButton({
 						transition={{ duration: 0.2 }}
 						className="absolute right-0 mt-2 origin-top-right"
 					>
-						<UserDropdownMenu />
+						<UserDropdownMenu onSignOut={handleSignOut} />
 					</motion.div>
 				)}
 			</AnimatePresence>
