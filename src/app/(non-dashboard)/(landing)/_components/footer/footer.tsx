@@ -4,34 +4,16 @@ import { siteConfig } from '@/config/site-config'
 import React from 'react'
 import HorizontalLine from '../horizontal-line'
 import RainbowLine from '../rainbow-line'
+import { FooterColumnProps, FooterContactLinkProps } from './footer.d'
 import styles from './footer.module.scss'
 
-type FooterLink = {
-	text: string
-	href: string
-	isNew?: boolean
-	isBeta?: boolean
-	external?: boolean
-}
 
-type FooterColumnProps = {
-	title: string
-	links: FooterLink[]
-}
-
-type FooterContactLinkProps = {
-	href: string
-	icon: React.ReactNode
-	text: string
-	target?: string
-	external?: boolean
-}
-const FooterContactLink: React.FC<FooterContactLinkProps> = React.memo(
-	({ href, icon, target, text, external }) => (
+function FooterContactLink({ href, icon, target, text, external }: FooterContactLinkProps) {
+	return (
 		<a
 			href={href}
 			target={external ? '_blank' : undefined}
-			className={`${styles['footer-contact-link']} ${styles['w-inline-block']}`}
+			className="flex items-center text-title hover:text-title-dark trans-300"
 		>
 			<div className={`${styles['icon-small']} ${styles['w-embed']}`}>
 				{icon}
@@ -39,21 +21,21 @@ const FooterContactLink: React.FC<FooterContactLinkProps> = React.memo(
 			<div className={styles['paragraph-small']}>{text}</div>
 		</a>
 	)
-)
+}
 
-const FooterColumn: React.FC<FooterColumnProps> = React.memo(
-	({ title, links }) => (
+
+function FooterColumn({ title, links }: FooterColumnProps) {
+	return (
 		<div className={styles['footer-column']}>
 			<div
-				className={`${styles['label-regular']} ${styles['text-color-white']}`}
+				className='text-sm heading leading-tight'
 			>
 				{title}
 			</div>
 			<div className={styles['wrap-v-regular']}>
 				{links.map((link, index) => (
 					<a
-						onClick={e => handleClick(e, link.isBeta)}
-						key={`${link.text}-${index}`}
+p b						key={`${link.text}-${index}`}
 						href={link.href}
 						className={`${styles['footer-link']} ${styles['w-inline-block']}`}
 					>
@@ -74,8 +56,7 @@ const FooterColumn: React.FC<FooterColumnProps> = React.memo(
 						)}
 						{link.isBeta && (
 							<div
-								className={`${styles['wrap-h-xsmall']} ${styles['align-c']}`}
-							>
+								className='text-xxs flex items-center gap-2 heading'>
 								<div
 									className={`${styles['icon-x-small']} ${styles['w-embed']}`}
 								>
@@ -91,7 +72,7 @@ const FooterColumn: React.FC<FooterColumnProps> = React.memo(
 			</div>
 		</div>
 	)
-)
+}
 
 export default function Footer() {
 	return (
@@ -106,7 +87,7 @@ export default function Footer() {
 							<div className="flex flex-col items-start gap-4">
 								<RainbowLine small className="footer-rainbow" />
 
-								<div className="mb-0 text-sm font-medium leading-[1.7] text-neutral-300">
+								<div className="mb-0 text-xl font-medium leading-[1.7] heading">
 									Notevault
 								</div>
 								<div className="flex flex-wrap items-center gap-14">
