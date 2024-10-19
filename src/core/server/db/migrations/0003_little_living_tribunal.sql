@@ -1,0 +1,1 @@
+ALTER TABLE "board" ADD COLUMN "lanes" jsonb DEFAULT '["Backlog","In Progress","Completed"]'::jsonb NOT NULL;

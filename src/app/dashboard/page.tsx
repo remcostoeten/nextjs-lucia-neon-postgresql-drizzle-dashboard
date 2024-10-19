@@ -1,10 +1,10 @@
 import { Flex } from '@/components/atoms/Flex'
-
-import EmptyStateMessage from '@/components/effects/empty-state-loader'
 import OnboardingNotice from '@/components/effects/onboarding-trigger'
 import ShowHide from '@/components/effects/show-hide'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { validateRequest } from '@/core/server/auth/lucia'
-import { db, userProfiles } from '@/core/server/db'
+import { db, tasks, userProfiles } from '@/core/server/db'
 import { eq } from 'drizzle-orm'
 
 export default async function Dashboard() {
@@ -22,31 +22,103 @@ export default async function Dashboard() {
 	const currentHour = new Date().getHours()
 	const greeting = getGreeting(currentHour)
 
+	// Fetch user's boards and tasks
+	const recentTasks = await db
+		.select()
+		.from(tasks)
+		.where(eq(tasks.userId, user.id))
+		.orderBy(tasks.updatedAt)
+		.limit(5)
+
 	return (
-		<Flex
-			dir="col"
-			className="max-w-[1400px] w-[1400px] max-md:pl-5 max-md:max-w-full"
-		>
-			<Flex dir="col" className="w-4/5 mt-2 max-md:mt-10 max-md:w-full">
-				<OnboardingNotice
-					userId={user.id}
-					hasCompletedOnboarding={!!userProfile}
-				>
-					Finished the onboarding? Click here to dismiss this notice
-				</OnboardingNotice>
+		<Flex dir="col" className="max-w-[1400px] w-full px-4 py-8 gap-8">
+			<OnboardingNotice
+				userId={user.id}
+				hasCompletedOnboarding={!!userProfile}
+			>
+				Finished the onboarding? Click here to dismiss this notice
+			</OnboardingNotice>
+
+			<Flex dir="col" gap="4">
 				<h1 className="text-5xl font-semibold text-title leading-[55px] max-md:max-w-full max-md:text-4xl">
 					<span className="gradient-span">{greeting},</span>
 					<span className="text-title">{displayName}!</span>
 				</h1>
-				<ShowHide title="Recent Activities">
-					<EmptyStateMessage
-						message="You don't have any recent activities yet. Go ahead and get busy!"
-						cardCount={6}
-						animate={true}
-						opacity={75}
-					/>
-				</ShowHide>
+				<TimeWeatherInfo />
 			</Flex>
+
+			<Card>
+				<CardHeader>
+					<CardTitle>Recent Activities</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<ShowHide title="Recent Activities">
+						{recentTasks.length > 0 ? (
+							<ul className="space-y-2">
+								{recentTasks.map((task) => (
+									<li
+										key={task.id}
+										className="flex justify-between items-center"
+									>
+										<span>{task.title}</span>
+										<span className="text-sm text-muted-foreground">
+											{task.status}
+										</span>
+									</li>
+								))}
+							</ul>
+						) : (
+							<EmptyStateMessage
+								message="You don't have any recent activities yet. Go ahead and get busy!"
+								cardCount={6}
+								animate={true}
+								opacity={75}
+							/>
+						)}
+					</ShowHide>
+				</CardContent>
+			</Card>
+
+			<Card>
+				<CardHeader>
+					<CardTitle>Task Management</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<Flex dir="col" gap="4">
+						<Flex justify="between" items="center">
+							<select className="bg-background text-foreground border border-input rounded-md px-3 py-2">
+								<option value="">Select a project</option>
+								{/* userBoards.map((board) => (
+									<option key={board.id} value={board.id}>
+										{board.name}
+										</option>
+								)) */}
+							</select>
+							<Button variant="outline">Create New Board</Button>
+						</Flex>
+						<Flex gap="4">
+							{['Backlog', 'In Progress', 'Completed'].map(
+								(lane) => (
+									<Card key={lane} className="flex-1">
+										<CardHeader>
+											<CardTitle>{lane}</CardTitle>
+										</CardHeader>
+										<CardContent>
+											<Button
+												variant="ghost"
+												className="w-full"
+											>
+												+ Add Task
+											</Button>
+										</CardContent>
+									</Card>
+								)
+							)}
+						</Flex>
+						<Button>Create Task</Button>
+					</Flex>
+				</CardContent>
+			</Card>
 		</Flex>
 	)
 }

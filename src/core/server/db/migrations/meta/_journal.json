@@ -1,0 +1,34 @@
+{
+	"version": "5",
+	"dialect": "pg",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "5",
+			"when": 1729221035902,
+			"tag": "0000_tranquil_rogue",
+			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "5",
+			"when": 1729250275731,
+			"tag": "0001_chemical_infant_terrible",
+			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "5",
+			"when": 1729274115597,
+			"tag": "0002_amused_mentor",
+			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "5",
+			"when": 1729290981716,
+			"tag": "0003_little_living_tribunal",
+			"breakpoints": true
+		}
+	]
+}

@@ -1,4 +1,3 @@
-import BackgroundGeneratorSidebar from '@/components/aside/route-specific/background-creator-aside'
 import FoldersAside from '@/components/aside/route-specific/folders-aside'
 import ParsedOutputsSidebar from '@/components/aside/route-specific/ig-parsed-aside'
 import NotesSidebar from '@/components/aside/route-specific/notes-aside'
@@ -11,8 +10,8 @@ import {
 	FolderIcon,
 	LucideIcon,
 	Mail,
+	MessageCircle,
 	Mic,
-	Paintbrush,
 	User
 } from 'lucide-react'
 import { ReactNode } from 'react'
@@ -24,6 +23,7 @@ export type SidebarItem = {
 	hasAlert?: boolean
 	className?: string
 	alertCount?: number
+	disabled?: boolean
 	realName?: string
 }
 
@@ -41,12 +41,14 @@ export const sidebarItems: SidebarItem[] = [
 		path: '/dashboard/inbox',
 		icon: Mail,
 		hasAlert: true,
-		alertCount: 3
+		alertCount: 3,
+		disabled: true
 	},
 	{
 		name: 'IG Follower Parser',
 		path: '/dashboard/ig-follower-parser',
-		icon: FileText
+		icon: FileText,
+		disabled: true
 	},
 	{
 		name: 'Record MP3',
@@ -59,9 +61,9 @@ export const sidebarItems: SidebarItem[] = [
 		icon: CalendarIcon
 	},
 	{
-		name: 'Generate background',
-		path: '/dashboard/background-creator',
-		icon: Paintbrush
+		name: 'Chats',
+		path: '/dashboard/chats',
+		icon: MessageCircle
 	}
 ]
 
@@ -79,9 +81,5 @@ export const subSidebarConfig: SubSidebarConfig = {
 		allowToggle: true
 	},
 	'/dashboard/notes': { component: NotesSidebar, allowToggle: false },
-	'/dashboard/folders': { component: FoldersAside, allowToggle: true },
-	'/dashboard/background-creator': {
-		component: BackgroundGeneratorSidebar,
-		allowToggle: false
-	}
+	'/dashboard/folders': { component: FoldersAside, allowToggle: true }
 }

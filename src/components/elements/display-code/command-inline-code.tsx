@@ -1,14 +1,13 @@
 'use client'
 
+import { ClipboardIcon } from 'lucide-react'
+import { toast } from 'sonner'
 import {
 	ContextMenu,
 	ContextMenuContent,
 	ContextMenuItem,
 	ContextMenuTrigger
 } from 'ui'
-import { useCopyToClipboard } from 'hooks'
-import { ClipboardIcon } from 'lucide-react'
-import { toast } from 'sonner'
 
 type CommandCodeProps = {
 	children: string

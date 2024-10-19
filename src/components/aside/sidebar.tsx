@@ -11,9 +11,9 @@ import {
 	PanelLeftOpen,
 	Settings2Icon
 } from 'lucide-react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { useSiteSettingsStore } from 'stores'
 import { MainSidebarProps, SidebarIconProps } from './types.sidear'
 
@@ -33,8 +33,20 @@ function useActivePath(): (path: string) => boolean {
 function SidebarIcon({ item, isActive, onClick }: SidebarIconProps) {
 	const [isHovered, setIsHovered] = useState<boolean>(false)
 	const { disableAllAnimations } = useSiteSettingsStore()
+	const router = useRouter()
 
 	const IconComponent = disableAllAnimations ? 'div' : motion.div
+
+	const handleClick = (e: React.MouseEvent) => {
+		if (item.disabled) {
+			e.preventDefault()
+			toast.error(`The ${item.name} feature is currently unavailable.`)
+		} else if (onClick) {
+			onClick()
+		} else {
+			router.push(item.path)
+		}
+	}
 
 	return (
 		<IconComponent
@@ -42,12 +54,16 @@ function SidebarIcon({ item, isActive, onClick }: SidebarIconProps) {
 				isActive
 					? 'bg-body border-outline text-white'
 					: 'text-zinc-400 hover:text-title hover:bg-body'
-			} ${isHovered ? 'border border-outline' : ''}`}
+			} ${isHovered ? 'border border-outline' : ''} ${
+				item.disabled
+					? 'opacity-50 cursor-not-allowed'
+					: 'cursor-pointer'
+			}`}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 			whileHover={disableAllAnimations ? undefined : { scale: 1.1 }}
 			whileTap={disableAllAnimations ? undefined : { scale: 0.95 }}
-			onClick={onClick}
+			onClick={handleClick}
 		>
 			<item.icon className="w-4 h-4" aria-hidden="true" />
 			<span className="sr-only">{item.name}</span>
@@ -155,12 +171,10 @@ export default function MainSidebar({
 											: itemVariants
 									}
 								>
-									<Link href={item.path}>
-										<SidebarIcon
-											item={item}
-											isActive={isActivePath(item.path)}
-										/>
-									</Link>
+									<SidebarIcon
+										item={item}
+										isActive={isActivePath(item.path)}
+									/>
 								</ItemComponent>
 							))}
 						</nav>
