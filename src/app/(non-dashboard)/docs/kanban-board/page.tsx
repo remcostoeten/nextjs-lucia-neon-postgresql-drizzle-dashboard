@@ -207,7 +207,7 @@ export default async function KanbanBoard() {
       <h1 className="text-2xl font-bold mb-4">{board.name}</h1>
       <div className="flex space-x-4">
         {columnsData.map(column => (
-          <div key={column.id} className="bg-gray-100 p-4 rounded-lg w-64">
+          <div key={column.id} className="bg-section p-4 rounded-lg w-64">
             <h2 className="font-semibold mb-2">{column.name}</h2>
             {tasksData
               .filter(task => task.columnId === column.id)
@@ -333,7 +333,7 @@ export default function KanbanBoard({ initialData }) {
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className="bg-gray-100 p-4 rounded-lg w-64"
+                className="bg-section p-4 rounded-lg w-64"
               >
                 <h2 className="font-semibold mb-2">{column.name}</h2>
                 {column.tasks.map((task, index) => (

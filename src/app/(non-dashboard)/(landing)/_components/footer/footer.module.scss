@@ -133,7 +133,6 @@
 	grid-column-gap: 16px;
 }
 
-
 .text-color-white {
 	color: var(--base--white);
 }
@@ -174,24 +173,12 @@
 	background-color: transparent;
 }
 
-.wrap-h-xsmall {
-	display: flex;
-	grid-row-gap: 8px;
-	grid-column-gap: 8px;
-}
 
 .align-c {
 	display: flex;
 	align-items: center;
 }
 
-
-.paragraph-small {
-	margin-bottom: 0;
-	font-size: 12px;
-	line-height: 1.7;
-	letter-spacing: -0.02em;
-}
 
 .footer-link {
 	display: flex;
@@ -255,14 +242,7 @@
 	grid-column-gap: 6px;
 }
 
-.icon-x-small {
-	display: flex;
-	width: 16px;
-	height: 16px;
-	justify-content: center;
-	align-items: center;
-	flex: none;
-}
+
 
 .text-field {
 	min-height: 36px;

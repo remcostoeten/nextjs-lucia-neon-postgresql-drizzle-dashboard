@@ -1,12 +1,5 @@
 'use client'
 
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue
-} from 'ui'
 import { Icons } from '@/components/base/icons'
 import Spotlight, {
 	SpotlightCard
@@ -23,6 +16,13 @@ import {
 } from '@/components/ui'
 import Image from 'next/image'
 import { useState } from 'react'
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue
+} from 'ui'
 import DesignSystemWrapper from '../_components/DesignSystemWrapper'
 import Card01 from '/public/card-01.png'
 import Card02 from '/public/card-02.png'
@@ -31,7 +31,7 @@ import Card03 from '/public/card-03.png'
 const themes = {
 	light: {
 		name: 'Light',
-		bgMain: 'bg-gray-100',
+		bgMain: 'bg-section',
 		bgCard: 'bg-white',
 		textPrimary: 'text-gray-900',
 		textSecondary: 'text-gray-600',

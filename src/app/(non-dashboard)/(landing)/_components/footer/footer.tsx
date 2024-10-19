@@ -1,51 +1,51 @@
 'use client'
 
 import { siteConfig } from '@/config/site-config'
+import Link from 'next/link'
 import React from 'react'
 import HorizontalLine from '../horizontal-line'
 import RainbowLine from '../rainbow-line'
 import { FooterColumnProps, FooterContactLinkProps } from './footer.d'
 import styles from './footer.module.scss'
 
-
-function FooterContactLink({ href, icon, target, text, external }: FooterContactLinkProps) {
+function FooterContactLink({
+	href,
+	icon,
+	target,
+	text,
+	external
+}: FooterContactLinkProps) {
 	return (
 		<a
 			href={href}
 			target={external ? '_blank' : undefined}
-			className="flex items-center text-title hover:text-title-dark trans-300"
+			className="flex items-center text-title hover:text-title-dark trans-300 -translate-x-2"
 		>
-			<div className={`${styles['icon-small']} ${styles['w-embed']}`}>
+			<div className="flex-none justify-center items-center w-5 h-5">
 				{icon}
 			</div>
-			<div className={styles['paragraph-small']}>{text}</div>
+			<div className="text-md mb-0 font-normal leading-[1.7] tracking-[-0.02em]">{text}</div>
 		</a>
 	)
 }
 
-
 function FooterColumn({ title, links }: FooterColumnProps) {
 	return (
 		<div className={styles['footer-column']}>
-			<div
-				className='text-sm heading leading-tight'
-			>
-				{title}
-			</div>
+			<div className="text-xs heading leading-tight">{title}</div>
 			<div className={styles['wrap-v-regular']}>
 				{links.map((link, index) => (
-					<a
-p b						key={`${link.text}-${index}`}
+					<Link
+						key={`${link.text}-${index}`}
 						href={link.href}
 						className={`${styles['footer-link']} ${styles['w-inline-block']}`}
 					>
-						<div>{link.text}</div>
+						<p className='subtitle text-xxs mb-0'>{link.text}</p>
 						{link.isNew && (
-							<div
-								className={`${styles['wrap-h-xsmall']} ${styles['align-c']}`}
-							>
+							<div className="flex gap-2 text-xxs items-center">
+
 								<div
-									className={`${styles['icon-x-small']} ${styles['w-embed']}`}
+									className="w-4 h-4 flex justify-center items-center"
 								>
 									<NewIcon />
 								</div>
@@ -55,19 +55,14 @@ p b						key={`${link.text}-${index}`}
 							</div>
 						)}
 						{link.isBeta && (
-							<div
-								className='text-xxs flex items-center gap-2 heading'>
-								<div
-									className={`${styles['icon-x-small']} ${styles['w-embed']}`}
-								>
+							<div className="text-xxs flex items-center gap-2 heading">
+								<div className="flex justify-center items-center w-4 h-4">
 									<NewIcon />
 								</div>
-								<div className={styles['text-color-white']}>
-									Beta
-								</div>
+								<div className='subtitle'>Beta</div>
 							</div>
 						)}
-					</a>
+					</Link>
 				))}
 			</div>
 		</div>
@@ -165,13 +160,13 @@ export default function Footer() {
 								className={`${styles['wrap-v-regular']} ${styles['align-v-l']}`}
 							>
 								<div className={styles.badge}>
-									<div>
+									<p className="text-xxs">
 										Built with
 										<span className="text-red-40 pulse mx-2 hover:text-red-500">
 											❤️
 										</span>
 										by Remco
-									</div>
+									</p>
 								</div>
 								<div className={styles['wrap-v-x-small']}>
 									<div className={styles['h4-heading']}>

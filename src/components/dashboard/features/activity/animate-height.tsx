@@ -1,6 +1,9 @@
 'use client'
 
+import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
+import { Icon, Skeleton } from 'ui'
+import { ActivityCardProps, ActivityCardSkeletonProps } from './activities.d'
 
 interface AnimateHeightProps {
 	children: React.ReactNode
@@ -53,9 +56,6 @@ export const AnimateHeight: React.FC<AnimateHeightProps> = ({
 		</div>
 	)
 }
-import Link from 'next/link'
-import { Icon, Skeleton } from 'ui'
-import { ActivityCardProps, ActivityCardSkeletonProps } from './activities.d'
 
 export function ActivityCard({
 	id,
@@ -104,7 +104,7 @@ ActivityCard.Skeleton = function ActivityCardSkeleton({
 			className="shrink-0 basis-full lg:basis-[250px]"
 			style={{ opacity: `${opacity}%` }}
 		>
-			<div className="flex flex-col gap-2 rounded-xl border bg-gray-100 dark:bg-gray-800 p-6">
+			<div className="flex flex-col gap-2 rounded-xl border bg-section dark:bg-gray-800 p-6">
 				<Skeleton className="h-5 w-5 bg-gray-200 dark:bg-gray-700" />
 				<Skeleton className="mt-2 h-6 w-full bg-gray-200 dark:bg-gray-700" />
 				<Skeleton className="mt-1 h-4 w-[50px] bg-gray-200 dark:bg-gray-700" />
