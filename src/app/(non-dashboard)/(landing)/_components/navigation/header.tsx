@@ -5,6 +5,7 @@ import NotificationBar from '@/components/elements/notification-bar/notification
 import { Button } from '@/components/ui'
 import { menuConfig } from '@/config/menu-config'
 import { createShortcutMap, useKeyboardShortcuts } from '@/core/hooks'
+import { useDismissedState } from '@/core/hooks/use-local-storage'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ExternalLink, X } from 'lucide-react'
 import Link from 'next/link'
@@ -36,10 +37,11 @@ const ProductCategory = ({
 					target={link.external ? '_blank' : undefined}
 					rel={link.external ? 'noopener noreferrer' : undefined}
 					onClick={onLinkClick}
-					className={`block text-sm ${pathname === link.href
-						? 'text-title font-medium'
-						: 'text-subtitle hover:text-title'
-						} mb-1.5 transition-colors duration-200 flex items-center`}
+					className={`block text-sm ${
+						pathname === link.href
+							? 'text-title font-medium'
+							: 'text-subtitle hover:text-title'
+					} mb-1.5 transition-colors duration-200 flex items-center`}
 				>
 					{link.name}
 					{link.external && <ExternalLink className="ml-1 h-3 w-3" />}
@@ -89,10 +91,11 @@ const AuthLink = ({
 		<Link
 			href={href}
 			onClick={onLinkClick}
-			className={`flex flex-col items-center justify-center py-2 ${pathname === href
-				? 'text-title'
-				: 'text-subtitle hover:text-title'
-				} transition-colors duration-200`}
+			className={`flex flex-col items-center justify-center py-2 ${
+				pathname === href
+					? 'text-title'
+					: 'text-subtitle hover:text-title'
+			} transition-colors duration-200`}
 		>
 			<Icon
 				className={`mb-1 text-2xl ${pathname === href ? 'text-[#201c20]' : 'text-title'}`}
@@ -105,7 +108,7 @@ const AuthLink = ({
 export default function Header() {
 	const [isOpen, setIsOpen] = useState(false)
 	const [isScrolled, setIsScrolled] = useState(false)
-	const [showNotification, setShowNotification] = useState(true)
+	const [isDismissed] = useDismissedState('feature-notification')
 	const menuRef = useRef<HTMLDivElement>(null)
 	const headerRef = useRef<HTMLDivElement>(null)
 
@@ -205,13 +208,12 @@ export default function Header() {
 
 	return (
 		<>
-			{showNotification && (
+			{!isDismissed && (
 				<NotificationBar
-					badgeText="New"
+					badgeText="Design"
 					badgeEmoji="fire"
-					message="We've updated the design of our landing page!"
-					animated={true}
-					onClose={() => setShowNotification(false)}
+					message="We've just launched our new landing page! 🎉 Beware of bugs!"
+					storageKey="feature-notification"
 				/>
 			)}
 			<motion.div
@@ -220,7 +222,13 @@ export default function Header() {
 				animate="open"
 				exit="closed"
 				variants={containerVariants}
-				className={`${styles.header} ${isScrolled ? styles.scrolled : ''} fixed left-0 right-0 z-50 transition-all duration-300 ease-in-out ${isScrolled ? 'top-0 backdrop-blur-lg' : 'top-10'}`}
+				className={`${styles.header} ${isScrolled ? styles.scrolled : ''} fixed left-0 right-0 z-50 transition-all duration-300 ease-in-out ${
+					isScrolled
+						? 'top-0 backdrop-blur-lg'
+						: isDismissed
+							? 'top-0'
+							: 'top-10'
+				}`}
 				style={{
 					height: isScrolled ? '60px' : '80px'
 				}}
@@ -282,7 +290,11 @@ export default function Header() {
 						variants={menuVariants}
 						className="fixed left-0 right-0 bg-body backdrop-blur-sm shadow-lg z-40 overflow-y-auto"
 						style={{
-							top: isScrolled ? '60px' : showNotification ? '120px' : '80px',
+							top: isScrolled
+								? '60px'
+								: isDismissed
+									? '80px'
+									: '120px',
 							maxHeight: 'calc(100vh - 60px)',
 							transition: 'top 0.3s ease-in-out'
 						}}

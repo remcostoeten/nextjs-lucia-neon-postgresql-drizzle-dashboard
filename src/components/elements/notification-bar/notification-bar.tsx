@@ -2,6 +2,7 @@
 
 import { HorizontalLight } from '@/app/(non-dashboard)/(landing)/_components/effects/landing-effects'
 import useMouseHoverEffect from '@/core/hooks/use-mouse-hover'
+import { useDismissStore } from 'stores'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -39,6 +40,7 @@ type BannerProps = {
 	animated?: boolean
 	onClose?: () => void
 	showLights?: boolean
+	storageKey: string
 }
 
 function NotificationBar({
@@ -46,29 +48,30 @@ function NotificationBar({
 	badgeEmoji = 'fire',
 	message,
 	animated = false,
-	onClose,
 	showLights = true
 }: BannerProps) {
-	const [isVisible, setIsVisible] = useState(true)
+	const { isDismissed, setIsDismissed } = useDismissStore()
+	const [isVisible, setIsVisible] = useState(!isDismissed)
 	const mouseHover = useMouseHoverEffect()
 
 	useEffect(() => {
-		if (animated) {
+		if (animated && !isDismissed) {
 			setIsVisible(false)
 			setTimeout(() => setIsVisible(true), 0)
 		}
-	}, [animated])
-
-	function handleClose() {
-		setIsVisible(false)
-		if (onClose) {
-			setTimeout(onClose, 300)
-		}
-	}
+	}, [animated, isDismissed])
 
 	const childVariants = {
 		hidden: { opacity: 0, y: 20 },
 		visible: { opacity: 1, y: 0 }
+	}
+
+	const handleDismiss = () => {
+		setIsDismissed(true)
+	}
+
+	if (isDismissed) {
+		return null
 	}
 
 	return (
@@ -84,14 +87,14 @@ function NotificationBar({
 						exit={{ opacity: 0, scale: 0 }}
 						transition={{ duration: 0.3 }}
 					>
-						<div className="container-large z-10 w-full max-w-[1208px] mx-auto relative">
+						<div className="z-5 w-full max-w-big-wrapper mx-auto">
 							<div className="banner-content-wide flex justify-between items-center gap-3 h-full">
 								<motion.div
 									className="banner-left flex items-center gap-3 h-full"
 									variants={childVariants}
 									transition={{ delay: 0.2 }}
 								>
-									<div className="banner-badge bg-body z-[1000] border  animate-pulse rounded-lg px-2 py-0.5 text-xs leading-normal">
+									<div className="banner-badge bg-body z-[ border  animate-pulse rounded-lg px-2 py-0.5 text-xs leading-normal">
 										<span className="gradient text-xxs">
 											{badgeText}{' '}
 											{badgeEmoji &&
@@ -102,10 +105,9 @@ function NotificationBar({
 										{message}
 									</p>
 								</motion.div>
-								<motion.a
-									href="#"
+								<motion.button
 									className="banner-close w-6 h-6 flex items-center text-neutral-400 hover:text-secondary-light transition-colors duration-200"
-									onClick={handleClose}
+									onClick={handleDismiss}
 									variants={childVariants}
 									transition={{ delay: 0.3 }}
 								>
@@ -125,7 +127,7 @@ function NotificationBar({
 											/>
 										</svg>
 									</div>
-								</motion.a>
+								</motion.button>
 							</div>
 						</div>
 					</motion.section>

@@ -7,11 +7,17 @@ import { Button, Input, Label, Textarea } from 'ui'
 
 interface ProfileFormProps {
 	initialData: UserProfile | null
-	updateProfile: (formData: FormData) => Promise<{ success: boolean; error?: string }>
+	updateProfile: (
+		formData: FormData
+	) => Promise<{ success: boolean; error?: string }>
 	logout: () => Promise<void>
 }
 
-export default function ProfileForm({ initialData, updateProfile, logout }: ProfileFormProps) {
+export default function ProfileForm({
+	initialData,
+	updateProfile,
+	logout
+}: ProfileFormProps) {
 	const [isEditing, setIsEditing] = useState(false)
 	const router = useRouter()
 
@@ -43,8 +49,12 @@ export default function ProfileForm({ initialData, updateProfile, logout }: Prof
 					{ key: 'firstName', label: 'First Name' },
 					{ key: 'lastName', label: 'Last Name' },
 					{ key: 'username', label: 'Username' },
-					{ key: 'dateOfBirth', label: 'Date of Birth', type: 'date' },
-					{ key: 'occupation', label: 'Occupation' },
+					{
+						key: 'dateOfBirth',
+						label: 'Date of Birth',
+						type: 'date'
+					},
+					{ key: 'occupation', label: 'Occupation' }
 				].map(({ key, label, type }) => (
 					<div key={key}>
 						<Label htmlFor={key}>{label}</Label>
@@ -52,7 +62,9 @@ export default function ProfileForm({ initialData, updateProfile, logout }: Prof
 							id={key}
 							name={key}
 							type={type || 'text'}
-							defaultValue={initialData[key as keyof UserProfile] || ''}
+							defaultValue={
+								initialData[key as keyof UserProfile] || ''
+							}
 							disabled={!isEditing}
 						/>
 					</div>
@@ -73,11 +85,15 @@ export default function ProfileForm({ initialData, updateProfile, logout }: Prof
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 				{['github', 'linkedin', 'twitter'].map(social => (
 					<div key={social}>
-						<Label htmlFor={social}>{social.charAt(0).toUpperCase() + social.slice(1)}</Label>
+						<Label htmlFor={social}>
+							{social.charAt(0).toUpperCase() + social.slice(1)}
+						</Label>
 						<Input
 							id={social}
 							name={social}
-							defaultValue={initialData[social as keyof UserProfile] || ''}
+							defaultValue={
+								initialData[social as keyof UserProfile] || ''
+							}
 							disabled={!isEditing}
 						/>
 					</div>
@@ -86,11 +102,19 @@ export default function ProfileForm({ initialData, updateProfile, logout }: Prof
 
 			{isEditing ? (
 				<div className="flex justify-end space-x-2">
-					<Button type="button" variant="outline" onClick={() => setIsEditing(false)}>Cancel</Button>
+					<Button
+						type="button"
+						variant="outline"
+						onClick={() => setIsEditing(false)}
+					>
+						Cancel
+					</Button>
 					<Button type="submit">Save Changes</Button>
 				</div>
 			) : (
-				<Button type="button" onClick={() => setIsEditing(true)}>Edit Profile</Button>
+				<Button type="button" onClick={() => setIsEditing(true)}>
+					Edit Profile
+				</Button>
 			)}
 
 			<hr className="my-8" />

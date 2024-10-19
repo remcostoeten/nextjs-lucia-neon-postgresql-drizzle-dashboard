@@ -24,7 +24,7 @@ export default function Navigation() {
 						<Link
 							key={link.href}
 							href={link.href}
-							className="text-sm text-subtitle hover:text-title trans-all"
+							className="text-sm text-subtitle hover:tex	t-title trans-all"
 						>
 							{link.label}
 						</Link>
