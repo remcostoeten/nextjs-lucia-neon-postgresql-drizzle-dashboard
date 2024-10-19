@@ -13,19 +13,20 @@
 		"dev": "next dev",
 		"turbo": "next dev --turbo",
 		"build": "next build",
+		"fix": "pnpm run fix:ui && pnpm run f",
+		"fix:ui": "python3 src/core/scripts/fix-imports/optimize-ui-imports.py --all",
+		"fix:ui-file": "python3 src/core/scripts/optimize-ui-imports.py --file",
 		"f": "prettier --write . --ignore-path ~/prettier/.prettierignore --config ~/prettier/.prettierrc",
+		"shad": "npx shadcn@latest add",
+		"gen": "drizzle-kit generate:pg",
+		"push": "drizzle-kit push:pg",
 		"clear": "rm -rf node_modules && rm -rf package-lock.json && rm -rf yarn.lock && rm -rf package-lock.json && rm -rf yarn.lock",
 		"rebuild": "pnpm clear && pnpm i && pnpm build",
 		"restart": "pnpm clear && pnpm i && pnpm dev",
-		"gen": "drizzle-kit generate:pg",
-		"push": "drizzle-kit push:pg",
 		"drop": "drizzle-kit drop",
 		"pull": "drizzle-kit introspect:pg",
 		"studio": "drizzle-kit studio",
-		"check": "drizzle-kit check:pg",
-		"shad": "npx shadcn@latest add",
-		"fix:ui": "python3 src/core/scripts/optimize-ui-imports.py --all",
-		"fix:ui-file": "python3 src/core/scripts/optimize-ui-imports.py --file"
+		"check": "drizzle-kit check:pg"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.9.0",
@@ -114,7 +115,7 @@
 		"zustand": "5.0.0-rc.2"
 	},
 	"devDependencies": {
-		"@types/node": "^20",
+		"@types/node": "^20.16.13",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
 		"@types/react-syntax-highlighter": "^15.5.13",

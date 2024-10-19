@@ -2,9 +2,7 @@
 
 import { Flex } from '@/components/atoms'
 import ModeToggle from '@/components/ui/ThemeToggle'
-import { useClientAuth } from '@/core/server/auth/client-auth-utils'
 import { useState } from 'react'
-import { toast } from 'sonner'
 import MenuItem from './user-dropdown-menu-item'
 
 type MenuItemType = {
@@ -25,18 +23,19 @@ const COLORS = {
 	BORDER: 'border-outline'
 }
 
-export default function UserDropdownMenu() {
-	const { clientSignOut } = useClientAuth()
+type UserDropdownMenuProps = {
+	onSignOut: () => Promise<void>
+}
+
+export default function UserDropdownMenu({ onSignOut }: UserDropdownMenuProps) {
 	const [isSigningOut, setIsSigningOut] = useState(false)
 
 	const handleSignOut = async () => {
 		setIsSigningOut(true)
 		try {
-			await clientSignOut()
-			toast.success('Signed out successfully')
+			await onSignOut()
 		} catch (error) {
 			console.error('Error signing out:', error)
-			toast.error('Failed to sign out. Please try again.')
 		} finally {
 			setIsSigningOut(false)
 		}

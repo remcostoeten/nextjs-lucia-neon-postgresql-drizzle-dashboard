@@ -9,6 +9,30 @@ type LandingEffectsProps = {
 	effect?: 'lights' | 'noise' | 'both'
 }
 
+export function HorizontalLight() {
+	return (
+		<div className={lightStyles['home-lights']}>
+			<div className={lightStyles['light-wrap']}>
+				<motion.div
+					className="right-0 absolute"
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 2, ease: 'easeInOut' }}
+				>
+					<Image
+						src="/landing/lights/horizontal-light.webp"
+						alt="Light effect horizontal"
+						width={760}
+						height={760}
+						quality={100}
+						priority
+					/>
+				</motion.div>
+			</div>
+		</div>
+	)
+}
+
 export default function LandingEffects({
 	effect = 'both'
 }: LandingEffectsProps) {

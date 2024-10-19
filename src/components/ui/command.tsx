@@ -1,155 +1,92 @@
 'use client'
 
-import { type DialogProps } from '@radix-ui/react-dialog'
-import { Command as CommandPrimitive } from 'cmdk'
-import * as React from 'react'
+import { useCopyToClipboard } from '@/core/hooks'
+import { ClipboardIcon } from 'lucide-react'
+import { toast } from 'sonner'
+import {
+	ContextMenu,
+	ContextMenuContent,
+	ContextMenuItem,
+	ContextMenuTrigger
+} from 'ui'
 
-import { cn } from 'cn'
-import { LuSearch } from 'react-icons/lu'
-import { Dialog, DialogContent } from './dialog'
+type CommandCodeProps = {
+	children: string
+	copyMode?: 'full' | 'essential'
+}
 
-const Command = React.forwardRef<
-	React.ElementRef<typeof CommandPrimitive>,
-	React.ComponentPropsWithoutRef<typeof CommandPrimitive>
->(({ className, ...props }, ref) => (
-	<CommandPrimitive
-		ref={ref}
-		className={cn(
-			'relative flex h-full w-full flex-col overflow-hidden rounded-default bg-background text-neutral-800',
-			className
-		)}
-		{...props}
-	/>
-))
-Command.displayName = 'Command'
+/**
+ * CommandCode component displays code or command text with a copy button.
+ * It allows copying either the full text or just the essential part of an error message.
+ * Right-click context menu provides an option to copy the full text even in essential mode.
+ * The component has an orange color scheme.
+ *
+ * @param {CommandCodeProps} props - The props for the CommandCode component.
+ * @returns {JSX.Element} A button containing the code and a copy icon, wrapped in a context menu.
+ *
+ * @example
+ * // Full copy mode (default)
+ * <CommandCode>npm install react</CommandCode>
+ *
+ * @example
+ * // Essential copy mode (for error messages)
+ * <CommandCode copyMode="essential">useSkeletonLoader is not defined</CommandCode>
+ */
+export function CommandCode({ children, copyMode = 'full' }: CommandCodeProps) {
+	const [copiedText, copy] = useCopyToClipboard()
 
-interface CommandDialogProps extends DialogProps {}
+	const handleCopyCode = (code: string, mode: 'full' | 'essential') => {
+		let textToCopy = code
+		if (mode === 'essential') {
+			// Extract the essential part of the error message
+			textToCopy = code.split(' is not defined')[0].trim()
+		}
+		copy(textToCopy)
+		toast.success(`Command copied: ${textToCopy}`)
+	}
 
-const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
 	return (
-		<Dialog {...props}>
-			<DialogContent className="overflow-hidden p-0 shadow-lg">
-				<Command className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-neutral-600 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-neutral-300-wrapper]_svg]:h-5 [&_[cmdk-neutral-300-wrapper]_svg]:w-5 [&_[cmdk-neutral-300]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
-					{children}
-				</Command>
-			</DialogContent>
-		</Dialog>
+		<ContextMenu>
+			<ContextMenuTrigger>
+				<button
+					className="flex transform-gpu items-center justify-between gap-5 rounded-full bg-[rgba(255,108,0,.2)] px-5 py-3 text-[rgba(255,108,0,.8)] tracking-tighter transition-all hover:bg-[rgba(255,108,0,.15)]"
+					onClick={() => handleCopyCode(children, copyMode)}
+				>
+					<code className="overflow-hidden overflow-ellipsis whitespace-nowrap text-left">
+						{children}
+					</code>
+					<ClipboardIcon className="size-5" />
+				</button>
+			</ContextMenuTrigger>
+			<ContextMenuContent className="w-64">
+				<ContextMenuItem
+					onClick={() => handleCopyCode(children, copyMode)}
+				>
+					Copy {copyMode === 'essential' ? 'Essential' : 'Full'}{' '}
+					Command
+				</ContextMenuItem>
+				{copyMode === 'essential' && (
+					<ContextMenuItem
+						onClick={() => handleCopyCode(children, 'full')}
+					>
+						Copy Full Command
+					</ContextMenuItem>
+				)}
+			</ContextMenuContent>
+		</ContextMenu>
 	)
 }
 
-const CommandInput = React.forwardRef<
-	React.ElementRef<typeof CommandPrimitive.Input>,
-	React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
->(({ className, ...props }, ref) => (
-	<div
-		className="flex items-center border-b px-3"
-		cmdk-neutral-300-wrapper=""
-	>
-		<LuSearch className="mr-2 h-4 w-4 shrink-0 opacity-50" />
-		<CommandPrimitive.Input
-			ref={ref}
-			className={cn(
-				'flex h-11 w-full rounded-default bg-transparent py-3 text-sm outline-none placeholder:text-neutral-600 disabled:cursor-not-allowed disabled:opacity-50',
-				className
-			)}
-			{...props}
-		/>
-	</div>
-))
-CommandInput.displayName = 'CommandInput'
-
-const CommandList = React.forwardRef<
-	React.ElementRef<typeof CommandPrimitive.List>,
-	React.ComponentPropsWithoutRef<typeof CommandPrimitive.List>
->(({ className, ...props }, ref) => (
-	<CommandPrimitive.List
-		ref={ref}
-		className={cn(
-			'max-h-[300px] overflow-y-auto overflow-x-hidden bg-background',
-			className
-		)}
-		{...props}
-	/>
-))
-CommandList.displayName = CommandPrimitive.List.displayName
-
-const CommandEmpty = React.forwardRef<
-	React.ElementRef<typeof CommandPrimitive.Empty>,
-	React.ComponentPropsWithoutRef<typeof CommandPrimitive.Empty>
->(({ className, ...props }, ref) => (
-	<CommandPrimitive.Empty
-		ref={ref}
-		className={cn('py-6 text-center text-sm', className)}
-		{...props}
-	/>
-))
-CommandEmpty.displayName = CommandPrimitive.Empty.displayName
-
-const CommandGroup = React.forwardRef<
-	React.ElementRef<typeof CommandPrimitive.Group>,
-	React.ComponentPropsWithoutRef<typeof CommandPrimitive.Group>
->(({ className, ...props }, ref) => (
-	<CommandPrimitive.Group
-		ref={ref}
-		className={cn(
-			'overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-neutral-600',
-			className
-		)}
-		{...props}
-	/>
-))
-CommandGroup.displayName = 'CommandGroup'
-
-const CommandSeparator = React.forwardRef<
-	React.ElementRef<typeof CommandPrimitive.Separator>,
-	React.ComponentPropsWithoutRef<typeof CommandPrimitive.Separator>
->(({ className, ...props }, ref) => (
-	<CommandPrimitive.Separator
-		ref={ref}
-		className={cn('-mx-1 h-px bg-neutral-300', className)}
-		{...props}
-	/>
-))
-CommandSeparator.displayName = 'CommandSeparator'
-
-const CommandItem = React.forwardRef<
-	React.ElementRef<typeof CommandPrimitive.Item>,
-	React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item>
->(({ className, ...props }, ref) => (
-	<CommandPrimitive.Item
-		ref={ref}
-		className={cn(
-			'relative flex cursor-default select-none items-center rounded-nested px-2 py-1.5 text-sm outline-none aria-selected:bg-neutral-200 aria-selected:text-neutral-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-			className
-		)}
-		{...props}
-	/>
-))
-CommandItem.displayName = CommandPrimitive.Item.displayName
-
-const CommandShortcut = ({
-	className,
-	...props
-}: React.HTMLAttributes<HTMLSpanElement>) => {
-	return (
-		<span
-			className={cn(
-				'ml-auto text-xs tracking-widest text-neutral-600',
-				className
-			)}
-			{...props}
-		/>
-	)
-}
-
-export {
-	Command,
-	CommandDialog,
-	CommandEmpty,
-	CommandGroup,
-	CommandInput,
-	CommandItem,
-	CommandList,
-	CommandSeparator,
-	CommandShortcut
-}
+// Usage examples:
+//
+// For regular commands or code snippets:
+// <CommandCode>npm install react</CommandCode>
+//
+// For error messages where you want to copy only the essential part:
+// <CommandCode copyMode="essential">useSkeletonLoader is not defined</CommandCode>
+//
+// In an error page component:
+// <div className="mb-6">
+//   <h3 className="text-sm font-medium mb-2">Error details:</h3>
+//   <CommandCode copyMode="essential">{error.message}</CommandCode>
+// </div>

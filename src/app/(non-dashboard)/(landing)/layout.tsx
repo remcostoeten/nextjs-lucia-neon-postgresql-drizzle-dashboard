@@ -1,6 +1,6 @@
+import HomeLights from './_components/effects/home-lights'
 import LandingEffects from './_components/effects/landing-effects'
 // import './styles/landing.scss'
-import HomeLights from './_components/effects/home-lights'
 import './styles/app.scss'
 
 export default function DashboardLayout({
@@ -10,9 +10,9 @@ export default function DashboardLayout({
 }) {
 	return (
 		<>
+			<LandingEffects effect="noise" />
 			{children}
 			<HomeLights />
-			<LandingEffects effect="noise" />
 		</>
 	)
 }

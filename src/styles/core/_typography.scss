@@ -26,3 +26,22 @@ subtitle,
 psub {
 	color: var(--text-subtitle);
 }
+
+.subtitle {
+	color: var(--text-subtitle);
+}
+
+.title {
+	color: var(--text-title);
+}
+
+.heading {
+	background-image: linear-gradient(
+		to bottom,
+		var(--text-title),
+		var(--white--64)
+	);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}

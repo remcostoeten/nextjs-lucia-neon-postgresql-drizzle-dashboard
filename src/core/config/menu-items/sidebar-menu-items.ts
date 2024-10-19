@@ -1,4 +1,3 @@
-import BackgroundGeneratorSidebar from '@/components/aside/route-specific/background-creator-aside'
 import FoldersAside from '@/components/aside/route-specific/folders-aside'
 import ParsedOutputsSidebar from '@/components/aside/route-specific/ig-parsed-aside'
 import NotesSidebar from '@/components/aside/route-specific/notes-aside'
@@ -12,7 +11,6 @@ import {
 	LucideIcon,
 	Mail,
 	Mic,
-	Paintbrush,
 	User
 } from 'lucide-react'
 import { ReactNode } from 'react'
@@ -57,11 +55,6 @@ export const sidebarItems: SidebarItem[] = [
 		name: 'Tasks',
 		path: '/dashboard/tasks',
 		icon: CalendarIcon
-	},
-	{
-		name: 'Generate background',
-		path: '/dashboard/background-creator',
-		icon: Paintbrush
 	}
 ]
 
@@ -79,9 +72,5 @@ export const subSidebarConfig: SubSidebarConfig = {
 		allowToggle: true
 	},
 	'/dashboard/notes': { component: NotesSidebar, allowToggle: false },
-	'/dashboard/folders': { component: FoldersAside, allowToggle: true },
-	'/dashboard/background-creator': {
-		component: BackgroundGeneratorSidebar,
-		allowToggle: false
-	}
+	'/dashboard/folders': { component: FoldersAside, allowToggle: true }
 }

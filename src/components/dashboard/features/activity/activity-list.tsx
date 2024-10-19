@@ -19,7 +19,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({
 	return (
 		<ul className="space-y-4">
 			{activities.map(activity => (
-				<li key={activity.id} className="bg-gray-100 p-4 rounded-lg">
+				<li key={activity.id} className="bg-section p-4 rounded-lg">
 					<div className="flex justify-between items-center">
 						<div>
 							<h3 className="font-bold">{activity.type}</h3>

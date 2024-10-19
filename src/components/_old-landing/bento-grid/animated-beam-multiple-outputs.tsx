@@ -1,6 +1,6 @@
 'use client'
 
-import { AnimatedBeam } from '@/components/effects/animated-beam';
+import { AnimatedBeam } from '@/components/effects/animated-beam'
 import { cn } from 'cn'
 import React, { forwardRef, useRef } from 'react'
 

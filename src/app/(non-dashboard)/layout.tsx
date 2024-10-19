@@ -6,7 +6,8 @@ export default function RootLayout({ children }: PageProps) {
 	return (
 		<ThemeWrapper>
 			<Header />
-			{children}
+			<main className="">{children}</main>
+
 			<Footer />
 		</ThemeWrapper>
 	)

@@ -1,3 +1,4 @@
+import React from 'react'
 import { Flex } from '@/components/atoms'
 import useMouseHoverEffect from '@/core/hooks/use-mouse-hover'
 import { cn } from '@/lib/utils'
@@ -62,8 +63,8 @@ const lineVariants = {
 }
 
 export default function Feature() {
-	const logbookCardRef = useMouseHoverEffect()
-	const useMouseHoverEffectRef = useMouseHoverEffect()
+	const useMouseHoverEffectRef1 = useMouseHoverEffect()
+	const useMouseHoverEffectRef2 = useMouseHoverEffect()
 	const logosToRender = logos.length - 2
 
 	return (
@@ -97,196 +98,100 @@ export default function Feature() {
 					</div>
 				</motion.div>
 				<div className="flex flex-col sm:flex-row gap-4 flex-1 h-full">
-					<motion.div
-						variants={itemVariants}
-						className={`${styles.featureCard} ${styles.styleAmqbr} flex-1 hover-effect`}
-						ref={logbookCardRef}
-					>
-						<RainbowLine small />
-						<div className={styles.ccfeatureHeading}>
+					{[useMouseHoverEffectRef1, useMouseHoverEffectRef2].map(
+						(ref, index) => (
 							<motion.div
-								variants={iconVariants}
-								className={styles.iconWrap}
+								key={index}
+								variants={itemVariants}
+								className={`${styles.featureCard} ${styles.styleK2nBn} flex-1 hover-effect`}
+								ref={ref}
 							>
-								<Image
-									src="/landing/feature/feature1.webp"
-									width={22}
-									height={22}
-									alt=""
-									className={styles.featureIcon}
-								/>
-								<Image
-									src="/landing/feature/feature2.webp"
-									width={22}
-									height={22}
-									alt=""
-									className={styles.iconBlur}
-								/>
-							</motion.div>
-							<div className={styles.wrapVXSmall}>
-								<div className={styles.h6Heading}>
-									Logbook your thoughts
-								</div>
-								<p className="text-xxs text-subtitle">
-									Lorem ipsum dolor sit amet, consectetur
-									adipiscing elit. Morbi vitae nulla lacinia,
-									vulputate mauris eget.
-								</p>
-							</div>
-						</div>
-
-						<div className="flex flex-col items-stretch gap-6 p-7 border border-neutral-800 rounded-[12px_12px_20px_20px]">
-							<Flex dir="col" gap="2">
-								<div className="text-xxs leading-[1.7] tracking-[-0.02em] mb-0 text-subtitle">
-									Formality
-								</div>
-								<div className="flex gap-2 flex-wrap">
-									<FeatureBadge>
-										<motion.div
-											variants={iconVariants}
-											className="flex-none flex justify-center items-center w-4 h-4"
-										>
-											<SiBuysellads className="greyscale" />
-										</motion.div>
-										<div>Personal</div>
-									</FeatureBadge>
-									<FeatureBadge>
-										<motion.div
-											variants={iconVariants}
-											className="flex-none flex justify-center items-center w-4 h-4"
-										>
-											<LockIcon className="greyscale" />
-										</motion.div>
-										<div>Secure</div>
-									</FeatureBadge>
-									<FeatureBadge>
-										<motion.div
-											variants={iconVariants}
-											className="flex-none flex justify-center items-center w-4 h-4"
-										>
-											<ChartLine className="greyscale" />
-										</motion.div>
-										<div>Insights</div>
-									</FeatureBadge>
-								</div>
-							</Flex>
-							<motion.div
-								variants={lineVariants}
-								className="flex items-center w-full h-0.5"
-							>
-								<DashLineIcon />
-							</motion.div>
-							<div className={styles.featureCardButonWrap}>
-								<motion.div
-									variants={itemVariants}
-									className="button--small"
-								>
-									<div>Ui filling</div>
-									<ChevronRightIcon
-										className={styles.iconXSmall}
-									/>
-								</motion.div>
-								<motion.div
-									variants={itemVariants}
-									className="button--small"
-								>
-									<div>Ui filling</div>
-									<ChevronRightIcon
-										className={styles.iconXSmall}
-									/>
-								</motion.div>
-							</div>
-							<FeatureSelect>Some select</FeatureSelect>
-						</div>
-					</motion.div>
-					<motion.div
-						variants={itemVariants}
-						className={`${styles.featureCard} ${styles.styleK2nBn} flex-1 hover-effect`}
-						ref={useMouseHoverEffectRef}
-					>
-						<RainbowLine small />
-						<div className={styles.featureHeading}>
-							<motion.div
-								variants={iconVariants}
-								className={styles.iconWrap}
-							>
-								<Image
-									src="https://cdn.prod.website-files.com/65b8e9cb3c15d9b62f057c9a/65ba147ed99fff370aa907ee_Feature%20Icon%2002.webp"
-									width={22}
-									height={22}
-									alt=""
-									className={styles.featureIcon}
-								/>
-								<Image
-									src="https://cdn.prod.website-files.com/65b8e9cb3c15d9b62f057c9a/65ba147efb6d9006e1aed951_Icon%20Blur.svg"
-									width={22}
-									height={22}
-									alt=""
-									className={styles.iconBlur}
-								/>
-							</motion.div>
-							<div className={styles.wrapVXSmall}>
-								<div className={styles.h6Heading}>
-									Finance insight
-								</div>
-								<p className="text-[14px] text-subtitle">
-									Lorem ipsum dolor sit amet, consectetur
-									adipiscing elit. Morbi vitae nulla lacinia,
-									vulputate mauris eget.
-								</p>
-							</div>
-						</div>
-						<div className={styles.featureInner}>
-							<div className={styles.wrapVLarge}>
-								<div className="flex flex-wrap justify-between items-center gap-6 w-full px-6">
-									{logos
-										.slice(0, logosToRender)
-										.map((logo, index) => (
-											<motion.div
-												key={index}
-												variants={iconVariants}
-											>
-												<Image
-													src={logo.src}
-													width={logo.width}
-													height={logo.width}
-													alt={`Logo ${index + 1}`}
-													className="w-8 h-8 cursor-pointer transition-all duration-300 ease-in-out hover:scale-110"
-												/>
-											</motion.div>
-										))}
-								</div>
-							</div>
-							<motion.div
-								variants={lineVariants}
-								className={`${styles.horizontalDividerDash} ${styles.feature}`}
-							>
-								<DashLineIcon />
-							</motion.div>
-							<Flex dir="col" gap="2">
-								<motion.div
-									variants={itemVariants}
-									className="flex flex-col h-full"
-								>
-									<Flex
-										dir="col"
-										gap="2"
-										className="p-4 h-full"
+								<RainbowLine small />
+								<div className={styles.featureHeading}>
+									<motion.div
+										variants={iconVariants}
+										className={styles.iconWrap}
 									>
-										<Flex dir="col" gap="2">
-											<div className="text-xxs leading-[1.7] tracking-[-0.02em] mb-0 text-subtitle">
-												Formality
-											</div>
-											<FeatureBadges />
-										</Flex>
+										<Image
+											src="https://cdn.prod.website-files.com/65b8e9cb3c15d9b62f057c9a/65ba147ed99fff370aa907ee_Feature%20Icon%2002.webp"
+											width={22}
+											height={22}
+											alt=""
+											className={styles.featureIcon}
+										/>
+										<Image
+											src="https://cdn.prod.website-files.com/65b8e9cb3c15d9b62f057c9a/65ba147efb6d9006e1aed951_Icon%20Blur.svg"
+											width={22}
+											height={22}
+											alt=""
+											className={styles.iconBlur}
+										/>
+									</motion.div>
+									<div className={styles.wrapVXSmall}>
+										<div className={styles.h6Heading}>
+											Finance insight
+										</div>
+										<p className="text-[14px] text-subtitle">
+											Lorem ipsum dolor sit amet,
+											consectetur adipiscing elit. Morbi
+											vitae nulla lacinia, vulputate
+											mauris eget.
+										</p>
+									</div>
+								</div>
+								<div className={styles.featureInner}>
+									<div className={styles.wrapVLarge}>
+										<div className="flex flex-wrap justify-between items-center gap-6 w-full px-6">
+											{logos
+												.slice(0, logosToRender)
+												.map((logo, logoIndex) => (
+													<motion.div
+														key={logoIndex}
+														variants={iconVariants}
+													>
+														<Image
+															src={logo.src}
+															width={logo.width}
+															height={logo.width}
+															alt={`Logo ${logoIndex + 1}`}
+															className="w-8 h-8 cursor-pointer transition-all duration-300 ease-in-out hover:scale-110"
+														/>
+													</motion.div>
+												))}
+										</div>
+									</div>
+									<motion.div
+										variants={lineVariants}
+										className={`${styles.horizontalDividerDash} ${styles.feature}`}
+									>
+										<DashLineIcon />
+									</motion.div>
+									<Flex dir="col" gap="2">
+										<motion.div
+											variants={itemVariants}
+											className="flex flex-col h-full"
+										>
+											<Flex
+												dir="col"
+												gap="2"
+												className="p-4 h-full"
+											>
+												<Flex dir="col" gap="2">
+													<div className="text-xxs leading-[1.7] tracking-[-0.02em] mb-0 text-subtitle">
+														Formality
+													</div>
+													<FeatureBadges />
+												</Flex>
+											</Flex>
+										</motion.div>
+										<motion.div
+											variants={itemVariants}
+										></motion.div>
 									</Flex>
-								</motion.div>
-								<motion.div
-									variants={itemVariants}
-								></motion.div>
-							</Flex>
-						</div>
-					</motion.div>
+								</div>
+							</motion.div>
+						)
+					)}
 				</div>
 			</div>
 			<motion.div variants={itemVariants} className={styles.linesGroup}>
@@ -302,6 +207,7 @@ export default function Feature() {
 		</motion.div>
 	)
 }
+
 function FeatureBadge({ children }: { children: React.ReactNode }) {
 	return (
 		<motion.div

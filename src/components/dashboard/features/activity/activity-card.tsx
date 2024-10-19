@@ -61,7 +61,7 @@ ActivityCard.Skeleton = function ActivityCardSkeleton({
 			className="shrink-0 basis-full lg:basis-[250px]"
 			style={{ opacity: `${opacity}%` }}
 		>
-			<div className="flex flex-col gap-2 rounded-xl border bg-gray-100 p-6 dark:bg-gray-800">
+			<div className="flex flex-col gap-2 rounded-xl border bg-section p-6 dark:bg-gray-800">
 				<div
 					className={`h-5 w-5 rounded-full bg-gray-200 dark:bg-gray-700 ${animate ? 'animate-pulse' : ''}`}
 				/>
