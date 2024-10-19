@@ -3,18 +3,32 @@
 import { db } from '@/core/server/db'
 import { boards } from '@/core/server/db/schema'
 import { Board } from '@/types/tasks'
+import { eq } from 'drizzle-orm'
 
 export async function createBoard(
 	userId: string,
-	boardData: { name: string; description?: string }
+	boardData: { name: string; description?: string; lanes?: string[] }
 ): Promise<Board> {
 	try {
-		const newBoard = await db
+		if (!userId) {
+			throw new Error('User ID is required')
+		}
+
+		if (!boardData.name) {
+			throw new Error('Board name is required')
+		}
+
+		const [newBoard] = await db
 			.insert(boards)
 			.values({
 				userId,
 				name: boardData.name,
 				description: boardData.description || null,
+				lanes: boardData.lanes || [
+					'Backlog',
+					'In Progress',
+					'Completed'
+				],
 				createdAt: new Date(),
 				updatedAt: new Date()
 			})
@@ -25,13 +39,8 @@ export async function createBoard(
 				'Board creation failed: No board returned from database'
 			)
 		}
-		return {
-			id: newBoard[0].id,
-			name: newBoard[0].name,
-			description: newBoard[0].description || '',
-			createdAt: newBoard[0].createdAt,
-			updatedAt: newBoard[0].updatedAt
-		}
+
+		return newBoard
 	} catch (error) {
 		console.error('Error creating board:', error)
 		throw new Error(

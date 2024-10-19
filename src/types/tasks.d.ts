@@ -1,11 +1,12 @@
 export type TaskStatus = 'backlog' | 'in-progress' | 'completed'
 export type TaskPriority = 1 | 2 | 3
 
-export interface Board {
+export type Board = {
 	id: string
-	userId: string
 	name: string
-	description: string | null
+	description?: string
+	userId: string
+	statuses: string[]
 	createdAt: Date
 	updatedAt: Date
 }
@@ -33,7 +34,7 @@ export interface Task {
 	boardId: string
 	title: string
 	content: string
-	status: 'backlog' | 'in-progress' | 'completed'
+	status: string
 	priority: 1 | 2 | 3
 	dueDate: Date | null
 	createdAt: Date

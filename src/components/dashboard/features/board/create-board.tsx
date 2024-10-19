@@ -1,3 +1,8 @@
+import { Button, Input, Label, Textarea } from '@/components/ui'
+import { Board } from '@/types/tasks'
+import { createBoard } from 'actions'
+import { useState } from 'react'
+import { toast } from 'sonner'
 import {
 	Dialog,
 	DialogContent,
@@ -5,11 +10,6 @@ import {
 	DialogHeader,
 	DialogTitle
 } from 'ui'
-import { Button, Input, Label, Textarea } from '@/components/ui'
-import { Board } from '@/types/tasks'
-import { createBoard } from 'actions'
-import { useState } from 'react'
-import { toast } from 'sonner'
 interface CreateBoardModalProps {
 	isOpen: boolean
 	onClose: () => void
@@ -44,7 +44,11 @@ export default function CreateBoardModal({
 			handleClose()
 		} catch (error) {
 			console.error('Error creating board:', error)
-			toast.error('Failed to create board. Please try again.')
+			if (error instanceof Error) {
+				toast.error(`Failed to create board: ${error.message}`)
+			} else {
+				toast.error('Failed to create board. Please try again.')
+			}
 		} finally {
 			setIsLoading(false)
 		}

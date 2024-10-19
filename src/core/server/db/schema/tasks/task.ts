@@ -1,5 +1,12 @@
+import {
+	pgTable,
+	text,
+	timestamp,
+	uuid,
+	jsonb,
+	integer
+} from 'drizzle-orm/pg-core'
 import { relations } from 'drizzle-orm'
-import { pgTable, text, timestamp, uuid, integer } from 'drizzle-orm/pg-core'
 import { users } from '../auth'
 
 export const boards = pgTable('board', {
@@ -9,6 +16,9 @@ export const boards = pgTable('board', {
 	userId: text('user_id')
 		.notNull()
 		.references(() => users.id),
+	lanes: jsonb('lanes')
+		.notNull()
+		.default(['Backlog', 'In Progress', 'Completed']),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 	updatedAt: timestamp('updated_at').notNull().defaultNow()
 })
@@ -45,7 +55,6 @@ export const tasksRelations = relations(tasks, ({ one }) => ({
 	})
 }))
 
-// Types
 export type Board = typeof boards.$inferSelect
 export type NewBoard = typeof boards.$inferInsert
 export type Task = typeof tasks.$inferSelect

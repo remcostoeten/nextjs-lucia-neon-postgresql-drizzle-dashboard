@@ -7,9 +7,7 @@ import { eq } from 'drizzle-orm'
 export async function deleteBoard(boardId: string): Promise<void> {
 	try {
 		await db.transaction(async trx => {
-			// Delete all tasks associated with the board
 			await trx.delete(tasks).where(eq(tasks.boardId, boardId))
-			// Delete the board
 			await trx.delete(boards).where(eq(boards.id, boardId))
 		})
 	} catch (error) {

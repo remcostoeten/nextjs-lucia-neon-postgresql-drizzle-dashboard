@@ -175,7 +175,6 @@ export default function MainSidebar({
 										item={item}
 										isActive={isActivePath(item.path)}
 									/>
-									c{' '}
 								</ItemComponent>
 							))}
 						</nav>

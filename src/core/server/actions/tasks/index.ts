@@ -1,25 +1,19 @@
 'use server'
 
-import { tasks } from '@/core/server/db/schema'
-import { Board, NewTask, Subtask, Task, TaskStatus } from '@/types/tasks'
+import { boards, tasks } from '@/core/server/db/schema'
+import { NewTask, Subtask, Task } from '@/types/tasks'
 import { db } from 'db'
-import { eq } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 
-export async function getTasks(userId: string): Promise<Task[]> {
+export async function getTasks(
+	userId: string,
+	boardId: string
+): Promise<Task[]> {
 	try {
-		const tasksData = await db
+		return await db
 			.select()
 			.from(tasks)
-			.where(eq(tasks.userId, userId))
-		const tasksWithSubtasks = await Promise.all(
-			tasksData.map(async task => {
-				return {
-					...task,
-					subtasks: task.subtasks as Subtask[]
-				}
-			})
-		)
-		return tasksWithSubtasks
+			.where(and(eq(tasks.userId, userId), eq(tasks.boardId, boardId)))
 	} catch (error) {
 		console.error('Error fetching tasks:', error)
 		throw new Error('Failed to fetch tasks')
@@ -28,17 +22,18 @@ export async function getTasks(userId: string): Promise<Task[]> {
 
 export async function createTask(
 	userId: string,
-	taskData: NewTask
+	taskData: NewTask & { boardId: string }
 ): Promise<Task> {
 	try {
+		const { boardId, ...rest } = taskData
 		const [newTask] = await db
 			.insert(tasks)
 			.values({
-				...taskData,
+				...rest,
 				userId,
+				boardId,
 				createdAt: new Date(),
-				updatedAt: new Date(),
-				subtasks: taskData.subtasks || []
+				updatedAt: new Date()
 			})
 			.returning()
 
@@ -48,10 +43,7 @@ export async function createTask(
 			)
 		}
 
-		return {
-			...newTask,
-			subtasks: newTask.subtasks as Subtask[]
-		}
+		return newTask
 	} catch (error) {
 		console.error('Error creating task:', error)
 		throw new Error(
@@ -77,10 +69,7 @@ export async function updateTask(task: Task): Promise<Task> {
 			)
 		}
 
-		return {
-			...updatedTask,
-			subtasks: updatedTask.subtasks as Subtask[]
-		}
+		return updatedTask
 	} catch (error) {
 		console.error('Error updating task:', error)
 		throw new Error('Failed to update task')
@@ -98,7 +87,7 @@ export async function deleteTask(taskId: string): Promise<void> {
 
 export async function updateTaskStatus(
 	taskId: string,
-	newStatus: TaskStatus
+	newStatus: string
 ): Promise<void> {
 	try {
 		await db
@@ -108,6 +97,21 @@ export async function updateTaskStatus(
 	} catch (error) {
 		console.error('Error updating task status:', error)
 		throw new Error('Failed to update task status')
+	}
+}
+
+export async function updateBoardStatuses(
+	boardId: string,
+	newStatuses: string[]
+): Promise<void> {
+	try {
+		await db
+			.update(boards)
+			.set({ statuses: newStatuses, updatedAt: new Date() })
+			.where(eq(boards.id, boardId))
+	} catch (error) {
+		console.error('Error updating board statuses:', error)
+		throw new Error('Failed to update board statuses')
 	}
 }
 
@@ -252,7 +256,7 @@ export async function addTaskDependency(
 
 		await db
 			.update(tasks)
-			.set({ dependencies: updatedDependencies, updatedAt: new Date() })
+			.set({ updatedAt: new Date() })
 			.where(eq(tasks.id, taskId))
 	} catch (error) {
 		console.error('Error adding task dependency:', error)
@@ -334,8 +338,4 @@ export async function addComment(
 		console.error('Error adding comment:', error)
 		throw new Error('Failed to add comment')
 	}
-}
-
-export default async function (): Promise<null> {
-	return null
 }

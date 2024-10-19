@@ -1,10 +1,10 @@
 'use client'
 
 import { useClientAuth } from '@/core/server/auth/client-auth-utils'
-import { Task, TaskPriority, TaskStatus } from '@/types/tasks'
+import { Task, TaskPriority, NewTask } from '@/types/tasks'
 import { createTask } from 'actions'
 import { format } from 'date-fns'
-import { CalendarIcon, Plus } from 'lucide-react'
+import { CalendarIcon, Plus, Tag } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import {
@@ -21,38 +21,40 @@ import {
 	SelectTrigger,
 	SelectValue,
 	Textarea
-} from 'ui'
+} from '@/components/ui'
 
 type CreateTaskPopoverProps = {
-	onTaskCreated: (createdTask: Task) => void
+	onTaskCreated: () => void
 	isOpen: boolean
 	setIsOpen: (isOpen: boolean) => void
 	boardId: string | undefined
+	lanes: string[]
 }
 
-type NewTaskData = Omit<Task, 'id' | 'createdAt' | 'updatedAt' | 'boardId'>
+type NewTaskData = Omit<NewTask, 'boardId'>
 
 export default function CreateTaskPopover({
 	onTaskCreated,
 	isOpen,
 	setIsOpen,
-	boardId
+	boardId,
+	lanes
 }: CreateTaskPopoverProps) {
 	const { getClientSession } = useClientAuth()
 	const [userId, setUserId] = useState<string | null>(null)
 	const [newTask, setNewTask] = useState<NewTaskData>({
 		title: '',
 		content: '',
-		status: 'backlog',
+		status: lanes[0] || 'backlog',
 		labels: [],
 		subtasks: [],
 		dueDate: null,
 		priority: 1,
 		actualTime: null,
 		estimatedTime: null,
-		assignee: null,
-		dependencies: []
+		assignee: null
 	})
+	const [newLabel, setNewLabel] = useState('')
 
 	useEffect(() => {
 		const fetchUserSession = async () => {
@@ -86,26 +88,44 @@ export default function CreateTaskPopover({
 					setNewTask({
 						title: '',
 						content: '',
-						status: 'backlog',
+						status: lanes[0] || 'backlog',
 						labels: [],
 						subtasks: [],
 						dueDate: null,
 						priority: 1,
 						actualTime: null,
 						estimatedTime: null,
-						assignee: null,
-						dependencies: []
+						assignee: null
 					})
-					onTaskCreated(createdTask)
-					toast.success('Task created successfully')
+					onTaskCreated()
+					toast.success('Task created successfully!')
+				} else {
+					throw new Error('Failed to create task')
 				}
 			} catch (error) {
-				console.error('Error creating task:', error)
-				toast.error('Failed to create task')
+				console.error('Failed to create task:', error)
+				toast.error('Failed to create task. Please try again.')
 			}
 		} else {
-			toast.error('Please fill in all required fields')
+			toast.error('Please provide a title and description for the task.')
 		}
+	}
+
+	const handleAddLabel = () => {
+		if (newLabel && !newTask.labels.includes(newLabel)) {
+			setNewTask(prev => ({
+				...prev,
+				labels: [...prev.labels, newLabel]
+			}))
+			setNewLabel('')
+		}
+	}
+
+	const handleRemoveLabel = (label: string) => {
+		setNewTask(prev => ({
+			...prev,
+			labels: prev.labels.filter(l => l !== label)
+		}))
 	}
 
 	return (
@@ -115,17 +135,15 @@ export default function CreateTaskPopover({
 					<Plus className="mr-2 h-4 w-4" /> Create Task
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className="w-[400px] bg-[#2C2C2C] border-gray-600">
+			<PopoverContent className="w-[400px] bg-background border-border">
 				<div className="grid gap-4">
 					<div className="space-y-2">
-						<h4 className="font-medium leading-none text-white">
+						<h4 className="font-medium leading-none">
 							Create New Task
 						</h4>
 					</div>
 					<div className="grid gap-2">
-						<Label htmlFor="title" className="text-white">
-							Title
-						</Label>
+						<Label htmlFor="title">Title</Label>
 						<Input
 							id="title"
 							value={newTask.title}
@@ -135,13 +153,11 @@ export default function CreateTaskPopover({
 									title: e.target.value
 								})
 							}
-							className="bg-[#3C3C3C] text-white border-gray-600"
+							className="bg-input"
 						/>
 					</div>
 					<div className="grid gap-2">
-						<Label htmlFor="content" className="text-white">
-							Description
-						</Label>
+						<Label htmlFor="content">Description</Label>
 						<Textarea
 							id="content"
 							value={newTask.content}
@@ -151,38 +167,32 @@ export default function CreateTaskPopover({
 									content: e.target.value
 								})
 							}
-							className="bg-[#3C3C3C] text-white border-gray-600"
+							className="bg-input"
 							rows={3}
 						/>
 					</div>
 					<div className="grid gap-2">
-						<Label htmlFor="status" className="text-white">
-							Status
-						</Label>
+						<Label htmlFor="status">Status</Label>
 						<Select
 							value={newTask.status}
-							onValueChange={(value: TaskStatus) =>
+							onValueChange={(value: string) =>
 								setNewTask({ ...newTask, status: value })
 							}
 						>
-							<SelectTrigger className="bg-[#3C3C3C] text-white border-gray-600">
+							<SelectTrigger className="bg-input">
 								<SelectValue placeholder="Select status" />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="backlog">Backlog</SelectItem>
-								<SelectItem value="in-progress">
-									In Progress
-								</SelectItem>
-								<SelectItem value="completed">
-									Completed
-								</SelectItem>
+								{lanes.map(lane => (
+									<SelectItem key={lane} value={lane}>
+										{lane}
+									</SelectItem>
+								))}
 							</SelectContent>
 						</Select>
 					</div>
 					<div className="grid gap-2">
-						<Label htmlFor="priority" className="text-white">
-							Priority
-						</Label>
+						<Label htmlFor="priority">Priority</Label>
 						<Select
 							value={newTask.priority.toString()}
 							onValueChange={(value: string) =>
@@ -192,7 +202,7 @@ export default function CreateTaskPopover({
 								})
 							}
 						>
-							<SelectTrigger className="bg-[#3C3C3C] text-white border-gray-600">
+							<SelectTrigger className="bg-input">
 								<SelectValue placeholder="Select priority" />
 							</SelectTrigger>
 							<SelectContent>
@@ -203,14 +213,12 @@ export default function CreateTaskPopover({
 						</Select>
 					</div>
 					<div className="grid gap-2">
-						<Label htmlFor="dueDate" className="text-white">
-							Due Date
-						</Label>
+						<Label htmlFor="dueDate">Due Date</Label>
 						<Popover>
 							<PopoverTrigger asChild>
 								<Button
-									variant={'outline'}
-									className={`justify-start text-left font-normal bg-[#3C3C3C] text-white border-gray-600 ${!newTask.dueDate && 'text-muted-foreground'}`}
+									variant="outline"
+									className={`justify-start text-left font-normal bg-input ${!newTask.dueDate && 'text-muted-foreground'}`}
 								>
 									<CalendarIcon className="mr-2 h-4 w-4" />
 									{newTask.dueDate ? (
@@ -220,7 +228,7 @@ export default function CreateTaskPopover({
 									)}
 								</Button>
 							</PopoverTrigger>
-							<PopoverContent className="w-auto p-0 bg-[#2C2C2C] border-gray-600">
+							<PopoverContent className="w-auto p-0 bg-popover">
 								<Calendar
 									mode="single"
 									selected={newTask.dueDate || undefined}
@@ -231,10 +239,41 @@ export default function CreateTaskPopover({
 										})
 									}
 									initialFocus
-									className="bg-[#2C2C2C] text-white"
 								/>
 							</PopoverContent>
 						</Popover>
+					</div>
+					<div className="grid gap-2">
+						<Label htmlFor="labels">Labels</Label>
+						<div className="flex flex-wrap gap-2 mb-2">
+							{newTask.labels.map(label => (
+								<div
+									key={label}
+									className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-sm flex items-center"
+								>
+									{label}
+									<button
+										onClick={() => handleRemoveLabel(label)}
+										className="ml-2 text-primary-foreground hover:text-red-500"
+									>
+										&times;
+									</button>
+								</div>
+							))}
+						</div>
+						<div className="flex gap-2">
+							<Input
+								id="newLabel"
+								value={newLabel}
+								onChange={e => setNewLabel(e.target.value)}
+								placeholder="Add a label"
+								className="bg-input"
+							/>
+							<Button onClick={handleAddLabel} variant="outline">
+								<Tag className="h-4 w-4 mr-2" />
+								Add
+							</Button>
+						</div>
 					</div>
 					<Button
 						onClick={handleCreateTask}

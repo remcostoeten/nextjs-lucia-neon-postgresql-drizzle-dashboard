@@ -13,6 +13,9 @@ export default async function MyAccountPage() {
 	}
 
 	return (
-		<UnifiedSettingsComponent variant="page" initialProfile={userProfile} />
+		<UnifiedSettingsComponent
+			variant="modal"
+			initialProfile={userProfile}
+		/>
 	)
 }
