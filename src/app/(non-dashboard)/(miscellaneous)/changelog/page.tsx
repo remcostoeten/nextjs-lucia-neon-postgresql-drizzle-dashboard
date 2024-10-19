@@ -1,6 +1,7 @@
 'use client'
 
 import { Flex } from '@/components/atoms'
+import { GitHubIcon } from '@/components/base/Icons'
 import DeploymentInfo from '@/components/DeploymentInfo'
 import HeartbeatLoader from '@/components/effects/loaders/heartbeat-loader'
 import useMouseHoverEffect from '@/core/hooks/use-mouse-hover'
@@ -595,12 +596,12 @@ const ChangelogPage: React.FC = () => {
 					date: format(
 						new Date(
 							Date.now() -
-								(weeklyData.length - 1 - index) *
-									7 *
-									24 *
-									60 *
-									60 *
-									1000
+							(weeklyData.length - 1 - index) *
+							7 *
+							24 *
+							60 *
+							60 *
+							1000
 						),
 						'MMM d'
 					),
