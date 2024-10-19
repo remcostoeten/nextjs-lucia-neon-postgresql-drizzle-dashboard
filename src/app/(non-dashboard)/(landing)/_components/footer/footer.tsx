@@ -24,7 +24,9 @@ function FooterContactLink({
 			<div className="flex-none justify-center items-center w-5 h-5">
 				{icon}
 			</div>
-			<div className="text-md mb-0 font-normal leading-[1.7] tracking-[-0.02em]">{text}</div>
+			<div className="text-md mb-0 font-normal leading-[1.7] tracking-[-0.02em]">
+				{text}
+			</div>
 		</a>
 	)
 }
@@ -40,13 +42,10 @@ function FooterColumn({ title, links }: FooterColumnProps) {
 						href={link.href}
 						className={`${styles['footer-link']} ${styles['w-inline-block']}`}
 					>
-						<p className='subtitle text-xxs mb-0'>{link.text}</p>
+						<p className="subtitle text-xxs mb-0">{link.text}</p>
 						{link.isNew && (
 							<div className="flex gap-2 text-xxs items-center">
-
-								<div
-									className="w-4 h-4 flex justify-center items-center"
-								>
+								<div className="w-4 h-4 flex justify-center items-center">
 									<NewIcon />
 								</div>
 								<div className={styles['text-color-white']}>
@@ -59,7 +58,7 @@ function FooterColumn({ title, links }: FooterColumnProps) {
 								<div className="flex justify-center items-center w-4 h-4">
 									<NewIcon />
 								</div>
-								<div className='subtitle'>Beta</div>
+								<div className="subtitle">Beta</div>
 							</div>
 						)}
 					</Link>

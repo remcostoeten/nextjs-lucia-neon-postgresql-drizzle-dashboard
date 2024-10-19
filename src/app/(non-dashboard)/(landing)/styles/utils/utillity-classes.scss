@@ -111,3 +111,29 @@ $vertical-padding: 72px;
 		opacity: 1;
 	}
 }
+
+.gradient {
+	.gradient-span {
+		background-image: linear-gradient(
+			to bottom,
+			var(--base--white),
+			var(--white--64)
+		);
+		-webkit-text-fill-color: transparent;
+		-webkit-background-clip: text;
+		background-clip: text;
+	}
+}
+
+.gradient-alt {
+	.gradient-span {
+		background-image: linear-gradient(
+			to bottom,
+			var(--base--white),
+			var(--text-subtitle)
+		);
+		-webkit-text-fill-color: transparent;
+		-webkit-background-clip: text;
+		background-clip: text;
+	}
+}

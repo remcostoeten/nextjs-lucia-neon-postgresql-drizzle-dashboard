@@ -74,4 +74,3 @@ export const subSidebarConfig: SubSidebarConfig = {
 	'/dashboard/notes': { component: NotesSidebar, allowToggle: false },
 	'/dashboard/folders': { component: FoldersAside, allowToggle: true }
 }
-

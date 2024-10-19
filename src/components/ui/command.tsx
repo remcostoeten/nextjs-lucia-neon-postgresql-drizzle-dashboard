@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useCopyToClipboard } from '@/core/hooks'

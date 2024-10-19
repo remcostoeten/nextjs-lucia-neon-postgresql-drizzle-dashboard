@@ -1,7 +1,6 @@
 'use client'
 
 import { Flex } from '@/components/atoms'
-import { GitHubIcon } from '@/components/base/Icons'
 import DeploymentInfo from '@/components/DeploymentInfo'
 import HeartbeatLoader from '@/components/effects/loaders/heartbeat-loader'
 import useMouseHoverEffect from '@/core/hooks/use-mouse-hover'

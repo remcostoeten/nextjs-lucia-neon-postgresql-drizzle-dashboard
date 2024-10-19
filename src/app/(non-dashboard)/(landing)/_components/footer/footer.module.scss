@@ -9,9 +9,11 @@
 
 .footer-line {
 	z-index: 40;
-	background-image: linear-gradient(to right,
-			var(--yellow--250),
-			var(--purple--250));
+	background-image: linear-gradient(
+		to right,
+		var(--yellow--250),
+		var(--purple--250)
+	);
 	width: 40px;
 	height: 2px;
 	position: absolute;
@@ -173,12 +175,10 @@
 	background-color: transparent;
 }
 
-
 .align-c {
 	display: flex;
 	align-items: center;
 }
-
 
 .footer-link {
 	display: flex;
@@ -197,9 +197,11 @@
 }
 
 .gradient-span {
-	background-image: linear-gradient(to bottom,
-			var(--base--white),
-			var(--white--64));
+	background-image: linear-gradient(
+		to bottom,
+		var(--base--white),
+		var(--white--64)
+	);
 	-webkit-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
@@ -219,9 +221,11 @@
 	align-items: center;
 	border-radius: var(--radius--40px);
 	background-color: var(--white--12);
-	background-image: linear-gradient(to bottom,
-			var(--white--8),
-			rgba(142, 120, 176, 0.08));
+	background-image: linear-gradient(
+		to bottom,
+		var(--white--8),
+		rgba(142, 120, 176, 0.08)
+	);
 	box-shadow:
 		inset 0 1px 0.75px 0 var(--white--16),
 		inset 0 0 1px 0 var(--white--12);
@@ -241,8 +245,6 @@
 	grid-row-gap: 6px;
 	grid-column-gap: 6px;
 }
-
-
 
 .text-field {
 	min-height: 36px;
@@ -349,7 +351,6 @@
 }
 
 @media screen and (max-width: 767px) {
-
 	.footer-contact-details,
 	.footer-links {
 		flex-direction: column;

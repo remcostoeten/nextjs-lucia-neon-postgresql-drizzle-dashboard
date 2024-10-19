@@ -20,13 +20,13 @@ const SidebarItems = () => {
 			<SidebarLinkGroup links={defaultLinks} />
 			{additionalLinks.length > 0
 				? additionalLinks.map(l => (
-					<SidebarLinkGroup
-						links={l.links}
-						title={l.title}
-						border
-						key={l.title}
-					/>
-				))
+						<SidebarLinkGroup
+							links={l.links}
+							title={l.title}
+							border
+							key={l.title}
+						/>
+					))
 				: null}
 		</>
 	)

@@ -1,5 +1,6 @@
 export * from './_hook_helpers/use-isomorphic-layout-effect'
 export * from './use-copy-clipboard'
+export * from './use-dev-mode'
 export * from './use-geo-location'
 export * from './use-keyboard-shortcuts'
 export * from './use-local-storage'

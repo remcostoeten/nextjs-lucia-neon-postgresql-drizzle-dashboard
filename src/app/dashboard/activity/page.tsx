@@ -1,4 +1,4 @@
-import ActivityFeed from "@/components/dashboard/features/activity/activity-feed";
+import ActivityFeed from '@/components/dashboard/features/activity/activity-feed'
 
 export default function ActivityPage() {
 	return (

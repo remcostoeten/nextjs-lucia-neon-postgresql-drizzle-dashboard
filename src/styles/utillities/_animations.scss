@@ -31,15 +31,15 @@
 
 	.loading svg polyline#back {
 		fill: none;
-		stroke: #ff4d5033;
+		stroke: #58575a33;
 	}
 
 	.loading svg polyline#front {
 		fill: none;
-		stroke: #ff4d4f;
+		stroke: #5b5b5c;
 		stroke-dasharray: 48, 144;
 		stroke-dashoffset: 192;
-		animation: dash_682 1.4s linear infinite;
+		animation: dash_682 1.4s ease-in-out infinite;
 	}
 
 	@keyframes dash_682 {
@@ -50,5 +50,53 @@
 		to {
 			stroke-dashoffset: 0;
 		}
+	}
+}
+
+.wave {
+	animation-name: wave-animation;
+	/* Refers to the name of your @keyframes element below */
+	animation-duration: 2.5s;
+	/* Change to speed up or slow down */
+	animation-iteration-count: infinite;
+	/* Never stop waving :) */
+	transform-origin: 70% 70%;
+	/* Pivot around the bottom-left palm */
+	display: inline-block;
+}
+
+@keyframes wave-animation {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	10% {
+		transform: rotate(14deg);
+	}
+
+	/* The following five values can be played with to make the waving more or less extreme */
+	20% {
+		transform: rotate(-8deg);
+	}
+
+	30% {
+		transform: rotate(14deg);
+	}
+
+	40% {
+		transform: rotate(-4deg);
+	}
+
+	50% {
+		transform: rotate(10deg);
+	}
+
+	60% {
+		transform: rotate(0deg);
+	}
+
+	/* Reset for the last half to pause */
+	100% {
+		transform: rotate(0deg);
 	}
 }

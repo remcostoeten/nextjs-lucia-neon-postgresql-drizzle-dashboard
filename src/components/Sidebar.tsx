@@ -50,13 +50,15 @@ function SidebarIcon({ item, isActive, onClick }: SidebarIconProps) {
 
 	return (
 		<IconComponent
-			className={`relative z-50 flex items-center justify-center size-10 mb-2 rounded-md transition-colors duration-200 ${isActive
-				? 'bg-body border-outline text-white'
-				: 'text-zinc-400 hover:text-title hover:bg-body'
-				} ${isHovered ? 'border border-outline' : ''} ${item.disabled
+			className={`relative z-50 flex items-center justify-center size-10 mb-2 rounded-md transition-colors duration-200 ${
+				isActive
+					? 'bg-body border-outline text-white'
+					: 'text-zinc-400 hover:text-title hover:bg-body'
+			} ${isHovered ? 'border border-outline' : ''} ${
+				item.disabled
 					? 'opacity-50 cursor-not-allowed'
 					: 'cursor-pointer'
-				}`}
+			}`}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 			whileHover={disableAllAnimations ? undefined : { scale: 1.1 }}
@@ -225,8 +227,9 @@ export default function MainSidebar({
 				</SidebarComponent>
 				<ButtonComponent
 					onClick={toggleCollapse}
-					className={`fixed top-[66px] p-1 bg-body border border-outline text-white hover:bg-opacity-80 z-20 border-outline rounded-full shadow-xl backdrop-filter backdrop-blur-lg ${isCollapsed ? 'left-2' : 'left-0'
-						} filter drop-shadow-[0_4px_6px_rgba(255,165,0,0.4)]`}
+					className={`fixed top-[66px] p-1 bg-body border border-outline text-white hover:bg-opacity-80 z-20 border-outline rounded-full shadow-xl backdrop-filter backdrop-blur-lg ${
+						isCollapsed ? 'left-2' : 'left-0'
+					} filter drop-shadow-[0_4px_6px_rgba(255,165,0,0.4)]`}
 					aria-label={
 						isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'
 					}
