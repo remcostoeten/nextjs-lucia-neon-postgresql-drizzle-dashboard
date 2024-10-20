@@ -26,7 +26,7 @@ export type SidebarItem = {
 }
 
 export const sidebarItems: SidebarItem[] = [
-	{ name: 'Dashboard', path: '/dashboard', icon: DashboardIcon },
+	{ name: 'erd', path: '/dashboard', icon: DashboardIcon },
 	{
 		name: 'Folders',
 		path: '/dashboard/folders',
