@@ -1,6 +1,6 @@
-import { ArrowRightIcon } from '@radix-ui/react-icons'
 import { cn } from 'cn'
 import { motion } from 'framer-motion'
+import { ArrowRightIcon } from 'lucide-react'
 import { ReactNode } from 'react'
 import { Button } from 'ui'
 

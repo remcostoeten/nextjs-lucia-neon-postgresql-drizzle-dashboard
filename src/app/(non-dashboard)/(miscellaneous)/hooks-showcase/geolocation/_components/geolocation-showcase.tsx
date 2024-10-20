@@ -2,8 +2,8 @@
 
 import Spinner from '@/components/ui/spinner'
 import { useGeolocation } from '@/core/hooks'
+import { IconJarLogoIcon } from '@radix-ui/react-icons'
 import { AlertTriangle, Clock, Compass, MapPin } from 'lucide-react'
-import { SiExpedia } from 'react-icons/si'
 
 export default function GeolocationUI() {
 	const { data, error, isLoading } = useGeolocation()
@@ -68,7 +68,7 @@ export default function GeolocationUI() {
 			value: data.heading ? `${data.heading.toFixed(2)}°` : 'N/A'
 		},
 		{
-			icon: <SiExpedia />,
+			icon: <IconJarLogoIcon />,
 			label: 'Speed',
 			value: data.speed ? `${(data.speed * 3.6).toFixed(2)} km/h` : 'N/A'
 		},

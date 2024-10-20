@@ -1,7 +1,6 @@
 'use client'
 
-import { CalendarIcon, FileTextIcon } from '@radix-ui/react-icons'
-import { BellIcon, Share2Icon } from 'lucide-react'
+import { BellIcon, CalendarIcon, FileTextIcon, Share2Icon } from 'lucide-react'
 
 import { cn } from 'cn'
 import { BentoCard, BentoGrid } from './bento-grid-parent'

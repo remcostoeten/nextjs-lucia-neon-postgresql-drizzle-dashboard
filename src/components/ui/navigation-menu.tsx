@@ -3,7 +3,7 @@ import { cva } from 'class-variance-authority'
 import * as React from 'react'
 
 import { cn } from 'cn'
-import { LuChevronDown } from 'react-icons/lu'
+import { ChevronDown } from 'lucide-react'
 
 const NavigationMenu = React.forwardRef<
 	React.ElementRef<typeof NavigationMenuPrimitive.Root>,
@@ -54,7 +54,7 @@ const NavigationMenuTrigger = React.forwardRef<
 		{...props}
 	>
 		{children}
-		<LuChevronDown
+		<ChevronDown
 			className="relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
 			aria-hidden="true"
 		/>

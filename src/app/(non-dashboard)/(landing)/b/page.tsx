@@ -6,10 +6,10 @@ import {
 	ArrowRightFromLine,
 	Building,
 	Cat,
+	HelpCircleIcon,
 	Phone
 } from 'lucide-react'
 import React from 'react'
-import { SiHellofresh } from 'react-icons/si'
 
 type CardProps = {
 	icon: React.ReactNode
@@ -60,7 +60,7 @@ export default function CardLayout() {
 					description="Places to be apart. Wait, what?"
 				/>
 				<Card
-					icon={<SiHellofresh />}
+					icon={<HelpCircleIcon />}
 					title="Unicorns"
 					description="A single corn. Er, I mean horn."
 				/>

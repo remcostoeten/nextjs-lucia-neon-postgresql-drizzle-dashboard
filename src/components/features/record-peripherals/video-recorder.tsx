@@ -1,8 +1,7 @@
-import { Button, Input } from 'ui'
-import { StopIcon } from '@radix-ui/react-icons'
-import { Pause, Play, Trash2, Video } from 'lucide-react'
+import { Pause, Play, StopCircleIcon, Trash2, Video } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useLocalStorage } from 'src/core/hooks/index'
+import { Button, Input } from 'ui'
 
 export default function WebcamRecorder() {
 	const [recordings, setRecordings] = useLocalStorage('webcam-recordings', [])
@@ -150,7 +149,7 @@ export default function WebcamRecorder() {
 							Pause
 						</Button>
 						<Button onClick={stopRecording}>
-							<StopIcon className="mr-2" />
+							<StopCircleIcon className="mr-2" />
 							Stop
 						</Button>
 					</>

@@ -596,12 +596,12 @@ const ChangelogPage: React.FC = () => {
 					date: format(
 						new Date(
 							Date.now() -
-							(weeklyData.length - 1 - index) *
-							7 *
-							24 *
-							60 *
-							60 *
-							1000
+								(weeklyData.length - 1 - index) *
+									7 *
+									24 *
+									60 *
+									60 *
+									1000
 						),
 						'MMM d'
 					),
