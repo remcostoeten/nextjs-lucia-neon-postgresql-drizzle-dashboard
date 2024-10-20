@@ -4,8 +4,14 @@ import { Flex } from '@/components/atoms'
 import EmptyStateMessage from '@/components/effects/empty-state-loader'
 import { ConfirmationDialog } from '@/components/elements/crud/confirm-dialog'
 import { useLocalStorage } from '@/core/hooks/use-local-storage'
-import { StopIcon } from '@radix-ui/react-icons'
-import { Download, MicIcon, PauseIcon, PlayIcon, TrashIcon } from 'lucide-react'
+import {
+	Download,
+	MicIcon,
+	PauseIcon,
+	PlayIcon,
+	StopCircle,
+	TrashIcon
+} from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import {
@@ -366,7 +372,7 @@ export default function AudioRecorder() {
 							{isPaused ? 'Resume' : 'Pause'}
 						</Button>
 						<Button onClick={stopRecording} disabled={!isRecording}>
-							<StopIcon className="h-4 w-4 mr-2" />
+							<StopCircle className="h-4 w-4 mr-2" />
 							Stop
 						</Button>
 						<div className="text-lg font-mono">

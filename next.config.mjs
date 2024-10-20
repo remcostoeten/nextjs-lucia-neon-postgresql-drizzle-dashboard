@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	experimental: {
-		reactCompiler :true,
+		reactCompiler: true
 	},
 	images: {
 		domains: ['cdn.prod.website-files.com']

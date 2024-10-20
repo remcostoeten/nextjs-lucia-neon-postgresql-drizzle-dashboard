@@ -8,6 +8,7 @@ import { logActivity } from 'actions'
 import { db } from 'db'
 import { and, eq, like, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
+
 export async function createFolder(
 	name: string,
 	description: string | null = null,

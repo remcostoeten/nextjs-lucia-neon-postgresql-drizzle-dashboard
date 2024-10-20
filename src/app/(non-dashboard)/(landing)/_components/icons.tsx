@@ -1,4 +1,7 @@
-import { IconProps } from '@radix-ui/react-icons/dist/types'
+type IconProps = {
+	className?: string
+}
+
 export const ChevronRightIcon: React.FC<IconProps> = ({ className }) => (
 	<svg
 		width="16"
