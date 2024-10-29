@@ -315,23 +315,23 @@ export default function Header() {
 									<div className="space-y-4">
 										<div className="space-y-2">
 											<h3 className="text-lg font-medium text-title">
-												Getting Started
+												Dashboard Examples
 											</h3>
 											<div className="space-y-1">
 												<Link
-													href="/features"
+													href="/dashboard/client"
 													className="block text-sm text-subtitle hover:text-title transition-colors"
 												>
-													Features Overview
+													Client-side Dashboard
 												</Link>
 												<Link
-													href="/pricing"
+													href="/dashboard/server"
 													className="block text-sm text-subtitle hover:text-title transition-colors"
 												>
-													Pricing Plans
+													Server-side Dashboard
 												</Link>
 												<Link
-													href="/docs"
+													href="/dashboard/examples"
 													className="block text-sm text-subtitle hover:text-title transition-colors"
 												>
 													Documentation

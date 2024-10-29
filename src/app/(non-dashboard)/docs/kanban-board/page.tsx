@@ -1,4 +1,4 @@
-import EnhancedCodeBlock from '@/components/elements/display-code/code-block'
+import { CodeBlock } from '@/components/elements/code-block/code-block'
 
 export default function KanbanTutorial() {
 	return (
@@ -96,7 +96,7 @@ export default function KanbanTutorial() {
 					Laten we beginnen met het opzetten van ons Next.js project.
 					Open je terminal en voer de volgende commando's uit:
 				</p>
-				<EnhancedCodeBlock
+				<CodeBlock
 					code={`npx create-next-app@latest kanban-project
 cd kanban-project
 npm install @neon-tech/serverless pg drizzle-orm @auth/core @auth/drizzle-adapter
@@ -119,7 +119,7 @@ npm install -D drizzle-kit`}
 					Neon.tech. Eerst maken we een schema voor onze Kanban bord
 					tabellen:
 				</p>
-				<EnhancedCodeBlock
+				<CodeBlock
 					code={`import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
 
 export const boards = pgTable('boards', {
@@ -148,7 +148,7 @@ export const tasks = pgTable('tasks', {
 					Vervolgens maken we een bestand voor onze database
 					connectie:
 				</p>
-				<EnhancedCodeBlock
+				<CodeBlock
 					code={`import { neon } from '@neon-tech/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 
@@ -161,7 +161,7 @@ export const db = drizzle(sql);`}
 					Zorg ervoor dat je een .env bestand aanmaakt met je
 					Neon.tech database URL:
 				</p>
-				<EnhancedCodeBlock
+				<CodeBlock
 					code={`DATABASE_URL=your_neon_database_url_here`}
 					fileName=".env"
 					language="plaintext"
@@ -169,7 +169,7 @@ export const db = drizzle(sql);`}
 				<p className="mt-4">
 					Tot slot, voer de migratie uit om de tabellen aan te maken:
 				</p>
-				<EnhancedCodeBlock
+				<CodeBlock
 					code={`npx drizzle-kit push:pg`}
 					fileName="terminal"
 					language="bash"
@@ -184,7 +184,7 @@ export const db = drizzle(sql);`}
 					Nu gaan we ons Kanban bord renderen met server-side
 					rendering. Maak een nieuwe pagina aan:
 				</p>
-				<EnhancedCodeBlock
+				<CodeBlock
 					code={`import { db } from '@/db';
 import { boards, columns, tasks } from '@/db/schema';
 
@@ -239,7 +239,7 @@ export default async function KanbanBoard() {
 					Nu gaan we server actions implementeren voor het toevoegen
 					en verwijderen van taken:
 				</p>
-				<EnhancedCodeBlock
+				<CodeBlock
 					code={`import { db } from '@/db';
 import { tasks } from '@/db/schema';
 
@@ -260,7 +260,7 @@ export async function moveTask(taskId: number, newColumnId: number) {
 				<p className="mt-4">
 					Nu kunnen we deze actions gebruiken in onze componenten:
 				</p>
-				<EnhancedCodeBlock
+				<CodeBlock
 					code={`import { addTask, deleteTask } from './actions';
 
 export function AddTaskForm({ columnId }: { columnId: number }) {
@@ -299,7 +299,7 @@ export function DeleteTaskButton({ taskId }: { taskId: number }) {
 					Voor drag-and-drop functionaliteit kunnen we gebruik maken
 					van de react-beautiful-dnd library. Installeer deze eerst:
 				</p>
-				<EnhancedCodeBlock
+				<CodeBlock
 					code={`npm install react-beautiful-dnd`}
 					fileName="terminal"
 					language="bash"
@@ -307,7 +307,7 @@ export function DeleteTaskButton({ taskId }: { taskId: number }) {
 				<p className="mt-4">
 					Vervolgens passen we onze Kanban bord component aan:
 				</p>
-				<EnhancedCodeBlock
+				<CodeBlock
 					code={`'use client';
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';

@@ -1,9 +1,8 @@
 'use client'
 
-import EnhancedCodeBlock from '@/components/elements/display-code/code-block'
+import { CodeBlock } from '@/components/elements/code-block/code-block'
 import { useEffect, useState } from 'react'
 import { Button } from 'ui'
-
 type Section =
 	| 'intro'
 	| 'packages'
@@ -161,7 +160,7 @@ export default function TodoPresentation() {
 						Benodigde Packages
 					</h2>
 					<p>Installeer de volgende packages om te beginnen:</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`npm install next@latest react@latest react-dom@latest
 npm install drizzle-orm @neondatabase/serverless
 npm install -D drizzle-kit
@@ -172,7 +171,7 @@ npm install @tanstack/react-query
 npm install react-hot-toast`}
 						fileName="terminal"
 						language="bash"
-						badges={['setup']}
+						badges={[{ text: 'setup', variant: 'default' }]}
 					/>
 				</section>
 
@@ -183,7 +182,7 @@ npm install react-hot-toast`}
 					<p>
 						Configureer de connectie met de Neon Postgres database:
 					</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 
@@ -191,14 +190,18 @@ const sql = neon(process.env.DATABASE_URL!);
 export const db = drizzle(sql);`}
 						fileName="src/lib/db.ts"
 						language="typescript"
-						badges={['database', 'neon', 'drizzle']}
+						badges={[
+							{ text: 'database', variant: 'default' },
+							{ text: 'neon', variant: 'default' },
+							{ text: 'drizzle', variant: 'default' }
+						]}
 					/>
 				</section>
 
 				<section id="schema" className="space-y-4">
 					<h2 className="text-2xl font-semibold">Database Schema</h2>
 					<p>Definieer het schema voor de todo-tabel:</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`import { pgTable, serial, varchar, boolean, timestamp } from 'drizzle-orm/pg-core';
 
 export const todos = pgTable('todos', {
@@ -209,7 +212,10 @@ export const todos = pgTable('todos', {
 });`}
 						fileName="src/db/schema.ts"
 						language="typescript"
-						badges={['database', 'drizzle']}
+						badges={[
+							{ text: 'database', variant: 'default' },
+							{ text: 'drizzle', variant: 'default' }
+						]}
 					/>
 				</section>
 
@@ -221,7 +227,7 @@ export const todos = pgTable('todos', {
 						Definieer een Zod schema voor het valideren van de todo
 						input:
 					</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`import { z } from 'zod';
 
 export const todoSchema = z.object({
@@ -229,7 +235,10 @@ export const todoSchema = z.object({
 });`}
 						fileName="src/lib/validations.ts"
 						language="typescript"
-						badges={['validation', 'zod']}
+						badges={[
+							{ text: 'validation', variant: 'default' },
+							{ text: 'zod', variant: 'default' }
+						]}
 					/>
 				</section>
 
@@ -241,7 +250,7 @@ export const todoSchema = z.object({
 						Implementeer een server action om nieuwe todo's aan te
 						maken:
 					</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`import { db } from '@/lib/db';
 import { todos } from '@/db/schema';
 import { todoSchema } from '@/lib/validations';
@@ -260,7 +269,10 @@ export async function createTodo(formData: FormData) {
 }`}
 						fileName="src/app/actions/createTodo.ts"
 						language="typescript"
-						badges={['server-action', 'drizzle']}
+						badges={[
+							{ text: 'server-action', variant: 'default' },
+							{ text: 'drizzle', variant: 'default' }
+						]}
 					/>
 				</section>
 
@@ -269,7 +281,7 @@ export async function createTodo(formData: FormData) {
 						Show Todos Action
 					</h2>
 					<p>Implementeer een server action om todos op te halen:</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`import { db } from '@/lib/db';
 import { todos } from '@/db/schema';
 
@@ -278,14 +290,17 @@ export async function getTodos() {
 }`}
 						fileName="src/app/actions/getTodos.ts"
 						language="typescript"
-						badges={['server-action', 'drizzle']}
+						badges={[
+							{ text: 'server-action', variant: 'default' },
+							{ text: 'drizzle', variant: 'default' }
+						]}
 					/>
 				</section>
 
 				<section id="edit-todo" className="space-y-4">
 					<h2 className="text-2xl font-semibold">Edit Todo Action</h2>
 					<p>Implementeer een server action om todos te bewerken:</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`import { db } from '@/lib/db';
 import { todos } from '@/db/schema';
 import { todoSchema } from '@/lib/validations';
@@ -308,7 +323,10 @@ export async function editTodo(id: number, formData: FormData) {
 }`}
 						fileName="src/app/actions/editTodo.ts"
 						language="typescript"
-						badges={['server-action', 'drizzle']}
+						badges={[
+							{ text: 'server-action', variant: 'default' },
+							{ text: 'drizzle', variant: 'default' }
+						]}
 					/>
 				</section>
 
@@ -363,7 +381,7 @@ export async function editTodo(id: number, formData: FormData) {
 						Geavanceerd Zod Schema
 					</h2>
 					<p>Laten we ons Zod schema uitbreiden met meer velden:</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`import { z } from 'zod';
 
 export const advancedTodoSchema = z.object({
@@ -375,7 +393,10 @@ export const advancedTodoSchema = z.object({
 });`}
 						fileName="src/lib/validations.ts"
 						language="typescript"
-						badges={['validation', 'zod']}
+						badges={[
+							{ text: 'validation', variant: 'default' },
+							{ text: 'zod', variant: 'default' }
+						]}
 					/>
 				</section>
 
@@ -387,7 +408,7 @@ export const advancedTodoSchema = z.object({
 						Laten we ons database schema uitbreiden met de nieuwe
 						velden en een aparte tabel voor categorieën:
 					</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`import { pgTable, serial, varchar, text, boolean, timestamp, integer } from 'drizzle-orm/pg-core';
 
 export const categories = pgTable('categories', {
@@ -408,7 +429,10 @@ export const todos = pgTable('todos', {
 });`}
 						fileName="src/db/schema.ts"
 						language="typescript"
-						badges={['database', 'drizzle']}
+						badges={[
+							{ text: 'database', variant: 'default' },
+							{ text: 'drizzle', variant: 'default' }
+						]}
 					/>
 				</section>
 
@@ -420,7 +444,7 @@ export const todos = pgTable('todos', {
 						Implementeer een server action om nieuwe geavanceerde
 						todo's aan te maken:
 					</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`import { db } from '@/lib/db';
 import { todos, categories } from '@/db/schema';
 import { advancedTodoSchema } from '@/lib/validations';
@@ -456,7 +480,10 @@ export async function createAdvancedTodo(formData: FormData) {
 }`}
 						fileName="src/app/actions/createAdvancedTodo.ts"
 						language="typescript"
-						badges={['server-action', 'drizzle']}
+						badges={[
+							{ text: 'server-action', variant: 'default' },
+							{ text: 'drizzle', variant: 'default' }
+						]}
 					/>
 				</section>
 
@@ -468,7 +495,7 @@ export async function createAdvancedTodo(formData: FormData) {
 						Maak een React component om de geavanceerde todos weer
 						te geven:
 					</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`import { getTodos } from '@/app/actions/getTodos';
 import { format } from 'date-fns';
 
@@ -493,7 +520,10 @@ export default async function AdvancedTodoList() {
 }`}
 						fileName="src/components/AdvancedTodoList.tsx"
 						language="tsx"
-						badges={['react', 'ssr']}
+						badges={[
+							{ text: 'react', variant: 'default' },
+							{ text: 'ssr', variant: 'default' }
+						]}
 					/>
 				</section>
 
@@ -505,7 +535,7 @@ export default async function AdvancedTodoList() {
 						Maak een React component om geavanceerde todos te
 						bewerken in een popover:
 					</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`import { useState } from 'react';
 import { editAdvancedTodo } from '@/app/actions/editAdvancedTodo';
 import { useForm } from 'react-hook-form';
@@ -580,7 +610,11 @@ export function EditTodoPopover({ todo }) {
 }`}
 						fileName="src/components/EditTodoPopover.tsx"
 						language="tsx"
-						badges={['react', 'form', 'popover']}
+						badges={[
+							{ text: 'react', variant: 'default' },
+							{ text: 'form', variant: 'default' },
+							{ text: 'popover', variant: 'default' }
+						]}
 					/>
 				</section>
 
@@ -592,7 +626,7 @@ export function EditTodoPopover({ todo }) {
 						Maak een React component om todos te verwijderen met een
 						bevestigingsdialoog:
 					</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`import { useState } from 'react';
 import { deleteAdvancedTodo } from '@/app/actions/deleteAdvancedTodo';
 
@@ -626,7 +660,10 @@ export function DeleteTodoDialog({ todoId, todoTitle }) {
 }`}
 						fileName="src/components/DeleteTodoDialog.tsx"
 						language="tsx"
-						badges={['react', 'dialog']}
+						badges={[
+							{ text: 'react', variant: 'default' },
+							{ text: 'dialog', variant: 'default' }
+						]}
 					/>
 				</section>
 
@@ -638,7 +675,7 @@ export function DeleteTodoDialog({ todoId, todoTitle }) {
 						Implementeer toasts voor server-side rendering feedback
 						bij acties:
 					</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`import { toast } from 'react-hot-toast';
 
 // In je server action
@@ -667,7 +704,10 @@ export default function Layout({ children }) {
 }`}
 						fileName="src/app/actions/createAdvancedTodo.ts"
 						language="typescript"
-						badges={['server-action', 'toast']}
+						badges={[
+							{ text: 'server-action', variant: 'default' },
+							{ text: 'toast', variant: 'default' }
+						]}
 					/>
 				</section>
 
@@ -679,7 +719,7 @@ export default function Layout({ children }) {
 						Implementeer skeleton loaders voor server-side
 						rendering:
 					</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`import { Skeleton } from "@/components/ui/skeleton"
 
 export function TodoSkeleton() {
@@ -708,7 +748,10 @@ export default function TodoPage() {
 }`}
 						fileName="src/components/TodoSkeleton.tsx"
 						language="tsx"
-						badges={['react', 'skeleton']}
+						badges={[
+							{ text: 'react', variant: 'default' },
+							{ text: 'skeleton', variant: 'default' }
+						]}
 					/>
 				</section>
 
@@ -720,7 +763,7 @@ export default function TodoPage() {
 						Implementeer optimistic updates voor een betere
 						gebruikerservaring:
 					</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`import { useState } from 'react';
 import { useOptimistic } from 'react';
 import { deleteTodo } from '@/app/actions/deleteTodo';
@@ -749,7 +792,10 @@ export function TodoItem({ todo }) {
 }`}
 						fileName="src/components/TodoItem.tsx"
 						language="tsx"
-						badges={['react', 'optimistic-update']}
+						badges={[
+							{ text: 'react', variant: 'default' },
+							{ text: 'optimistic-update', variant: 'default' }
+						]}
 					/>
 				</section>
 
@@ -761,7 +807,7 @@ export function TodoItem({ todo }) {
 						Implementeer server-side rendering voor het ophalen van
 						data zonder useEffect:
 					</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`// In je page.tsx
 import { getTodos } from '@/app/actions/getTodos';
 import { TodoList } from '@/components/TodoList';
@@ -795,7 +841,11 @@ export function TodoList({ initialTodos }) {
 }`}
 						fileName="src/app/todos/page.tsx"
 						language="tsx"
-						badges={['react', 'ssr', 'tanstack-query']}
+						badges={[
+							{ text: 'react', variant: 'default' },
+							{ text: 'ssr', variant: 'default' },
+							{ text: 'tanstack-query', variant: 'default' }
+						]}
 					/>
 				</section>
 
@@ -805,7 +855,7 @@ export function TodoList({ initialTodos }) {
 						Implementeer paginatie voor het efficiënt laden van
 						grote hoeveelheden todos:
 					</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`import { db } from '@/lib/db';
 import { todos } from '@/db/schema';
 import { sql } from 'drizzle-orm';
@@ -873,7 +923,10 @@ export default async function TodoPage({ searchParams }: { searchParams: { page?
 }`}
 						fileName="src/app/actions/getPaginatedTodos.ts"
 						language="typescript"
-						badges={['server-action', 'pagination']}
+						badges={[
+							{ text: 'server-action', variant: 'default' },
+							{ text: 'pagination', variant: 'default' }
+						]}
 					/>
 				</section>
 
@@ -882,7 +935,7 @@ export default async function TodoPage({ searchParams }: { searchParams: { page?
 						Filteren op Categorie
 					</h2>
 					<p>Implementeer filtering op categorie:</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`import { db } from '@/lib/db';
 import { todos, categories } from '@/db/schema';
 import { eq } from 'drizzle-orm';
@@ -912,7 +965,10 @@ export default async function TodoPage({ searchParams }: { searchParams: { categ
 }`}
 						fileName="src/app/actions/getFilteredTodos.ts"
 						language="typescript"
-						badges={['server-action', 'filtering']}
+						badges={[
+							{ text: 'server-action', variant: 'default' },
+							{ text: 'filtering', variant: 'default' }
+						]}
 					/>
 				</section>
 
@@ -1002,7 +1058,7 @@ export default async function TodoPage({ searchParams }: { searchParams: { categ
 					<p>
 						Implementeer robuuste foutafhandeling in je applicatie:
 					</p>
-					<EnhancedCodeBlock
+					<CodeBlock
 						code={`// In je server action
 import { toast } from 'react-hot-toast';
 
@@ -1051,7 +1107,10 @@ export function CreateTodoForm() {
 }`}
 						fileName="src/components/CreateTodoForm.tsx"
 						language="tsx"
-						badges={['react', 'error-handling']}
+						badges={[
+							{ text: 'react', variant: 'default' },
+							{ text: 'error-handling', variant: 'default' }
+						]}
 					/>
 				</section>
 			</div>
