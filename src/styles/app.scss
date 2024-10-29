@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './components/_scrollar.scss';
+@import './components/_mouse-grid.scss';
+@import './components/_hover-efffect.scss';
+
+@import './core/_typography.scss';
+
+@import './themes/_theme-selector.scss';
+
+@import './utillities/_utillities.scss';
+@import './utillities/_border.scss';
+@import './utillities/_animations.scss';
+
+.trans-all {
+	transition: 500ms ease-in-out all;
+}
+
+@for $i from 1 through 20 {
+	.trans-#{$i * 100} {
+		transition: #{$i * 100}ms ease-in-out all;
+	}
+}
+
+label {
+	color: var(--text-title);
+
+	&.dark {
+		color: var(--text-subtitle);
+	}
+}
+
+dd {
+	color: var(--text-subtitle);
+}

@@ -1,0 +1,41 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1729558092004,
+      "tag": "0000_lowly_bishop",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1729558139068,
+      "tag": "0001_lonely_shotgun",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1729559385176,
+      "tag": "0002_slimy_landau",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1729559777956,
+      "tag": "0003_romantic_pixie",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1729559891723,
+      "tag": "0004_noisy_sumo",
+      "breakpoints": true
+    }
+  ]
+}

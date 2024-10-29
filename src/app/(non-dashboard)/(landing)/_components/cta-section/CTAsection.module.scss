@@ -1,0 +1,135 @@
+// styles/CTASection.module.scss
+
+:root {
+	--base--background: #070707;
+	--neutral--400: #6a6a6b;
+	--base--white: #fff;
+	--radius--40px: 40px;
+	--white--12: rgba(255, 255, 255, 0.12);
+	--white--8: rgba(255, 255, 255, 0.08);
+	--white--16: rgba(255, 255, 255, 0.16);
+	--white--2: rgba(255, 255, 255, 0.02);
+	--neutral--800: #1b1b1d;
+	--white--6: rgba(255, 255, 255, 0.06);
+	--white--64: rgba(255, 255, 255, 0.64);
+	--radius--24px: 24px;
+	--white--4: rgba(255, 255, 255, 0.04);
+	--radius--8px: 8px;
+	--radius--12px: 12px;
+	--radius--6px: 6px;
+	--yellow--250: #fce48d;
+	--purple--250: #b98dfc;
+	--radius--16px: 16px;
+}
+
+.containerLinesLarge {
+	z-index: 5;
+	width: 100%;
+	max-width: 1128px;
+	margin: 0 auto;
+	padding: 120px 48px;
+	position: relative;
+}
+
+.containerRegular {
+	width: 100%;
+	max-width: 984px;
+	margin: 0 auto;
+	position: relative;
+}
+
+.linesGroup {
+	z-index: 2;
+	pointer-events: none;
+	position: absolute;
+	inset: 0;
+}
+
+.gridThreeColumn {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 16px;
+}
+
+.ctaBlock {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 48px;
+	border: 1px solid var(--neutral--800);
+	border-radius: var(--radius--12px) var(--radius--12px) var(--radius--24px)
+		var(--radius--24px);
+	background-color: var(--base--background);
+	background-image: linear-gradient(
+		to bottom,
+		var(--white--4),
+		rgba(255, 255, 255, 0)
+	);
+	margin-top: 16px;
+	padding: 4px 6px 4px 4px;
+}
+
+.lineVertical {
+	z-index: 1;
+	background-color: var(--neutral--800);
+	width: 1px;
+	height: auto;
+	position: absolute;
+	top: 4.5px;
+	bottom: 0;
+
+	&Left {
+		@extend .lineVertical;
+		left: 0;
+	}
+
+	&Right {
+		@extend .lineVertical;
+		right: 0;
+	}
+}
+
+.lineDot {
+	z-index: 5;
+	border: 1px solid var(--neutral--800);
+	background-color: #0d0d11;
+	border-radius: 2px;
+	width: 10px;
+	height: 10px;
+	position: absolute;
+
+	&BottomLeft {
+		@extend .lineDot;
+		bottom: -4.5px;
+		left: -4.5px;
+	}
+
+	&BottomRight {
+		@extend .lineDot;
+		bottom: -4.5px;
+		right: -4.5px;
+	}
+}
+
+.ctaFeature {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	border: 1px solid var(--neutral--800);
+	border-radius: var(--radius--12px);
+	background-color: var(--base--background);
+	padding: 16px 24px 24px;
+	position: relative;
+
+	&First {
+		@extend .ctaFeature;
+		border-top-left-radius: var(--radius--24px);
+	}
+
+	&Last {
+		@extend .ctaFeature;
+		border-top-right-radius: var(--radius--24px);
+	}
+}
+
+// ... (rest of the styles)
