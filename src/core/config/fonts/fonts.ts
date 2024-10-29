@@ -4,4 +4,3 @@ export {
 } from './font.bricolage_grotesque'
 export { ptMono } from './font.pt_mono'
 export { geistMono, geistSans } from './geist/font.geist'
-

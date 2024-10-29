@@ -169,7 +169,7 @@ npm install zod @hookform/resolvers react-hook-form
 npm install @radix-ui/react-popover @radix-ui/react-dialog
 npm install lucide-react date-fns
 npm install @tanstack/react-query
-npm install sonner`}
+npm install react-hot-toast`}
 						fileName="terminal"
 						language="bash"
 						badges={['setup']}
@@ -639,7 +639,7 @@ export function DeleteTodoDialog({ todoId, todoTitle }) {
 						bij acties:
 					</p>
 					<EnhancedCodeBlock
-						code={`import { toast } from 'sonner';
+						code={`import { toast } from 'react-hot-toast';
 
 // In je server action
 export async function createAdvancedTodo(formData: FormData) {
@@ -655,7 +655,7 @@ export async function createAdvancedTodo(formData: FormData) {
 }
 
 // In je component
-import { Toaster } from 'sonner';
+import { Toaster } from 'react-hot-toast';
 
 export default function Layout({ children }) {
   return (
@@ -1004,7 +1004,7 @@ export default async function TodoPage({ searchParams }: { searchParams: { categ
 					</p>
 					<EnhancedCodeBlock
 						code={`// In je server action
-import { toast } from 'sonner';
+import { toast } from 'react-hot-toast';
 
 export async function createTodo(formData: FormData) {
   try {
@@ -1020,7 +1020,7 @@ export async function createTodo(formData: FormData) {
 'use client';
 
 import { useTransition } from 'react';
-import { toast } from 'sonner';
+import { toast } from 'react-hot-toast';
 
 export function CreateTodoForm() {
   const [isPending, startTransition] = useTransition();

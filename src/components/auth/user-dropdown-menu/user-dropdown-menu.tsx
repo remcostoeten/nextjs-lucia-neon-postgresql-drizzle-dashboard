@@ -1,7 +1,7 @@
 'use client'
 
 import { Flex } from '@/components/atoms'
-import ModeToggle from '@/components/ui/ThemeToggle'
+import ModeToggle from '@/components/ui/theme-toggle'
 import { useState } from 'react'
 import MenuItem from './user-dropdown-menu-item'
 

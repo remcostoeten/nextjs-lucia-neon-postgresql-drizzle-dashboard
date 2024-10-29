@@ -10,4 +10,4 @@ declare global {
 }
 
 // It's important to include this line to make it a module
-export {}
+export { }

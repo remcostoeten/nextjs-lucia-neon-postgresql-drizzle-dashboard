@@ -1,4 +1,4 @@
-import ThemeWrapper from '@/components/base/ThemeWrapper'
+import ThemeWrapper from '@/components/base/theme-wrapper'
 import Footer from './(landing)/_components/footer/footer'
 import Header from './(landing)/_components/navigation/header'
 

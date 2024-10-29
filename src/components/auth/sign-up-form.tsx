@@ -7,7 +7,7 @@ import signUpAction from '@/core/server/actions/user/action.sign-up'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { toast } from 'sonner'
+import { toast } from 'react-hot-toast'
 import { SignUpFormProps } from './auth'
 
 function SignUpForm({ enhancedSubmit }: SignUpFormProps) {

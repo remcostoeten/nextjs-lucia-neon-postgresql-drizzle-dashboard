@@ -3,15 +3,15 @@
 import { Flex } from '@/components/atoms'
 import NotificationBar from '@/components/elements/notification-bar/notification-bar'
 import { Button } from '@/components/ui'
-import { menuConfig } from '@/config/menu-config'
+import { menuConfig } from '@/config/megamenu-config'
 import { createShortcutMap, useKeyboardShortcuts } from '@/core/hooks'
 import { useDismissedState } from '@/core/hooks/use-local-storage'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ExternalLink, X } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { JSX, Key, useEffect, useRef, useState } from 'react'
-import { toast } from 'sonner'
+import { JSX, useEffect, useRef, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import HorizontalLine from '../horizontal-line'
 import Logo from './_components/logo'
 import SecondaryButton from './_components/sign-in-button'
@@ -22,7 +22,7 @@ const ProductCategory = ({
 	links,
 	onLinkClick
 }: ProductCategoryProps & { onLinkClick: () => void }) => {
-	const pathname = usePathname()
+	const pathname = usePathname() as string
 
 	return (
 		<div className="mb-6">
@@ -84,7 +84,7 @@ const AuthLink = ({
 	text,
 	onLinkClick
 }: AuthLinkProps & { onLinkClick: () => void }) => {
-	const pathname = usePathname()
+	const pathname = usePathname() as string
 
 	return (
 		<Link
@@ -298,7 +298,7 @@ export default function Header() {
 							transition: 'top 0.3s ease-in-out'
 						}}
 					>
-						<div className="max-w-big-wrapper mx-auto px-4 md:px-theme py-6 grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+						<div className="max-w-big-wrapper mx-auto px-4 md:px-theme py-6 grid grid-cols-1 md:grid-cols-2 gap-8 relative">
 							<Button
 								size="icon"
 								variant="outline"
@@ -308,32 +308,115 @@ export default function Header() {
 								<X className="w-6 h-6" />
 							</Button>
 							<div className="overflow-y-auto max-h-[60vh]">
-								{menuConfig.products.map(
-									(
-										category: JSX.IntrinsicAttributes &
-											ProductCategoryProps,
-										index: Key
-									) => (
-										<ProductCategory
-											key={index}
-											{...category}
-											onLinkClick={closeMenu}
-										/>
-									)
-								)}
-							</div>
-							<div className="overflow-y-auto max-h-[60vh]">
 								<h2 className="text-xl font-semibold mb-4">
-									<span className="gradient-span">Blog</span>
+									<span className="gradient-span">Menu</span>
 								</h2>
-								{menuConfig.blog.map(
-									(
-										post: JSX.IntrinsicAttributes &
-											BlogPostProps
-									) => (
-										<BlogPostCard key={post.id} {...post} />
-									)
-								)}
+								<div className="grid grid-cols-2 gap-8">
+									<div className="space-y-4">
+										<div className="space-y-2">
+											<h3 className="text-lg font-medium text-title">
+												Getting Started
+											</h3>
+											<div className="space-y-1">
+												<Link
+													href="/features"
+													className="block text-sm text-subtitle hover:text-title transition-colors"
+												>
+													Features Overview
+												</Link>
+												<Link
+													href="/pricing"
+													className="block text-sm text-subtitle hover:text-title transition-colors"
+												>
+													Pricing Plans
+												</Link>
+												<Link
+													href="/docs"
+													className="block text-sm text-subtitle hover:text-title transition-colors"
+												>
+													Documentation
+												</Link>
+											</div>
+										</div>
+										<div className="space-y-2">
+											<h3 className="text-lg font-medium text-title">
+												Resources
+											</h3>
+											<div className="space-y-1">
+												<Link
+													href="/help"
+													className="block text-sm text-subtitle hover:text-title transition-colors"
+												>
+													Help Center
+												</Link>
+												<Link
+													href="/community"
+													className="block text-sm text-subtitle hover:text-title transition-colors"
+												>
+													Community
+												</Link>
+												<Link
+													href="/contact"
+													className="block text-sm text-subtitle hover:text-title transition-colors"
+												>
+													Contact Us
+												</Link>
+											</div>
+										</div>
+									</div>
+									<div className="space-y-4">
+										<div className="space-y-2">
+											<h3 className="text-lg font-medium text-title">
+												Company
+											</h3>
+											<div className="space-y-1">
+												<Link
+													href="/about"
+													className="block text-sm text-subtitle hover:text-title transition-colors"
+												>
+													About Us
+												</Link>
+												<Link
+													href="/careers"
+													className="block text-sm text-subtitle hover:text-title transition-colors"
+												>
+													Careers
+												</Link>
+												<Link
+													href="/blog"
+													className="block text-sm text-subtitle hover:text-title transition-colors"
+												>
+													Blog
+												</Link>
+											</div>
+										</div>
+										<div className="space-y-2">
+											<h3 className="text-lg font-medium text-title">
+												Legal
+											</h3>
+											<div className="space-y-1">
+												<Link
+													href="/privacy"
+													className="block text-sm text-subtitle hover:text-title transition-colors"
+												>
+													Privacy Policy
+												</Link>
+												<Link
+													href="/terms"
+													className="block text-sm text-subtitle hover:text-title transition-colors"
+												>
+													Terms of Service
+												</Link>
+												<Link
+													href="/cookies"
+													className="block text-sm text-subtitle hover:text-title transition-colors"
+												>
+													Cookie Policy
+												</Link>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 							<div className="overflow-y-auto max-h-[60vh]">
 								<h2 className="text-lg font-semibold mb-4">

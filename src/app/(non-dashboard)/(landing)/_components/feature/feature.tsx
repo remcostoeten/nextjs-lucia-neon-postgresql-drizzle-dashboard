@@ -1,16 +1,15 @@
-import React from 'react'
 import { Flex } from '@/components/atoms'
+import { Icons } from '@/components/base/icons'
 import useMouseHoverEffect from '@/core/hooks/use-mouse-hover'
-import { cn } from '@/lib/utils'
+import { cn } from 'cn'
 import { motion } from 'framer-motion'
-import { ChartLine, LockIcon } from 'lucide-react'
 import Image from 'next/image'
+import React from 'react'
 import { DashLineIcon } from '../icons'
 import { logos } from '../logo-section/logo-section'
 import RainbowLine from '../rainbow-line'
 import FeatureBadges from './_components/emoji-badges'
 import styles from './feature.module.scss'
-import { Icons } from '@/components/base/icons'
 
 const containerVariants = {
 	hidden: { opacity: 0 },

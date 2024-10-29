@@ -2,9 +2,9 @@
 
 import { HorizontalLight } from '@/app/(non-dashboard)/(landing)/_components/effects/landing-effects'
 import useMouseHoverEffect from '@/core/hooks/use-mouse-hover'
-import { useDismissStore } from 'stores'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { useDismissStore } from './store.dismiss-notification'
 
 export const EMOJI_MAP = {
 	fire: '🔥',

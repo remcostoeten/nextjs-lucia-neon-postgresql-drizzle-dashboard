@@ -11,7 +11,7 @@ import Hero from './_components/hero/hero'
 import LogoSection from './_components/logo-section/logo-section'
 import PoweredBy from './_components/powered-by/powered-by'
 import MarqueeItems from './_components/text-marquee/MarqueeItems'
-import Video from './_components/Video/Video'
+import Video from './_components/video/Video'
 
 const FadeInSection = ({ children }: { children: React.ReactNode }) => {
 	const ref = useRef(null)
@@ -32,9 +32,6 @@ const FadeInSection = ({ children }: { children: React.ReactNode }) => {
 export default function LandingPage() {
 	return (
 		<>
-			<Notice id={'landing-page-notice'}>
-				Just redesigned the landing page! 🎨 Content is still WIP
-			</Notice>
 			<FadeInSection>
 				<Hero />
 			</FadeInSection>

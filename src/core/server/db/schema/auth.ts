@@ -1,6 +1,6 @@
-import { max, min, relations } from 'drizzle-orm'
+import { relations } from 'drizzle-orm'
 import { date, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
-import { object, optional, string, z } from 'zod'
+import { z } from 'zod'
 
 // User table
 export const users = pgTable('user', {
@@ -53,15 +53,6 @@ export const sessions = pgTable('session', {
 		withTimezone: true,
 		mode: 'date'
 	}).notNull()
-})
-
-// Keys table (unchanged)
-export const keys = pgTable('key', {
-	id: text('id').primaryKey(),
-	userId: text('user_id')
-		.notNull()
-		.references(() => users.id),
-	hashedPassword: text('hashed_password')
 })
 
 // Schemas

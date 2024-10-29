@@ -1,4 +1,4 @@
-import ThemeWrapper from '@/components/base/ThemeWrapper'
+import ThemeWrapper from '@/components/base/theme-wrapper'
 import { metadata as rootMetadata } from '@/core/config/metadata/metadata.root-layout'
 import { Metadata } from 'next'
 import '../styles/app.scss'

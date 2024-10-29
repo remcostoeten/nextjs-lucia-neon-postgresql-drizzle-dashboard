@@ -115,12 +115,6 @@ export default function Footer() {
 											text: 'Productivity panel ',
 											href: 'https://panel.remcostoeten.com',
 											external: true
-										},
-										{
-											external: true,
-											text: 'Chanelog',
-											href: '/changelog',
-											isBeta: true
 										}
 									]}
 								/>

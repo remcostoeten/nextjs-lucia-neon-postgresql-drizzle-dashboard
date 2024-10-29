@@ -2,7 +2,7 @@
 
 import { useCopyToClipboard } from '@/core/hooks'
 import { ClipboardIcon } from 'lucide-react'
-import { toast } from 'sonner'
+import { toast } from 'react-hot-toast'
 import {
 	ContextMenu,
 	ContextMenuContent,

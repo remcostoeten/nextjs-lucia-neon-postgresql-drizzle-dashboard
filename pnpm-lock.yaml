@@ -199,7 +199,7 @@ importers:
             sharp:
                 specifier: ^0.33.5
                 version: 0.33.5
-            sonner:
+            react-hot-toast:
                 specifier: ^1.5.0
                 version: 1.5.0(react-dom@19.0.0-rc-b8ae38f8-20241018(react@19.0.0-rc-b8ae38f8-20241018))(react@19.0.0-rc-b8ae38f8-20241018)
             tailwind-merge:
@@ -6469,7 +6469,7 @@ packages:
                 integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==
             }
 
-    sonner@1.5.0:
+    react-hot-toast@1.5.0:
         resolution:
             {
                 integrity: sha512-FBjhG/gnnbN6FY0jaNnqZOMmB73R+5IiyYAw8yBj7L54ER7HB3fOSE5OFiQiE2iXWxeXKvg6fIP4LtVppHEdJA==
@@ -10983,7 +10983,7 @@ snapshots:
 
     sisteransi@1.0.5: {}
 
-    sonner@1.5.0(react-dom@19.0.0-rc-b8ae38f8-20241018(react@19.0.0-rc-b8ae38f8-20241018))(react@19.0.0-rc-b8ae38f8-20241018):
+    react-hot-toast@1.5.0(react-dom@19.0.0-rc-b8ae38f8-20241018(react@19.0.0-rc-b8ae38f8-20241018))(react@19.0.0-rc-b8ae38f8-20241018):
         dependencies:
             react: 19.0.0-rc-b8ae38f8-20241018
             react-dom: 19.0.0-rc-b8ae38f8-20241018(react@19.0.0-rc-b8ae38f8-20241018)

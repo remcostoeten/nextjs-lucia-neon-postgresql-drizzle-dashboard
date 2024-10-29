@@ -4,7 +4,7 @@ import { signOutAction } from '@/core/server/actions/user/action.sign-out'
 import { LogOut } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { toast } from 'sonner'
+import { toast } from 'react-hot-toast'
 import { Button } from 'ui'
 
 export default function SignOutBtn() {
