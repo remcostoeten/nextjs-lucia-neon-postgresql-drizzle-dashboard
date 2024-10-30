@@ -1,3 +1,6 @@
+> [!NOTE]  
+> Currently refactoring the entire api, dashboard, server side. Depreecating every single feature since I want to rebuild with SOLID principles and finish feature by fgeature instead of building dozens of half-assed features.. Current master branch is the old version which i'm refactoring.
+
 <sub>tl;dr - another application which I say will be the end all.</sub>
 
 ## Notevault - by Remco Stoeten
