@@ -27,17 +27,18 @@ export function Breadcrumbs() {
 				return (
 					<div key={path} className="flex items-center">
 						<ChevronRight className="h-4 w-4 mx-1" />
-						{isLast ?
+						{isLast ? (
 							<span className="capitalize text-foreground">
 								{segment.replace(/-/g, ' ')}
 							</span>
-						:	<Link
+						) : (
+							<Link
 								href={path}
 								className="capitalize hover:text-foreground transition-colors"
 							>
 								{segment.replace(/-/g, ' ')}
 							</Link>
-						}
+						)}
 					</div>
 				)
 			})}

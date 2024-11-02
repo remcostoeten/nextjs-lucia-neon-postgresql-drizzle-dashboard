@@ -48,9 +48,9 @@ const ProductCategory = ({
 					rel={link.external ? 'noopener noreferrer' : undefined}
 					onClick={onLinkClick}
 					className={`block text-sm ${
-						pathname === link.href ?
-							'text-title font-medium'
-						:	'text-subtitle hover:text-title'
+						pathname === link.href
+							? 'text-title font-medium'
+							: 'text-subtitle hover:text-title'
 					} mb-1.5 flex items-center transition-colors duration-200`}
 				>
 					{link.name}
@@ -102,9 +102,9 @@ const AuthLink = ({
 			href={href}
 			onClick={onLinkClick}
 			className={`flex flex-col items-center justify-center py-2 ${
-				pathname === href ? 'text-title' : (
-					'text-subtitle hover:text-title'
-				)
+				pathname === href
+					? 'text-title'
+					: 'text-subtitle hover:text-title'
 			} transition-colors duration-200`}
 		>
 			<Icon
@@ -241,9 +241,11 @@ export default function Header() {
 				exit="closed"
 				variants={containerVariants}
 				className={`fixed inset-x-0 z-50 transition-all duration-300 ease-in-out ${
-					isScrolled ? 'top-0 backdrop-blur-lg'
-					: isDismissed ? 'top-0'
-					: 'top-10'
+					isScrolled
+						? 'top-0 backdrop-blur-lg'
+						: isDismissed
+							? 'top-0'
+							: 'top-10'
 				}`}
 				style={{
 					height: isScrolled ? '60px' : '80px'
@@ -270,8 +272,9 @@ export default function Header() {
 								className={`flex items-center justify-center p-2 ${isScrolled ? 'rounded-lg border' : 'border-none'}  bg-body hover:bg-section rounded-lg transition-all duration-300 ease-in-out hover:border`}
 								onClick={toggleMenu}
 								style={{
-									transform:
-										isScrolled ? 'scale(0.9)' : 'scale(1)'
+									transform: isScrolled
+										? 'scale(0.9)'
+										: 'scale(1)'
 								}}
 							>
 								<svg
@@ -305,10 +308,11 @@ export default function Header() {
 						variants={menuVariants}
 						className="bg-body fixed inset-x-0 z-40 overflow-y-auto shadow-lg backdrop-blur-sm"
 						style={{
-							top:
-								isScrolled ? '60px'
-								: isDismissed ? '80px'
-								: '120px',
+							top: isScrolled
+								? '60px'
+								: isDismissed
+									? '80px'
+									: '120px',
 							maxHeight: 'calc(100vh - 60px)',
 							transition: 'top 0.3s ease-in-out'
 						}}

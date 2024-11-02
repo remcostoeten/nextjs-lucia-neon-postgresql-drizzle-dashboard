@@ -1,3 +1,4 @@
+import { db } from '@/lib/db'
 import { compare } from 'bcryptjs'
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
@@ -24,28 +25,35 @@ const config = {
 			},
 			async authorize(credentials) {
 				if (!credentials?.email || !credentials?.password) {
-					throw new Error('Invalid credentials')
+					return null
 				}
 
-				// Here you would typically fetch the user from your database
-				// and verify their password
 				try {
-					// Example database check (replace with your actual DB logic):
-					const user = await prisma.user.findUnique({
-						where: { email: credentials.email }
+					const user = await db.query.users.findFirst({
+						where: (users, { eq }) =>
+							eq(users.email, credentials.email),
+						columns: {
+							id: true,
+							email: true,
+							name: true,
+							password: true,
+							image: true
+						}
 					})
 
-					if (!user || !user.hashedPassword) {
-						throw new Error('Invalid credentials')
+					if (!user?.password) {
+						console.log('User not found or no password')
+						return null
 					}
 
-					const isCorrectPassword = await compare(
+					const passwordMatch = await compare(
 						credentials.password,
-						user.hashedPassword
+						user.password
 					)
 
-					if (!isCorrectPassword) {
-						throw new Error('Invalid credentials')
+					if (!passwordMatch) {
+						console.log('Password does not match')
+						return null
 					}
 
 					return {
@@ -55,7 +63,7 @@ const config = {
 						image: user.image
 					}
 				} catch (error) {
-					console.error('Error:', error)
+					console.error('Authorization error:', error)
 					return null
 				}
 			}
@@ -63,28 +71,33 @@ const config = {
 	],
 	pages: {
 		signIn: '/login',
-		error: '/error'
+		error: '/login'
 	},
 	session: {
-		strategy: 'jwt'
+		strategy: 'jwt',
+		maxAge: 30 * 24 * 60 * 60 // 30 days
 	},
 	callbacks: {
-		async session({ session, token }) {
-			if (token && session.user) {
-				session.user.id = token.sub
-			}
-			return session
-		},
-		async jwt({ token, user, account }) {
+		async jwt({ token, user }) {
 			if (user) {
 				token.id = user.id
-			}
-			if (account) {
-				token.accessToken = account.access_token
+				token.email = user.email
+				token.name = user.name
+				token.picture = user.image
 			}
 			return token
+		},
+		async session({ session, token }) {
+			if (session.user) {
+				session.user.id = token.id as string
+				session.user.email = token.email
+				session.user.name = token.name
+				session.user.image = token.picture as string
+			}
+			return session
 		}
 	},
+	debug: process.env.NODE_ENV === 'development',
 	secret: process.env.NEXTAUTH_SECRET
 } satisfies NextAuthConfig
 

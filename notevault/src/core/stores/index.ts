@@ -1,2 +1,1 @@
-export { useLayoutStore } from './store.resizable-layout';
-
+export { useLayoutStore } from './store.resizable-layout'

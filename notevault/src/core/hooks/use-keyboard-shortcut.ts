@@ -103,8 +103,9 @@ export function useKeyboardShortcut(
 				const ctrlMatch = combo.ctrl ? event.ctrlKey : !event.ctrlKey
 				const metaMatch = combo.meta ? event.metaKey : !event.metaKey
 				const altMatch = combo.alt ? event.altKey : !event.altKey
-				const shiftMatch =
-					combo.shift ? event.shiftKey : !event.shiftKey
+				const shiftMatch = combo.shift
+					? event.shiftKey
+					: !event.shiftKey
 
 				return (
 					keyMatch && ctrlMatch && metaMatch && altMatch && shiftMatch

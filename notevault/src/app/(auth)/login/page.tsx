@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
+import ProtectedAuthRoute from '@/components/auth/protected-auth-route'
 import { LoginForm } from '../components/login-form'
 
 type LoginPageProps = {
@@ -39,16 +40,18 @@ export default function LoginPage({ searchParams }: LoginPageProps) {
 	}
 
 	return (
-		<div className="flex flex-col space-y-2 text-center">
-			<h1 className="font-heading text-3xl drop-shadow-xl dark:bg-gradient-to-br dark:from-neutral-200 dark:to-neutral-600 dark:bg-clip-text dark:text-transparent sm:text-4xl md:text-5xl">
-				Login
-			</h1>
+		<ProtectedAuthRoute>
+			<div className="flex flex-col space-y-2 text-center">
+				<h1 className="font-heading text-3xl drop-shadow-xl dark:bg-gradient-to-br dark:from-neutral-200 dark:to-neutral-600 dark:bg-clip-text dark:text-transparent sm:text-4xl md:text-5xl">
+					Login
+				</h1>
 
-			<p className="text-sm text-muted-foreground">
-				Enter your credentials below to login
-			</p>
+				<p className="text-sm text-muted-foreground">
+					Enter your credentials below to login
+				</p>
 
-			<LoginForm />
-		</div>
+				<LoginForm />
+			</div>
+		</ProtectedAuthRoute>
 	)
 }

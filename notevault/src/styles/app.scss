@@ -1,9 +1,9 @@
 @use './components/heartbeat-loader';
+@use './theme/colors';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 @layer base {
 	:root {

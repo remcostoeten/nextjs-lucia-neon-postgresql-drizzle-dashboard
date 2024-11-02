@@ -32,9 +32,7 @@ export default function FAQItem({ question, answer }: FAQItemProps) {
 						animate={{ rotate: isOpen ? 180 : 0 }}
 						transition={{ duration: 0.3 }}
 					>
-						{isOpen ?
-							<MinusIcon />
-						:	<PlusIcon />}
+						{isOpen ? <MinusIcon /> : <PlusIcon />}
 					</motion.div>
 				</div>
 			</motion.div>

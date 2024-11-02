@@ -22,10 +22,9 @@ async function getAllCommits(repoPath: string, token: string) {
 			// Check for rate limiting
 			if (response.status === 403) {
 				const rateLimitReset = response.headers.get('X-RateLimit-Reset')
-				const resetDate =
-					rateLimitReset ?
-						new Date(parseInt(rateLimitReset) * 1000)
-					:	new Date()
+				const resetDate = rateLimitReset
+					? new Date(parseInt(rateLimitReset) * 1000)
+					: new Date()
 				console.error(
 					`Rate limited until ${resetDate.toLocaleString()}`
 				)

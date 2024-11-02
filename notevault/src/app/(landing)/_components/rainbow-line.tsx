@@ -68,8 +68,9 @@ export default function RainbowLine({
 			mouseY.set(e.clientY)
 
 			const dx = e.clientX - centerX
-			const dy =
-				small ? e.clientY - centerY : Math.max(0, e.clientY - centerY)
+			const dy = small
+				? e.clientY - centerY
+				: Math.max(0, e.clientY - centerY)
 
 			const rawDistance = Math.sqrt(dx * dx + dy * dy)
 			const easedDistance = smoothStep(0, 150, rawDistance) * 100
@@ -122,10 +123,9 @@ export default function RainbowLine({
 
 	const lineHeight = small ? '2px' : '0.125rem'
 	const lineWidth = small ? '48px' : width
-	const linePosition =
-		small ?
-			{ top: '1px', left: '40px' }
-		:	{ bottom: `-${bottomOffset}px`, left: 0 }
+	const linePosition = small
+		? { top: '1px', left: '40px' }
+		: { bottom: `-${bottomOffset}px`, left: 0 }
 
 	return (
 		<AnimatePresence>
@@ -142,20 +142,20 @@ export default function RainbowLine({
 						disableAnimation ? undefined : { opacity: 0, width: 0 }
 					}
 					animate={
-						disableAnimation ? undefined : (
-							{ opacity: 1, width: '100%' }
-						)
+						disableAnimation
+							? undefined
+							: { opacity: 1, width: '100%' }
 					}
 					exit={
 						disableAnimation ? undefined : { opacity: 0, width: 0 }
 					}
 					transition={
-						disableAnimation ? undefined : (
-							{
-								duration: 1.5,
-								ease: cubicBezier(0.13, 0.97, 0.54, 0.46)
-							}
-						)
+						disableAnimation
+							? undefined
+							: {
+									duration: 1.5,
+									ease: cubicBezier(0.13, 0.97, 0.54, 0.46)
+								}
 					}
 					{...props}
 				>

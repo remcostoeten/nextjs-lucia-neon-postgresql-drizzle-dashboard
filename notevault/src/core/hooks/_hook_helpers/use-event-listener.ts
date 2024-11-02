@@ -25,8 +25,9 @@ function useEventListener<K extends keyof WindowEventMap>(
 // Element Event based useEventListener interface
 function useEventListener<
 	K extends keyof HTMLElementEventMap & keyof SVGElementEventMap,
-	T extends Element = K extends keyof HTMLElementEventMap ? HTMLDivElement
-	:	SVGElement
+	T extends Element = K extends keyof HTMLElementEventMap
+		? HTMLDivElement
+		: SVGElement
 >(
 	eventName: K,
 	handler:

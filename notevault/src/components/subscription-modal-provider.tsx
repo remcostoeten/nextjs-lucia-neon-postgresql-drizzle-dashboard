@@ -64,9 +64,10 @@ export const SubscriptionModalProvider = (props: Props) => {
 			{children}
 
 			<Dialog open={open} onOpenChange={setOpen}>
-				{subscription?.status === 'active' ?
+				{subscription?.status === 'active' ? (
 					<DialogContent>Already on a paid plan!</DialogContent>
-				:	<DialogContent>
+				) : (
+					<DialogContent>
 						<DialogHeader>
 							<DialogTitle>Upgrade to a Pro Plan</DialogTitle>
 						</DialogHeader>
@@ -86,7 +87,7 @@ export const SubscriptionModalProvider = (props: Props) => {
 							</Button>
 						</DialogFooter>
 					</DialogContent>
-				}
+				)}
 			</Dialog>
 		</SubscriptionModalContext.Provider>
 	)

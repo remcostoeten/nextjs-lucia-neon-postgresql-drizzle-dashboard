@@ -111,7 +111,7 @@ export function Trash() {
 					Trashed Folders
 				</h3>
 
-				{trashedFolders.length > 0 ?
+				{trashedFolders.length > 0 ? (
 					<ScrollArea>
 						<div className="mb-6 flex h-full gap-4">
 							{trashedFolders.map((folder) => (
@@ -122,9 +122,11 @@ export function Trash() {
 								>
 									<div className="group relative rounded-md border shadow">
 										<div className="mx-auto flex h-36 items-center justify-center text-5xl drop-shadow-md">
-											{folder.iconId ?
+											{folder.iconId ? (
 												folder.iconId
-											:	<Folder size={56} />}
+											) : (
+												<Folder size={56} />
+											)}
 										</div>
 
 										<div className="absolute inset-0 hidden items-center justify-center space-x-2 backdrop-blur-sm group-hover:flex">
@@ -178,19 +180,20 @@ export function Trash() {
 						</div>
 						<ScrollBar orientation="horizontal" />
 					</ScrollArea>
-				:	<div className="flex flex-col items-center gap-4 rounded-md border border-dashed py-10 font-medium drop-shadow-md">
+				) : (
+					<div className="flex flex-col items-center gap-4 rounded-md border border-dashed py-10 font-medium drop-shadow-md">
 						<Ghost size={32} className="drop-shadow" />
 						<span className="drop-shadow-sm">
 							Nothing to show here!
 						</span>
 					</div>
-				}
+				)}
 
 				<h3 className="font-heading text-3xl drop-shadow-md">
 					Trashed Files
 				</h3>
 
-				{trashedFiles.length > 0 ?
+				{trashedFiles.length > 0 ? (
 					<ScrollArea>
 						<div className="mb-6 flex h-full gap-4">
 							{trashedFiles.map((file) => (
@@ -201,9 +204,11 @@ export function Trash() {
 								>
 									<div className="group relative rounded-md border shadow">
 										<div className="mx-auto flex h-36 items-center justify-center text-5xl drop-shadow-md">
-											{file.iconId ?
+											{file.iconId ? (
 												file.iconId
-											:	<FileIcon size={56} />}
+											) : (
+												<FileIcon size={56} />
+											)}
 										</div>
 
 										<div className="absolute inset-0 hidden items-center justify-center space-x-2 backdrop-blur-sm group-hover:flex">
@@ -257,13 +262,14 @@ export function Trash() {
 						</div>
 						<ScrollBar orientation="vertical" />
 					</ScrollArea>
-				:	<div className="flex flex-col items-center gap-4 rounded-md border border-dashed py-10 font-medium drop-shadow-md">
+				) : (
+					<div className="flex flex-col items-center gap-4 rounded-md border border-dashed py-10 font-medium drop-shadow-md">
 						<Ghost size={32} className="drop-shadow" />
 						<span className="drop-shadow-sm">
 							Nothing to show here!
 						</span>
 					</div>
-				}
+				)}
 			</div>
 
 			<DialogFooter>

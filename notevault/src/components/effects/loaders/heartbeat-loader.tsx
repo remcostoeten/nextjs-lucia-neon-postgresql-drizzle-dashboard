@@ -11,11 +11,13 @@ export default function HeartbeatLoader({
 }: HeartbeatLoaderProps) {
 	return (
 		<>
-			{centered ?
+			{centered ? (
 				<Center method="grid">
 					<Heartbeat />
 				</Center>
-			:	<Heartbeat />}
+			) : (
+				<Heartbeat />
+			)}
 		</>
 	)
 }

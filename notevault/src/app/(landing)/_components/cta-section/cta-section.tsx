@@ -54,9 +54,11 @@ function CTAFeature({
 	const featureRef = useMouseHoverEffect()
 	const featureClass = `cta-feature flex flex-col gap-2 border border-neutral-800 bg-base-background p-4 pb-6 relative
     ${
-		isFirst ? 'rounded-tl-[24px]'
-		: isLast ? 'rounded-tr-[24px]'
-		: 'rounded-[12px]'
+		isFirst
+			? 'rounded-tl-[24px]'
+			: isLast
+				? 'rounded-tr-[24px]'
+				: 'rounded-[12px]'
 	}
     hover-effect`
 

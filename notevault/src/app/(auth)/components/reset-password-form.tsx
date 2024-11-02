@@ -117,8 +117,9 @@ export function ResetPasswordForm() {
 									<Tooltip delayDuration={150}>
 										<TooltipTrigger
 											aria-label={
-												isPassVisible ? 'Hide Password'
-												:	'Show Password'
+												isPassVisible
+													? 'Hide Password'
+													: 'Show Password'
 											}
 											tabIndex={-1}
 											type="button"
@@ -128,16 +129,18 @@ export function ResetPasswordForm() {
 											}
 											className="absolute inset-y-0 right-2 my-auto text-muted-foreground hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
 										>
-											{isPassVisible ?
+											{isPassVisible ? (
 												<EyeOff className="size-5" />
-											:	<Eye className="size-5" />}
+											) : (
+												<Eye className="size-5" />
+											)}
 										</TooltipTrigger>
 
 										<TooltipContent>
 											<p className="text-xs">
-												{isPassVisible ?
-													'Hide Password'
-												:	'Show Password'}
+												{isPassVisible
+													? 'Hide Password'
+													: 'Show Password'}
 											</p>
 										</TooltipContent>
 									</Tooltip>
@@ -160,9 +163,9 @@ export function ResetPasswordForm() {
 								<div className="relative">
 									<Input
 										type={
-											isNewPassVisible ? 'text' : (
-												'password'
-											)
+											isNewPassVisible
+												? 'text'
+												: 'password'
 										}
 										disabled={isSubmitting}
 										placeholder="••••••••••"
@@ -172,9 +175,9 @@ export function ResetPasswordForm() {
 									<Tooltip delayDuration={150}>
 										<TooltipTrigger
 											aria-label={
-												isNewPassVisible ?
-													'Hide Password'
-												:	'Show Password'
+												isNewPassVisible
+													? 'Hide Password'
+													: 'Show Password'
 											}
 											tabIndex={-1}
 											type="button"
@@ -186,16 +189,18 @@ export function ResetPasswordForm() {
 											}
 											className="absolute inset-y-0 right-2 my-auto text-muted-foreground hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
 										>
-											{isNewPassVisible ?
+											{isNewPassVisible ? (
 												<EyeOff className="size-5" />
-											:	<Eye className="size-5" />}
+											) : (
+												<Eye className="size-5" />
+											)}
 										</TooltipTrigger>
 
 										<TooltipContent>
 											<p className="text-xs">
-												{isNewPassVisible ?
-													'Hide Password'
-												:	'Show Password'}
+												{isNewPassVisible
+													? 'Hide Password'
+													: 'Show Password'}
 											</p>
 										</TooltipContent>
 									</Tooltip>
@@ -212,9 +217,11 @@ export function ResetPasswordForm() {
 					disabled={isSubmitting}
 					className="w-full font-semibold shadow-md"
 				>
-					{isSubmitting ?
+					{isSubmitting ? (
 						<Loader2 className="mr-2 size-4 animate-spin" />
-					:	<Key className="mr-2 size-4" />}
+					) : (
+						<Key className="mr-2 size-4" />
+					)}
 					Reset Password
 				</Button>
 			</form>

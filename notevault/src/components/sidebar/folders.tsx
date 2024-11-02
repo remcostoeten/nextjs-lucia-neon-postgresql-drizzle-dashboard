@@ -91,9 +91,9 @@ export function Folders() {
 	function createFolderToggle() {
 		if (subscription?.status !== 'active' && stateFolders.length >= 3) {
 			const description =
-				stateFolders.length === folders.length ?
-					'You have reached the maximum number of folders.'
-				:	'You have reached the maximum number of folders. Try clearing the trash to create more folders.'
+				stateFolders.length === folders.length
+					? 'You have reached the maximum number of folders.'
+					: 'You have reached the maximum number of folders. Try clearing the trash to create more folders.'
 
 			toast.error('Something went wrong', { description })
 
@@ -260,10 +260,11 @@ export function Folders() {
 							onClick={createFolderToggle}
 							className="size-7 text-muted-foreground"
 						>
-							{isCreatingFolder ?
+							{isCreatingFolder ? (
 								<X className="size-4 duration-300 animate-in spin-in-90" />
-							:	<Plus className="size-[18px] duration-300 animate-out spin-out-90" />
-							}
+							) : (
+								<Plus className="size-[18px] duration-300 animate-out spin-out-90" />
+							)}
 						</Button>
 					</TooltipTrigger>
 
@@ -274,7 +275,7 @@ export function Folders() {
 			</div>
 
 			<div className="-mb-2 flex grow flex-col gap-1 overflow-hidden">
-				{isCreatingFolder || folders.length ?
+				{isCreatingFolder || folders.length ? (
 					<ScrollArea>
 						<Accordion
 							type="multiple"
@@ -294,9 +295,11 @@ export function Folders() {
 										getValue={setSelectedEmoji}
 										className="absolute inset-y-0 left-1 my-auto inline-flex size-7 items-center justify-center rounded-md hover:bg-muted"
 									>
-										{!selectedEmoji ?
+										{!selectedEmoji ? (
 											<FolderIcon className="size-4" />
-										:	selectedEmoji}
+										) : (
+											selectedEmoji
+										)}
 									</EmojiPicker>
 
 									<Input
@@ -346,16 +349,15 @@ export function Folders() {
 													)}
 												>
 													<span className="mr-2">
-														{iconId ?
+														{iconId ? (
 															iconId
-														: (
-															openedFolders.includes(
+														) : openedFolders.includes(
 																id!
-															)
-														) ?
+														  ) ? (
 															<FolderOpen className="size-4 shrink-0" />
-														:	<FolderIcon className="size-4 shrink-0" />
-														}
+														) : (
+															<FolderIcon className="size-4 shrink-0" />
+														)}
 													</span>
 
 													{title}
@@ -374,9 +376,9 @@ export function Folders() {
 													<FileIcon className="mr-2 size-4 shrink-0" />
 													New File
 													<Kbd className="ml-auto">
-														{isAppleDevice() ?
-															'⌘'
-														:	'Ctrl'}
+														{isAppleDevice()
+															? '⌘'
+															: 'Ctrl'}
 														+N
 													</Kbd>
 												</ContextMenuItem>
@@ -388,9 +390,9 @@ export function Folders() {
 													<Edit2 className="mr-2 size-4 shrink-0" />
 													Rename
 													<Kbd className="ml-auto">
-														{isAppleDevice() ?
-															'⌘'
-														:	'Ctrl'}
+														{isAppleDevice()
+															? '⌘'
+															: 'Ctrl'}
 														+E
 													</Kbd>
 												</ContextMenuItem>
@@ -417,9 +419,9 @@ export function Folders() {
 													<Trash2 className="mr-2 size-4 shrink-0" />
 													Move to Trash
 													<Kbd className="ml-auto">
-														{isAppleDevice() ?
-															'⌘'
-														:	'Ctrl'}
+														{isAppleDevice()
+															? '⌘'
+															: 'Ctrl'}
 														+D
 													</Kbd>
 												</ContextMenuItem>
@@ -447,9 +449,9 @@ export function Folders() {
 													<Trash className="mr-2 size-4 shrink-0" />
 													Delete
 													<Kbd className="ml-auto">
-														{isAppleDevice() ?
-															'⌘'
-														:	'Ctrl'}
+														{isAppleDevice()
+															? '⌘'
+															: 'Ctrl'}
 														+Shift+D
 													</Kbd>
 												</ContextMenuItem>
@@ -476,9 +478,11 @@ export function Folders() {
 														}
 														className="absolute inset-y-0 left-1 my-auto inline-flex size-7 items-center justify-center rounded-md hover:bg-muted"
 													>
-														{!selectedEmoji ?
+														{!selectedEmoji ? (
 															<FileIcon className="size-4" />
-														:	selectedEmoji}
+														) : (
+															selectedEmoji
+														)}
 													</EmojiPicker>
 
 													<Input
@@ -507,10 +511,8 @@ export function Folders() {
 												</form>
 											)}
 
-											{(
-												creatingFiles.includes(id!) ||
-												folderFiles.length
-											) ?
+											{creatingFiles.includes(id!) ||
+											folderFiles.length ? (
 												folderFiles.map(
 													({
 														id,
@@ -534,10 +536,11 @@ export function Folders() {
 																className="flex w-full items-center gap-0.5"
 															>
 																<span className="mr-2 shrink-0">
-																	{iconId ?
+																	{iconId ? (
 																		iconId
-																	:	<FileIcon className="size-4" />
-																	}
+																	) : (
+																		<FileIcon className="size-4" />
+																	)}
 																</span>
 																{title}
 															</Link>
@@ -649,7 +652,8 @@ export function Folders() {
 														</div>
 													)
 												)
-											:	<div className="flex flex-col items-center justify-center gap-2 rounded-md border border-dashed p-4 text-muted-foreground">
+											) : (
+												<div className="flex flex-col items-center justify-center gap-2 rounded-md border border-dashed p-4 text-muted-foreground">
 													<FileX size={20} />
 
 													<p className="text-center text-sm">
@@ -657,7 +661,7 @@ export function Folders() {
 														file yet.
 													</p>
 												</div>
-											}
+											)}
 										</AccordionContent>
 									</AccordionItem>
 								)
@@ -665,13 +669,14 @@ export function Folders() {
 						</Accordion>
 						<ScrollBar />
 					</ScrollArea>
-				:	<div className="flex h-full flex-col items-center justify-center gap-4 px-4 text-muted-foreground">
+				) : (
+					<div className="flex h-full flex-col items-center justify-center gap-4 px-4 text-muted-foreground">
 						<FolderX size={32} />
 						<p className="text-center text-sm">
 							You don&apos;t have any folders yet.
 						</p>
 					</div>
-				}
+				)}
 			</div>
 		</>
 	)

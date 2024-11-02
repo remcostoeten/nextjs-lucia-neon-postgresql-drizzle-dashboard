@@ -1,11 +1,11 @@
 'use client'
 
-import * as React from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { SessionProvider } from 'next-auth/react'
 import { ThemeProvider } from 'next-themes'
 import NextTopLoader from 'nextjs-toploader'
+import * as React from 'react'
 import { Toaster } from 'sonner'
 import { TooltipProvider } from 'ui'
 
@@ -24,7 +24,7 @@ export function Providers({ children, theme }: Props) {
 			disableTransitionOnChange
 			{...theme}
 		>
-			<SessionProvider>
+			<SessionProvider refetchInterval={0} refetchOnWindowFocus={true}>
 				<TooltipProvider delayDuration={0}>
 					<NextTopLoader
 						color="#89777d"

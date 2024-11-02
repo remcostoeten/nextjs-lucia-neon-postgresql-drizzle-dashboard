@@ -1,11 +1,11 @@
 {
 	"name": "notevault",
 	"author": "Remco Stoeten",
-    "homepage": "https://github.com/remcostoeten/nextjs-lucia-neon-postgresql-drizzle-dashboard",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/remcostoeten/nextjs-lucia-neon-postgresql-drizzle-dashboard.git"
-    },
+	"homepage": "https://github.com/remcostoeten/nextjs-lucia-neon-postgresql-drizzle-dashboard",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/remcostoeten/nextjs-lucia-neon-postgresql-drizzle-dashboard.git"
+	},
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
@@ -79,6 +79,7 @@
 		"zustand": "^5.0.1"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
 		"@total-typescript/ts-reset": "^0.6.1",
 		"@types/bcryptjs": "^2.4.6",
 		"@types/node": "22.7.5",
@@ -112,4 +113,3 @@
 		}
 	}
 }
- 

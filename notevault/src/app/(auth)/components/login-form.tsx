@@ -1,11 +1,11 @@
 'use client'
 
-import React from 'react'
-import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AtSign, Eye, EyeOff, Fingerprint, Loader2, Mail } from 'lucide-react'
 import { signIn } from 'next-auth/react'
+import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import {
@@ -36,6 +36,7 @@ const defaultValues: FormData = {
 }
 
 export function LoginForm() {
+	const router = useRouter()
 	const [isEmailMode, setIsEmailMode] = React.useState(true)
 	const [isPassVisible, setIsPassVisible] = React.useState(false)
 	const [isSubmitting, setIsSubmitting] = React.useState(false)
@@ -58,15 +59,34 @@ export function LoginForm() {
 		setIsSubmitting(true)
 
 		try {
-			toast.promise(signIn('credentials', { ...formData }), {
-				loading: 'Signing in...',
-				success: 'You have been signed in.',
-				error: 'Something went wrong.',
-				finally: () => setIsSubmitting(false)
+			const result = await signIn('credentials', {
+				email: formData.email,
+				password: formData.password,
+				redirect: false
 			})
+
+			if (result?.error) {
+				if (result.error === 'CredentialsSignin') {
+					toast.error('Invalid email or password')
+				} else {
+					toast.error(result.error)
+				}
+				setIsSubmitting(false)
+				return
+			}
+
+			if (result?.ok) {
+				toast.success('Logged in successfully')
+				setTimeout(() => {
+					router.push('/dashboard')
+					router.refresh()
+				}, 100)
+			}
 		} catch (error) {
-			const err = error as Error
-			console.error(err.message)
+			console.error('Login error:', error)
+			toast.error('An unexpected error occurred')
+		} finally {
+			setIsSubmitting(false)
 		}
 	}
 
@@ -90,9 +110,9 @@ export function LoginForm() {
 										type={isEmailMode ? 'email' : 'text'}
 										disabled={isSubmitting}
 										placeholder={
-											isEmailMode ? 'you@domain.com' : (
-												'@username'
-											)
+											isEmailMode
+												? 'you@domain.com'
+												: '@username'
 										}
 										className="pr-8 shadow-sm"
 										{...field}
@@ -100,9 +120,9 @@ export function LoginForm() {
 									<Tooltip delayDuration={150}>
 										<TooltipTrigger
 											aria-label={
-												isEmailMode ?
-													'Use Username instead'
-												:	'Use Email instead'
+												isEmailMode
+													? 'Use Username instead'
+													: 'Use Email instead'
 											}
 											tabIndex={-1}
 											type="button"
@@ -111,16 +131,18 @@ export function LoginForm() {
 											}
 											className="absolute inset-y-0 right-2 my-auto text-muted-foreground hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
 										>
-											{isEmailMode ?
+											{isEmailMode ? (
 												<AtSign className="size-5" />
-											:	<Mail className="size-5" />}
+											) : (
+												<Mail className="size-5" />
+											)}
 										</TooltipTrigger>
 
 										<TooltipContent>
 											<p className="text-xs">
-												{isEmailMode ?
-													'Use Username instead'
-												:	'Use Email instead'}
+												{isEmailMode
+													? 'Use Username instead'
+													: 'Use Email instead'}
 											</p>
 										</TooltipContent>
 									</Tooltip>
@@ -151,8 +173,9 @@ export function LoginForm() {
 									<Tooltip delayDuration={150}>
 										<TooltipTrigger
 											aria-label={
-												isPassVisible ? 'Hide Password'
-												:	'Show Password'
+												isPassVisible
+													? 'Hide Password'
+													: 'Show Password'
 											}
 											tabIndex={-1}
 											type="button"
@@ -162,16 +185,18 @@ export function LoginForm() {
 											}
 											className="absolute inset-y-0 right-2 my-auto text-muted-foreground hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
 										>
-											{isPassVisible ?
+											{isPassVisible ? (
 												<EyeOff className="size-5" />
-											:	<Eye className="size-5" />}
+											) : (
+												<Eye className="size-5" />
+											)}
 										</TooltipTrigger>
 
 										<TooltipContent>
 											<p className="text-xs">
-												{isPassVisible ?
-													'Hide Password'
-												:	'Show Password'}
+												{isPassVisible
+													? 'Hide Password'
+													: 'Show Password'}
 											</p>
 										</TooltipContent>
 									</Tooltip>
@@ -188,11 +213,13 @@ export function LoginForm() {
 					disabled={isSubmitting}
 					className="w-full font-semibold shadow-md"
 				>
-					{isSubmitting ?
+					{isSubmitting ? (
 						<Loader2 className="mr-2 size-4 animate-spin" />
-					: isEmailMode ?
+					) : isEmailMode ? (
 						<Mail className="mr-2 size-4" />
-					:	<Fingerprint className="mr-2 size-4" />}
+					) : (
+						<Fingerprint className="mr-2 size-4" />
+					)}
 
 					{isEmailMode ? 'Login with Email' : 'Login'}
 				</Button>

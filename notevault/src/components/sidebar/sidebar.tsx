@@ -6,7 +6,6 @@ import type { LucideIcon } from 'lucide-react'
 import { siteConfig } from '@/config/site'
 import { useAppState } from '@/core/hooks/use-app-state'
 import { cn } from '@/lib/utils'
-import { Logo } from '../icons'
 import { Settings } from '../settings'
 import { SignOut } from '../sign-out'
 import { Trash } from '../trash'
@@ -18,6 +17,7 @@ import { Workspaces } from '../workspaces'
 import { Folders } from './folders'
 import { FoldersCollapsed } from './folders-collapsed'
 import { NavDialog } from './nav-dialog'
+import Logo from '../base/logo'
 
 type SidebarProps = React.ComponentProps<'aside'> & {
 	isCollapsed: boolean
@@ -67,14 +67,14 @@ export function Sidebar({ isCollapsed, className, ...props }: SidebarProps) {
 			>
 				<div
 					className={cn(
-						'flex',
-						isCollapsed ?
-							'my-px h-14 border-b'
-						:	'my-1 ml-4 mr-2 items-center gap-2'
+						'flex mx-auto border-b pb-0',
+						isCollapsed
+							? 'my-px h-14 border-b'
+							: 'my-1 ml-4 mr-2 items-center gap-2'
 					)}
 				>
 					<Logo
-						size={44}
+						hasLink
 						className={cn('shrink-0', isCollapsed && 'm-auto')}
 					/>
 					{!isCollapsed && (
@@ -87,7 +87,7 @@ export function Sidebar({ isCollapsed, className, ...props }: SidebarProps) {
 				<nav className="flex flex-col items-center justify-center gap-1 px-4">
 					{navItems.map(
 						({ title, description, icon, content: Content }) =>
-							isCollapsed ?
+							isCollapsed ? (
 								<Tooltip key={title} delayDuration={0}>
 									<TooltipTrigger asChild>
 										<NavDialog
@@ -103,7 +103,8 @@ export function Sidebar({ isCollapsed, className, ...props }: SidebarProps) {
 										{title}
 									</TooltipContent>
 								</Tooltip>
-							:	<NavDialog
+							) : (
+								<NavDialog
 									key={title}
 									title={title}
 									icon={icon}
@@ -111,24 +112,23 @@ export function Sidebar({ isCollapsed, className, ...props }: SidebarProps) {
 								>
 									<Content />
 								</NavDialog>
+							)
 					)}
 				</nav>
 
 				<Separator className={isCollapsed ? 'block' : 'hidden'} />
 
-				{isCollapsed ?
-					<FoldersCollapsed />
-				:	<Folders />}
+				{isCollapsed ? <FoldersCollapsed /> : <Folders />}
 
 				<div
 					className={cn(
 						'absolute z-10 transition-all animate-in fade-in-0 zoom-in-0 slide-in-from-bottom-full [animation-duration:500ms]',
-						isCollapsed ? 'inset-x-0 bottom-1' : (
-							'inset-x-2 bottom-2 flex items-center gap-2 rounded-full border bg-background/10 p-2 shadow backdrop-blur-md hover:shadow-xl'
-						)
+						isCollapsed
+							? 'inset-x-0 bottom-1'
+							: 'inset-x-2 bottom-2 flex items-center gap-2 rounded-full border bg-background/10 p-2 shadow backdrop-blur-md hover:shadow-xl'
 					)}
 				>
-					{isCollapsed ?
+					{isCollapsed ? (
 						<Popover>
 							<PopoverTrigger className="mx-auto flex rounded-full border p-0.5 shadow hover:shadow-xl">
 								<Avatar>
@@ -163,7 +163,8 @@ export function Sidebar({ isCollapsed, className, ...props }: SidebarProps) {
 								/>
 							</PopoverContent>
 						</Popover>
-					:	<>
+					) : (
+						<>
 							<Avatar className="m-auto">
 								<AvatarImage src={user?.image ?? undefined} />
 								<AvatarFallback>
@@ -186,7 +187,7 @@ export function Sidebar({ isCollapsed, className, ...props }: SidebarProps) {
 								className="ml-auto shrink-0 rounded-full text-muted-foreground"
 							/>
 						</>
-					}
+					)}
 				</div>
 			</div>
 		</aside>

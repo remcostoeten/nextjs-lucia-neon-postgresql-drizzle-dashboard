@@ -112,9 +112,11 @@ export function WorkspaceForm({ user }: WorkspaceFormProps) {
 						disabled={form.formState.isSubmitting}
 						className="ml-auto w-40 shadow-md"
 					>
-						{form.formState.isSubmitting ?
+						{form.formState.isSubmitting ? (
 							<Loader2 className="size-4 animate-spin" />
-						:	'Create workspace'}
+						) : (
+							'Create workspace'
+						)}
 					</Button>
 				</div>
 			</form>

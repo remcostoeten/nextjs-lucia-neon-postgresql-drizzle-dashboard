@@ -18,7 +18,7 @@ export const menuConfig = {
 		}
 	],
 	authentication: [
-		{ href: '/sign-in', Icon: LogIn, text: 'Log In' },
+		{ href: '/login', Icon: LogIn, text: 'Log In' },
 		{ href: '/signup', Icon: UserPlus, text: 'Register' },
 		{ href: '/dashboard', Icon: User, text: 'Dashboard' }
 	]

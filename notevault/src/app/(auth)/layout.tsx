@@ -2,8 +2,8 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { Logo } from '@/components/icons'
 import { AuthModeToggle } from './components/auth-mode-toggle'
+import Logo from '@/components/base/logo'
 
 export default function AuthLayout({ children }: React.PropsWithChildren) {
 	return (
@@ -12,13 +12,7 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
 				<div className="absolute inset-0 bg-zinc-900" />
 
 				<div className="z-10 w-fit font-handwriting text-2xl font-medium lowercase text-background dark:text-foreground">
-					<Link
-						aria-label="Go to home page"
-						href="/"
-						className="flex items-center gap-2 rounded-md ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-					>
-						<Logo size={48} />
-					</Link>
+					<Logo hasLink />
 				</div>
 
 				<div className="m-auto">

@@ -5,12 +5,12 @@ import * as React from 'react'
 
 import { Button } from '@/components/ui/button'
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger
 } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 
@@ -39,12 +39,7 @@ export function NavDialog({
 						isCollapsed && 'h-12 w-12 p-0'
 					)}
 				>
-					<Icon
-						className={cn(
-							'size-5',
-							isCollapsed && 'mx-auto'
-						)}
-					/>
+					<Icon className={cn('size-5', isCollapsed && 'mx-auto')} />
 					{!isCollapsed && <span>{title}</span>}
 				</Button>
 			</DialogTrigger>

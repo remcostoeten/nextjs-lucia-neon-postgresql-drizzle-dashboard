@@ -215,9 +215,9 @@ export function CodeBlock({
 	const goToPreviousResult = useCallback(() => {
 		if (searchResults.length === 0) return
 		const prevIndex =
-			currentResultIndex - 1 < 0 ?
-				searchResults.length - 1
-			:	currentResultIndex - 1
+			currentResultIndex - 1 < 0
+				? searchResults.length - 1
+				: currentResultIndex - 1
 		setCurrentResultIndex(prevIndex)
 		scrollToLine(searchResults[prevIndex])
 	}, [searchResults, currentResultIndex, scrollToLine])
@@ -267,9 +267,9 @@ export function CodeBlock({
 		(lineNumber: number) => {
 			if (enableLineHighlight) {
 				setHighlightedLines((prev) =>
-					prev.includes(lineNumber) ?
-						prev.filter((line) => line !== lineNumber)
-					:	[...prev, lineNumber]
+					prev.includes(lineNumber)
+						? prev.filter((line) => line !== lineNumber)
+						: [...prev, lineNumber]
 				)
 				onLineClick?.(lineNumber)
 			}
@@ -293,12 +293,14 @@ export function CodeBlock({
 					/>
 					{searchQuery && (
 						<div className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-zinc-500">
-							{searchResults.length > 0 ?
+							{searchResults.length > 0 ? (
 								<span>
 									{currentResultIndex + 1}/
 									{searchResults.length}
 								</span>
-							:	<span>No results</span>}
+							) : (
+								<span>No results</span>
+							)}
 						</div>
 					)}
 				</div>
@@ -361,25 +363,25 @@ export function CodeBlock({
 							<div
 								className={cn(
 									'flex items-center gap-2 rounded-full px-3 py-1 border transition-all duration-200',
-									fileNameColor ?
-										`border-${fileNameColor}-500/30 bg-${fileNameColor}-500/10 text-${fileNameColor}-400 group-hover:border-${fileNameColor}-400 group-hover:text-${fileNameColor}-300`
-									:	'bg-[#111111] border-[#333333] group-hover:border-[#444444]'
+									fileNameColor
+										? `border-${fileNameColor}-500/30 bg-${fileNameColor}-500/10 text-${fileNameColor}-400 group-hover:border-${fileNameColor}-400 group-hover:text-${fileNameColor}-300`
+										: 'bg-[#111111] border-[#333333] group-hover:border-[#444444]'
 								)}
 							>
 								<File
 									size={12}
 									className={
-										fileNameColor ?
-											`text-${fileNameColor}-400`
-										:	'text-zinc-400'
+										fileNameColor
+											? `text-${fileNameColor}-400`
+											: 'text-zinc-400'
 									}
 								/>
 								<span
 									className={cn(
 										'text-sm font-medium transition-colors duration-200',
-										fileNameColor ?
-											`text-${fileNameColor}-400 group-hover:text-${fileNameColor}-300`
-										:	'text-zinc-400 group-hover:text-zinc-300'
+										fileNameColor
+											? `text-${fileNameColor}-400 group-hover:text-${fileNameColor}-300`
+											: 'text-zinc-400 group-hover:text-zinc-300'
 									)}
 								>
 									{fileName}
@@ -447,7 +449,7 @@ export function CodeBlock({
 							title="Copy code (⌘/Ctrl + C)"
 						>
 							<AnimatePresence mode="wait">
-								{isCopied ?
+								{isCopied ? (
 									<motion.div
 										key="check"
 										variants={COPY_VARIANTS}
@@ -458,7 +460,9 @@ export function CodeBlock({
 									>
 										<Check size={16} />
 									</motion.div>
-								:	<Copy size={16} />}
+								) : (
+									<Copy size={16} />
+								)}
 							</AnimatePresence>
 						</Button>
 					</div>
@@ -506,18 +510,15 @@ export function CodeBlock({
 										lineProps={(lineNumber) => ({
 											style: {
 												display: 'block',
-												cursor:
-													enableLineHighlight ?
-														'pointer'
-													:	'default',
+												cursor: enableLineHighlight
+													? 'pointer'
+													: 'default',
 												backgroundColor:
-													(
-														highlightedLines.includes(
-															lineNumber
-														)
-													) ?
-														'rgba(255, 255, 255, 0.1)'
-													:	'transparent'
+													highlightedLines.includes(
+														lineNumber
+													)
+														? 'rgba(255, 255, 255, 0.1)'
+														: 'transparent'
 											},
 											onClick: () =>
 												handleLineClick(lineNumber)

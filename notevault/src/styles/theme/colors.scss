@@ -1,0 +1,34 @@
+:root {
+	--body: #0a0a0a;
+	--white: #e5e5e5;
+	--section: #171717;
+	--border: #262626;
+	--text: #a3a3a3;
+	// --text-alt: #393939;
+}
+
+.bg-body,
+.bg-black {
+	background-color: var(--body);
+}
+
+.bg-white {
+	background-color: var(--white);
+}
+
+.bg-section,
+.bg-block {
+	background-color: var(--section);
+}
+
+.border {
+	border-color:rgb(50 50 50)
+}
+
+.text-text {
+	color: var(--text);
+}
+
+* {
+border-color:red;
+}

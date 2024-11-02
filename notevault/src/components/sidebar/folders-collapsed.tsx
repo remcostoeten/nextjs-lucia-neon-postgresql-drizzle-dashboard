@@ -80,9 +80,9 @@ export function FoldersCollapsed() {
 	function createFolderToggle() {
 		if (subscription?.status !== 'active' && stateFolders.length >= 3) {
 			const description =
-				stateFolders.length === folders.length ?
-					'You have reached the maximum number of folders.'
-				:	'You have reached the maximum number of folders. Try clearing the trash to create more folders.'
+				stateFolders.length === folders.length
+					? 'You have reached the maximum number of folders.'
+					: 'You have reached the maximum number of folders. Try clearing the trash to create more folders.'
 
 			toast.error('Something went wrong', { description })
 
@@ -271,9 +271,11 @@ export function FoldersCollapsed() {
 										variant: 'ghost'
 									})}
 								>
-									{!selectedEmoji ?
+									{!selectedEmoji ? (
 										<FolderIcon className="size-5" />
-									:	selectedEmoji}
+									) : (
+										selectedEmoji
+									)}
 								</EmojiPicker>
 
 								<Input
@@ -311,19 +313,23 @@ export function FoldersCollapsed() {
 								showIndicator={false}
 								className="size-10 p-0"
 							>
-								{!iconId ?
+								{!iconId ? (
 									<FolderIcon className="size-5" />
-								:	<span className="text-lg">{iconId}</span>}
+								) : (
+									<span className="text-lg">{iconId}</span>
+								)}
 							</NavigationMenuTrigger>
 
 							<NavigationMenuContent className="min-w-80 space-y-4 p-4">
 								<header className="flex items-center justify-between">
 									<h3 className="flex text-lg font-semibold leading-none tracking-tight">
-										{iconId ?
+										{iconId ? (
 											<span className="text-lg">
 												{iconId}
 											</span>
-										:	<FolderIcon className="size-5" />}
+										) : (
+											<FolderIcon className="size-5" />
+										)}
 										<span className="ml-2">{title}</span>
 									</h3>
 
@@ -337,20 +343,19 @@ export function FoldersCollapsed() {
 													}
 													className="size-7 p-0 text-muted-foreground"
 												>
-													{(
-														creatingFiles.includes(
-															id!
-														)
-													) ?
+													{creatingFiles.includes(
+														id!
+													) ? (
 														<X className="size-4" />
-													:	<FilePlus2 className="size-4" />
-													}
+													) : (
+														<FilePlus2 className="size-4" />
+													)}
 												</Button>
 											</TooltipTrigger>
 											<TooltipContent>
-												{creatingFiles.includes(id!) ?
-													'Cancel creating file'
-												:	'Create file'}
+												{creatingFiles.includes(id!)
+													? 'Cancel creating file'
+													: 'Create file'}
 											</TooltipContent>
 										</Tooltip>
 
@@ -450,9 +455,11 @@ export function FoldersCollapsed() {
 													getValue={setSelectedEmoji}
 													className="absolute inset-y-0 left-1 my-auto inline-flex size-7 items-center justify-center rounded-md hover:bg-muted"
 												>
-													{!selectedEmoji ?
+													{!selectedEmoji ? (
 														<FileIcon className="size-4" />
-													:	selectedEmoji}
+													) : (
+														selectedEmoji
+													)}
 												</EmojiPicker>
 
 												<Input
@@ -480,10 +487,8 @@ export function FoldersCollapsed() {
 											</form>
 										)}
 
-										{(
-											creatingFiles.includes(id!) ||
-											folderFiles.length
-										) ?
+										{creatingFiles.includes(id!) ||
+										folderFiles.length ? (
 											folderFiles.map(
 												({
 													id,
@@ -506,10 +511,11 @@ export function FoldersCollapsed() {
 															className="flex w-full items-center gap-0.5"
 														>
 															<span className="mr-2 shrink-0">
-																{iconId ?
+																{iconId ? (
 																	iconId
-																:	<FileIcon className="size-4" />
-																}
+																) : (
+																	<FileIcon className="size-4" />
+																)}
 															</span>
 															{title}
 														</Link>
@@ -619,7 +625,8 @@ export function FoldersCollapsed() {
 													</div>
 												)
 											)
-										:	<div className="flex flex-col items-center justify-center gap-2 rounded-md border border-dashed p-4 text-muted-foreground">
+										) : (
+											<div className="flex flex-col items-center justify-center gap-2 rounded-md border border-dashed p-4 text-muted-foreground">
 												<FileX size={20} />
 
 												<p className="text-center text-sm">
@@ -627,7 +634,7 @@ export function FoldersCollapsed() {
 													yet.
 												</p>
 											</div>
-										}
+										)}
 									</div>
 
 									<ScrollBar />
