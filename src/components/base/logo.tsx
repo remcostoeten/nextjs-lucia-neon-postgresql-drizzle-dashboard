@@ -1,8 +1,7 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import Link from 'next/link'
 import React from 'react'
+import Link from 'next/link'
 
 type LogoProps = {
 	width?: string
@@ -21,14 +20,12 @@ const LogoIcon: React.FC<LogoProps> = ({
 	...props
 }) => {
 	const logo = (
-		<motion.svg
+		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			xmlSpace="preserve"
 			width={width}
 			height={height}
 			className={`logo ${className}`}
-			whileHover={{ rotate: 10 }}
-			transition={{ type: 'spring', stiffness: 400, damping: 10 }}
 			viewBox="0 0 66 66"
 			preserveAspectRatio="xMidYMid meet"
 			{...props}
@@ -44,7 +41,7 @@ const LogoIcon: React.FC<LogoProps> = ({
 					className="st0 svg-elem-2 logo__icon-left origin-center"
 				/>
 			</g>
-		</motion.svg>
+		</svg>
 	)
 
 	return isLink ? <Link href="/">{logo}</Link> : logo

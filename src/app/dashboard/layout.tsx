@@ -1,39 +1,21 @@
-'use client'
+import { redirect } from 'next/navigation'
 
-import MainSidebar from '@/components/aside/sidebar'
-import SidebarSkeletonLoader from '@/components/aside/skeleton.sidebbar'
-import SubSidebarShell from '@/components/aside/sub-sidebar-shell'
-import MainContentWrapper from '@/components/base/layout/main-content-wrapper'
-import Navigation from '@/components/dashboard/layout/top-bar/top-bar'
-import { useMainSidebarStore, useSubSidebarStore } from '@/core/stores'
-import { ReactNode, Suspense } from 'react'
+import type { PropsWithChildren } from 'react'
 
-type ClientWrapperProps = {
-	children: ReactNode
-	userEmail: string
-}
+import { SubscriptionModalProvider } from '@/components/subscription-modal-provider'
+import { getCurrentUser } from '@/lib/auth'
+import { getUserSubscription } from '@/lib/db/queries'
 
-export default function ClientWrapper({ children }: ClientWrapperProps) {
-	const {
-		isCollapsed: isMainSidebarCollapsed,
-		toggleCollapse: toggleMainSidebar
-	} = useMainSidebarStore()
-	const { isOpen: isSubSidebarOpen, toggle: toggleSubSidebar } =
-		useSubSidebarStore()
+export default async function DashboardLayout({ children }: PropsWithChildren) {
+	const user = await getCurrentUser()
+
+	if (!user) redirect('/login')
+
+	const { data, error } = await getUserSubscription(user.id)
 
 	return (
-		<>
-			<Navigation />
-			<Suspense fallback={<SidebarSkeletonLoader />}>
-				<MainSidebar
-					isSubSidebarOpen={isSubSidebarOpen}
-					toggleSubSidebar={toggleSubSidebar}
-					isCollapsed={isMainSidebarCollapsed}
-					toggleCollapse={toggleMainSidebar}
-				/>
-			</Suspense>
-			<SubSidebarShell isSubSidebarOpen={isSubSidebarOpen} />
-			<MainContentWrapper>{children}</MainContentWrapper>
-		</>
+		<SubscriptionModalProvider subscription={data} hasErrored={!!error}>
+			{children}
+		</SubscriptionModalProvider>
 	)
 }

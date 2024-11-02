@@ -1,0 +1,29 @@
+.heartbeat {
+	.loading svg polyline {
+		fill: none;
+		stroke-width: 3;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.loading svg polyline#back {
+		stroke: var(--brand);
+	}
+
+	.loading svg polyline#front {
+		stroke: #5b5b5c;
+		stroke-dasharray: 48, 144;
+		stroke-dashoffset: 192;
+		animation: heartbeatPulse 1.4s ease-in-out infinite;
+	}
+
+	@keyframes heartbeatPulse {
+		72.5% {
+			opacity: 0;
+		}
+
+		to {
+			stroke-dashoffset: 0;
+		}
+	}
+}

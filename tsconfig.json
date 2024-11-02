@@ -1,11 +1,11 @@
 {
 	"compilerOptions": {
+		"target": "es2017",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"skipLibCheck": true,
-		"strict": true,
+		"strict": false,
 		"noEmit": true,
-		"strictNullChecks": false,
 		"esModuleInterop": true,
 		"module": "esnext",
 		"moduleResolution": "node",
@@ -13,27 +13,23 @@
 		"isolatedModules": true,
 		"jsx": "preserve",
 		"incremental": true,
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"],
+			"db": ["./src/core/server/db/index.ts"],
+			"types": ["./src/core/types/index.ts"],
+			"ui": ["./src/components/ui/index.ts"],
+			"styles": ["./src/styles/app.scss"],
+			"hooks": ["./src/core/hooks/index.ts"],
+			"cn": ["./src/core/utilities/cn.ts"],
+			"models": ["./src/core/models/index.ts"]
+		},
 		"plugins": [
 			{
 				"name": "next"
 			}
 		],
-		"paths": {
-			"@/*": ["./src/*"],
-			"models": ["./src/core/models/index.ts"],
-			"toast": ["./src/core/stores/store.toasts.ts"],
-			"cn": ["src/core/constants/cn-tw.ts"],
-			"locales": ["./src/core/config/locales/locales.ts"],
-			"db": ["./src/core/server/db/index.ts"],
-			"hooks": ["./src/core/hooks/index.ts"],
-			"schema": ["./src/core/server/schema/index.ts"],
-			"actions": ["./src/core/server/actions/index.ts"],
-			"ui": ["./src/components/ui/index.ts"],
-			"stores": ["./src/core/stores/index.ts"],
-			"atoms": ["./src/components/atoms/index.ts"]
-		},
-		"target": "esnext",
-		"baseUrl": "./"
+		"types": ["framer-motion/types"]
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
 	"exclude": ["node_modules"]

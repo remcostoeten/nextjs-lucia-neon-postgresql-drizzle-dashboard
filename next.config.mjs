@@ -1,21 +1,24 @@
+import './src/env.mjs'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	experimental: {
-		reactCompiler: true
-	},
-	images: {
-		domains: ['cdn.prod.website-files.com']
-	},
-	webpack: config => {
-		config.externals.push('@node-rs/argon2', '@node-rs/bcrypt')
-		return config
-	},
-	eslint: {
-		ignoreDuringBuilds: true
-	},
-	typescript: {
-		ignoreBuildErrors: true
-	}
+  reactStrictMode: true,
+  sassOptions: {
+    logger: {
+      warn: function(message) {
+        // Suppress specific deprecation warning
+        if (message.includes('Deprecation')) return
+        console.warn(message)
+      }
+    }
+  },
+  images: {
+    domains: [
+      'avatars.githubusercontent.com',
+      // ... any other domains you need
+    ],
+  },
+  // ... any other config options
 }
 
 export default nextConfig

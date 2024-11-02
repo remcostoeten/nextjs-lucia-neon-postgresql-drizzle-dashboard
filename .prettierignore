@@ -1,8 +1,11 @@
+cache
+.cache
+public
+CHANGELOG.md
+.yarn
+dist
 node_modules
 .next
-dist
 build
 .contentlayer
-public
-tmp
-_templates
+migrations

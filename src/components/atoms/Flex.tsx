@@ -1,5 +1,7 @@
-import clsx from 'clsx'
 import React from 'react'
+import clsx from 'clsx'
+
+import type { JSX } from 'react'
 
 type FlexProps = {
 	children: React.ReactNode

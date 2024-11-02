@@ -1,11 +1,14 @@
 {
 	"extends": "next/core-web-vitals",
 	"rules": {
-		"react/jsx-no-undef": [
-			"error",
-			{
-				"ignore": ["spa", "title", "ptitle", "subtitle", "psub"]
-			}
-		]
+		"@next/next/no-img-element": "off",
+		"react-hooks/exhaustive-deps": "off",
+		"tailwindcss/classnames-order": "off",
+		"tailwindcss/no-custom-classname": "off",
+		"tailwindcss/migration-from-tailwind-2": "off",
+		"@typescript-eslint/no-explicit-any": "off",
+		"no-unused-vars": "off",
+		"@typescript-eslint/no-unused-vars": "off",
+		"@next/next/no-html-link-for-pages": "off"
 	}
 }

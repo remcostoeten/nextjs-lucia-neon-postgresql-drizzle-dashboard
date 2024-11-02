@@ -4,7 +4,6 @@
 /node_modules
 /.pnp
 .pnp.js
-.yarn/install-state.gz
 
 # testing
 /coverage
@@ -25,10 +24,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
-.env*.local
-.env
-
 # vercel
 .vercel
 
@@ -36,12 +31,13 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# local env files
+.env*.local
 
+# local files
+_LOCAL/*
+.env
 
-# package managers
-bun.lockb
-
-# misc
-.cursorrules
+# cursor
 .cursorignore
-_LOCAL/
+.cursorrules

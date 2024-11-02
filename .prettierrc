@@ -1,19 +1,22 @@
 {
-	"useTabs": true,
-	"tabWidth": 4,
-	"singleQuote": true,
-	"semi": false,
-	"trailingComma": "none",
-	"overrides": [
-		{
-			"files": ["*.tsx", "*.ts", "*.scss", "*.css", "*.mdx"],
-			"options": {
-				"useTabs": true,
-				"tabWidth": 4,
-				"singleQuote": true,
-				"semi": false,
-				"trailingComma": "none"
-			}
-		}
-	]
+  "endOfLine": "lf",
+  "semi": false,
+  "singleQuote": true,
+  "tabWidth": 4,
+  "useTabs": true,
+  "trailingComma": "none",
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "^(react/(.*)$)|^(react$)",
+    "^(next/(.*)$)|^(next$)",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "<TYPES>",
+    "<TYPES>^[@~]/(?!$).*$",
+    "",
+    "^[@~]/.*$",
+    "^[.]"
+  ],
+  "experimentalTernaries": true,
+  "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"]
 }
