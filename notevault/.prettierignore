@@ -1,0 +1,8 @@
+node_modules
+.next
+dist
+build
+.contentlayer
+public
+tmp
+_templates

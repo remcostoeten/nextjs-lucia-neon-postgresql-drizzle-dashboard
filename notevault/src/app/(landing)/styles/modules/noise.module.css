@@ -1,0 +1,15 @@
+.noise {
+	z-index: 99999;
+	opacity: 0.22;
+	pointer-events: none;
+	background-image: url('https: //assets-global.website-files.com/65b8e9cb3c15d9b62f057c9a/65b8fe1b1063b88db89fa90a_Noise.png');
+	/* soDo: take local image */
+	background-position: 0 0;
+	background-size: 1440px;
+	height: 100%;
+	position: absolute;
+	top: 0%;
+	bottom: 0%;
+	left: 0%;
+	right: 0%;
+}

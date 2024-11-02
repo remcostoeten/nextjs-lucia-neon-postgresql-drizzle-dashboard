@@ -1,0 +1,54 @@
+.integrationTitle {
+	grid-column-gap: 12px;
+	grid-row-gap: 12px;
+	text-align: center;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	max-width: 552px;
+	margin-bottom: 100px;
+	margin-left: auto;
+	margin-right: auto;
+	display: flex;
+	transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+		rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+	opacity: 1;
+	transform-style: preserve-3d;
+}
+
+.badge {
+	grid-column-gap: 4px;
+	grid-row-gap: 4px;
+	border: 1px solid var(--white--6);
+	background-color: var(--white--2);
+	box-shadow: inset 0 -4px 12px 0 var(--white--10);
+	backdrop-filter: blur(12px);
+	color: var(--base--white);
+	border-radius: 99px;
+	align-items: center;
+	padding: 4px 10px;
+	font-size: 12px;
+	line-height: 1.7;
+	display: flex;
+}
+
+.integrationTitle h3 {
+	margin-top: 20px;
+	margin-bottom: 10px;
+	color: var(--base--white);
+	letter-spacing: -0.17px;
+	font-family: 'Bricolage Grotesque', sans-serif;
+	font-size: 40px;
+	font-weight: 500;
+	line-height: 1.2;
+}
+
+.gradientSpan {
+	background-image: linear-gradient(
+		to bottom,
+		var(--base--white),
+		var(--white--64)
+	);
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
