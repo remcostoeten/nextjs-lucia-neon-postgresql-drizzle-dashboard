@@ -1,14 +1,23 @@
 'use client'
 
+<<<<<<< Updated upstream:notevault/src/components/ui/form.tsx
 import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
+=======
+import { Slot } from '@radix-ui/react-slot'
+import * as React from 'react'
+>>>>>>> Stashed changes:src/components/ui/form.tsx
 import { Controller, FormProvider, useFormContext } from 'react-hook-form'
 
 import type * as LabelPrimitive from '@radix-ui/react-label'
 import type { ControllerProps, FieldPath, FieldValues } from 'react-hook-form'
 
 import { Label } from '@/components/ui/label'
+<<<<<<< Updated upstream:notevault/src/components/ui/form.tsx
 import { cn } from '@/lib/utils'
+=======
+import { cn } from 'cn'
+>>>>>>> Stashed changes:src/components/ui/form.tsx
 
 const Form = FormProvider
 
@@ -167,8 +176,13 @@ export {
 	Form,
 	FormItem,
 	FormLabel,
+<<<<<<< Updated upstream:notevault/src/components/ui/form.tsx
 	FormControl,
 	FormDescription,
 	FormMessage,
 	FormField
+=======
+	FormMessage,
+	useFormField
+>>>>>>> Stashed changes:src/components/ui/form.tsx
 }

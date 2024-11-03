@@ -1,5 +1,10 @@
 'use client'
 
+<<<<<<< Updated upstream:notevault/src/components/ui/label.tsx
+=======
+import * as LabelPrimitive from '@radix-ui/react-label'
+import { cva } from 'class-variance-authority'
+>>>>>>> Stashed changes:src/components/ui/label.tsx
 import * as React from 'react'
 import * as LabelPrimitive from '@radix-ui/react-label'
 import { cva } from 'class-variance-authority'
@@ -8,6 +13,13 @@ import type { VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
 
+<<<<<<< Updated upstream:notevault/src/components/ui/label.tsx
+=======
+import type { VariantProps } from 'class-variance-authority'
+
+import { cn } from 'cn'
+
+>>>>>>> Stashed changes:src/components/ui/label.tsx
 const labelVariants = cva(
 	'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
 )

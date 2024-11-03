@@ -1,10 +1,15 @@
 'use client'
 
+<<<<<<< Updated upstream:notevault/src/components/ui/dropdown-menu.tsx
 import * as React from 'react'
+=======
+>>>>>>> Stashed changes:src/components/ui/dropdown-menu.tsx
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu'
 import { Check, ChevronRight, Circle } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
+
+import { cn } from 'cn'
 
 const DropdownMenu = DropdownMenuPrimitive.Root
 

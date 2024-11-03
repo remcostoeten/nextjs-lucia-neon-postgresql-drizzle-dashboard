@@ -1,9 +1,17 @@
+<<<<<<< Updated upstream:notevault/src/components/ui/badge.tsx
+=======
+import { cva } from 'class-variance-authority'
+>>>>>>> Stashed changes:src/components/ui/badge.tsx
 import * as React from 'react'
 import { cva } from 'class-variance-authority'
 
 import type { VariantProps } from 'class-variance-authority'
 
+<<<<<<< Updated upstream:notevault/src/components/ui/badge.tsx
 import { cn } from '@/lib/utils'
+=======
+import { cn } from 'cn'
+>>>>>>> Stashed changes:src/components/ui/badge.tsx
 
 const badgeVariants = cva(
 	'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',

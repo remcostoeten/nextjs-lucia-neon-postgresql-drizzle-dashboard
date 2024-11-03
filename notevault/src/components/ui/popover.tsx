@@ -5,6 +5,11 @@ import * as PopoverPrimitive from '@radix-ui/react-popover'
 
 import { cn } from '@/lib/utils'
 
+<<<<<<< Updated upstream:notevault/src/components/ui/popover.tsx
+=======
+import { cn } from 'cn'
+
+>>>>>>> Stashed changes:src/components/ui/popover.tsx
 const Popover = PopoverPrimitive.Root
 
 const PopoverTrigger = PopoverPrimitive.Trigger

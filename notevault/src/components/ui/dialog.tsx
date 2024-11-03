@@ -4,7 +4,11 @@ import * as React from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
 
+<<<<<<< Updated upstream:notevault/src/components/ui/dialog.tsx
 import { cn } from '@/lib/utils'
+=======
+import { cn } from 'cn'
+>>>>>>> Stashed changes:src/components/ui/dialog.tsx
 
 const Dialog = DialogPrimitive.Root
 
@@ -88,7 +92,11 @@ const DialogTitle = React.forwardRef<
 	<DialogPrimitive.Title
 		ref={ref}
 		className={cn(
+<<<<<<< Updated upstream:notevault/src/components/ui/dialog.tsx
 			'text-lg font-semibold leading-none tracking-tight',
+=======
+			'text-lg gradient-span  font-semibold leading-none tracking-tight',
+>>>>>>> Stashed changes:src/components/ui/dialog.tsx
 			className
 		)}
 		{...props}

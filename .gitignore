@@ -40,4 +40,11 @@ _LOCAL/*
 
 # cursor
 .cursorignore
+<<<<<<< Updated upstream
 .cursorrules
+=======
+_LOCAL/
+notevault/node_modules/*
+*node_modules*
+*.next*
+>>>>>>> Stashed changes

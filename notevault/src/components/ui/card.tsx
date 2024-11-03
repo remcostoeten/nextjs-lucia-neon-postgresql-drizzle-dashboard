@@ -1,6 +1,10 @@
 import * as React from 'react'
 
+<<<<<<< Updated upstream:notevault/src/components/ui/card.tsx
 import { cn } from '@/lib/utils'
+=======
+import { cn } from 'cn'
+>>>>>>> Stashed changes:src/components/ui/card.tsx
 
 const Card = React.forwardRef<
 	HTMLDivElement,

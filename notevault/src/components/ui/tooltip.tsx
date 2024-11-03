@@ -5,6 +5,11 @@ import * as TooltipPrimitive from '@radix-ui/react-tooltip'
 
 import { cn } from '@/lib/utils'
 
+<<<<<<< Updated upstream:notevault/src/components/ui/tooltip.tsx
+=======
+import { cn } from 'cn'
+
+>>>>>>> Stashed changes:src/components/ui/tooltip.tsx
 const TooltipProvider = TooltipPrimitive.Provider
 
 const Tooltip = TooltipPrimitive.Root

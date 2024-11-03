@@ -1,0 +1,79 @@
+.videoContainerLines {
+	z-index: 5;
+	width: 100%;
+	max-width: 1128px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 72px;
+	padding-bottom: 72px;
+	position: relative;
+}
+
+.linesGroup {
+	z-index: 2;
+	pointer-events: none;
+	position: absolute;
+	top: 0%;
+	bottom: 0%;
+	left: 0%;
+	right: 0%;
+}
+
+.lineVerticalLeft,
+.lineVerticalRight {
+	z-index: 1;
+	background-color: var(--neutral--800);
+	width: 1px;
+	height: auto;
+	position: absolute;
+	top: 4.5px;
+	bottom: 0%;
+}
+
+.lineVerticalLeft {
+	left: 0%;
+	right: auto;
+}
+
+.lineVerticalRight {
+	left: auto;
+	right: 0%;
+}
+
+.lineDot {
+	z-index: 5;
+	border: 1px solid var(--neutral--800);
+	background-color: #0d0d11;
+	border-radius: 2px;
+	width: 10px;
+	height: 10px;
+	position: absolute;
+}
+
+.bottomLeft {
+	top: auto;
+	bottom: -4.5px;
+	left: -4.5px;
+	right: auto;
+}
+
+.bottomRight {
+	top: auto;
+	bottom: -4.5px;
+	left: auto;
+	right: -4.5px;
+}
+
+.topLeft {
+	top: -4.5px;
+	bottom: auto;
+	left: -4.5px;
+	right: auto;
+}
+
+.topRight {
+	top: -4.5px;
+	bottom: auto;
+	left: auto;
+	right: -4.5px;
+}

@@ -1,5 +1,11 @@
 'use client'
 
+<<<<<<< Updated upstream:notevault/src/components/ui/sheet.tsx
+=======
+import * as SheetPrimitive from '@radix-ui/react-dialog'
+import { cva } from 'class-variance-authority'
+import { X } from 'lucide-react'
+>>>>>>> Stashed changes:src/components/ui/sheet.tsx
 import * as React from 'react'
 import * as SheetPrimitive from '@radix-ui/react-dialog'
 import { cva } from 'class-variance-authority'
@@ -7,7 +13,13 @@ import { X } from 'lucide-react'
 
 import type { VariantProps } from 'class-variance-authority'
 
+<<<<<<< Updated upstream:notevault/src/components/ui/sheet.tsx
 import { cn } from '@/lib/utils'
+=======
+import type { VariantProps } from 'class-variance-authority'
+
+import { cn } from 'cn'
+>>>>>>> Stashed changes:src/components/ui/sheet.tsx
 
 const Sheet = SheetPrimitive.Root
 
@@ -136,5 +148,9 @@ export {
 	SheetHeader,
 	SheetFooter,
 	SheetTitle,
+<<<<<<< Updated upstream:notevault/src/components/ui/sheet.tsx
 	SheetDescription
+=======
+	SheetTrigger
+>>>>>>> Stashed changes:src/components/ui/sheet.tsx
 }

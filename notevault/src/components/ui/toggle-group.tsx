@@ -1,12 +1,23 @@
 'use client'
 
+<<<<<<< Updated upstream:notevault/src/components/ui/toggle-group.tsx
+=======
+import * as ToggleGroupPrimitive from '@radix-ui/react-toggle-group'
+>>>>>>> Stashed changes:src/components/ui/toggle-group.tsx
 import * as React from 'react'
 import * as ToggleGroupPrimitive from '@radix-ui/react-toggle-group'
 
 import type { VariantProps } from 'class-variance-authority'
 
+<<<<<<< Updated upstream:notevault/src/components/ui/toggle-group.tsx
 import { toggleVariants } from '@/components/ui/toggle'
 import { cn } from '@/lib/utils'
+=======
+import type { VariantProps } from 'class-variance-authority'
+
+import { toggleVariants } from '@/components/ui/toggle'
+import { cn } from 'cn'
+>>>>>>> Stashed changes:src/components/ui/toggle-group.tsx
 
 const ToggleGroupContext = React.createContext<
 	VariantProps<typeof toggleVariants>
