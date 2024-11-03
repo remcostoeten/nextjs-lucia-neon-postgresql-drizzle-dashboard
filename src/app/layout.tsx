@@ -1,9 +1,10 @@
-import ThemeWrapper from '@/components/base/ThemeWrapper'
-import { metadata as rootMetadata } from '@/core/config/metadata/metadata.root-layout'
-import { Metadata } from 'next'
-import '../styles/app.scss'
+import '@/styles/app.scss'
 
-export const metadata: Metadata = rootMetadata
+import React from 'react'
+
+import AuthIndicator from '@/components/dev/auth-indicator'
+import { Providers } from '@/components/providers'
+import { ThemeProvider } from '@/components/theme-provider'
 
 export default function RootLayout({
 	children
@@ -11,14 +12,20 @@ export default function RootLayout({
 	children: React.ReactNode
 }) {
 	return (
-		<html
-			lang="en"
-			dir="ltr"
-			className="scroll-smooth"
-			suppressHydrationWarning
-		>
-			<body className="antialiased bg-base">
-				<ThemeWrapper>{children}</ThemeWrapper>
+		<html lang="en" suppressHydrationWarning>
+			<head />
+			<body>
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="system"
+					enableSystem
+					disableTransitionOnChange
+				>
+					<Providers>
+						{children}
+						<AuthIndicator />
+					</Providers>
+				</ThemeProvider>
 			</body>
 		</html>
 	)

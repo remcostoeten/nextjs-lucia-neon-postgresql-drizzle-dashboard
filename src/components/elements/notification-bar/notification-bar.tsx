@@ -1,10 +1,10 @@
-'use client'
-
-import { HorizontalLight } from '@/app/(non-dashboard)/(landing)/_components/effects/landing-effects'
-import useMouseHoverEffect from '@/core/hooks/use-mouse-hover'
-import { useDismissStore } from 'stores'
-import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+
+import { HorizontalLight } from '@/app/(landing)/_components/effects/landing-effects'
+import { WordRotate } from '@/components/effects/loaders/rotate-words'
+import { useDismissedState } from '@/core/hooks/use-local-storage'
+import useMouseHoverEffect from '@/core/hooks/use-mouse-hover'
 
 export const EMOJI_MAP = {
 	fire: '🔥',
@@ -33,10 +33,14 @@ export const EMOJI_MAP = {
 
 type EmojiKey = keyof typeof EMOJI_MAP
 
-type BannerProps = {
-	badgeText?: string
-	badgeEmoji?: EmojiKey
+type Notice = {
+	badgeText: string
+	badgeEmoji: EmojiKey
 	message: string
+}
+
+type BannerProps = {
+	notices: Notice[]
 	animated?: boolean
 	onClose?: () => void
 	showLights?: boolean
@@ -44,13 +48,12 @@ type BannerProps = {
 }
 
 function NotificationBar({
-	badgeText = '',
-	badgeEmoji = 'fire',
-	message,
+	notices,
 	animated = false,
-	showLights = true
+	showLights = true,
+	storageKey
 }: BannerProps) {
-	const { isDismissed, setIsDismissed } = useDismissStore()
+	const [isDismissed, setDismissed] = useDismissedState(storageKey)
 	const [isVisible, setIsVisible] = useState(!isDismissed)
 	const mouseHover = useMouseHoverEffect()
 
@@ -67,12 +70,11 @@ function NotificationBar({
 	}
 
 	const handleDismiss = () => {
-		setIsDismissed(true)
+		setDismissed()
+		setIsVisible(false)
 	}
 
-	if (isDismissed) {
-		return null
-	}
+	if (isDismissed) return null
 
 	return (
 		<AnimatePresence>
@@ -81,29 +83,34 @@ function NotificationBar({
 					{showLights && <HorizontalLight />}
 					<motion.section
 						ref={mouseHover}
-						className={`hover-effect z-50 section-banner bg-card flex items-center text-whitepx-[5%]  h-10 overflow-hidden w-screen `}
+						className="hover-effect z-50 section-banner bg-card flex items-center text-whitepx-[5%] h-10 overflow-hidden w-screen"
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0, scale: 0 }}
 						transition={{ duration: 0.3 }}
+						as="section"
 					>
 						<div className="z-5 w-full max-w-big-wrapper mx-auto">
-							<div className="banner-content-wide flex justify-between items-center gap-3 h-full">
+							<div className="banner-content-wide flex justify-center items-center gap-3 h-full">
 								<motion.div
 									className="banner-left flex items-center gap-3 h-full"
 									variants={childVariants}
 									transition={{ delay: 0.2 }}
 								>
-									<div className="banner-badge bg-body z-[ border  animate-pulse rounded-lg px-2 py-0.5 text-xs leading-normal">
-										<span className="gradient text-xxs">
-											{badgeText}{' '}
-											{badgeEmoji &&
-												EMOJI_MAP[badgeEmoji]}
-										</span>
-									</div>
-									<p className="paragraph-regular text-sm leading-tight m-0">
-										{message}
-									</p>
+									<WordRotate
+										words={notices.map(
+											(notice) => notice.badgeText
+										)}
+										className="banner-badge bg-body z-[ border animate-pulse rounded-lg px-2 py-0.5 text-xs leading-normal gradient text-xxs"
+										duration={5000}
+									/>
+									<WordRotate
+										words={notices.map(
+											(notice) => notice.message
+										)}
+										className="paragraph-regular text-sm leading-tight m-0"
+										duration={5000}
+									/>
 								</motion.div>
 								<motion.button
 									className="banner-close w-6 h-6 flex items-center text-neutral-400 hover:text-secondary-light transition-colors duration-200"
