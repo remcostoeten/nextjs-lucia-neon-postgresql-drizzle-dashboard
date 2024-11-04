@@ -1,7 +1,7 @@
 'use client'
 
-import Image from 'next/image'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 
 import lightStyles from '../../styles/modules/lights.module.scss'
 import styles from '../../styles/modules/noise.module.css'

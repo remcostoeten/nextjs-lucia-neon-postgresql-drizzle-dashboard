@@ -18,7 +18,8 @@ export default function Workspaces() {
 	const { workspaces } = useAppState()
 	const { workspaceSlug } = useParams() as { workspaceSlug?: string }
 
-	const selectedWorkspace = workspaces?.find((w) => w.slug === workspaceSlug) || workspaces?.[0]
+	const selectedWorkspace =
+		workspaces?.find((w) => w.slug === workspaceSlug) || workspaces?.[0]
 
 	if (!workspaces?.length) return null
 
@@ -39,7 +40,9 @@ export default function Workspaces() {
 							<span className="text-sm font-medium text-zinc-100">
 								{selectedWorkspace?.title}
 							</span>
-							<span className="text-xs text-zinc-400">Workspace</span>
+							<span className="text-xs text-zinc-400">
+								Workspace
+							</span>
 						</div>
 						<ChevronsUpDown className="ml-auto h-4 w-4 text-zinc-400" />
 					</Button>
@@ -69,7 +72,8 @@ export default function Workspaces() {
 									<span className="text-sm font-medium text-zinc-100">
 										{workspace.title}
 									</span>
-									{selectedWorkspace?.slug === workspace.slug && (
+									{selectedWorkspace?.slug ===
+										workspace.slug && (
 										<motion.div
 											layoutId="active"
 											style={{
@@ -77,7 +81,8 @@ export default function Workspaces() {
 												height: '0.375rem',
 												width: '0.375rem',
 												borderRadius: '9999px',
-												backgroundColor: 'var(--primary)'
+												backgroundColor:
+													'var(--primary)'
 											}}
 											transition={{
 												duration: 0.15,

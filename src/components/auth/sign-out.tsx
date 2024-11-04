@@ -4,9 +4,9 @@ import { LogOut } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import { toast } from 'sonner'
 
-import type { ButtonProps } from './ui/button'
+import type { ButtonProps } from '../ui/button'
 
-import { Button } from './ui/button'
+import { Button } from '../ui/button'
 
 export function SignOut(props: ButtonProps) {
 	async function signOutHandler() {

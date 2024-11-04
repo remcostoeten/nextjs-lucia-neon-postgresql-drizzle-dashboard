@@ -19,11 +19,11 @@
 			"db": ["./src/core/server/db/index.ts"],
 			"types": ["./src/core/types/index.ts"],
 			"ui": ["./src/components/ui/index.ts"],
-			"styles": ["./src/styles/app.scss"],
 			"hooks": ["./src/core/hooks/index.ts"],
 			"cn": ["./src/core/utilities/cn.ts"],
 			"models": ["./src/core/models/index.ts"],
-			"stores": ["./src/core/stores/index.ts"]
+			"stores": ["./src/core/stores/index.ts"],
+			"utils": ["./src/core/utilities/index.ts"]
 		},
 		"plugins": [
 			{

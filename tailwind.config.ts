@@ -98,6 +98,9 @@ const config: Config = {
 				spotlight: 'spotlight 2s ease .75s 1 forwards',
 				'marquee-vertical':
 					'marquee-vertical var(--duration) linear infinite'
+			},
+			transitionTimingFunction: {
+				custom: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
 			}
 		}
 	},

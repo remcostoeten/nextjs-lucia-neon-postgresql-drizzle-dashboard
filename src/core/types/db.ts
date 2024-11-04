@@ -2,8 +2,6 @@ import type {
 	accounts,
 	collaborators,
 	customers,
-	files,
-	folders,
 	prices,
 	products,
 	subscriptions,
@@ -20,8 +18,32 @@ export type Workspace = {
 	createdAt?: string
 	updatedAt?: string
 }
-export type Folder = typeof folders.$inferInsert
-export type File = typeof files.$inferInsert
+export type Folder = {
+	id: string
+	title: string
+	iconId: string
+	workspaceId: string
+	inTrash?: boolean
+}
+export type CreateFolderInput = {
+	title: string
+	iconId: string
+	workspaceId: string
+}
+export type File = {
+	id: string
+	title: string
+	iconId: string
+	folderId: string
+	workspaceId: string
+	inTrash?: boolean
+}
+export type CreateFileInput = {
+	title: string
+	iconId: string
+	folderId: string
+	workspaceId: string
+}
 export type Account = typeof accounts.$inferInsert
 export type Customer = typeof customers.$inferInsert
 export type Product = typeof products.$inferInsert

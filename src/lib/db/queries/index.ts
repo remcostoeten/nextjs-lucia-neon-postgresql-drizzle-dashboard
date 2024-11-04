@@ -14,11 +14,4 @@ export {
 
 export { getUserSubscription } from './subscription'
 
-export {
-	createWorkspace,
-	getCollaboratingWorkspaces,
-	getPrivateWorkspaces,
-	getSharedWorkspaces,
-	getWorkspaceBySlug,
-	getWorkspaces
-} from './workspace'
+export { createWorkspace, getWorkspaceBySlug, getWorkspaces } from './workspace'

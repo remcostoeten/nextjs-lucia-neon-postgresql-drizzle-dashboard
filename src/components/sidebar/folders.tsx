@@ -1,8 +1,5 @@
 'use client'
 
-import React, { useState } from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import {
 	Check,
 	ChevronDown,
@@ -17,6 +14,9 @@ import {
 	Trash2,
 	X
 } from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import React, { useState } from 'react'
 import { toast } from 'sonner'
 import {
 	ContextMenu,
@@ -24,11 +24,11 @@ import {
 	ContextMenuItem,
 	ContextMenuTrigger
 } from 'ui'
-import { v4 as uuid } from 'uuid'
 
 import type { File, Folder } from '@/core/types/db'
 
 import { useAppState } from '@/core/hooks/use-app-state'
+import { uuid } from '@/core/utilities'
 import {
 	createFile,
 	createFolder,

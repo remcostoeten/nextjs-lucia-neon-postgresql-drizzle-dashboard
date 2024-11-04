@@ -74,7 +74,7 @@ export function Breadcrumbs() {
 				asChild
 				variant="ghost"
 				size="icon"
-				className="size-8 hover:text-foreground"
+				className="size-8 hover-foreground"
 			>
 				<Link href="/dashboard">
 					<Home className="size-4" />
@@ -96,11 +96,11 @@ export function Breadcrumbs() {
 							)}
 						>
 							{isLast ? (
-								<div className="flex items-center gap-1.5">
+								<div className="flex items-center gap-4">
 									{segment.icon && (
 										<span>{segment.icon}</span>
 									)}
-									<span className="font-medium text-foreground">
+									<span className="font-medium gradient-span">
 										{segment.name}
 									</span>
 								</div>
@@ -112,7 +112,9 @@ export function Breadcrumbs() {
 									{segment.icon && (
 										<span>{segment.icon}</span>
 									)}
-									<span>{segment.name}</span>
+									<span className="gradient-span">
+										{segment.name}
+									</span>
 								</Link>
 							)}
 						</Button>

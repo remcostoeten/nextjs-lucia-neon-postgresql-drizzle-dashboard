@@ -294,7 +294,7 @@ export default function AuthIndicator() {
 								border-2 border-border/50 
 								cursor-pointer
 								transition-all duration-500
-								ease-[cubic-bezier(0.34,1.56,0.64,1)]
+								ease-custom
 								h-5
 								${isHovered ? 'w-auto min-w-[9rem] px-4 rounded-full' : 'w-5 rounded-full'}
 							`}

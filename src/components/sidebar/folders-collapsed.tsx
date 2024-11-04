@@ -15,11 +15,16 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useState } from 'react'
 import { toast } from 'sonner'
-import { v4 as uuid } from 'uuid'
 
-import type { File, Folder } from '@/core/types/db'
+import type {
+	CreateFileInput,
+	CreateFolderInput,
+	File,
+	Folder
+} from '@/core/types/db'
 
 import { useAppState } from '@/core/hooks/use-app-state'
+import { uuid } from '@/core/utilities/generate-uuid'
 import {
 	createFile,
 	createFolder,
@@ -79,12 +84,7 @@ export function FoldersCollapsed() {
 
 	function createFolderToggle() {
 		if (subscription?.status !== 'active' && stateFolders.length >= 3) {
-			const description =
-				stateFolders.length === folders.length
-					? 'You have reached the maximum number of folders.'
-					: 'You have reached the maximum number of folders. Try clearing the trash to create more folders.'
-
-			toast.error('Something went wrong', { description })
+			toast.error('You have reached the maximum number of folders.')
 
 			setOpen(true)
 			return
@@ -96,9 +96,7 @@ export function FoldersCollapsed() {
 			subscription?.status !== 'active' &&
 			files.filter((f) => f.folderId === folderId).length >= 3
 		) {
-			toast.error('Something went wrong', {
-				description: 'You have reached the maximum number of files.'
-			})
+			toast.error('You have reached the maximum number of files.')
 
 			setOpen(true)
 			return
@@ -116,22 +114,25 @@ export function FoldersCollapsed() {
 	async function createFolderHandler(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault()
 
-		const newFolder: Folder = {
-			id: uuid(),
+		const workspaceId = pathname.split('/')[2]
+
+		const folderData: CreateFolderInput = {
 			title: folderName,
 			iconId: selectedEmoji,
-			workspaceId: pathname.split('/')[2]
+			workspaceId
+		}
+
+		const newFolder: Folder = {
+			id: uuid(),
+			...folderData
 		}
 
 		addFolder(newFolder)
 
-		toast.promise(createFolder(newFolder), {
+		toast.promise(createFolder(folderData), {
 			loading: 'Creating folder...',
 			success: 'Folder created.',
-			error: () => {
-				deleteFolder(newFolder.id!)
-				return 'Something went wrong! Unable to create folder.'
-			}
+			error: 'Unable to create folder.'
 		})
 
 		setSelectedEmoji('')
@@ -149,25 +150,30 @@ export function FoldersCollapsed() {
 			return
 		}
 
-		const newFile: File = {
-			id: uuid(),
+		const workspaceId = pathname.split('/')[2]
+
+		const fileData: CreateFileInput = {
 			title: fileName,
 			iconId: selectedEmoji,
 			folderId,
-			workspaceId: pathname.split('/')[2]
+			workspaceId
+		}
+
+		const newFile: File = {
+			id: uuid(),
+			...fileData
 		}
 
 		addFile(newFile)
 
-		toast.promise(createFile(newFile), {
+		toast.promise(createFile(fileData), {
 			loading: 'Creating file...',
 			success: 'File created.',
-			error: 'Something went wrong! Unable to create file.'
+			error: 'Unable to create file.'
 		})
 
 		setSelectedEmoji('')
 		setFileName('Untitled')
-
 		setCreatingFiles((prev) => prev.filter((id) => id !== folderId))
 	}
 
@@ -175,19 +181,21 @@ export function FoldersCollapsed() {
 		const file = files.find((f) => f.id === fileId)
 
 		if (!file) {
-			toast.error('Something went wrong', {
-				description: 'File not found.'
-			})
+			toast.error('File not found.')
 			return
 		}
 
-		const updatedFile: File = { ...file, inTrash: true }
+		const updatedFile = {
+			...file,
+			inTrash: true
+		}
+
 		updateFile(updatedFile)
 
-		toast.promise(updateFileInDb(updatedFile), {
+		toast.promise(updateFileInDb({ id: fileId, inTrash: true }), {
 			loading: 'Moving file to trash...',
 			success: 'File moved to trash.',
-			error: 'Something went wrong! Unable to move file to trash.'
+			error: 'Unable to move file to trash.'
 		})
 	}
 
@@ -195,19 +203,21 @@ export function FoldersCollapsed() {
 		const folder = folders.find((f) => f.id === folderId)
 
 		if (!folder) {
-			toast.error('Something went wrong', {
-				description: 'Folder not found.'
-			})
+			toast.error('Folder not found.')
 			return
 		}
 
-		const updatedFolder: Folder = { ...folder, inTrash: true }
+		const updatedFolder = {
+			...folder,
+			inTrash: true
+		}
+
 		updateFolder(updatedFolder)
 
-		toast.promise(updateFolderInDb(updatedFolder), {
+		toast.promise(updateFolderInDb({ id: folderId, inTrash: true }), {
 			loading: 'Moving folder to trash...',
 			success: 'Folder moved to trash.',
-			error: 'Something went wrong! Unable to move folder to trash.'
+			error: 'Unable to move folder to trash.'
 		})
 	}
 
@@ -218,10 +228,7 @@ export function FoldersCollapsed() {
 		toast.promise(deleteFileFromDb(fileId), {
 			loading: 'Deleting file...',
 			success: 'File deleted permanently.',
-			error: () => {
-				addFile(file!)
-				return 'Something went wrong! Unable to delete file.'
-			}
+			error: 'Unable to delete file.'
 		})
 	}
 
@@ -232,10 +239,7 @@ export function FoldersCollapsed() {
 		toast.promise(deleteFolderFromDb(folderId), {
 			loading: 'Deleting folder...',
 			success: 'Folder deleted permanently.',
-			error: () => {
-				addFolder(folder!)
-				return 'Something went wrong! Unable to delete folder.'
-			}
+			error: 'Unable to delete folder.'
 		})
 	}
 

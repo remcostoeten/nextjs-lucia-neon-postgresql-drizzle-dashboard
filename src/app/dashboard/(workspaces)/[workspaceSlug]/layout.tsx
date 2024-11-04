@@ -3,14 +3,22 @@ import { redirect } from 'next/navigation'
 
 import { AppStateProvider } from '@/components/app-state-provider'
 import { getCurrentUser } from '@/lib/auth'
-import { getFiles, getFolders, getWorkspaceBySlug, getWorkspaces } from '@/lib/db/queries'
+import {
+	getFiles,
+	getFolders,
+	getWorkspaceBySlug,
+	getWorkspaces
+} from '@/lib/db/queries'
 import ResizableLayout from '../components/resizable-layout'
 
 type WorkspaceLayoutProps = React.PropsWithChildren<{
 	params: { workspaceSlug: string }
 }>
 
-export default async function WorkspaceLayout({ children, params }: WorkspaceLayoutProps) {
+export default async function WorkspaceLayout({
+	children,
+	params
+}: WorkspaceLayoutProps) {
 	const { workspaceSlug } = params
 	const user = await getCurrentUser()
 
@@ -32,9 +40,9 @@ export default async function WorkspaceLayout({ children, params }: WorkspaceLay
 	if (!workspace) redirect('/dashboard')
 
 	return (
-		<AppStateProvider 
-			user={user} 
-			files={files!} 
+		<AppStateProvider
+			user={user}
+			files={files!}
 			folders={folders!}
 			workspace={workspace}
 			workspaces={workspaces}

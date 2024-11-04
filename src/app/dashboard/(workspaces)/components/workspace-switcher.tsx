@@ -33,9 +33,9 @@ export default function WorkspaceSwitcher({
 			<DropdownMenuTrigger asChild>
 				<Button
 					variant="ghost"
-					className="relative h-auto w-[240px] justify-start gap-2 border border-zinc-800 bg-zinc-900 px-3 py-2 hover:bg-zinc-900/50"
+					className="relative h-auto w-[240px] justify-start gap-2 border border bg-black px-3 py-2 hover:bg-zinc-900/50"
 				>
-					<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-800">
+					<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-body">
 						<span className="text-lg">
 							{selectedWorkspace?.iconId}
 						</span>

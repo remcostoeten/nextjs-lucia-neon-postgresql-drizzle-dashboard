@@ -3,9 +3,9 @@
 import type { Workspace } from '@/core/types/db'
 import { db } from '@/lib/db'
 import { workspaces } from '@/lib/db/schema'
-import { slugify } from '@/lib/utils/slugify'
 import { eq } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
+import { slugify } from 'utils'
 
 export async function createWorkspace(workspace: Workspace) {
 	try {

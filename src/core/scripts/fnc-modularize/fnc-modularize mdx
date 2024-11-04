@@ -1,0 +1,200 @@
+# TypeScript Modularizer
+
+A Python script for modularizing TypeScript files by extracting types, interfaces, and functions into separate modules.
+
+## Features
+
+- **Type Definition Extraction**:
+  - Interfaces
+  - Type aliases
+  - Enums
+  - Classes
+
+- **Function Extraction**:
+  - Exports functions to individual files
+  - Preserves JSDoc comments
+  - Maintains type dependencies
+  - Handles async functions
+  - Supports generic type parameters
+
+- **Dependency Management**:
+  - Automatic type dependency detection
+  - Circular dependency detection
+  - Proper import/export generation
+  - Type reference preservation
+
+- **Code Organization**:
+  - Creates clean module structure
+  - Generates `index.ts` with exports
+  - Maintains 'use server' directives
+  - Converts names to kebab-case
+
+## Installation
+
+1. Clone the repository:
+   ```sh
+   git clone <repository-url>
+   cd typescript-modularizer
+   ```
+
+2. Ensure you have Python 3.6+ installed:
+   ```sh
+   python --version
+   ```
+
+3. No additional dependencies required (uses standard library only)
+
+## Usage
+
+Basic usage:
+```sh
+python typescript_modularizer.py input.ts output/
+```
+
+With options:
+```sh
+python typescript_modularizer.py input.ts output/ --verbose --no-server
+```
+
+### Command Line Options
+
+- `input_file`: Path to the TypeScript file to process
+- `output_dir`: Directory where modularized files will be created
+- `--no-server`: Don't add 'use server' directive to files
+- `--verbose`, `-v`: Enable detailed logging
+- `--dry-run`, `-d`: Show what would be done without making changes
+
+## Output Structure
+
+```
+output_directory/
+├── logs/
+│   ├── modularizer.log
+│   └── stats.json
+├── types.d.ts
+├── [function-name].ts
+└── index.ts
+```
+
+### File Contents
+
+- **types.d.ts**: Contains all extracted types, interfaces, and enums
+- **[function-name].ts**: Individual function modules
+- **index.ts**: Exports all modules
+- **logs/modularizer.log**: Processing log
+- **stats.json**: Processing statistics
+
+## Examples
+
+### Input TypeScript File
+
+```typescript
+interface User {
+  id: number;
+  name: string;
+}
+
+type UserResponse = {
+  user: User;
+  token: string;
+}
+
+export async function getUser(id: number): Promise<UserResponse> {
+  // ... implementation
+}
+```
+
+### Output Files
+
+**types.d.ts**:
+```typescript
+/**
+ * Interface: User
+ */
+interface User {
+  id: number;
+  name: string;
+}
+
+/**
+ * Type: UserResponse
+ * 
+ * Dependencies:
+ * - User
+ */
+type UserResponse = {
+  user: User;
+  token: string;
+}
+
+export type User = User;
+export type UserResponse = UserResponse;
+```
+
+**get-user.ts**:
+```typescript
+'use server'
+
+import type { User, UserResponse } from './types';
+
+/**
+ * [Original JSDoc preserved]
+ */
+export async function getUser(id: number): Promise<UserResponse> {
+  // ... implementation
+}
+```
+
+**index.ts**:
+```typescript
+export * from './get-user';
+```
+
+## Development
+
+### Project Structure
+
+```
+typescript-modularizer/
+├── README.md
+├── typescript_modularizer.py
+└── tests/
+    └── ...
+```
+
+### Key Components
+
+1. **TypeDefinition**: Class representing a type definition (interface/type/enum)
+2. **TypeScriptModularizer**: Main class handling the modularization process
+   - Type extraction
+   - Function extraction
+   - Dependency management
+   - File generation
+
+### Error Handling
+
+The script includes comprehensive error handling:
+
+- **ModularizerError**: Base exception class
+- **ParseError**: Raised for parsing issues
+- **TypeDefinitionError**: Raised for type-related issues
+
+### Logging
+
+- Detailed logging to both console and file
+- Processing statistics in JSON format
+- Warning and error tracking
+
+## Limitations
+
+1. Complex TypeScript syntax might need manual review
+2. Nested type definitions are extracted as-is
+3. Function extraction pattern might need adjustments for very complex cases
+
+## Credits
+
+xxx remco stoeten,
+
+
+- [@remcostoeten on Github](https://github.com/remcostoeten)
+- [@yowremco on X](https://twitter.com/yowremco)

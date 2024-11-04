@@ -86,9 +86,12 @@ Like I said I will slowly be merging features into here and you can expect the f
 -   SVG to CSS-pseudo selector/SVG to react component converter
     ... And many more I can't remember.
 
-Much love xxxx,
 
-Remco Stoeten  
-<sub>[remcostoeten.com](https://remcostoeten.com)</sub>
+xxx remco stoeten,
+
+
+- [@remcostoeten on Github](https://github.com/remcostoeten)
+- [@yowremco on X](https://twitter.com/yowremco)
+
 
 <sub>A ✨ is appreciated for growning my e-penor</sub>

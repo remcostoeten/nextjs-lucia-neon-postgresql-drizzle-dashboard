@@ -7,9 +7,9 @@ import WorkspaceSwitcher from '@/app/dashboard/(workspaces)/components/workspace
 import { siteConfig } from '@/config/site'
 import { useAppState } from '@/core/hooks/use-app-state'
 import { cn } from '@/lib/utils'
+import { SignOut } from '../auth/sign-out'
 import Logo from '../base/logo'
 import { Settings } from '../settings'
-import { SignOut } from '../sign-out'
 import { ThemeSwitcher } from '../theme-switcher'
 import { Trash } from '../trash'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
@@ -191,12 +191,14 @@ export function Sidebar({ isCollapsed, className, ...props }: SidebarProps) {
 					)}
 				</div>
 
-				<div className={cn(
-					'absolute z-10 transition-all',
-					isCollapsed
-						? 'inset-x-0 bottom-1 flex justify-center'
-						: 'inset-x-2 bottom-2 flex justify-end'
-				)}>
+				<div
+					className={cn(
+						'absolute z-10 transition-all',
+						isCollapsed
+							? 'inset-x-0 bottom-1 flex justify-center'
+							: 'inset-x-2 bottom-2 flex justify-end'
+					)}
+				>
 					<ThemeSwitcher />
 				</div>
 			</div>
